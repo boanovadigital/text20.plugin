@@ -1,16 +1,15 @@
- <?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <html>
 	
 
 <head>
+    <!-- Include what we need -->	
     <script type="text/javascript" src="jquery.js"></script>
     <script type="text/javascript" src="jquery.timers.js"></script>
     <script type="text/javascript" src="text20.js"></script>
 	 
 	<!-- Manually bring up the plugin -->
 	<script type="text/javascript">
-	   text20.connector.config.recordingEnabled = true
-	   text20.connector.config.enableBrainTracker = false
 	   text20.connector.config.extensions = ["extensions/yodling.jar"]
 		
 	   text20.connector.listener("INITIALIZED", function() {
@@ -20,68 +19,16 @@
             var allSpans = text20.dom.spanify(allTextNodes);
 
             // Register text
-            text20.core.register(allSpans)
-			
-			var x = text20.connector.extensions.getAbstract("Car");
-            var y = text20.connector.extensions.getProbability("Car");
-
-            //alert((y.toString()))
-			//alert(x + " " + y)
+            text20.core.register(allSpans)			
 	   })
 	   
        text20.core.init()
-	</script>	
+	</script>
+		
 </head><body>
-
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-	<br/>
-
-    <div onFixation="alert(1)"> hello world</div>
+    <div onFixation="alert(1)">Hello World</div>
 	<br/><br/><br/><br/>
-    <div onGazeOver="alert(2)" onGazeOut="alert(3)"> yoasdhjas dk</div>
+    <div onGazeOver="alert(2)" onGazeOut="alert(3)">Hello Again.</div>
 </body></html>
 
 
