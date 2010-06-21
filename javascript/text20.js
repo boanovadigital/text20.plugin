@@ -1152,7 +1152,8 @@ var text20 = {},
 
             // If set to true, the core will try to find all elements that have onGaze/onFixation/...
 			// attributes. This works quite well, but takes some time every new fixation and might 
-			// add significant overhead for larger pages. If set to false you have to call TODO every
+			// add significant overhead for larger pages. If set to false you have to call 
+			// core.attributed.update('onFixation') -- (change onFixation with what you need) -- every
 			// time you add or change the DOM tree and add or remove elements containing such attributes 
 			autoupdateAttributed: true,
 		},
@@ -1356,12 +1357,10 @@ var text20 = {},
 	            var gazedElement = document.elementFromPoint(x - window.pageXOffset, y - window.pageYOffset),
 	                allUnderCurrentGaze = dom.parents(gazedElement);
 	            
-				// TODO: Add function to cache the $(onFix...) call so 
+				// Cache the $(onFix...) call so 
 				// that we don't have to look the elements up each new
 				// fixation, but only when the user requests it
-				
-	            // Or ther onGazeOut handler
-	            core.attributed.get("onFixation").each(function(i){
+				core.attributed.get("onFixation").each(function(i){
 	                // If an element with onGazeOut is under gaze, ignore it. 
 	                if (allUnderCurrentGaze.indexOf(this) < 0) 
 	                    return;
@@ -1381,12 +1380,9 @@ var text20 = {},
 	         */
 	        onPerusalHandler: function(e){
 	        
-                // TODO: Add function to cache the $(onPerusal...) call so 
+                // Cache the $(onPerusal...) call so 
                 // that we don't have to look the elements up each new
                 // fixation, but only when the user requests it
-
-			
-	            // Now check for every onPerusal element we found                             
 	            core.attributed.get("onPerusal").each(function(i){
 	            
 	                var pos = dom.documentPosition(this);
