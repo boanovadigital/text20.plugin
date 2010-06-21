@@ -29,7 +29,9 @@ package de.dfki.km.text20.browserplugin.browser.browserplugin.impl;
 
 import java.applet.Applet;
 import java.applet.AppletContext;
+import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.io.File;
 import java.io.IOException;
@@ -371,6 +373,9 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         // Setup gaze recording
         initTrackingDevice();
 
+        // Setup mouse recording
+        initMouseRecording();
+
         // Publish items of the information broker
         publishBrokerItems();
 
@@ -590,7 +595,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     }
 
     /**
-     * 
+     * Initializes the tracking devices
      */
     private void initTrackingDevice() {
 
@@ -624,6 +629,32 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
                 });
             }
         }
+    }
+
+    /** 
+     * Initializes recording of the mouse position
+     */
+    private void initMouseRecording() {
+        // Start a background thread to record the current mouse position. 
+        final Thread t = new Thread(new Runnable() {
+            public void run() {
+                while (true) {
+                    final SessionRecorder sr = BrowserPluginImpl.this.sessionRecorder;
+                    final PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+                    final Point point = pointerInfo.getLocation();
+
+                    if (sr != null) sr.updateMousePosition(point.x, point.y);
+
+                    try {
+                        Thread.sleep(25);
+                    } catch (final InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        t.setDaemon(true);
+        t.start();
     }
 
     /**
