@@ -658,8 +658,7 @@ var text20 = {},
 		            batch.generateBatchCalls = function(){
 		                var rval = []
 
-                        // TODO: Generalize calls with single method
-						
+                        // Generalize calls with single method
 						var assembler = function(prefix, array, keyset) {
 						    
                             // Construct proper prefix 
@@ -1304,7 +1303,7 @@ var text20 = {},
 	                allUnderCurrentGaze = dom.parents(gazedElement);
 
 
-                // TODO: Add function to cache the $(onGazeOver...) calls so 
+                // core.attributed caches the $(onGazeOver...) calls so 
                 // that we don't have to look the elements up each new
                 // fixation, but only when the user requests it
 				

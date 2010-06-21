@@ -38,7 +38,7 @@ public class YodelingTestExtension implements Extension {
      */
     @Init
     public void init() {
-        System.out.println("Yodling Succeded");
+        System.out.println("Yodeling Succeded");
     }
 
     /* (non-Javadoc)
