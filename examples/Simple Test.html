@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html>
+	
+
+<head>
+    <!-- Include what we need -->	
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="jquery.timers.js"></script>
+    <script type="text/javascript" src="text20.js"></script>
+	 
+	<!-- Manually bring up the plugin -->
+	<script type="text/javascript">
+	   text20.connector.config.extensions = ["extensions/yodeling.jar"]
+		
+	   text20.connector.listener("INITIALIZED", function() {
+            var sentence = $("body").get(0);
+			
+            var allTextNodes = text20.dom.textnodesBelow(sentence);
+            var allSpans = text20.dom.spanify(allTextNodes);
+
+            // Register text
+            text20.core.register(allSpans)			
+	   })
+	   
+       text20.core.init()
+	</script>
+		
+</head><body>
+    <div onFixation="alert(1)">Hello World</div>
+	<br/><br/><br/><br/>
+    <div onGazeOver="alert(2)" onGazeOut="alert(3)">Hello Again.</div>
+</body></html>
+
+
