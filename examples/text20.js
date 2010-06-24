@@ -5,26 +5,20 @@
  * 
  * All rights reserved.
  * 
- * Redistribution and use in source and binary forms, with or without modification, are
- * permitted provided that the following conditions are met:
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  * 
- * Redistributions of source code must retain the above copyright notice, this list of
- * conditions and the following disclaimer. Redistributions in binary form must reproduce the
- * above copyright notice, this list of conditions and the following disclaimer in the
- * documentation and/or other materials provided with the distribution.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
  * 
- * Neither the name of the author nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- * 
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
- * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
- * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
- * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * MA 02110-1301  USA
  * 
  * 
  * Version:
@@ -658,7 +652,8 @@ var text20 = {},
 		            batch.generateBatchCalls = function(){
 		                var rval = []
 
-                        // Generalize calls with single method
+                        // TODO: Generalize calls with single method
+						
 						var assembler = function(prefix, array, keyset) {
 						    
                             // Construct proper prefix 
@@ -1157,7 +1152,8 @@ var text20 = {},
 
             // If set to true, the core will try to find all elements that have onGaze/onFixation/...
 			// attributes. This works quite well, but takes some time every new fixation and might 
-			// add significant overhead for larger pages. If set to false you have to call TODO every
+			// add significant overhead for larger pages. If set to false you have to call 
+			// core.attributed.update('onFixation') -- (change onFixation with what you need) -- every
 			// time you add or change the DOM tree and add or remove elements containing such attributes 
 			autoupdateAttributed: true,
 		},
@@ -1303,7 +1299,7 @@ var text20 = {},
 	                allUnderCurrentGaze = dom.parents(gazedElement);
 
 
-                // core.attributed caches the $(onGazeOver...) calls so 
+                // TODO: Add function to cache the $(onGazeOver...) calls so 
                 // that we don't have to look the elements up each new
                 // fixation, but only when the user requests it
 				
@@ -1361,12 +1357,10 @@ var text20 = {},
 	            var gazedElement = document.elementFromPoint(x - window.pageXOffset, y - window.pageYOffset),
 	                allUnderCurrentGaze = dom.parents(gazedElement);
 	            
-				// TODO: Add function to cache the $(onFix...) call so 
+				// Cache the $(onFix...) call so 
 				// that we don't have to look the elements up each new
 				// fixation, but only when the user requests it
-				
-	            // Or ther onGazeOut handler
-	            core.attributed.get("onFixation").each(function(i){
+				core.attributed.get("onFixation").each(function(i){
 	                // If an element with onGazeOut is under gaze, ignore it. 
 	                if (allUnderCurrentGaze.indexOf(this) < 0) 
 	                    return;
@@ -1386,12 +1380,9 @@ var text20 = {},
 	         */
 	        onPerusalHandler: function(e){
 	        
-                // TODO: Add function to cache the $(onPerusal...) call so 
+                // Cache the $(onPerusal...) call so 
                 // that we don't have to look the elements up each new
                 // fixation, but only when the user requests it
-
-			
-	            // Now check for every onPerusal element we found                             
 	            core.attributed.get("onPerusal").each(function(i){
 	            
 	                var pos = dom.documentPosition(this);
