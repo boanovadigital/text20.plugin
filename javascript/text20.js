@@ -1258,8 +1258,10 @@ var text20 = {},
 	            });
 	            
 	            // In case subsequent updates are disabled we are finished. 
-	            if (clustering.disableSubsequentUpdates) 
-	                return;
+	            if (clustering.disableSubsequentUpdates) {
+                    connector.connection.endBatch();
+                    return;
+				} 
 	            
 	            // Select what we want to transmit this round
 	            // var cls = ".registeredGazeElement" // Transmit all elements at once
