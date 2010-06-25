@@ -873,6 +873,14 @@ var text20 = {},
                                 $("#atloadingindicatorbackground").hide()
                                 $("#atloadingindicator").hide()                                         
                             }
+                            
+                            
+                            // Setup Emotion Engine :-)
+                            if(connector.config.enableBrainTracker) {
+                            	var r = connector.extensions.brainTrackerInitEvaluation();
+                            	alert(r)
+                            }
+
                                                                         
                             // Process all initialized listener
                             connector.variables.listeners.process("INITIALIZED", function(f){
@@ -1440,6 +1448,38 @@ var text20 = {},
                         eval(elem.attr("onPerusal"))
                     }
                 })
+             },
+             
+             /**
+              * Handles onEmotion handler.
+              *
+              * @param {Object} x
+              * @param {Object} y
+              */
+             onEmotionHandler: function(x, y){
+                 // After this we know all elements which are under gaze.                
+                 var gazedElement = document.elementFromPoint(x - window.pageXOffset, y - window.pageYOffset),
+                     allUnderCurrentGaze = dom.parents(gazedElement),
+                     emotion = connector.extensions.getTrainedPeakEmotion();	
+                 
+                 if (!emotion) return; 
+                 
+                 var map = { 
+                	 "happy" : "onSmile", 
+                	 "interested" : "onInterest", 
+                	 "doubt" : "onFurrow", 
+                	 "bored" : "onBoredom", 
+                 }
+                 
+                 var handler = map[emotion.split(" ")[0]]; 
+                 if (!handler) return;
+
+              	 core.attributed.get(handler).each(function(i){
+                     if (allUnderCurrentGaze.indexOf(this) < 0) 
+                         return;
+                     
+                     eval($(this).attr(handler))
+                 })                	 
              }
         },
         
@@ -1482,6 +1522,8 @@ var text20 = {},
                 // call onGaze* and onFixation handler
                 core.handler.onGazeHandler(x, y)
                 core.handler.onFixationHandler(x, y)
+
+                core.handler.onEmotionHandler(x, y)
             },
             
             /** Called when new reduced gaze events come in */			
