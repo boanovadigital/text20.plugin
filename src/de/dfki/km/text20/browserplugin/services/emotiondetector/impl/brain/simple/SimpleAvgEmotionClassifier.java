@@ -67,20 +67,25 @@ public class SimpleAvgEmotionClassifier implements EmotionClassifier {
 				avgEngagement = 0;
 			}	
 				
+			String emotion = "";
 			
 			if(avgEngagement <= 0.4)
-				return "bored";
+				emotion += "bored";
 			
-			if(avgFurrow >= 0.2)
-				return "doubt";
+			else if(avgFurrow >= 0.2)
+					emotion += "doubt";
 			
-			if(avgEngagement >= 0.7)
-				return "interested";
+			else if(avgEngagement >= 0.7)
+					emotion += "interested";
 
-			if(avgSmile >= 0.8)
-				return "happy";
+			else if(avgSmile >= 0.8)
+					emotion += "happy";
 				
-			return "neutral";
+			else emotion += "neutral";
+			
+			emotion += " " + round(avgFurrow) +" "+ round(avgSmile) +" "+ round(avgEngagement);
+			
+			return emotion;
     	}
     	return null;
     }
@@ -102,4 +107,9 @@ public class SimpleAvgEmotionClassifier implements EmotionClassifier {
     		events.clear();
 		}
     }
+    
+    private double round(double num){
+    	return ((double)Math.round(num*100))/100.0;
+    }
+    
 }

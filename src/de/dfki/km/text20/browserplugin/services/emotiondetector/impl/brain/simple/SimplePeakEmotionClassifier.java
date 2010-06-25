@@ -41,23 +41,36 @@ public class SimplePeakEmotionClassifier implements EmotionClassifier {
 	    			interested = true;
 	    	
 	    	// doubt or happy (have peaks)
+	    	
+	    	double peakFurrow = 0;
+	    	double peakSmile = 0;
+	    	
 	    	for(BrainTrackingEvent b : currEvents){
-	    		if(b.getValue("channel:furrow") >= 0.2)
+	    		if(b.getValue("channel:furrow") >= 0.2){
 	    			doubt = true;
-	    		else if(b.getValue("channel:smile") >= 0.8)
-	    				happy = true;
+	    			peakFurrow = b.getValue("channel:furrow") > peakFurrow ? b.getValue("channel:furrow") : peakFurrow;
+	    		}
+	    		else if(b.getValue("channel:smile") >= 0.8){
+	    			happy = true;
+	    			peakSmile = b.getValue("channel:smile") > peakSmile ? b.getValue("channel:smile") : peakSmile;
+	    		}
 	    	}	    	
 	    	
 	    	// return by priorities (bored > doubt > interested > happy)
+	    	String emotion = "";
 	    	if(bored)
-	    		return "bored";
-	    	if(doubt)
-	    		return "doubt";
-	    	if(interested)
-	    		return "interested";
-	    	if(happy)
-	    		return "happy";	    	
-	    	return "neutral";
+	    		emotion += "bored";
+	    	else if(doubt)
+	    			emotion += "doubt";
+	    	else if(interested)
+	    			emotion += "interested";
+	    	else if(happy)
+	    			emotion += "happy";	    	
+	    	else emotion +="neutral";
+	    	
+	    	emotion += " " + round(peakFurrow) +" "+ round(peakSmile) +" "+ round(avg);
+	    	
+	    	return emotion;
     	}
     	return null;
     }
@@ -78,5 +91,9 @@ public class SimplePeakEmotionClassifier implements EmotionClassifier {
     	synchronized (events) {
     		events.clear();
 		}
+    }
+    
+    private double round(double num){
+    	return ((double)Math.round(num*100))/100.0;
     }
 }
