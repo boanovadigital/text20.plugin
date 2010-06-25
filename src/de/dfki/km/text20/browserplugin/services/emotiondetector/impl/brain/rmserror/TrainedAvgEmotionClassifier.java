@@ -99,24 +99,30 @@ public class TrainedAvgEmotionClassifier implements EmotionClassifier {
 			return "bored";		*/
 		
 		//if(model.avgSimple.isEmpty()){
+		
+		String emotion = "";
 			
 		double thresholdBored = model.avgSimple.containsKey("bored")? model.avgSimple.get("bored").doubleValue(): 0.4;
-		if(avgEngagement <= thresholdBored)
-			return "bored";
-		
 		double thresholdDoubt = model.avgSimple.containsKey("doubt")? model.avgSimple.get("doubt").doubleValue(): 0.2;
-		if(avgFurrow >= thresholdDoubt)
-			return "doubt";
-		
 		double thresholdInterested = model.avgSimple.containsKey("interested")? model.avgSimple.get("interested").doubleValue(): 0.7;
-		if(avgEngagement >= thresholdInterested)
-			return "interested";
-
 		double thresholdHappy = model.avgSimple.containsKey("happy")? model.avgSimple.get("happy").doubleValue(): 0.8;
-		if(avgSmile >= thresholdHappy)
-			return "happy";
+		
+		if(avgEngagement <= thresholdBored)
+			emotion += "bored";		
+		else if(avgFurrow >= thresholdDoubt)
+				emotion += "doubt";
+		
+		else if(avgEngagement >= thresholdInterested)
+				emotion += "interested";
+
+		else if(avgSmile >= thresholdHappy)
+				emotion += "happy";
 			
-		return "neutral";
+		else emotion += "neutral";
+		
+		emotion += " " + round(avgFurrow) +" "+ round(avgSmile) +" "+ round(avgEngagement);
+		
+		return emotion;
 			
 		/*} else {
 			if(avgEngagement <= model.avgSimple.get("bored").doubleValue())
@@ -200,5 +206,7 @@ public class TrainedAvgEmotionClassifier implements EmotionClassifier {
 		}
     }
     
-    
+    private double round(double num){
+    	return ((double)Math.round(num*100))/100.0;
+    }
   }

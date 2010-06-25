@@ -67,23 +67,144 @@ public class TrainedPeakEmotionClassifier implements EmotionClassifier {
     			interested = true;
     	
     	// doubt or happy (have peaks)
+    	
+    	double peakFurrow = 0;
+    	double peakSmile = 0;
+    	
     	for(BrainTrackingEvent b : currEvents){
-    		if(b.getValue("channel:furrow") >= thresholdDoubt)
-    			doubt = true;
+    		if(b.getValue("channel:furrow") >= thresholdDoubt){
+    			doubt = true;    		
+    			peakFurrow = b.getValue("channel:furrow") > peakFurrow ? b.getValue("channel:furrow") : peakFurrow;
+    		}
     		else if(b.getValue("channel:smile") >= thresholdHappy)
     				happy = true;
+    				peakSmile = b.getValue("channel:smile") > peakSmile ? b.getValue("channel:smile") : peakSmile;
     	}	    	
     	
     	// return by priorities (bored > doubt > interested > happy)
+    	String emotion = "";
     	if(bored)
-    		return "bored";
-    	if(doubt)
-    		return "doubt";
-    	if(interested)
-    		return "interested";
-    	if(happy)
-    		return "happy";	    	
-    	return "neutral";
+    		emotion += "bored";
+    	else if(doubt)
+    			emotion += "doubt";
+    	else if(interested)
+    			emotion += "interested";
+    	else if(happy)
+    			emotion += "happy";	    	
+    	else emotion +="neutral";
+    	
+    	emotion += " " + round(peakFurrow) +" "+ round(peakSmile) +" "+ round(avg);
+    	
+    	return emotion;
+	}
+	
+	public String getSimpleTrainedEmotion(){	
+		// goes through all events and calculates sum and count
+		ArrayList<BrainTrackingEvent> currEvents;
+		
+		synchronized(events){
+			currEvents = (ArrayList<BrainTrackingEvent>)events.clone();
+			events.clear();
+		}
+		
+		if(currEvents.isEmpty())
+			return null;
+		
+		boolean boredSimple = false, doubtSimple = false, interestedSimple = false, happySimple = false;
+		boolean boredTrained = false, doubtTrained = false, interestedTrained = false, happyTrained = false;
+		
+    	// bored or interested (continuous, take average)
+    	double sum = 0;
+    	double avg = 0;
+    	for(BrainTrackingEvent b : currEvents){
+    		sum += b.getValue("channel:engagement");
+    	}
+    	avg = sum / currEvents.size();
+    	
+    	// trained
+    	
+    	double thresholdBoredTrained = model.avgSimple.containsKey("bored")? model.avgSimple.get("bored").doubleValue(): 0.4;
+    	double thresholdDoubtTrained = model.avgSimple.containsKey("doubt")? model.avgSimple.get("doubt").doubleValue(): 0.2;
+    	double thresholdInterestedTrained = model.avgSimple.containsKey("interested")? model.avgSimple.get("interested").doubleValue(): 0.7;
+    	double thresholdHappyTrained = model.avgSimple.containsKey("happy")? model.avgSimple.get("happy").doubleValue(): 0.8;
+    	
+    	if(avg <= thresholdBoredTrained)
+    		boredTrained = true;
+    	else if(avg >= thresholdInterestedTrained)
+    			interestedTrained = true;
+    	
+    	// doubt or happy (have peaks)
+    	
+    	double peakFurrow = 0;
+    	double peakSmile = 0;
+    	
+    	for(BrainTrackingEvent b : currEvents){
+    		if(b.getValue("channel:furrow") >= thresholdDoubtTrained){
+    			doubtTrained = true;    		
+    			peakFurrow = b.getValue("channel:furrow") > peakFurrow ? b.getValue("channel:furrow") : peakFurrow;
+    		}
+    		else if(b.getValue("channel:smile") >= thresholdHappyTrained || b.getValue("channel:laugh") >= thresholdHappyTrained){
+    				happyTrained = true;
+    				peakSmile = b.getValue("channel:smile") > peakSmile ? b.getValue("channel:smile") : (b.getValue("channel:laugh") > peakSmile? b.getValue("channel:laugh") : peakSmile) ;
+    			}
+    	}	    	
+    	
+    	// return by priorities (bored > doubt > interested > happy)
+    	String emotionTrained = "";
+    	if(boredTrained)
+    		emotionTrained += "bored";
+    	else if(doubtTrained)
+    			emotionTrained += "doubt";
+    	else if(interestedTrained)
+    			emotionTrained += "interested";
+    	else if(happyTrained)
+    			emotionTrained += "happy";	    	
+    	else emotionTrained +="neutral";
+    	
+    	// simple
+    	
+    	if(avg <= 0.4)
+    		boredSimple = true;
+    	else if(avg >= 0.7)
+    			interestedSimple = true;
+    	
+    	// doubt or happy (have peaks)    	
+    	for(BrainTrackingEvent b : currEvents){
+    		if(b.getValue("channel:furrow") >= 0.2){
+    			doubtSimple = true;    			
+    		}
+    		else if(b.getValue("channel:smile") >= 0.8 || b.getValue("channel:laugh") >= 0.8 ){
+    			happySimple = true;
+    		}
+    	}	    	
+    	
+    	// return by priorities (bored > doubt > interested > happy)
+    	String emotionSimple = "";
+    	if(boredSimple)
+    		emotionSimple += "bored";
+    	else if(doubtSimple)
+    			emotionSimple += "doubt";
+    	else if(interestedSimple)
+    			emotionSimple += "interested";
+    	else if(happySimple)
+    			emotionSimple += "happy";	    	
+    	else emotionSimple +="neutral";
+    	
+    	
+    	// mixed
+    	
+    	String emotionMixed = "";
+    	if(boredSimple)
+    		emotionMixed += "bored";
+    	else if(doubtTrained)
+    			emotionMixed += "doubt";
+    	else if(interestedSimple)
+    			emotionMixed += "interested";
+    	else if(happyTrained)
+    			emotionMixed += "happy";	    	
+    	else emotionMixed +="neutral";
+    	
+    	return emotionSimple + " " + emotionTrained+ " " + emotionMixed + " " + round(peakFurrow) +" "+ round(peakSmile) +" "+ round(avg);
 	}
 	
 	public String getEmotionRMSE(){
@@ -119,6 +240,8 @@ public class TrainedPeakEmotionClassifier implements EmotionClassifier {
 		return null;		
 	}
 	
+	
+	
 	/**
 	 * Returns the Root Mean Squared Error of the current values and the emotion class
 	 * 
@@ -153,5 +276,7 @@ public class TrainedPeakEmotionClassifier implements EmotionClassifier {
 		}
     }
     
-    
+    private double round(double num){
+    	return ((double)Math.round(num*100))/100.0;
+    }
   }
