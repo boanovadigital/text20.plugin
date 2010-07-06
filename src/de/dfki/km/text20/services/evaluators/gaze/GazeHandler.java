@@ -23,18 +23,13 @@ package de.dfki.km.text20.services.evaluators.gaze;
 
 import java.util.Collection;
 
+import de.dfki.km.text20.services.evaluators.common.Handler;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
  * @author rb
  */
-public interface GazeHandler {
-    /**
-     * Called with a new tracking event
-     * 
-     * @param filteredEvent
-     */
-    public void newTrackingEvent(final EyeTrackingEvent filteredEvent);
+public interface GazeHandler extends Handler<EyeTrackingEvent> {
 
     /**
      * Returns the flags 

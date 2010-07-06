@@ -83,7 +83,6 @@ public interface SessionRecorder {
      * @param event
      */
     public void newTrackingEvent(EyeTrackingEvent event);
-    
 
     /**
      * Puts a new tracking event.
@@ -139,7 +138,7 @@ public interface SessionRecorder {
      * @param deviceInfo
      */
     public void storeDeviceInfo(EyeTrackingDeviceInfo deviceInfo);
-    
+
     /**
      * Stores the device info.
      * 

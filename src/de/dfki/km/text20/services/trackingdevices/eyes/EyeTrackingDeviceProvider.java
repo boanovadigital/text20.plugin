@@ -29,6 +29,8 @@ import de.dfki.km.text20.services.trackingdevices.common.TrackingDeviceProvider;
  * @author Ralf Biedert
  *
  */
-public interface EyeTrackingDeviceProvider extends TrackingDeviceProvider<EyeTrackingDeviceInfo, EyeTrackingEvent, EyeTrackingListener, EyeTrackingDevice>{
+public interface EyeTrackingDeviceProvider
+        extends
+        TrackingDeviceProvider<EyeTrackingDeviceInfo, EyeTrackingEvent, EyeTrackingListener, EyeTrackingDevice> {
     //
 }

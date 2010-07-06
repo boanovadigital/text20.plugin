@@ -41,34 +41,31 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.Ses
  */
 public class TestSerializationStream {
 
-
-   /**
-     * @param args
-     */
+    /**
+      * @param args
+      */
     @SuppressWarnings("null")
     public static void main(final String[] args) {
         String sessionRecordFileName = "ATStream.xml";
         XStream xstream = new XStream();
         BufferedReader br = null;
 
-
         final SessionStreamer streamer = new SessionStreamer(new Dimension(800, 600), sessionRecordFileName, null);
-        for (int i = 0; i< 10; i++){
+        for (int i = 0; i < 10; i++) {
             streamer.newImage("xx");
-            streamer.updateDocumentViewport(new Point(200+i, 200-i));
+            streamer.updateDocumentViewport(new Point(200 + i, 200 - i));
             streamer.updateElementGeometry("id", "type", "content", new Rectangle(12, 3, 4, 5));
         }
-        
 
         System.out.println("readsection-----------------");
         ObjectInputStream in = null;
         SessionStreamer.setAlias(xstream);
-        
+
         try {
             br = new BufferedReader(new FileReader(sessionRecordFileName));
             in = xstream.createObjectInputStream(br);
             AbstractSessionEvent evt = null;
-            while (true){
+            while (true) {
                 evt = SessionStreamer.loadFromStream(in);
                 System.out.println(evt);
             }
@@ -80,13 +77,13 @@ public class TestSerializationStream {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
-//            
+            //            
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-    }
+        }
     }
 }

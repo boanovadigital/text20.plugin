@@ -28,13 +28,13 @@ import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
 import net.xeoh.plugins.base.annotations.meta.Author;
 import net.xeoh.plugins.base.annotations.meta.Version;
 import net.xeoh.plugins.base.util.OptionUtils;
+import de.dfki.km.text20.services.evaluators.common.options.SpawnEvaluatorOption;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 import de.dfki.km.text20.services.evaluators.gaze.GazeHandler;
 import de.dfki.km.text20.services.evaluators.gaze.GazeHandlerFactory;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeListener;
 import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
-import de.dfki.km.text20.services.evaluators.gaze.options.SpawnEvaluatorOption;
 import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionGazeEvaluator;
 import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionGazeEvaluatorPassthrough;
 

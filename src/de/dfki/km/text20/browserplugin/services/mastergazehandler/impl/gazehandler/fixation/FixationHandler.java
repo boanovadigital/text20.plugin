@@ -75,9 +75,9 @@ public class FixationHandler extends AbstractGazeHandler {
 
     @Override
     protected void registerToEvaluator(final GazeEvaluator evaluator) {
-        evaluator.addGazeEvaluationListener(new FixationListener() {
+        evaluator.addEvaluationListener(new FixationListener() {
 
-            public void newGazeEvaluationEvent(final FixationEvent event) {
+            public void newEvaluationEvent(final FixationEvent event) {
                 handleEvent(event);
             }
         });

@@ -47,12 +47,12 @@ public class TestGazeEvaluator {
         pm.addPluginsFrom(new URI("classpath://*"));
 
         final GazeEvaluatorManager gem = pm.getPlugin(GazeEvaluatorManager.class);
-        final GazeEvaluator ge = gem.createGazeEvaluator(null);
+        final GazeEvaluator ge = gem.createEvaluator(null);
 
-        ge.addGazeEvaluationListener(new FixationListener() {
+        ge.addEvaluationListener(new FixationListener() {
 
             @Override
-            public void newGazeEvaluationEvent(FixationEvent event) {
+            public void newEvaluationEvent(FixationEvent event) {
                 System.out.println("You will never see me ...");
             }
         }, new OptionRequestVersion(FixationListener.class, "Ralf Biedert", 130));

@@ -23,7 +23,6 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder;
 
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.AbstractSessionEvent;
 
-
 /**
  * @author rb
  *

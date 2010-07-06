@@ -41,24 +41,24 @@ public class TestSimpleBrainTracker {
      * @throws URISyntaxException
      * @throws InterruptedException 
      */
-    public static void main(final String[] args) throws URISyntaxException, InterruptedException {
+    public static void main(final String[] args) throws URISyntaxException,
+                                                InterruptedException {
 
         // Load plugins
         final PluginManager pluginManager = PluginManagerFactory.createPluginManager();
         pluginManager.addPluginsFrom(new URI("classpath://*"));
 
-
-        final BrainTrackingDevice openDevice = pluginManager.getPlugin(BrainTrackingDeviceProvider.class).openDevice("discover://any");
+        final BrainTrackingDevice openDevice = pluginManager.getPlugin(BrainTrackingDeviceProvider.class).openDevice("discover://nearest");
         openDevice.addTrackingListener(new BrainTrackingListener() {
             @Override
             public void newTrackingEvent(BrainTrackingEvent event) {
                 System.out.println(event);
             }
         });
-        
+
         System.out.println("Connected!");
-        
+
         Thread.sleep(100000);
-        
+
     }
 }

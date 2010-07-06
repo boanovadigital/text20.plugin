@@ -55,9 +55,9 @@ public class SaccadeHandler extends AbstractGazeHandler<SaccadeEvent, SaccadeLis
 
     @Override
     public void init(AddGazeEvaluationListenerOption... options) {
-        this.gazeEvaluator.addGazeEvaluationListener(new FixationListener() {
+        this.gazeEvaluator.addEvaluationListener(new FixationListener() {
 
-            public void newGazeEvaluationEvent(final FixationEvent event) {
+            public void newEvaluationEvent(final FixationEvent event) {
                 if (event.getType().equals(FixationEventType.FIXATION_START)) {
                     nextFixation(event.getGenerationTime(), event.getFixation());
                 }

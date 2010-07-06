@@ -123,7 +123,7 @@ public class FrameworkManager {
         this.pluginManager.addPluginsFrom(new ClassURI(SessionRecorderExtensions.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(SpeechIOExtension.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(BrainTrackingExtension.class).toURI());
-        
+
         // Register additional modules
         this.pluginManager.addPluginsFrom(new ClassURI(UpdateCheckImpl.class).toURI());
     }

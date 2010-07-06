@@ -46,7 +46,7 @@ public class SessionReplayImpl implements SessionReplay {
             setRealtimeReplay(true);
             setSlowdown(ou.get(OptionSlowMotion.class).getFactor());
         }
-        
+
         // Create replay thread
         final Thread t = new Thread(new Runnable() {
 
