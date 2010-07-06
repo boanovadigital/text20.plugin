@@ -54,14 +54,13 @@ public class DiscoveryExtension implements Extension {
      */
     public Object executeDynamicFunction(String function, String args) {
 
-        
         // Invokes the discovery service to find a service on the network.
         if (function.equals("obtainServiceURL")) {
 
             this.logger.fine("Got request to obtainServiceURL()");
-            
+
             final String[] split = args.split(",");
-            
+
             // Remove ''
             for (int i = 0; i < split.length; i++) {
                 final String string = split[i];
@@ -76,7 +75,7 @@ public class DiscoveryExtension implements Extension {
 
             this.logger.fine("Protocol " + protocol);
             this.logger.fine("URI " + uri);
-            
+
             // Get path
             String path = "/UNDEFINED";
 
@@ -90,33 +89,30 @@ public class DiscoveryExtension implements Extension {
             } catch (final URISyntaxException e) {
                 e.printStackTrace();
             }
-            
-            this.logger.fine("Path " + path);
 
-            
+            this.logger.fine("Path " + path);
 
             // FIXME: This is currently a bit broken. If we do not specify args (aka discover://any) the 
             // Discovery is allowed to return just any suitable plugin (and might skip some). We have to
             // specifiy OptionDiscoverAllLocal first, do a quick search, and if we don't find anything
             // return the check with OptionDiscoverAll.
-            
-            
+
             // Get all plugins and decide manually.
             final Collection<DiscoveredPlugin> discover = this.remoteDiscovery.discover(Plugin.class);
-            
+
             this.logger.fine("Found " + discover.size() + " plugins");
 
             for (final DiscoveredPlugin discoveredPlugin : discover) {
                 final PublishMethod method = discoveredPlugin.getPublishMethod();
                 final URI publishURI = discoveredPlugin.getPublishURI();
-                
+
                 this.logger.fine("-> Found " + publishURI);
 
                 final boolean a = method.toString().equals(protocol);
                 final boolean b = path.equals(publishURI.getPath());
 
                 if (a && b) {
-                    this.logger.fine("Returning " + publishURI);                    
+                    this.logger.fine("Returning " + publishURI);
                     return publishURI.toString();
                 }
             }

@@ -130,7 +130,7 @@ public class MagneticDisplacementFilter extends AbstractFilter {
      * @return
      */
     private EyeTrackingEvent createWrapped(final EyeTrackingEvent event, final int dx,
-                                        final int dy) {
+                                           final int dy) {
         return new TrackingEventWrapper(event) {
 
             @Override

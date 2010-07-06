@@ -43,7 +43,7 @@ public class TestFrameworkManagerStream {
      * 
      */
     public TestFrameworkManagerStream() {
-//        System.setSecurityManager(new AppletSecurity());
+        //        System.setSecurityManager(new AppletSecurity());
 
         this.pluginManager = new FrameworkManager(new JSPFProperties()).getPluginManager();
         this.sessionStreamer = this.pluginManager.getPlugin(SessionRecorderManager.class).createSessionRecorder();
@@ -51,7 +51,7 @@ public class TestFrameworkManagerStream {
 
         System.out.println(this.sessionStreamer);
         this.sessionStreamer.start();
-//        this.pluginManager.shutdown();
+        //        this.pluginManager.shutdown();
     }
 
     /**

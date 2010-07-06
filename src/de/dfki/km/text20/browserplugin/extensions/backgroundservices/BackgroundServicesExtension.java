@@ -37,7 +37,7 @@ import de.dfki.km.augmentedtext.services.language.statistics.Statistics;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.SetupParameter;
- 
+
 /**
  * 
  * @author rb
@@ -56,7 +56,7 @@ public class BackgroundServicesExtension implements Extension {
 
     /** */
     protected final CountDownLatch startupLatch = new CountDownLatch(1);
-    
+
     /** */
     @InjectPlugin
     public RemoteAPILipe lipe;
@@ -71,7 +71,7 @@ public class BackgroundServicesExtension implements Extension {
     public Object executeDynamicFunction(String function, String args) {
         try {
             this.startupLatch.await();
-            
+
             if (function.equals("getAbstract")) {
                 String s = args.substring(1, args.length() - 1);
                 s = URLDecoder.decode(s, "UTF-8");
@@ -137,10 +137,8 @@ public class BackgroundServicesExtension implements Extension {
             }
 
             // Debug 
-            if (this.dbpedia != null)
-                this.logger.fine("DBPedia found");
-            if (this.statistics != null)
-                this.logger.fine("Statistics found");
+            if (this.dbpedia != null) this.logger.fine("DBPedia found");
+            if (this.statistics != null) this.logger.fine("Statistics found");
 
             if (this.dbpedia == null && this.statistics == null)
                 this.logger.fine("No background services services found.");
@@ -150,7 +148,7 @@ public class BackgroundServicesExtension implements Extension {
             this.startupLatch.countDown();
         }
     }
-    
+
     public static void main(String[] args) throws UnsupportedEncodingException {
         System.out.println(URLDecoder.decode("Rainer%20Br%FCderle", "ISO-8859-1"));
         System.out.println(URLDecoder.decode("Rainer%20Br%FCderle", "UTF-8"));

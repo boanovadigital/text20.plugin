@@ -21,8 +21,7 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze;
 
-import net.xeoh.plugins.base.Plugin;
-import de.dfki.km.text20.services.evaluators.gaze.options.SpawnEvaluatorOption;
+import de.dfki.km.text20.services.evaluators.common.HandlerFactory;
 
 /**
  * Used to construct gaze handler. NOTE: This is the "internal" API. Only 
@@ -31,20 +30,6 @@ import de.dfki.km.text20.services.evaluators.gaze.options.SpawnEvaluatorOption;
  * 
  * @author rb
  */
-public interface GazeHandlerFactory extends Plugin {
-
-    /**
-     * Returns a list with all supported evaluators
-     * 
-     * @return .
-     */
-    public Class<? extends GazeEvaluationListener<?>> getEvaluatorType();
-
-    /**
-     * @param listener 
-     * @param options 
-     * @return .
-     */
-    public GazeHandler spawnEvaluator(GazeEvaluationListener<?> listener,
-                                      SpawnEvaluatorOption... options);
+public interface GazeHandlerFactory extends HandlerFactory<GazeEvaluationListener<? extends GazeEvaluationEvent>, GazeHandler> {
+    
 }

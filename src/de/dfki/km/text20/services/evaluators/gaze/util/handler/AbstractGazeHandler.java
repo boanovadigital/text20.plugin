@@ -65,7 +65,7 @@ public abstract class AbstractGazeHandler<E extends GazeEvaluationEvent, L exten
      * @param event
      */
     public void callListener(final E event) {
-        this.attachedListener.newGazeEvaluationEvent(event);
+        this.attachedListener.newEvaluationEvent(event);
     }
 
     /**

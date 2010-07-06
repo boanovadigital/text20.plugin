@@ -33,7 +33,8 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
  * 
  * @author rb
  */
-public class EyeTrackingEventContainer extends AbstractSessionEvent implements EyeTrackingEvent {
+public class EyeTrackingEventContainer extends AbstractSessionEvent implements
+        EyeTrackingEvent {
 
     /** */
     private static final long serialVersionUID = -4224591581456166382L;

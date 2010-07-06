@@ -37,6 +37,5 @@ public interface PerusalListener extends GazeEvaluationListener<PerusalEvent> {
      * @return .
      */
     public Pseudorenderer getPseudorenderer();
-    
-    
+
 }

@@ -47,6 +47,7 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.CallFunct
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ElementGeometryEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ElementMetaInformation;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ExecuteJSEvent;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.EyeTrackingEventContainer;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.GeometryEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.GetPreferenceEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ImageEvent;
@@ -57,7 +58,6 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.MouseMoti
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.RegisterListenerEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.RemoveListenerEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.SetPreferenceEvent;
-import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.EyeTrackingEventContainer;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.UpdateElementFlagEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ViewportEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.DisplacementRegion;

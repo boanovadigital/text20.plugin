@@ -202,8 +202,8 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
         // Create gaze evaluator 
         final GazeEvaluatorManager evaluationManager = this.pluginManager.getPlugin(GazeEvaluatorManager.class);
 
-        this.evaluator = evaluationManager.createGazeEvaluator(trackingDevice);
-        this.evaluator.setGazeFilter(this.filter);
+        this.evaluator = evaluationManager.createEvaluator(trackingDevice);
+        this.evaluator.setFilter(this.filter);
 
         // Create gaze handler
         this.allGazeHandler.add(new RawGazeHandler());

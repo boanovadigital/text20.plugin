@@ -21,8 +21,6 @@
  */
 package de.dfki.km.text20.services.trackingdevices.common;
 
-
-
 /**
  * Represents a tracking device.
  * 

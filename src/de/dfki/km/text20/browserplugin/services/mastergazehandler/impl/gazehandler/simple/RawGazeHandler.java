@@ -54,9 +54,9 @@ public class RawGazeHandler extends AbstractGazeHandler {
 
     @Override
     protected void registerToEvaluator(final GazeEvaluator evaluator) {
-        evaluator.addGazeEvaluationListener(new RawDataListener() {
+        evaluator.addEvaluationListener(new RawDataListener() {
 
-            public void newGazeEvaluationEvent(final RawDataEvent event) {
+            public void newEvaluationEvent(final RawDataEvent event) {
                 handleEvent(event.getTrackingEvent());
             }
 

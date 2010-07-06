@@ -29,6 +29,6 @@ import de.dfki.km.text20.services.trackingdevices.common.TrackingListener;
  * @author rb
  *
  */
-public interface EyeTrackingListener extends TrackingListener<EyeTrackingEvent>{
+public interface EyeTrackingListener extends TrackingListener<EyeTrackingEvent> {
     //
 }

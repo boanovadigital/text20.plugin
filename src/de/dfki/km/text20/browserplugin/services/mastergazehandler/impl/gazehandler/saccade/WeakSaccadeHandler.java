@@ -65,9 +65,9 @@ public class WeakSaccadeHandler extends AbstractGazeHandler {
     @Override
     protected void registerToEvaluator(final GazeEvaluator evaluator) {
 
-        evaluator.addGazeEvaluationListener(new WeakSaccadeListener() {
+        evaluator.addEvaluationListener(new WeakSaccadeListener() {
 
-            public void newGazeEvaluationEvent(SaccadeEvent event) {
+            public void newEvaluationEvent(SaccadeEvent event) {
                 handleEvent(event);
             }
         });

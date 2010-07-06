@@ -63,8 +63,8 @@ public class TestTrackingClient {
                 float[] headPosition = event.getHeadPosition();
                 System.out.println();
                 for (float f : headPosition) {
-                	System.out.println(" * " + f);
-				}
+                    System.out.println(" * " + f);
+                }
             }
         });
 
