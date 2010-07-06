@@ -68,5 +68,4 @@ public class VirtualMedianFilter extends CentralPointFilter {
         return new Point(x[s], y[s]);
     }
 
-
 }

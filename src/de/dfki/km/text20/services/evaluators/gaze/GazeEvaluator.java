@@ -21,6 +21,7 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze;
 
+import de.dfki.km.text20.services.evaluators.common.Evaluator;
 import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 
 /**
@@ -28,20 +29,7 @@ import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListe
  * 
  * @author rb
  */
-public interface GazeEvaluator {
-
-    /**
-     * @param listener
-     * @param options 
-     */
-    public void addGazeEvaluationListener(GazeEvaluationListener<?> listener,
-                                          AddGazeEvaluationListenerOption... options);
-
-    /**
-     * Sets a gaze filter this evaluator used to pre-process all incoming event.
-     * 
-     * @param gazeFilter
-     */
-    public void setGazeFilter(GazeFilter gazeFilter);
-
+public interface GazeEvaluator
+        extends
+        Evaluator<GazeEvaluationListener<? extends GazeEvaluationEvent>, AddGazeEvaluationListenerOption, GazeFilter> {
 }

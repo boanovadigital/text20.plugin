@@ -21,18 +21,13 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze;
 
+import de.dfki.km.text20.services.evaluators.common.EvaluationEvent;
+
 /**
  * Base class of all gaze events. 
  * 
  * @author rb
  *
  */
-public interface GazeEvaluationEvent {
-    /**
-     * Returns the time this event was generated.
-     * 
-     * @return .
-     */
-    public long getGenerationTime();
-    
+public interface GazeEvaluationEvent extends EvaluationEvent {
 }

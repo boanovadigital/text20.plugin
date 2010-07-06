@@ -1,7 +1,7 @@
 /*
- * FixationLineListener.java
+ * EvaluationEvent.java
  * 
- * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
+ * Copyright (c) 2010, André Hoffmann, DFKI. All rights reserved.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,18 +19,14 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade;
+package de.dfki.km.text20.services.evaluators.common;
 
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
+public interface EvaluationEvent {
 
-/**
- * Called upon a weak saccade. A weak saccade is called between two hypothetical 
- * fixations but before the fixation listener actually fires. 
- * 
- * Use the weak saccade to change content of the screen in a more concealed way.  
- * 
- * @author rb
- */
-public interface WeakSaccadeListener extends GazeEvaluationListener<SaccadeEvent> {
-    //
+    /**
+     * Returns the time this event was generated.
+     * 
+     * @return .
+     */
+    public long getGenerationTime();
 }

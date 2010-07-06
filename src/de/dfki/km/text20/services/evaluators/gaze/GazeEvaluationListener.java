@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze;
 
+import de.dfki.km.text20.services.evaluators.common.EvaluationListener;
+
 /**
  * @author rb
  * 
@@ -28,11 +30,6 @@ package de.dfki.km.text20.services.evaluators.gaze;
  * @param <T> 
  *
  */
-public interface GazeEvaluationListener<T extends GazeEvaluationEvent> {
-    /**
-     * Called with a new gaze evaluation event. 
-     * 
-     * @param event
-     */
-    public void newGazeEvaluationEvent(T event);
+public interface GazeEvaluationListener<T extends GazeEvaluationEvent> extends
+        EvaluationListener<T> {
 }

@@ -96,8 +96,8 @@ public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeEvaluator#addGazeEvaluationListener(de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeEvaluationListener)
      */
-    public void addGazeEvaluationListener(final GazeEvaluationListener<?> listener,
-                                          AddGazeEvaluationListenerOption... options) {
+    public void addEvaluationListener(final GazeEvaluationListener<?> listener,
+                                      AddGazeEvaluationListenerOption... options) {
 
         final OptionUtils<AddGazeEvaluationListenerOption> ou = new OptionUtils<AddGazeEvaluationListenerOption>(options);
         final Collection<OptionRequestVersion> requestedVersions = ou.getAll(OptionRequestVersion.class);
@@ -231,7 +231,7 @@ public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeEvaluator#setGazeFilter(de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeFilter)
      */
-    public void setGazeFilter(final GazeFilter gazeFilter) {
+    public void setFilter(final GazeFilter gazeFilter) {
         this.gazeFilter = gazeFilter;
     }
 

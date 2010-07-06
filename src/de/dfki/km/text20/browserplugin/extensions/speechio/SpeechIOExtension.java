@@ -38,7 +38,7 @@ import de.dfki.km.augmentedtext.services.speech.synthesis.SpeechSynthesis;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.SetupParameter;
- 
+
 /**
  * 
  * @author rb
@@ -57,7 +57,7 @@ public class SpeechIOExtension implements Extension {
 
     /** */
     protected final CountDownLatch startupLatch = new CountDownLatch(1);
-    
+
     /** */
     @InjectPlugin
     public RemoteAPILipe lipe;
@@ -71,7 +71,7 @@ public class SpeechIOExtension implements Extension {
     public Object executeDynamicFunction(String function, String args) {
         try {
             this.startupLatch.await();
-            
+
             if (function.equals("speakText")) {
                 String s = args.substring(1, args.length() - 1);
                 s = URLDecoder.decode(s, "UTF-8");

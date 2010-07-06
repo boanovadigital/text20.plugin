@@ -21,19 +21,16 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze;
 
-import net.xeoh.plugins.base.Plugin;
+import de.dfki.km.text20.services.evaluators.common.EvaluatorManager;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 
 /**
  * @author rb
  *
  */
-public interface GazeEvaluatorManager extends Plugin {
-    /**
-     * Constructs a gaze evaluator for the given tracking device.
-     * 
-     * @param trackingDevice 
-     * @return .
-     */
-    public GazeEvaluator createGazeEvaluator(EyeTrackingDevice trackingDevice);
+public interface GazeEvaluatorManager
+        extends
+        EvaluatorManager<EyeTrackingEvent, EyeTrackingListener, GazeEvaluator, EyeTrackingDevice> {
 }

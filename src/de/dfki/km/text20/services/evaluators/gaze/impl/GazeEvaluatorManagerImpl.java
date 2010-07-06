@@ -50,7 +50,7 @@ public class GazeEvaluatorManagerImpl implements GazeEvaluatorManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeEvaluatorManager#createGazeEvaluator(de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice)
      */
-    public GazeEvaluator createGazeEvaluator(final EyeTrackingDevice trackingDevice) {
+    public GazeEvaluator createEvaluator(final EyeTrackingDevice trackingDevice) {
 
         final GazeEvaluatorImpl rval = new GazeEvaluatorImpl(this.pluginManager, trackingDevice);
 

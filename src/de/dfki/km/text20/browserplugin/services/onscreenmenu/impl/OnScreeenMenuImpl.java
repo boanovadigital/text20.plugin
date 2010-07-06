@@ -134,7 +134,8 @@ public class OnScreeenMenuImpl implements OnScreenMenu, EyeTrackingListener {
         this.trackingDevice.addTrackingListener(new EyeTrackingListener() {
 
             public void newTrackingEvent(final EyeTrackingEvent event) {
-                if (!event.areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID)) return;
+                if (!event.areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID))
+                    return;
 
                 final Point p = event.getGazeCenter();
                 final long ct = System.currentTimeMillis();
@@ -178,7 +179,8 @@ public class OnScreeenMenuImpl implements OnScreenMenu, EyeTrackingListener {
 
             public void newTrackingEvent(final EyeTrackingEvent event) {
                 // Return if the center position is invalid
-                if (!event.areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID)) return;
+                if (!event.areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID))
+                    return;
 
                 OnScreeenMenuImpl.this.recalibrationWidget.newGazePoint(event);
                 OnScreeenMenuImpl.this.dashboardFrame.addGazePoint(event.getGazeCenter());

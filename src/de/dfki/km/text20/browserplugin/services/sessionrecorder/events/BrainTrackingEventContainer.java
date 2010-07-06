@@ -33,7 +33,8 @@ import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
  * 
  * @author rb
  */
-public class BrainTrackingEventContainer extends AbstractSessionEvent implements BrainTrackingEvent {
+public class BrainTrackingEventContainer extends AbstractSessionEvent implements
+        BrainTrackingEvent {
 
     /** */
     private static final long serialVersionUID = -4224591581456166382L;
@@ -42,14 +43,13 @@ public class BrainTrackingEventContainer extends AbstractSessionEvent implements
     @Element
     private HashMap<String, Double> channels = new HashMap<String, Double>();
 
-
     /**
      * @param trackingEvent
      */
     @SuppressWarnings("boxing")
     public BrainTrackingEventContainer(final BrainTrackingEvent trackingEvent) {
         this.originalEventTime = trackingEvent.getEventTime();
-        
+
         // Get channels
         Collection<String> c = trackingEvent.getChannels();
         for (String string : c) {

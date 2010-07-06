@@ -21,8 +21,8 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator;
 
+import de.dfki.km.text20.services.evaluators.common.options.SpawnEvaluatorOption;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
-import de.dfki.km.text20.services.evaluators.gaze.options.SpawnEvaluatorOption;
 
 /**
  * @author rb

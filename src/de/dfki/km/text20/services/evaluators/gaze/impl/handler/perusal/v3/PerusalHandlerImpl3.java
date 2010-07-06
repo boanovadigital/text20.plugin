@@ -81,8 +81,8 @@ public class PerusalHandlerImpl3 extends
 
         this.pseudorenderer = this.attachedListener.getPseudorenderer();
 
-        this.gazeEvaluator.addGazeEvaluationListener(new FixationLineListener() {
-            public void newGazeEvaluationEvent(final FixationLineEvent event) {
+        this.gazeEvaluator.addEvaluationListener(new FixationLineListener() {
+            public void newEvaluationEvent(final FixationLineEvent event) {
                 PerusalHandlerImpl3.this.currentTime = event.getGenerationTime();
                 newFixationLineEvent(event);
             }

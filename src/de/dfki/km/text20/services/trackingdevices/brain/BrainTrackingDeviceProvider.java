@@ -23,11 +23,12 @@ package de.dfki.km.text20.services.trackingdevices.brain;
 
 import de.dfki.km.text20.services.trackingdevices.common.TrackingDeviceProvider;
 
-
 /**
  * @author rb
  *
  */
-public interface BrainTrackingDeviceProvider extends TrackingDeviceProvider<BrainTrackingDeviceInfo, BrainTrackingEvent, BrainTrackingListener, BrainTrackingDevice>{
+public interface BrainTrackingDeviceProvider
+        extends
+        TrackingDeviceProvider<BrainTrackingDeviceInfo, BrainTrackingEvent, BrainTrackingListener, BrainTrackingDevice> {
     //
 }

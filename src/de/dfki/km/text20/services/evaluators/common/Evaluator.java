@@ -1,7 +1,7 @@
 /*
- * FixationLineListener.java
+ * Evaluator.java
  * 
- * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
+ * Copyright (c) 2010, André Hoffmann, DFKI. All rights reserved.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,18 +19,28 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade;
+package de.dfki.km.text20.services.evaluators.common;
 
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
+import net.xeoh.plugins.base.Option;
+import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
 /**
- * Called upon a weak saccade. A weak saccade is called between two hypothetical 
- * fixations but before the fixation listener actually fires. 
- * 
- * Use the weak saccade to change content of the screen in a more concealed way.  
+ * A evaluator bound to a specific device. Different listeners may be registered using the method below.
  * 
  * @author rb
  */
-public interface WeakSaccadeListener extends GazeEvaluationListener<SaccadeEvent> {
-    //
+public interface Evaluator<T extends EvaluationListener<? extends EvaluationEvent>, U extends Option, V extends Filter<? extends TrackingEvent>> {
+
+    /**
+     * @param listener
+     * @param options 
+     */
+    public void addEvaluationListener(T listener, U... options);
+
+    /**
+     * Sets a filter this evaluator used to pre-process all incoming event.
+     * 
+     * @param filter
+     */
+    public void setFilter(V filter);
 }

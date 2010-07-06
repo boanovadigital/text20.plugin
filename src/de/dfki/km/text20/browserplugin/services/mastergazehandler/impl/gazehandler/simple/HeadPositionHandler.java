@@ -44,10 +44,10 @@ public class HeadPositionHandler extends AbstractGazeHandler {
         // Execute rawGaze handler
         final List<String> handler = this.masterGazeHandler.getHandlerForType("headPosition");
         float[] headPosition = event.getHeadPosition();
-        
+
         // Call only every 2nd turn (improves performance)
         if (this.i++ % 2 == 0) return;
-        
+
         for (final String h : handler) {
             this.browserPlugin.executeJSFunction(h, event.getEventTime(), headPosition[0], headPosition[1], headPosition[2]);
         }
@@ -59,9 +59,9 @@ public class HeadPositionHandler extends AbstractGazeHandler {
 
     @Override
     protected void registerToEvaluator(final GazeEvaluator evaluator) {
-        evaluator.addGazeEvaluationListener(new RawDataListener() {
+        evaluator.addEvaluationListener(new RawDataListener() {
 
-            public void newGazeEvaluationEvent(final RawDataEvent event) {
+            public void newEvaluationEvent(final RawDataEvent event) {
                 handleEvent(event.getTrackingEvent());
             }
 

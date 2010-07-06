@@ -31,5 +31,3 @@ import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
 public interface SaccadeListener extends GazeEvaluationListener<SaccadeEvent> {
     //
 }
-
-

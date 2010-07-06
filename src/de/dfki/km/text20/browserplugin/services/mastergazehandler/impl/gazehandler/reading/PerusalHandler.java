@@ -124,10 +124,10 @@ public class PerusalHandler extends AbstractGazeHandler {
             }
         });*/
 
-        evaluator.addGazeEvaluationListener(new FixationLineListener() {
+        evaluator.addEvaluationListener(new FixationLineListener() {
 
             @Override
-            public void newGazeEvaluationEvent(FixationLineEvent event) {
+            public void newEvaluationEvent(FixationLineEvent event) {
                 handleEventNew(event);
             }
 

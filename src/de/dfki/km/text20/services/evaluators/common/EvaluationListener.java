@@ -1,7 +1,7 @@
 /*
- * SpawnEvaluatorOption.java
+ * EvaluatorListener.java
  * 
- * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
+ * Copyright (c) 2010, André Hoffmann, DFKI. All rights reserved.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,14 +19,14 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.options;
+package de.dfki.km.text20.services.evaluators.common;
 
-import net.xeoh.plugins.base.Option;
+public interface EvaluationListener<T extends EvaluationEvent> {
 
-/**
- * @author rb
- *
- */
-public interface SpawnEvaluatorOption extends Option {
-    //
+    /**
+     * Called with a new evaluation event. 
+     * 
+     * @param event
+     */
+    public void newEvaluationEvent(T event);
 }

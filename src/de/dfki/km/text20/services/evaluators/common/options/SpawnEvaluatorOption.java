@@ -1,5 +1,5 @@
 /*
- * FixationLineListener.java
+ * SpawnEvaluatorOption.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,18 +19,14 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade;
+package de.dfki.km.text20.services.evaluators.common.options;
 
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
+import net.xeoh.plugins.base.Option;
 
 /**
- * Called upon a weak saccade. A weak saccade is called between two hypothetical 
- * fixations but before the fixation listener actually fires. 
- * 
- * Use the weak saccade to change content of the screen in a more concealed way.  
- * 
  * @author rb
+ *
  */
-public interface WeakSaccadeListener extends GazeEvaluationListener<SaccadeEvent> {
+public interface SpawnEvaluatorOption extends Option {
     //
 }

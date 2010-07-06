@@ -1,7 +1,7 @@
 /*
- * AddGazeEvaluatorPassthroughOption.java
+ * HandlerFactory.java
  * 
- * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
+ * Copyright (c) 2010, André Hoffmann, DFKI. All rights reserved.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,35 +18,26 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
  * MA 02110-1301  USA
  *
- */
-package de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator;
+ */package de.dfki.km.text20.services.evaluators.common;
 
+import net.xeoh.plugins.base.Plugin;
 import de.dfki.km.text20.services.evaluators.common.options.SpawnEvaluatorOption;
-import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
+import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
-/**
- * @author rb
- *
- */
-public class OptionGazeEvaluatorPassthrough implements SpawnEvaluatorOption {
-
-    /**  */
-    private static final long serialVersionUID = 358315534220091144L;
-
-    /** */
-    private final AddGazeEvaluationListenerOption[] options;
+public interface HandlerFactory<T extends EvaluationListener<? extends EvaluationEvent>, U extends Handler<? extends TrackingEvent>>
+        extends Plugin {
 
     /**
-     * @param options
+     * Returns a list with all supported evaluators
+     * 
+     * @return .
      */
-    public OptionGazeEvaluatorPassthrough(AddGazeEvaluationListenerOption... options) {
-        this.options = options;
-    }
+    public Class<? extends T> getEvaluatorType();
 
     /**
-     * @return the options
+     * @param listener 
+     * @param options 
+     * @return .
      */
-    public AddGazeEvaluationListenerOption[] getOptions() {
-        return this.options;
-    }
+    public U spawnEvaluator(T listener, SpawnEvaluatorOption... options);
 }

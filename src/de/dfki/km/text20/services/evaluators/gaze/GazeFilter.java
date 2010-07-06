@@ -21,6 +21,7 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze;
 
+import de.dfki.km.text20.services.evaluators.common.Filter;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
@@ -28,13 +29,5 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * 
  * @author rb
  */
-public interface GazeFilter {
-    /**
-     * Filters a given gaze event.
-     * 
-     * @param event
-     * @return A new event with tweaked properties. 
-     * 
-     */
-    public EyeTrackingEvent filterEvent(EyeTrackingEvent event);
+public interface GazeFilter extends Filter<EyeTrackingEvent> {
 }
