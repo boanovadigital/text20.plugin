@@ -9,7 +9,6 @@
 	
 	<!-- Include aspectj and proguard support -->
 	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" classpath="dependencies/aspectj/aspectjtools.jar" />
-	<taskdef resource="proguard/ant/task.properties" classpath="dependencies/proguard/proguard.jar" />
 
 	<!-- because java.home is set not properly -->
 	<property name="jdkhome" value="D:/Programme/Java/jdk1.6.0_12" />
@@ -22,14 +21,9 @@
 	<property name="build.root" value="ant.build/" />
 	<property name="distribution.root" value="dist/" />
 
-	<!-- comment this out for nonpublic version -->
-	<!-- property name="publicversion" value="true" /-->
-	<!-- property name="coreversion" value="true" /-->
-
+	
 	<!-- Sets the current configuration -->
 	<property name="configuration" value="all" />
-
-	<property name="yuicompressor" location="${basedir}/dependencies/yuicompressor/yuicompressor-2.4.2.jar" />
 
 	<!-- Clear everything up -->
 	<target name="clean" description="Remove all previous build files">

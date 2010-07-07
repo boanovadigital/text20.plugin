@@ -7,7 +7,6 @@
 	<classpathentry kind="lib" path="dependencies/simple-xml-2.0.3.jar"/>
 	<classpathentry kind="lib" path="dependencies/stax-1.2.0.jar"/>
 	<classpathentry kind="lib" path="dependencies/stax-api-1.0.1.jar"/>
-	<classpathentry kind="lib" path="dependencies/aspectjrt.jar"/>
 	<classpathentry kind="lib" path="dependencies/jdkbrowserapi/plugin.jar"/>
 	<classpathentry kind="lib" path="dependencies/kd.jar"/>
 	<classpathentry kind="lib" path="dependencies/or124.jar"/>
