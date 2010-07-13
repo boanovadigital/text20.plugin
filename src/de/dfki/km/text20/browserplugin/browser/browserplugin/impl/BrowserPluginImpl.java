@@ -329,7 +329,6 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      * Wird seltener aufgerufen als start, sollte hier Verbindung mit dem Eye-Tracker-
      * Server aufnehmen und das Pluginframework initialisieren.
      */
-
     /* (non-Javadoc)
      * @see java.applet.Applet#init()
      */
@@ -344,7 +343,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         props.setProperty(UpdateCheck.class, "update.url", "http://api.text20.net/common/versioncheck/");
         props.setProperty(UpdateCheck.class, "update.enabled", "true");
         props.setProperty(UpdateCheck.class, "product.name", "text20.plugin");
-        props.setProperty(UpdateCheck.class, "product.version", "0.9");
+        props.setProperty(UpdateCheck.class, "product.version", "1.2"); // TODO: Get this version number from a better place!
 
         setupEarlyLogging(props);
 
@@ -475,10 +474,6 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.gazeHandler.removeJSCallback(listener);
     }
 
-    /* (non-Javadoc)
-     * @see java.applet.Applet#destroy()
-     */
-
     /**
      * Call this if you're in applet mode
      * 
@@ -488,10 +483,6 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.thisIsTheMatrix = value;
     }
 
-    /* (non-Javadoc)
-     * @see java.applet.Applet#stop()
-     */
-
     /**
      * Sets an override for parameters
      * 
@@ -500,10 +491,6 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     public void setParameterOverride(final Map<String, String> override) {
         this.parameterOverride = override;
     }
-
-    /* (non-Javadoc)
-     * @see java.applet.Applet#start()
-     */
 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#setPreference(java.lang.String, java.lang.String)
