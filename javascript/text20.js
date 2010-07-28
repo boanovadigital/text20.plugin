@@ -1589,7 +1589,7 @@ var text20 = {},
             element.forEach(function(e) {
                 var el = $(e)
                 el.removeClass("registeredGazeElement")
-                connector.transmitElementRemoved(el.attr("id"));
+                connector.connection.transmitElementRemoved(el.attr("id"));
             })				            
         },
 
