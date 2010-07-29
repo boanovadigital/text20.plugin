@@ -1,7 +1,7 @@
 /*
  * Handler.java
  * 
- * Copyright (c) 2010, André Hoffmann, DFKI. All rights reserved.
+ * Copyright (c) 2010, Andre Hoffmann, DFKI. All rights reserved.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,8 +20,6 @@
  *
  */
 package de.dfki.km.text20.services.evaluators.common;
-
-import java.util.Collection;
 
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
