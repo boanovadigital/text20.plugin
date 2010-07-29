@@ -1021,17 +1021,10 @@ var text20 = {},
                 /** Transmits if the given element has been removed in the meantime */
                 transmitElementRemoved: function(id) {
                     this.enginecheck(function(e, v, s) {
-                        
-                        // TODO: Is this code correct? I doubt it ...
-                        if(self.variables.batch) {
-                            v.batch.updateElementGeometry(id, type, content, x, y, w, h);
-                            return;
-                        }
-                        
                         e.updateElementFlag(id, "REMOVED", true);
                     })
                 },
-                
+                 
                 
                 /** Transmits where the element is anchored */
                 transmitElementPositionAnchor: function(id, anchor) {
