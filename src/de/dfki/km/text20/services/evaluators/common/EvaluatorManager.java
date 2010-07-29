@@ -1,7 +1,7 @@
 /*
  * EvaluatorManager.java
  * 
- * Copyright (c) 2010, Andr� Hoffmann, DFKI. All rights reserved.
+ * Copyright (c) 2010, Andre Hoffmann, DFKI. All rights reserved.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
