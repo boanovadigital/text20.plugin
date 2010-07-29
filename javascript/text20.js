@@ -883,10 +883,9 @@ var text20 = {},
 							
 							
 							// Register mouse clicked listener
-							window.document.onclick = function(e) {
+                            window.document.onclick = function(e) {
                                 connector.extensions.mouseClicked(0, e.button)
                             }
-
                                                                         
                             // Process all initialized listener
                             connector.variables.listeners.process("INITIALIZED", function(f){
