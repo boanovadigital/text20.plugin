@@ -873,6 +873,14 @@ var text20 = {},
                                 $("#atloadingindicatorbackground").hide()
                                 $("#atloadingindicator").hide()                                         
                             }
+                            
+                            
+                            // Setup Emotion Engine :-)
+                            if(connector.config.enableBrainTracker) {
+                            	var r = connector.extensions.brainTrackerInitEvaluation();
+                            	alert(r)
+                            }
+
                                                                         
                             // Process all initialized listener
                             connector.variables.listeners.process("INITIALIZED", function(f){
@@ -1013,17 +1021,10 @@ var text20 = {},
                 /** Transmits if the given element has been removed in the meantime */
                 transmitElementRemoved: function(id) {
                     this.enginecheck(function(e, v, s) {
-                        
-                        // TODO: Is this code correct? I doubt it ...
-                        if(self.variables.batch) {
-                            v.batch.updateElementGeometry(id, type, content, x, y, w, h);
-                            return;
-                        }
-                        
                         e.updateElementFlag(id, "REMOVED", true);
                     })
                 },
-                
+                 
                 
                 /** Transmits where the element is anchored */
                 transmitElementPositionAnchor: function(id, anchor) {
@@ -1440,6 +1441,38 @@ var text20 = {},
                         eval(elem.attr("onPerusal"))
                     }
                 })
+             },
+             
+             /**
+              * Handles onEmotion handler.
+              *
+              * @param {Object} x
+              * @param {Object} y
+              */
+             onEmotionHandler: function(x, y){
+                 // After this we know all elements which are under gaze.                
+                 var gazedElement = document.elementFromPoint(x - window.pageXOffset, y - window.pageYOffset),
+                     allUnderCurrentGaze = dom.parents(gazedElement),
+                     emotion = connector.extensions.getTrainedPeakEmotion();	
+                 
+                 if (!emotion) return; 
+                 
+                 var map = { 
+                	 "happy" : "onSmile", 
+                	 "interested" : "onInterest", 
+                	 "doubt" : "onFurrow", 
+                	 "bored" : "onBoredom", 
+                 }
+                 
+                 var handler = map[emotion.split(" ")[0]]; 
+                 if (!handler) return;
+
+              	 core.attributed.get(handler).each(function(i){
+                     if (allUnderCurrentGaze.indexOf(this) < 0) 
+                         return;
+                     
+                     eval($(this).attr(handler))
+                 })                	 
              }
         },
         
@@ -1482,6 +1515,8 @@ var text20 = {},
                 // call onGaze* and onFixation handler
                 core.handler.onGazeHandler(x, y)
                 core.handler.onFixationHandler(x, y)
+
+                core.handler.onEmotionHandler(x, y)
             },
             
             /** Called when new reduced gaze events come in */			
@@ -1547,7 +1582,7 @@ var text20 = {},
             element.forEach(function(e) {
                 var el = $(e)
                 el.removeClass("registeredGazeElement")
-                connector.transmitElementRemoved(el.attr("id"));
+                connector.connection.transmitElementRemoved(el.attr("id"));
             })				            
         },
 
