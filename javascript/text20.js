@@ -880,6 +880,12 @@ var text20 = {},
                             	var r = connector.extensions.brainTrackerInitEvaluation();
                             	alert(r)
                             }
+							
+							
+							// Register mouse clicked listener
+							window.document.onclick = function(e) {
+                                connector.extensions.mouseClicked(0, e.button)
+                            }
 
                                                                         
                             // Process all initialized listener
