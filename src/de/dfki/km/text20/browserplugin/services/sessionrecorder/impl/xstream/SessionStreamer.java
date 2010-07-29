@@ -105,7 +105,7 @@ public class SessionStreamer implements Serializable {
         xstream.alias("ElementGeometryEvent", ElementGeometryEvent.class);
         xstream.alias("MarkEvent", MarkEvent.class);
         xstream.alias("TrackingEvent", EyeTrackingEvent.class);
-        xstream.alias("CallFunctionEcvent", CallFunctionEvent.class);
+        xstream.alias("CallFunctionEvent", CallFunctionEvent.class);
         xstream.alias("ElementMetaInformation", ElementMetaInformation.class);
         xstream.alias("ExecuteJSEvent", ExecuteJSEvent.class);
         xstream.alias("GeometryEvent", GeometryEvent.class);
@@ -115,8 +115,8 @@ public class SessionStreamer implements Serializable {
         xstream.alias("RegisterListenerEvent", RegisterListenerEvent.class);
         xstream.alias("RemoveListenerEvent", RemoveListenerEvent.class);
         xstream.alias("SetPreferenceEvent", SetPreferenceEvent.class);
-        xstream.alias("TrackingEventContainer", EyeTrackingEventContainer.class);
-        //xstream.alias("EyeTrackingEventContainer", EyeTrackingEventContainer.class);
+        //xstream.alias("TrackingEventContainer", EyeTrackingEventContainer.class);
+        xstream.alias("EyeTrackingEventContainer", EyeTrackingEventContainer.class);
         xstream.alias("BrainTrackingEventContainer", BrainTrackingEventContainer.class);
         xstream.alias("UpdateElementFlagEvent", UpdateElementFlagEvent.class);
         xstream.alias("DisplacementRegion", DisplacementRegion.class);
