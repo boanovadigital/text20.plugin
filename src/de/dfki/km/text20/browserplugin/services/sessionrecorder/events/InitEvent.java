@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.events;
 
+import org.simpleframework.xml.Element;
+
 /**
  * @author rb
  *
@@ -32,10 +34,23 @@ public class InitEvent extends AbstractSessionEvent {
      */
     private static final long serialVersionUID = 5381862907326035060L;
 
+    /** */
+    @Element(required = false)
+    public int version;
+
     /**
      * Construct a default init event
      */
     public InitEvent() {
         //
+    }
+
+    /**
+     * Construct an init event with a given version
+     * 
+     * @param version 
+     */
+    public InitEvent(int version) {
+        this.version = version;
     }
 }
