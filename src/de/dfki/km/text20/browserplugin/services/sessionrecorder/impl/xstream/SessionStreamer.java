@@ -79,6 +79,8 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  */
 @Root
 public class SessionStreamer implements Serializable {
+    /** Serialization version */
+    private static final int VERSION = 101;
 
     /**  */
     private static final long serialVersionUID = -3269345193816331063L;
@@ -115,7 +117,6 @@ public class SessionStreamer implements Serializable {
         xstream.alias("RegisterListenerEvent", RegisterListenerEvent.class);
         xstream.alias("RemoveListenerEvent", RemoveListenerEvent.class);
         xstream.alias("SetPreferenceEvent", SetPreferenceEvent.class);
-        //xstream.alias("TrackingEventContainer", EyeTrackingEventContainer.class);
         xstream.alias("EyeTrackingEventContainer", EyeTrackingEventContainer.class);
         xstream.alias("BrainTrackingEventContainer", BrainTrackingEventContainer.class);
         xstream.alias("UpdateElementFlagEvent", UpdateElementFlagEvent.class);
@@ -172,7 +173,7 @@ public class SessionStreamer implements Serializable {
 
         // Put initial events
         nextDate(date);
-        addEvent(new InitEvent());
+        addEvent(new InitEvent(VERSION));
         nextDate(date);
         addEvent(new ScreenSizeEvent(screenSize));
         nextDate(date);
@@ -473,8 +474,7 @@ public class SessionStreamer implements Serializable {
     /**
      * @param fixationDisplacementRegions the fixationDisplacementRegions to set
      */
-    public synchronized void setFixationDisplacementRegions(
-                                                            final List<DisplacementRegion> fixationDisplacementRegions) {
+    public synchronized void setFixationDisplacementRegions(final List<DisplacementRegion> fixationDisplacementRegions) {
         this.fixationDisplacementRegions = fixationDisplacementRegions;
     }
 
