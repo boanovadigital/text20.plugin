@@ -26,7 +26,7 @@
  * 
  * Dependencies:
  *      jquery > 1.4
- *  
+ * 
  */
 
 (function(window, undefined) {
@@ -174,7 +174,7 @@ var text20 = {},
                 return data[id];
             }
             
-            // Return created cache
+            // Return created cache.
             return cache
         }
     },
@@ -1208,7 +1208,7 @@ var text20 = {},
                 // If this is set to true, elements will only be transmitted once. Useful if you know the page never changes.
                 disableSubsequentUpdates: false,
                 
-                // Internal variables
+                // Internal variables 
                 clusterPTRCreation: 0,
                 clusterPTRTransmission: 0,
                 numRegistered: 0,
