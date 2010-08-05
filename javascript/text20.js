@@ -303,7 +303,7 @@ var text20 = {},
             // Original Object
             var origObj = obj;
             
-            // Will be set below, position of the element relativ to document start
+            // Will be set below, position of the element relative to document start
             var posX = obj.offsetLeft;
             var posY = obj.offsetTop;
         
@@ -323,7 +323,7 @@ var text20 = {},
                         scrollCorrectionY -= obj.parentNode.scrollTop;
                     }
                                                 
-                    obj=obj.parentNode;          
+                    obj = obj.parentNode;          
             }
             
             // Restore original object
@@ -331,10 +331,10 @@ var text20 = {},
     
             // Obtain the screen position ...
             while(obj.offsetParent){     
-                posX=posX+obj.offsetParent.offsetLeft;
-                posY=posY+obj.offsetParent.offsetTop;
+                posX = posX + obj.offsetParent.offsetLeft;
+                posY = posY + obj.offsetParent.offsetTop;
                                     
-                obj=obj.offsetParent;         
+                obj = obj.offsetParent;         
             }
     
             if(!posX) return null;
@@ -1242,7 +1242,7 @@ var text20 = {},
                         
                         
                     // Sanity check                        
-                    if(pos == null) return;    
+                    if (pos == null) { return; }    
                     
                     
                     // Check type and content (SPAN-test)
@@ -1524,7 +1524,6 @@ var text20 = {},
                 // call onGaze* and onFixation handler
                 core.handler.onGazeHandler(x, y)
                 core.handler.onFixationHandler(x, y)
-
                 core.handler.onEmotionHandler(x, y)
             },
             
@@ -1597,6 +1596,7 @@ var text20 = {},
             })				            
         },
 
+   
         
         /** Call when everything is set up and ready to go */
         init: function() {
