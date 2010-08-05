@@ -168,6 +168,8 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#callFunction(java.lang.String, java.lang.String)
      */
     public Object callFunction(final String function) {
+        this.logger.fine("Received callFunction('" + function + "')");
+
         try {
             if (this.sessionRecorder != null) {
                 this.sessionRecorder.callFunction(function);
