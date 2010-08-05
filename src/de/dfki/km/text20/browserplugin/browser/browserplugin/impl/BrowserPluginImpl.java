@@ -168,7 +168,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#callFunction(java.lang.String, java.lang.String)
      */
     public Object callFunction(final String function) {
-        this.logger.fine("Received callFunction('" + function + "')");
+        this.logger.finer("Received callFunction('" + function + "')");
 
         try {
             if (this.sessionRecorder != null) {
@@ -324,7 +324,9 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     public String getPreference(final String key, final String deflt) {
         this.sessionRecorder.getPreference(key, deflt);
-        return this.preferences.getString(key, deflt);
+        final String rval = this.preferences.getString(key, deflt);
+        this.logger.finer("Received getPreference('" + key + "', '" + deflt + "') = " + rval);
+        return rval;
     }
 
     /**
@@ -498,6 +500,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#setPreference(java.lang.String, java.lang.String)
      */
     public void setPreference(final String key, final String value) {
+        this.logger.finer("Received setPreference('" + key + "', '" + value + "')");
         this.sessionRecorder.setPreference(key, value);
         this.preferences.setString(key, value);
     }

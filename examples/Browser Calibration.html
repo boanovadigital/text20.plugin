@@ -91,6 +91,7 @@
                 connector.connection.preference("connector:calibration:" + browserID + ":offset:x", dx) 
                 connector.connection.preference("connector:calibration:" + browserID + ":offset:y", dy) 
       
+      
                 // Inform user
                 $("#hitthedot").css("visibility", "hidden")
                 $("#thedot").css("visibility", "hidden")                
@@ -98,13 +99,10 @@
                 $("#thankyou").css("visibility", "visible")
             }
             
-            // Configure text20 plugin
-            connector.config.registerHighVolumeListeners = true
-            
             // Wait for raw gaze
             connector.listener("reducedApplicationGaze", function(evt) {
-                    var tx = (evt.x - window.screenX) - dx,
-                        ty = (evt.y - window.screenY) - dy;
+                    var tx = (evt.x) - dx,
+                        ty = (evt.y) - dy;
                     
                     if (tx < 0 || ty < 0) return;
                     
@@ -119,7 +117,13 @@
                 $("#initializing").css("visibility", "hidden")
                 $("#hitthedot").css("visibility", "visible")
                 $("#thedot").css("visibility", "visible")
-            });            
+            });
+            
+                        
+            // Configure text20 plugin
+            text20.browser.overrideOffset = [0, 0]
+            connector.config.registerHighVolumeListeners = true           
+            connector.config.logging = "FINER"           
             
             text20.core.init()
         </script>		
