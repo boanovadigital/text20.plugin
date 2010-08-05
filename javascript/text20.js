@@ -991,12 +991,12 @@ var text20 = {},
                 /** Check if the engine is running and up */
                 enginecheck: function(fnc) {
                     if (!this.variables.initialized) {
-                        alert("Plugin not initialized yet");
+                        alert("Enginecheck: Plugin not initialized yet");
                         return null;
                     }
                     
                     if (!this.variables.engine) {
-                        alert("There is no engine!");
+                        alert("Enginecheck: There is no engine!");
                         return null;
                     }
                     
@@ -1239,6 +1239,11 @@ var text20 = {},
                     
                     var text = null,
                         word = null;
+                        
+                        
+                    // Sanity check                        
+                    if(pos == null) return;    
+                    
                     
                     // Check type and content (SPAN-test)
                     if (this.firstChild && this.firstChild.nodeValue) {
