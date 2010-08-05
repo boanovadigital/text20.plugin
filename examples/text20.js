@@ -77,7 +77,141 @@ var text20 = {},
             
             // Return result
             return rval;
-        }		
+        },
+        
+        /** Functions for encoding and decoding base64. Shamelessly stolen from http://www.webtoolkit.info/javascript-base64.html */
+        base64: {
+            // private property
+            _keyStr : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+         
+            /** public method for encoding */
+            encode : function (input) {
+                var output = "";
+                var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+                var i = 0;
+         
+                input = this._utf8_encode(input);
+         
+                while (i < input.length) {
+         
+                    chr1 = input.charCodeAt(i++);
+                    chr2 = input.charCodeAt(i++);
+                    chr3 = input.charCodeAt(i++);
+         
+                    enc1 = chr1 >> 2;
+                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+                    enc4 = chr3 & 63;
+         
+                    if (isNaN(chr2)) {
+                        enc3 = enc4 = 64;
+                    } else if (isNaN(chr3)) {
+                        enc4 = 64;
+                    }
+         
+                    output = output +
+                    this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+                    this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+         
+                }
+         
+                return output;
+            },
+         
+            /** public method for decoding */
+            decode : function (input) {
+                var output = "";
+                var chr1, chr2, chr3;
+                var enc1, enc2, enc3, enc4;
+                var i = 0;
+         
+                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+         
+                while (i < input.length) {
+         
+                    enc1 = this._keyStr.indexOf(input.charAt(i++));
+                    enc2 = this._keyStr.indexOf(input.charAt(i++));
+                    enc3 = this._keyStr.indexOf(input.charAt(i++));
+                    enc4 = this._keyStr.indexOf(input.charAt(i++));
+         
+                    chr1 = (enc1 << 2) | (enc2 >> 4);
+                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+                    chr3 = ((enc3 & 3) << 6) | enc4;
+         
+                    output = output + String.fromCharCode(chr1);
+         
+                    if (enc3 != 64) {
+                        output = output + String.fromCharCode(chr2);
+                    }
+                    if (enc4 != 64) {
+                        output = output + String.fromCharCode(chr3);
+                    }
+         
+                }
+         
+                output = this._utf8_decode(output);
+         
+                return output;
+         
+            },
+         
+            // private method for UTF-8 encoding
+            _utf8_encode : function (string) {
+                string = string.replace(/\r\n/g,"\n");
+                var utftext = "";
+         
+                for (var n = 0; n < string.length; n++) {
+         
+                    var c = string.charCodeAt(n);
+         
+                    if (c < 128) {
+                        utftext += String.fromCharCode(c);
+                    }
+                    else if((c > 127) && (c < 2048)) {
+                        utftext += String.fromCharCode((c >> 6) | 192);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+                    else {
+                        utftext += String.fromCharCode((c >> 12) | 224);
+                        utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                        utftext += String.fromCharCode((c & 63) | 128);
+                    }
+         
+                }
+         
+                return utftext;
+            },
+         
+            // private method for UTF-8 decoding
+            _utf8_decode : function (utftext) {
+                var string = "";
+                var i = 0;
+                var c = c1 = c2 = 0;
+         
+                while ( i < utftext.length ) {
+         
+                    c = utftext.charCodeAt(i);
+         
+                    if (c < 128) {
+                        string += String.fromCharCode(c);
+                        i++;
+                    }
+                    else if((c > 191) && (c < 224)) {
+                        c2 = utftext.charCodeAt(i+1);
+                        string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+                        i += 2;
+                    }
+                    else {
+                        c2 = utftext.charCodeAt(i+1);
+                        c3 = utftext.charCodeAt(i+2);
+                        string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+                        i += 3;
+                    }
+         
+                }
+                return string;
+            }
+        }
     },
     
     
@@ -174,7 +308,7 @@ var text20 = {},
                 return data[id];
             }
             
-            // Return created cache
+            // Return created cache.
             return cache
         }
     },
@@ -203,7 +337,7 @@ var text20 = {},
         
         /** Returns a unique ID for this browser */
         id: function() {
-            return navigator.appVersion; // TODO: Improve this
+            return strings.base64.encode((navigator.appVersion))
         },
         
         /** Returns the offset of the document from the window's screen area */
@@ -303,7 +437,7 @@ var text20 = {},
             // Original Object
             var origObj = obj;
             
-            // Will be set below, position of the element relativ to document start
+            // Will be set below, position of the element relative to document start
             var posX = obj.offsetLeft;
             var posY = obj.offsetTop;
         
@@ -323,7 +457,7 @@ var text20 = {},
                         scrollCorrectionY -= obj.parentNode.scrollTop;
                     }
                                                 
-                    obj=obj.parentNode;          
+                    obj = obj.parentNode;          
             }
             
             // Restore original object
@@ -331,10 +465,10 @@ var text20 = {},
     
             // Obtain the screen position ...
             while(obj.offsetParent){     
-                posX=posX+obj.offsetParent.offsetLeft;
-                posY=posY+obj.offsetParent.offsetTop;
+                posX = posX + obj.offsetParent.offsetLeft;
+                posY = posY + obj.offsetParent.offsetTop;
                                     
-                obj=obj.offsetParent;         
+                obj = obj.offsetParent;         
             }
     
             if(!posX) return null;
@@ -465,23 +599,26 @@ var text20 = {},
             /** Should we present a load indicator? */			
             loadIndicator : false,
             
-            /** Devices and locations */          
+            /** Eye tracking devices and locations */          
             trackingDevice: "eyetrackingdevice:auto",
             trackingURL : "discover://nearest",
             
-            /** Brain Tracking device enabled*/
+            /** Brain tracking device enabled*/
             enableBrainTracker: false,
             brainTrackingURL: "discover://any",
+            
+            /** Performance */
+            registerHighVolumeListeners: false,
 
-            /** 3rd Party extensions */          
+            /** 3rd party extensions */          
             extensions : [],
             
-            /** 3rd Party extensions */          			
+            /** logging */          			
             recordingEnabled : false,
             sessionPath : "/tmp/sessions",			
             logging : "default",
             
-            /** Internal Variables */
+            /** Internal variables */
             transmitMode : "ASYNC",    // DO NOT TOUCH THIS
         },
         
@@ -860,13 +997,19 @@ var text20 = {},
                             self.updateaLoadingStatus("Extensions added. Registering special callbacks.");
             
                                             
-                            // Register some of the global callback listeners at the engine ... 
-                            // TODO: Only register the high volume listeners if there is a need
-                            // self.registerCallback("reducedApplicationGaze", self.handler.onRawReducedGaze);
-                            // self.registerCallback("headPosition", self.handler.onRawHead);
+                             
+                            
+                            // Register some of the global callback listeners at the engine ...                            
                             self.registerCallback("fixation", self.handler.onRawFixation);
                             self.registerCallback("perusal", self.handler.onRawPerusal);
                             self.registerCallback("weakSaccade", self.handler.onRawWeakSaccade);
+                            
+                            // Only register the high volume listeners if there is a need
+                            if(connector.config.registerHighVolumeListeners) {
+                                self.registerCallback("reducedApplicationGaze", self.handler.onRawReducedGaze);
+                                self.registerCallback("headPosition", self.handler.onRawHead);
+                            }
+                            
                             
                             self.updateaLoadingStatus("Callbacks registered. Transfering control to client. Cu ;-)");
                                             
@@ -991,12 +1134,12 @@ var text20 = {},
                 /** Check if the engine is running and up */
                 enginecheck: function(fnc) {
                     if (!this.variables.initialized) {
-                        alert("Plugin not initialized yet");
+                        alert("Enginecheck: Plugin not initialized yet");
                         return null;
                     }
                     
                     if (!this.variables.engine) {
-                        alert("There is no engine!");
+                        alert("Enginecheck: There is no engine!");
                         return null;
                     }
                     
@@ -1208,7 +1351,7 @@ var text20 = {},
                 // If this is set to true, elements will only be transmitted once. Useful if you know the page never changes.
                 disableSubsequentUpdates: false,
                 
-                // Internal variables
+                // Internal variables 
                 clusterPTRCreation: 0,
                 clusterPTRTransmission: 0,
                 numRegistered: 0,
@@ -1222,11 +1365,14 @@ var text20 = {},
                 
                 var basics = this,
                     connection = connector.connection,
-                    clustering = core.internal.clustering;
+                    clustering = core.internal.clustering,
+                    dontUpdateAfterRegister = true,
+                    registered = false;
                 
                 // Process all elements which are currently unprocessed
                 $(".untransmitted").each(function(){
-                    var id = $(this).attr("id")
+                    var self = $(this)
+                    var id = self.attr("id")
                     
                     var pos = dom.documentPosition(this),
                         w = parseInt(this.offsetWidth),
@@ -1236,15 +1382,20 @@ var text20 = {},
                     
                     var text = null,
                         word = null;
+                        
+                        
+                    // Sanity check                        
+                    if (pos == null) { return; }    
                     
-                    // Check type and content
+                    
+                    // Check type and content (SPAN-test)
                     if (this.firstChild && this.firstChild.nodeValue) {
                         type = "text"
                         content = this.firstChild.nodeValue;
                         
                         // Try to get optional values
-                        text = $(this).attr("_textID")
-                        word = $(this).attr("_wordID")
+                        text = self.attr("_textID")
+                        word = self.attr("_wordID")
                     }
                     
                     // Transmit basic data first time
@@ -1262,11 +1413,14 @@ var text20 = {},
                     }
                     
                     // Remove flag 
-                    $(this).removeClass("untransmitted")
+                    self.removeClass("untransmitted")
+                    
+                    // Rember that we registered an element
+                    registered = true
                 });
                 
                 // In case subsequent updates are disabled we are finished. 
-                if (clustering.disableSubsequentUpdates) {
+                if (clustering.disableSubsequentUpdates || (dontUpdateAfterRegister && registered)) {
                     connector.connection.endBatch();
                     return;
                 } 
@@ -1513,7 +1667,6 @@ var text20 = {},
                 // call onGaze* and onFixation handler
                 core.handler.onGazeHandler(x, y)
                 core.handler.onFixationHandler(x, y)
-
                 core.handler.onEmotionHandler(x, y)
             },
             
@@ -1547,18 +1700,20 @@ var text20 = {},
             
             var c = this.internal.clustering
             
-            element.forEach(function(e) {
+            element.forEach(function(_e) {
+                var e = $(_e)
+                
                 // Tag and ensure it has an ID
-                $(e).addClass("registeredGazeElement")
-                $(e).addClass("untransmitted")
-                $(e).addClass("clusterID" + c.clusterPTRCreation++)
+                e.addClass("registeredGazeElement")
+                e.addClass("untransmitted")
+                e.addClass("clusterID" + c.clusterPTRCreation++)
                 
                 // Cycle clusterPTR creation
                 if (c.clusterPTRCreation == core.config.clusters) {
                     c.clusterPTRCreation = 0;
                 }
                 
-                dom.ensureID(e);
+                dom.ensureID(_e);
             })
         },
         
@@ -1584,6 +1739,7 @@ var text20 = {},
             })				            
         },
 
+   
         
         /** Call when everything is set up and ready to go */
         init: function() {
@@ -1621,6 +1777,7 @@ var text20 = {},
     
     
     // Add namespaces
+    text20.strings = strings
     text20.math = math
     text20.listener = listener
     text20.system = system
