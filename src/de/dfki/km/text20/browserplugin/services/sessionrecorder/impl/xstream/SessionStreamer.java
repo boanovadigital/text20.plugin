@@ -80,7 +80,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 @Root
 public class SessionStreamer implements Serializable {
     /** Serialization version */
-    private static final int VERSION = 101;
+    private static final int VERSION = 200;
 
     /**  */
     private static final long serialVersionUID = -3269345193816331063L;
@@ -166,7 +166,8 @@ public class SessionStreamer implements Serializable {
 
         try {
             this.logger.fine("Create our output file " + filename);
-            this.out = this.xstream.createObjectOutputStream(new BufferedWriter(new FileWriter(filename)));
+            this.out = this.xstream.createObjectOutputStream((new BufferedWriter(new FileWriter(filename))));
+            // this.out = this.xstream.createObjectOutputStream(new ZOutputStream(new FileOutputStream(filename), JZlib.Z_BEST_COMPRESSION));
         } catch (final IOException e) {
             e.printStackTrace();
         }
@@ -200,6 +201,8 @@ public class SessionStreamer implements Serializable {
                     }
 
                     // And flush our stream when we're done;
+                    System.out.println(size);
+                    System.out.println("Flushing");
                     flush();
 
                     // Wait some time (TODO: Fix this, so that even for small apps using this plugin no event get lost when they quit instantly)
@@ -500,5 +503,14 @@ public class SessionStreamer implements Serializable {
      */
     public void brainTrackingEvent(BrainTrackingEvent event2) {
         addEvent(new BrainTrackingEventContainer(event2));
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        final SessionStreamer ss = new SessionStreamer(new Dimension(800, 800), "/tmp/1.zs", new Date());
+        Random r = new Random();
+        for (int i = 0; i < 10000; i++) {
+            ss.updateGeometry(new Rectangle(r.nextInt(), r.nextInt(), r.nextInt(), r.nextInt()));
+        }
+        Thread.sleep(3000);
     }
 }

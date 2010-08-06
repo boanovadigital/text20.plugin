@@ -339,8 +339,7 @@ public class SessionReplayImpl implements SessionReplay {
     /**
      * @param fixationDisplacementRegions
      */
-    public synchronized void setFixationDisplacementRegions(
-                                                            final List<DisplacementRegion> fixationDisplacementRegions) {
+    public synchronized void setFixationDisplacementRegions(final List<DisplacementRegion> fixationDisplacementRegions) {
         this.fixationDisplacementRegions = fixationDisplacementRegions;
     }
 
@@ -359,4 +358,7 @@ public class SessionReplayImpl implements SessionReplay {
         return new ArrayList<DisplacementRegion>();
     }
 
+    public static void main(String[] args) {
+        SessionReplayImpl sr = new SessionReplayImpl(new File("/tmp/1.zs"));
+    }
 }
