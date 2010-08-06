@@ -343,9 +343,12 @@ var text20 = {},
         /** Returns the offset of the document from the window's screen area */
         documentOffset: function() {
             // If an offset is present, use it
-            if(this.overrideOffset) {
+            if(this.overrideOffset)
                 return this.overrideOffset;
-            }
+
+            // If something has been calibrated, use that            
+            if(this.calibratedOffset) 
+                return this.calibratedOffset
             
             // FIXME: Determine automatically
             if(system.os() == "Windows")
