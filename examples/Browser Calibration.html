@@ -82,8 +82,8 @@
                 var p = text20.dom.documentPosition($("#thedot").get(0));
                     x = p[0], y = p[1];
                 
-                // Update deltas
-                if (dy == 0) dy = lastGazeY - y
+                // Update deltas (the magic number is a manual adjustment as we hit the area at the upper part)
+                if (dy == 0) dy = lastGazeY - y - 3 
                 if (dx == 0) dx = lastGazeX - x
                 
                 // Register deltas
@@ -111,6 +111,7 @@
                     lastGazeX = tx;
                     lastGazeY = ty;
             });
+            
             
             // Wait for initialization
             connector.listener("INITIALIZED", function(evt) {
