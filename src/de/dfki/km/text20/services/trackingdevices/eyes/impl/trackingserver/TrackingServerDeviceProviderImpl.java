@@ -234,7 +234,8 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                  * #getGazeCenter()
                  */
                 public Point getGazeCenter() {
-                    return new Point(e._centerX + ServerTrackingDevice.this.recalibration.x, e._centerY + ServerTrackingDevice.this.recalibration.y);
+                    if (e.centerGaze == null) return new Point(-1, -1);
+                    return new Point(e.centerGaze.x + ServerTrackingDevice.this.recalibration.x, e.centerGaze.y + ServerTrackingDevice.this.recalibration.y);
                 }
 
                 /*
@@ -246,20 +247,24 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                  */
                 public float[] getHeadPosition() {
                     final float rval[] = new float[3];
+                    final float invalid[] = new float[] {-1, -1, -1}; 
 
                     boolean leftEyeFound = true;
                     boolean rightEyeFound = true;
+                    
+                    final float leftEyePos[] = (e.leftEyePos != null) ? e.leftEyePos : invalid;
+                    final float rightEyePos[] = (e.rightEyePos != null) ? e.rightEyePos : invalid;
 
                     // First check if all of the head coordinates are okay.
                     for (int i = 0; i < 3; i++) {
 
                         // Update the backup value if the current value is in
                         // valid range
-                        if (!(e.leftEyePos[i] > 0.0f && e.leftEyePos[i] < 1.0f)) {
+                        if (!(leftEyePos[i] > 0.0f && leftEyePos[i] < 1.0f)) {
                             leftEyeFound = false;
                         }
 
-                        if (!(e.rightEyePos[i] > 0.0f && e.rightEyePos[i] < 1.0f)) {
+                        if (!(rightEyePos[i] > 0.0f && rightEyePos[i] < 1.0f)) {
                             rightEyeFound = false;
                         }
                     }
@@ -268,9 +273,9 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     if (leftEyeFound && rightEyeFound) {
                         // If everything is fine, update the last deltas
                         for (int i = 0; i < 3; i++) {
-                            ServerTrackingDevice.this.last.lastDeltas[i] = e.rightEyePos[i] - e.leftEyePos[i];
-                            ServerTrackingDevice.this.last.lastLeft[i] = e.leftEyePos[i];
-                            ServerTrackingDevice.this.last.lastRight[i] = e.rightEyePos[i];
+                            ServerTrackingDevice.this.last.lastDeltas[i] = rightEyePos[i] - leftEyePos[i];
+                            ServerTrackingDevice.this.last.lastLeft[i] = leftEyePos[i];
+                            ServerTrackingDevice.this.last.lastRight[i] = rightEyePos[i];
                         }
 
                         ServerTrackingDevice.this.last.dateOfLeft = e.date;
@@ -278,7 +283,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                         // Update rval
                         for (int i = 0; i < 3; i++) {
-                            rval[i] = (e.leftEyePos[i] + e.rightEyePos[i]) / 2;
+                            rval[i] = (leftEyePos[i] + rightEyePos[i]) / 2;
                         }
 
                         // And return
@@ -289,14 +294,14 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     if (leftEyeFound) {
                         // Update last deltas
                         for (int i = 0; i < 3; i++) {
-                            ServerTrackingDevice.this.last.lastLeft[i] = e.leftEyePos[i];
+                            ServerTrackingDevice.this.last.lastLeft[i] = leftEyePos[i];
                         }
 
                         ServerTrackingDevice.this.last.dateOfLeft = e.date;
 
                         // Update rval
                         for (int i = 0; i < 3; i++) {
-                            rval[i] = (e.leftEyePos[i] + ServerTrackingDevice.this.last.lastDeltas[i] / 2);
+                            rval[i] = (leftEyePos[i] + ServerTrackingDevice.this.last.lastDeltas[i] / 2);
                         }
 
                         // And return
@@ -307,14 +312,14 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     if (rightEyeFound) {
                         // Update last deltas
                         for (int i = 0; i < 3; i++) {
-                            ServerTrackingDevice.this.last.lastRight[i] = e.rightEyePos[i];
+                            ServerTrackingDevice.this.last.lastRight[i] = rightEyePos[i];
                         }
 
                         ServerTrackingDevice.this.last.dateOfRight = e.date;
 
                         // Update rval
                         for (int i = 0; i < 3; i++) {
-                            rval[i] = (e.rightEyePos[i] - ServerTrackingDevice.this.last.lastDeltas[i] / 2);
+                            rval[i] = (rightEyePos[i] - ServerTrackingDevice.this.last.lastDeltas[i] / 2);
                         }
 
                         // And return
