@@ -1,5 +1,5 @@
 /*
- * OnScreenMenu.java
+ * OptionDummy.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,13 +19,16 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.browserplugin.services.onscreenmenu;
+package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay;
 
-import net.xeoh.plugins.base.Plugin;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOption;
 
 /**
- * @author rb
+ * 
+ * @author Ralf Biedert
  */
-public interface OnScreenMenu extends Plugin {
-    //
+public class OptionLoadImages implements ReplayOption {
+    /** */
+    private static final long serialVersionUID = 4718902145003522316L;
+
 }

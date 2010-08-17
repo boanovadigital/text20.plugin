@@ -37,7 +37,6 @@ import de.dfki.km.text20.browserplugin.extensions.speechio.SpeechIOExtension;
 import de.dfki.km.text20.browserplugin.services.devicemanager.impl.TrackingDeviceManagerImpl;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.impl.ExtensionManagerImpl;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.MasterGazeHandlerManagerImpl;
-import de.dfki.km.text20.browserplugin.services.onscreenmenu.impl.OnScreeenMenuImpl;
 import de.dfki.km.text20.browserplugin.services.pagemanager.impl.PageManagerManagerImpl;
 import de.dfki.km.text20.browserplugin.services.persistentpreferences.impl.PersistentPreferencesImpl;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.SessionRecorderManagerImpl;
@@ -102,7 +101,6 @@ public class FrameworkManager {
 
         this.pluginManager.addPluginsFrom(new ClassURI(PersistentPreferencesImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(SessionRecorderManagerImpl.class).toURI());
-        this.pluginManager.addPluginsFrom(new ClassURI(OnScreeenMenuImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(MasterGazeHandlerManagerImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(PageManagerManagerImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(TrackingDeviceManagerImpl.class).toURI());

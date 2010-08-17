@@ -41,8 +41,8 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.ReplayListener;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorderManager;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.AbstractSessionEvent;
-import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionRealtime;
-import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionSlowMotion;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.pseudo.PseudoImageEvent;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionLoadImages;
 
 /**
  * @author buhl
@@ -55,8 +55,6 @@ public class TestSessionReplay {
 
     /** */
     final Logger logger = Logger.getLogger(this.getClass().getName());
-
-    private SessionReplay player;
 
     /**
      * @param args
@@ -77,25 +75,31 @@ public class TestSessionReplay {
         this.pluginManager = PluginManagerFactory.createPluginManager();
         this.pluginManager.addPluginsFrom(new URI("classpath://*"));
 
-        final File file = new File("tests/sessions/session.xml");
+        final File file = new File("../Text 2.0 Experiment Results/quickskim.prestudy.2010/experiment.3.zip");
 
-        this.player = this.pluginManager.getPlugin(SessionRecorderManager.class, new OptionCapabilities("sessionrecorder:plainxml")).loadSessionReplay(file);
-        this.player.replay(new ReplayListener() {
+        System.out.println();
+        System.out.println("Events come next");
+
+        // Load the player and replay
+        final SessionReplay player = this.pluginManager.getPlugin(SessionRecorderManager.class, new OptionCapabilities("sessionrecorder:xstream")).loadSessionReplay(file);
+        player.replay(new ReplayListener() {
             public void nextEvent(AbstractSessionEvent event) {
-                System.out.println("* " + event);
+                if (event instanceof PseudoImageEvent) {
+                    PseudoImageEvent e = (PseudoImageEvent) event;
+                }
             }
-        }, new OptionRealtime(), new OptionSlowMotion(0));
+        }, new OptionLoadImages());
 
-        //this.player.waitForFinish();
+        System.out.println();
+        System.out.println("Props come next");
 
-        System.out.println("=====================================\nProperties: ");
-        Map<String, String> props = this.player.getProperties();
+        // Print infos
+        final Map<String, String> props = player.getProperties();
         for (String key : props.keySet()) {
             System.out.println(key + ": " + props.get(key));
         }
 
-        System.out.println("=====================================\nScreenSize : ");
-        System.out.println(this.player.getScreenSize());
+        System.out.println(player.getScreenSize());
 
         this.pluginManager.shutdown();
     }

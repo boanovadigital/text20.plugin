@@ -1,11 +1,13 @@
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream;
 
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,8 +15,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
 
 import net.xeoh.plugins.base.util.OptionUtils;
 
@@ -23,10 +30,15 @@ import com.thoughtworks.xstream.XStream;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.ReplayListener;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.AbstractSessionEvent;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ImageEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.PropertyEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ScreenSizeEvent;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.pseudo.PseudoImageEvent;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.loader.AbstractLoader;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.loader.ZIPLoader;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOption;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionGetMetaInfo;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionLoadImages;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionRealtime;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionSlowMotion;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.DisplacementRegion;
@@ -37,55 +49,36 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.Di
  */
 public class SessionReplayImpl implements SessionReplay {
 
+    /** Logger */
+    final Logger logger = Logger.getLogger(this.getClass().getName());
+
+    /** Xstream (de)serializer */
+    final XStream xstream = new XStream();
+
     /**
      * Makes other threads wait for this element to be finished. 
      */
-    Lock finishedLock = new ReentrantLock();
+    final Lock finishedLock = new ReentrantLock();
 
-    /** Should we print timing information */
-    @SuppressWarnings("unused")
-    private final boolean printTiming = true;
-
-    /** If the replay is in realtime, or as fast as possible */
-    boolean realtimeReplay = false;
-
-    /** controls the behaviour of the replay method 
-     * if true, only the property and screen size 'events' are fetched and stored
-     * if false, the listeners will work   
-     * */
-    private boolean gettingMetaInfo = false;
-
-    /** How far to slow down "realtime" */
-    int slowdownFactor = 1;
+    /** Input stream to read the content from */
+    ObjectInputStream in;
 
     /** List of events to filter */
     final List<Class<? extends AbstractSessionEvent>> toFilter = new ArrayList<Class<? extends AbstractSessionEvent>>();
 
-    /** */
-    ObjectInputStream in;
+    /** List of properties stored in the replay */
+    final Map<String, String> propertyMap = new HashMap<String, String>();
 
-    /** */
-    Map<String, String> propertyMap = new HashMap<String, String>();
-
-    /** the recorded screen size */
+    /** The recorded screen size */
     Dimension screenSize;
 
-    /** */
-    final XStream xstream = new XStream();
-
-    /** the file to replay */
+    /** The file to replay. This can either be a zip file (with an internal .xstream) or an xstream directly. */
     private File file;
 
-    /** */
-    protected long firstEventtime;
+    /** The loader to access elements */
+    AbstractLoader loader = null;
 
-    /** */
-    protected long currentEventime;
-
-    /** */
-    protected long realtimeDuration;
-
-    /** */
+    /** Displacement regions to apply */
     private List<DisplacementRegion> fixationDisplacementRegions;
 
     /**
@@ -101,38 +94,50 @@ public class SessionReplayImpl implements SessionReplay {
 
         // parse file to get properties and screen size
         replay(null, new OptionGetMetaInfo());
+
         waitForFinish();
     }
 
-    /**
-     * Events of that class wont be passed.
-     * 
-     * @param filter
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay#getDisplacements()
      */
-    @SuppressWarnings("unused")
-    private void addFilter(final Class<? extends AbstractSessionEvent> filter) {
-        this.toFilter.add(filter);
+    @Override
+    public List<DisplacementRegion> getDisplacements() {
+        return new ArrayList<DisplacementRegion>();
     }
 
     /**
-     * @return the realtimeReplay
+     * @return .
      */
-    boolean isRealtimeReplay() {
-        return this.realtimeReplay;
+    public synchronized List<DisplacementRegion> getFixationDisplacementRegions() {
+        return this.fixationDisplacementRegions;
+    }
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#getProperties()
+     */
+    public Map<String, String> getProperties(String... properties) {
+        waitForFinish();
+        return this.propertyMap;
+    }
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#getScreenSize()
+     */
+    public Dimension getScreenSize() {
+        waitForFinish();
+        return this.screenSize;
     }
 
     /**
-     * @param realtimeReplay the realtimeReplay to set
+     * @param inStream
+     * @return .
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
-    public void setRealtimeReplay(final boolean realtimeReplay) {
-        this.realtimeReplay = realtimeReplay;
-    }
-
-    /**
-     * @param factor
-     */
-    public void setSlowdown(final int factor) {
-        this.slowdownFactor = factor;
+    public Object loadFromStream(final ObjectInputStream inStream) throws IOException,
+                                                                  ClassNotFoundException {
+        return (inStream.readObject());
     }
 
     /* (non-Javadoc)
@@ -141,42 +146,67 @@ public class SessionReplayImpl implements SessionReplay {
     public synchronized void replay(final ReplayListener listener,
                                     final ReplayOption... options) {
 
+        // Create a barrier that allows us to wait for synchronous replay 
         final CyclicBarrier barrier = new CyclicBarrier(2);
 
-        this.finishedLock = new ReentrantLock();
-        try {
-            this.in = this.xstream.createObjectInputStream(new FileReader(this.file));
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
+        // First check if we have a .ZIP ... 
+        if (this.file.getAbsolutePath().endsWith(".zip")) {
+            this.loader = new ZIPLoader(this.file);
+
+            try {
+                this.in = this.xstream.createObjectInputStream(this.loader.getSessionInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        setGettingMetaInfo(false);
-        setRealtimeReplay(false);
-
-        // Process options
-        final OptionUtils<ReplayOption> ou = new OptionUtils<ReplayOption>(options);
-        if (ou.contains(OptionGetMetaInfo.class)) setGettingMetaInfo(true);
-        if (ou.contains(OptionRealtime.class)) setRealtimeReplay(true);
-        if (ou.contains(OptionSlowMotion.class)) {
-            setRealtimeReplay(true);
-            setSlowdown(ou.get(OptionSlowMotion.class).getFactor());
+        // ... and check if we have .xstream file
+        if (this.file.getAbsolutePath().endsWith(".xstream")) {
+            // Load the input stream 
+            try {
+                this.in = this.xstream.createObjectInputStream(new FileReader(this.file));
+            } catch (final FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        if (listener == null && !isGettingMetaInfo()) {
-            System.out.println("no listener provided");
+        // Sanity check
+        if (this.in == null) {
+            this.logger.warning("Unable to load replay for file " + this.file);
             return;
         }
 
-        // Create replay thread
+        // Options
+        final AtomicBoolean gettingMetaInfo = new AtomicBoolean(false);
+        final AtomicBoolean realtimeReplay = new AtomicBoolean(false);
+        final AtomicBoolean loadImages = new AtomicBoolean(false);
+
+        // Some variables
+        final AtomicLong slowdownFactor = new AtomicLong(1);
+        final AtomicLong currentEvenTime = new AtomicLong();
+        final AtomicLong firstEventTime = new AtomicLong();
+        final AtomicLong realtimeDuration = new AtomicLong();
+
+        // Process options
+        final OptionUtils<ReplayOption> ou = new OptionUtils<ReplayOption>(options);
+        if (ou.contains(OptionGetMetaInfo.class)) gettingMetaInfo.set(true);
+        if (ou.contains(OptionRealtime.class)) realtimeReplay.set(true);
+        if (ou.contains(OptionLoadImages.class)) loadImages.set(true);
+        if (ou.contains(OptionSlowMotion.class)) {
+            realtimeReplay.set(true);
+            slowdownFactor.set(ou.get(OptionSlowMotion.class).getFactor());
+        }
+
+        // Create the actual replay thread
         final Thread t = new Thread(new Runnable() {
 
             private boolean hasMore = true;
 
-            @SuppressWarnings("null")
             public void run() {
                 try {
+                    // Lock until we finished
                     SessionReplayImpl.this.finishedLock.lock();
 
                     // Synchronize with exit of the function
@@ -189,55 +219,75 @@ public class SessionReplayImpl implements SessionReplay {
                     }
 
                     AbstractSessionEvent previousEvent = null;
-                    @SuppressWarnings("unused")
-                    long previousExecutionTime = 0;
+
+                    // As long as we have more events
                     while (this.hasMore) {
                         AbstractSessionEvent event = null;
 
                         try {
+                            // Load the next event
                             event = (AbstractSessionEvent) loadFromStream(SessionReplayImpl.this.in);
+
+                            // In case we have no previous event, save the first event time
                             if (previousEvent == null) {
-                                SessionReplayImpl.this.firstEventtime = event.originalEventTime;
+                                firstEventTime.set(event.originalEventTime);
                                 previousEvent = event;
                             }
-                            SessionReplayImpl.this.currentEventime = event.originalEventTime;
+
+                            // Store current event time
+                            currentEvenTime.set(event.originalEventTime);
+
                             // Dont process if filtered
-                            if (!SessionReplayImpl.this.toFilter.contains(event.getClass())) {
-                                if (!isGettingMetaInfo()) {
-                                    listener.nextEvent(event);
+                            if (SessionReplayImpl.this.toFilter.contains(event.getClass()))
+                                continue;
 
-                                    // Can be switched off, to make replay as fast as possible. 
-                                    if (SessionReplayImpl.this.realtimeReplay && !isGettingMetaInfo()) {
-                                        // Sleep till next event
-                                        long delta = event.originalEventTime - previousEvent.originalEventTime;
-                                        if (delta <= 0) {
-                                            delta = 0;
-                                        }
+                            // Check if we only get meta events ...
+                            if (gettingMetaInfo.get()) {
+                                if (event instanceof ScreenSizeEvent)
+                                    SessionReplayImpl.this.screenSize = ((ScreenSizeEvent) event).screenSize;
 
-                                        try {
-                                            Thread.sleep(delta * SessionReplayImpl.this.slowdownFactor);
-                                        } catch (final InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
+                                if (event instanceof PropertyEvent) {
+                                    SessionReplayImpl.this.propertyMap.put(((PropertyEvent) event).key, ((PropertyEvent) event).value);
+                                }
 
-                                    previousEvent = event;
-                                } else {
-                                    if (event instanceof ScreenSizeEvent) {
-                                        SessionReplayImpl.this.screenSize = ((ScreenSizeEvent) event).screenSize;
-                                        //                                                                                System.out.println(event);
-                                    }
-                                    if (event instanceof PropertyEvent) {
-                                        SessionReplayImpl.this.propertyMap.put(((PropertyEvent) event).key, ((PropertyEvent) event).value);
-                                        //                                                                                System.out.println(event);
-                                    }
+                                continue;
+                            }
+
+                            // Can be switched off, to make replay as fast as possible. 
+                            if (realtimeReplay.get()) {
+                                long delta = event.originalEventTime - previousEvent.originalEventTime;
+
+                                // TODO: When does this happen?
+                                if (delta < 0) {
+                                    SessionReplayImpl.this.logger.fine("Event times are mixed up " + event.originalEventTime + " < " + previousEvent.originalEventTime);
+                                    delta = 0;
+                                }
+
+                                // And now wait for the given time
+                                try {
+                                    Thread.sleep(delta * slowdownFactor.get());
+                                } catch (final InterruptedException e) {
+                                    e.printStackTrace();
                                 }
                             }
+
+                            // Check what kind of event it is and if we have some special rules
+                            if (event instanceof ImageEvent && loadImages.get()) {
+                                final ImageEvent e = (ImageEvent) event;
+                                final InputStream is = SessionReplayImpl.this.loader.getFile(e.associatedFilename);
+                                final BufferedImage read = ImageIO.read(is);
+
+                                event = new PseudoImageEvent(e, read);
+                            }
+
+                            // Now we are permitted to fire the event.
+                            listener.nextEvent(event);
+
+                            previousEvent = event;
                         } catch (EOFException e) {
                             this.hasMore = false;
-                            if (isGettingMetaInfo()) {
-                                SessionReplayImpl.this.realtimeDuration = (SessionReplayImpl.this.currentEventime - SessionReplayImpl.this.firstEventtime);
-                                //System.out.println("realtime duration: " + SessionReplayImpl.this.realtimeDuration + " ms");
+                            if (gettingMetaInfo.get()) {
+                                realtimeDuration.set(currentEvenTime.get() - firstEventTime.get());
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -275,6 +325,13 @@ public class SessionReplayImpl implements SessionReplay {
     }
 
     /**
+     * @param fixationDisplacementRegions
+     */
+    public synchronized void setFixationDisplacementRegions(final List<DisplacementRegion> fixationDisplacementRegions) {
+        this.fixationDisplacementRegions = fixationDisplacementRegions;
+    }
+
+    /**
      * Waits until the thread has finished.
      */
     public void waitForFinish() {
@@ -289,76 +346,12 @@ public class SessionReplayImpl implements SessionReplay {
     }
 
     /**
-     * @param inStream
-     * @return .
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * Events of that class wont be passed.
+     * 
+     * @param filter
      */
-    public Object loadFromStream(final ObjectInputStream inStream) throws IOException,
-                                                                  ClassNotFoundException {
-        return (inStream.readObject());
-    }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#getProperties()
-     */
-    public Map<String, String> getProperties(String... properties) {
-        waitForFinish();
-        return this.propertyMap;
-    }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#getScreenSize()
-     */
-    public Dimension getScreenSize() {
-        waitForFinish();
-        return this.screenSize;
-    }
-
-    /**
-     * @return the gettingMetaInfo
-     */
-    boolean isGettingMetaInfo() {
-        return this.gettingMetaInfo;
-    }
-
-    /**
-     * @param gettingMetaInfo the gettingMetaInfo to set
-     */
-    void setGettingMetaInfo(final boolean gettingMetaInfo) {
-        this.gettingMetaInfo = gettingMetaInfo;
-    }
-
-    /**
-     * @return the duration of the original session
-     */
-    public long getRealtimeDuration() {
-        return this.realtimeDuration;
-    }
-
-    /**
-     * @param fixationDisplacementRegions
-     */
-    public synchronized void setFixationDisplacementRegions(final List<DisplacementRegion> fixationDisplacementRegions) {
-        this.fixationDisplacementRegions = fixationDisplacementRegions;
-    }
-
-    /**
-     * @return .
-     */
-    public synchronized List<DisplacementRegion> getFixationDisplacementRegions() {
-        return this.fixationDisplacementRegions;
-    }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay#getDisplacements()
-     */
-    @Override
-    public List<DisplacementRegion> getDisplacements() {
-        return new ArrayList<DisplacementRegion>();
-    }
-
-    public static void main(String[] args) {
-        SessionReplayImpl sr = new SessionReplayImpl(new File("/tmp/1.zs"));
+    @SuppressWarnings("unused")
+    private void addFilter(final Class<? extends AbstractSessionEvent> filter) {
+        this.toFilter.add(filter);
     }
 }
