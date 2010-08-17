@@ -86,7 +86,8 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
         final long eventTime = filteredEvent.getEventTime();
         final long deltaTime = eventTime - this.lastObservedEventTime;
         if (deltaTime > 1000) {
-            this.logger.warning("The last observed tracking event was very long ago. You should really check your tracking input!");
+            // FIXME: Does not appear to be a general problem, investigate more closely.
+            this.logger.fine("The last observed tracking event was very long ago. You should really check your tracking input!");
 
             // Inform about the last event 
             callListener(filteredEvent, FixationEventType.FIXATION_END, this.currentFixation);
