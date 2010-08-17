@@ -31,6 +31,7 @@ import de.dfki.km.text20.browserplugin.services.extensionmanager.SetupParameter;
  *
  */
 @PluginImplementation
+//@Suppress(listOfPluginsToSuppress ) <-- Does that make sense?
 public class YodelingTestExtension implements Extension {
 
     /**

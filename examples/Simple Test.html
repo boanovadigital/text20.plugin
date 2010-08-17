@@ -11,6 +11,7 @@
 	<!-- Manually bring up the plugin -->
 	<script type="text/javascript">
 	   text20.connector.config.extensions = ["extensions/yodeling.jar"]
+       text20.connector.config.logging = "INFO"
 		
 	   text20.connector.listener("INITIALIZED", function() {
             var sentence = $("body").get(0);
