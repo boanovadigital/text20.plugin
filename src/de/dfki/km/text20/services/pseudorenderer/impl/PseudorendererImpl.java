@@ -49,35 +49,25 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderEle
  */
 public class PseudorendererImpl implements Pseudorenderer {
 
-    /** */
+    /** All status flags */
     private final Collection<PseudorendererStatus> allStatus = new ArrayList<PseudorendererStatus>();
 
-    /**
-     * Where the renderer is on the screen
-     */
+    /** Where the renderer is on the screen */
     final Rectangle currentGeometry = new Rectangle();
 
-    /**
-     * Prohibits two threads from accessing the element.
-     */
+    /** Prohibits two threads from accessing the element. */
     final Lock elementsLock = new ReentrantLock();
 
-    /**  */
+    /** The last change ID we emitted */
     long lastChangeID = 0;
 
-    /**
-     * Keeps all render elements created in this context
-     */
+    /** Keeps all render elements created in this context */
     final Collection<RenderElement> renderElements = new ArrayList<RenderElement>();
 
-    /**
-     * Where the viewport starts
-     */
+    /** Where the viewport starts */
     final Point viewportStart = new Point();
 
-    /**
-     * setup
-     */
+    /** Setup the renderer */
     public PseudorendererImpl() {
         // Make us visible
         setStatus(PseudorendererStatus.VISIBLE, true);
@@ -147,8 +137,7 @@ public class PseudorendererImpl implements Pseudorenderer {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#getAllElementsIntersecting(java.awt.Rectangle, de.dfki.km.augmentedtext.services.pseudorenderer.CoordinatesType, de.dfki.km.augmentedtext.services.pseudorenderer.options.GetAllElementsIntersectingOption[])
      */
-    public Collection<RenderElement> getAllElementsIntersecting(
-                                                                final Rectangle rectangle,
+    public Collection<RenderElement> getAllElementsIntersecting(final Rectangle rectangle,
                                                                 final CoordinatesType position,
                                                                 final GetAllElementsIntersectingOption... options) {
 

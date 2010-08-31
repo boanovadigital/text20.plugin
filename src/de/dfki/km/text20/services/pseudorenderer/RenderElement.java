@@ -25,9 +25,10 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 
 /**
- * Represents a rendering element.
+ * Represents a rendering element. Note that a render element is a 'live' object. Its values might change after you 
+ * query it, depending on changes to the element or the pseudorenderer. 
  * 
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public interface RenderElement {
@@ -88,6 +89,8 @@ public interface RenderElement {
     public void setZIndex(int zindex);
 
     /**
+     * Sets a meta attribute.
+     * 
      * @param key
      * @param value
      */
@@ -107,6 +110,7 @@ public interface RenderElement {
     public Serializable getMetaAttribute(RenderElementMetaAttribute key);
 
     /**
+     * Returns true if the element is visible.
      * 
      * @return .
      */
