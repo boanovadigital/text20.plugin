@@ -63,6 +63,7 @@ public class DisplacingFixationWrapper extends FixationWrapper {
      */
     @Override
     public List<EyeTrackingEvent> getTrackingEvents() {
+        // TODO: The individual events should be wrapped as well ... However, what to do with the relative view positions?
         return this.originalFixation.getTrackingEvents();
     }
 }
