@@ -48,12 +48,15 @@ public class BatchHandler {
      * @param call
      */
     public void batch(String call) {
+        
+        // Check where the actual call name ends
         final int indexOf = call.indexOf("(");
         if (indexOf < 0) {
             this.logger.warning("Batch: Wrong call syntax!");
             return;
         }
 
+        // Extract method names and parameters
         final String method = call.substring(0, indexOf);
         final String[] arguments = call.substring(call.indexOf("(") + 1, call.length() - 1).split(";");
         final ArrayList<String[]> splittedArguments = new ArrayList<String[]>();
@@ -61,6 +64,7 @@ public class BatchHandler {
             splittedArguments.add(argument.split(","));
         }
 
+        // Now check which call we have ...
         if (method.equals("simpleBenchmark")) {
             for (int i = 0; i < splittedArguments.size(); i++) {
                 final String[] argument = splittedArguments.get(i);

@@ -1174,6 +1174,13 @@ var text20 = {},
                 /** Transmits if the given element has been removed in the meantime */
                 transmitElementRemoved: function(id) {
                     this.enginecheck(function(e, v, s) {
+                        
+                        // If we have a batch call, call that one
+                        if (this.variables.batch) {
+                            this.variables.batch.updateElementFlag(id, "REMOVED", true);
+                            return;
+                        }
+                        
                         e.updateElementFlag(id, "REMOVED", true);
                     })
                 },
@@ -1734,12 +1741,19 @@ var text20 = {},
             if(!element.forEach) {
                 element = [element]
             }
+            
+            // Start a new batch call to speed up the process
+            connector.connection.startBatch();
                 
             element.forEach(function(e) {
                 var el = $(e)
                 el.removeClass("registeredGazeElement")
                 connector.connection.transmitElementRemoved(el.attr("id"));
             })				            
+            
+            
+            // End the batch and transmit
+            connector.connection.endBatch();
         },
 
    
