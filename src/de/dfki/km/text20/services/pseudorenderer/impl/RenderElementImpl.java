@@ -33,27 +33,34 @@ import de.dfki.km.text20.services.pseudorenderer.RenderElement;
 import de.dfki.km.text20.services.pseudorenderer.RenderElementMetaAttribute;
 
 /**
+ * Implementation of the RenderElement interface
  * 
  * @author rb
  */
 public class RenderElementImpl implements RenderElement {
 
-    /** */
+    /** Contains the meta information of this render element */
     private final Map<RenderElementMetaAttribute, Serializable> metaInformation = new HashMap<RenderElementMetaAttribute, Serializable>();
 
     /** Attached pseudorenderer */
     private final PseudorendererImpl pseudorenderer;
 
+    /** Our rectangle relative to our corrdinated anchor. */
     private final Rectangle rectangle = new Rectangle();
 
+    /** Increased with every change */
     private long changeID = 0;
 
+    /** Our coordinates anchor, document based is default. */
     private CoordinatesType coordinatesType = CoordinatesType.DOCUMENT_BASED;
 
+    /** ID */
     private String identifier;
 
+    /** Which layer we're in. */
     private int zindex = 0;
 
+    /** If we are visible or not */
     private boolean visible;
 
     /**
@@ -135,7 +142,7 @@ public class RenderElementImpl implements RenderElement {
             return;
         }
 
-        // Setting element-positions by screen position doesn't make sense yet ...
+        // Setting element-positions by screen position doesn't make sense ...
         throw new NotImplementedException();
     }
 
@@ -143,6 +150,7 @@ public class RenderElementImpl implements RenderElement {
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#setIdentifier(java.lang.String)
      */
     public void setIdentifier(final String id) {
+        updateChangeID();
         this.identifier = id;
     }
 
@@ -162,7 +170,7 @@ public class RenderElementImpl implements RenderElement {
     }
 
     /**
-     * 
+     * Updates our change ID.
      */
     protected void updateChangeID() {
         this.changeID = this.pseudorenderer.getChangeID();
@@ -179,6 +187,7 @@ public class RenderElementImpl implements RenderElement {
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#setZIndex(int)
      */
     public void setZIndex(int zindex) {
+        updateChangeID();
         this.zindex = zindex;
     }
 
