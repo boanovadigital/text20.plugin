@@ -84,7 +84,7 @@ public class PseudorendererImpl implements Pseudorenderer {
 
         if (from == CoordinatesType.SCREEN_BASED) {
             if (this.currentGeometry == null) return null;
-            if (!this.currentGeometry.contains(p)) return null;
+            if (!this.currentGeometry.contains(p)) return null; //TODO: Georg: that's the point where a null centerPoint is created
 
             r.x -= this.currentGeometry.x;
             r.y -= this.currentGeometry.y;
