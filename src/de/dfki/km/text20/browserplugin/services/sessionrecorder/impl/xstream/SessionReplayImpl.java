@@ -238,8 +238,9 @@ public class SessionReplayImpl implements SessionReplay {
                             currentEvenTime.set(event.originalEventTime);
 
                             // Dont process if filtered
-                            if (SessionReplayImpl.this.toFilter.contains(event.getClass()))
+                            if (SessionReplayImpl.this.toFilter.contains(event.getClass())) {
                                 continue;
+                            }
 
                             // Check if we only get meta events ...
                             if (gettingMetaInfo.get()) {
@@ -281,10 +282,15 @@ public class SessionReplayImpl implements SessionReplay {
                             }
 
                             // Now we are permitted to fire the event.
-                            listener.nextEvent(event);
+                            try {
+                                listener.nextEvent(event);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
 
                             previousEvent = event;
                         } catch (EOFException e) {
+                            e.printStackTrace();
                             this.hasMore = false;
                             if (gettingMetaInfo.get()) {
                                 realtimeDuration.set(currentEvenTime.get() - firstEventTime.get());
