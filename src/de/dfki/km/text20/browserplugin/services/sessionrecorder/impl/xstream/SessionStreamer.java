@@ -505,6 +505,10 @@ public class SessionStreamer implements Serializable {
         addEvent(new BrainTrackingEventContainer(event2));
     }
 
+    /**
+     * @param args
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws InterruptedException {
         final SessionStreamer ss = new SessionStreamer(new Dimension(800, 800), "/tmp/1.zs", new Date());
         Random r = new Random();

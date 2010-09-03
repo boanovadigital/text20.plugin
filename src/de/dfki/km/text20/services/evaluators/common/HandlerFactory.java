@@ -24,6 +24,12 @@ import net.xeoh.plugins.base.Plugin;
 import de.dfki.km.text20.services.evaluators.common.options.SpawnEvaluatorOption;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
+/**
+ * @author rb
+ *
+ * @param <T>
+ * @param <U>
+ */
 public interface HandlerFactory<T extends EvaluationListener<? extends EvaluationEvent>, U extends Handler<? extends TrackingEvent>>
         extends Plugin {
 

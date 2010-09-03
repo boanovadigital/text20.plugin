@@ -105,7 +105,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     }
 
     /**  */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void autosave() {
         this.logger.fine("Autosave called ... active status " + this.started.get());
         if (this.started.get()) {

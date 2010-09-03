@@ -34,7 +34,7 @@ import org.simpleframework.xml.transform.Transform;
  */
 public class XMLTransformationMatcher implements Matcher {
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
     public Transform<?> match(final Class arg0) throws Exception {
         if (arg0.equals(Rectangle.class)) return new Transform<Rectangle>() {
 

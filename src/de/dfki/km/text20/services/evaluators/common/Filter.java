@@ -23,6 +23,11 @@ package de.dfki.km.text20.services.evaluators.common;
 
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
+/**
+ * @author rb
+ *
+ * @param <T>
+ */
 public interface Filter<T extends TrackingEvent> {
     /**
      * Filters a given event.
