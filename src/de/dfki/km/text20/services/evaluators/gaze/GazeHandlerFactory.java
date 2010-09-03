@@ -30,6 +30,8 @@ import de.dfki.km.text20.services.evaluators.common.HandlerFactory;
  * 
  * @author rb
  */
-public interface GazeHandlerFactory extends HandlerFactory<GazeEvaluationListener<? extends GazeEvaluationEvent>, GazeHandler> {
-    
+public interface GazeHandlerFactory
+        extends
+        HandlerFactory<GazeEvaluationListener<? extends GazeEvaluationEvent>, GazeHandler> {
+    //
 }

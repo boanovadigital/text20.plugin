@@ -30,4 +30,5 @@ import de.dfki.km.text20.services.evaluators.common.EvaluationEvent;
  *
  */
 public interface GazeEvaluationEvent extends EvaluationEvent {
+    //
 }

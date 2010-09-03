@@ -30,4 +30,5 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author rb
  */
 public interface GazeFilter extends Filter<EyeTrackingEvent> {
+    //
 }

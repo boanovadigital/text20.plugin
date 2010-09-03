@@ -149,6 +149,10 @@ public class BackgroundServicesExtension implements Extension {
         }
     }
 
+    /**
+     * @param args
+     * @throws UnsupportedEncodingException
+     */
     public static void main(String[] args) throws UnsupportedEncodingException {
         System.out.println(URLDecoder.decode("Rainer%20Br%FCderle", "ISO-8859-1"));
         System.out.println(URLDecoder.decode("Rainer%20Br%FCderle", "UTF-8"));

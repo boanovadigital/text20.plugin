@@ -21,15 +21,21 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.util;
 
+import static net.jcores.CoreKeeper.$;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
+import net.jcores.cores.CoreObject;
+import net.jcores.interfaces.functions.F1;
+import net.jcores.interfaces.functions.F2DeltaObjects;
+import net.jcores.interfaces.functions.F2ReduceObjects;
+import net.jcores.utils.Staple;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
  * Methods regarding fixations.
@@ -42,11 +48,15 @@ public class FixationsUtil {
     /** */
     private final List<Fixation> fixations;
 
+    /** */
+    private CoreObject<Fixation> $fixations;
+
     /**
      * @param fixations
      */
     public FixationsUtil(final List<Fixation> fixations) {
         this.fixations = fixations;
+        this.$fixations = $(fixations);
     }
 
     /**
@@ -55,33 +65,40 @@ public class FixationsUtil {
      * @return .
      */
     public int getAverageYPosition() {
+        final Staple<Point> staple = this.$fixations.map(new F1<Fixation, Point>() {
+            public Point f(Fixation arg0) {
+                return arg0.getCenter();
+            }
+        }).staple(new Point(0, 0), new F2ReduceObjects<Point>() {
+            @Override
+            public Point f(Point arg0, Point arg1) {
+                arg0.x += arg1.x;
+                arg0.y += arg1.y;
+                return arg0;
+            }
+        });
 
-        int y = 0;
-        for (final Fixation fixation : this.fixations) {
-            y += fixation.getCenter().y;
-        }
-
-        y /= this.fixations.size();
-
-        return y;
+        return staple.staple().y / staple.size();
     }
 
     /**
+     * TODO: Calculate proper median w. null elements considered.
+     * 
      * Calculates the average y point of all fixations. 
      * 
      * @return .
      */
     public int getMedianYPosition() {
-
-        int[] ys = new int[this.fixations.size()];
-
-        for (int i = 0; i < this.fixations.size(); i++) {
-            ys[i] = this.fixations.get(i).getCenter().y;
-        }
-
-        Arrays.sort(ys);
-
-        return ys[ys.length / 2];
+        return this.$fixations.map(new F1<Fixation, Point>() {
+            public Point f(Fixation arg0) {
+                return arg0.getCenter();
+            }
+        }).compact().sort(new Comparator<Point>() {
+            @Override
+            public int compare(Point o1, Point o2) {
+                return o1.y - o2.y;
+            }
+        }).get(0.5).y;
     }
 
     /**
@@ -89,19 +106,25 @@ public class FixationsUtil {
      *  
      * @return .
      */
+    @SuppressWarnings("boxing")
     public int getAvgSaccadeLength() {
+        final Staple<Double> staple = this.$fixations.map(new F1<Fixation, Point>() {
+            public Point f(Fixation arg0) {
+                return arg0.getCenter();
+            }
+        }).delta(new F2DeltaObjects<Point, Double>() {
+            @Override
+            public Double f(Point arg0, Point arg1) {
+                return arg0.distance(arg1);
+            }
+        }).staple(0.0, new F2ReduceObjects<Double>() {
+            @Override
+            public Double f(Double arg0, Double arg1) {
+                return arg0 + arg1;
+            }
+        });
 
-        int len = 0;
-
-        final Fixation last = this.fixations.get(0);
-
-        for (final Fixation fixation : this.fixations) {
-            len += fixation.getCenter().distance(last.getCenter());
-        }
-
-        len /= this.fixations.size();
-
-        return len;
+        return (int) (staple.staple() / staple.size());
     }
 
     /**
@@ -109,19 +132,23 @@ public class FixationsUtil {
      *  
      * @return .
      */
+    @SuppressWarnings("boxing")
     public double[] getAllAngles() {
-        final double rval[] = new double[this.fixations.size() - 1];
+        CoreObject<Double> fill = this.$fixations.map(new F1<Fixation, Point>() {
+            public Point f(Fixation arg0) {
+                return arg0.getCenter();
+            }
+        }).delta(new F2DeltaObjects<Point, Double>() {
+            @Override
+            public Double f(Point c1, Point c2) {
+                return Math.atan2(c2.y - c1.y, c2.x - c1.x);
+            }
+        }).fill(Double.NaN);
 
-        // Compute angles
-        for (int i = 0; i < this.fixations.size() - 1; i++) {
-            final Fixation f1 = this.fixations.get(i);
-            final Fixation f2 = this.fixations.get(i + 1);
-
-            final Point c1 = f1.getCenter();
-            final Point c2 = f2.getCenter();
-
-            double atan2 = Math.atan2(c2.y - c1.y, c2.x - c1.x);
-            rval[i] = atan2;
+        // And now the ugly part: unbox
+        final double rval[] = new double[fill.size()];
+        for (int i = 0; i < rval.length; i++) {
+            rval[i] = fill.get(i);
         }
 
         return rval;
@@ -133,18 +160,23 @@ public class FixationsUtil {
      * 
      * @return .
      */
+    @SuppressWarnings("boxing")
     public int getAvgVerticalDeviation() {
-
-        int dev = 0;
         final int avg = getAverageYPosition();
 
-        for (final Fixation fixation : this.fixations) {
-            dev += Math.abs(fixation.getCenter().y - avg);
-        }
+        final Staple<Integer> staple = this.$fixations.map(new F1<Fixation, Integer>() {
+            @Override
+            public Integer f(Fixation x) {
+                return x.getCenter().y;
+            }
+        }).staple(0, new F2ReduceObjects<Integer>() {
+            @Override
+            public Integer f(Integer left, Integer right) {
+                return left + Math.abs(right - avg);
+            }
+        });
 
-        dev /= this.fixations.size();
-
-        return dev;
+        return staple.staple() / staple.size();
     }
 
     /**
@@ -158,6 +190,9 @@ public class FixationsUtil {
 
         for (final Fixation fixation : this.fixations) {
             final Point center = fixation.getCenter();
+
+            if (center == null) continue;
+
             min.x = Math.min(min.x, center.x);
             min.y = Math.min(min.y, center.y);
 
@@ -180,6 +215,8 @@ public class FixationsUtil {
         for (final Fixation fixation : this.fixations) {
             final Point center = fixation.getCenter();
 
+            if (center == null) continue;
+
             if (screenRectangle.contains(center)) {
                 rval += new FixationUtil(fixation).getFixationDuration();
             }
@@ -194,7 +231,6 @@ public class FixationsUtil {
      * @return .
      */
     public List<Fixation> getLastFixations(final int n) {
-
         final int s = this.fixations.size();
         return new ArrayList<Fixation>(this.fixations.subList(s - n, s));
     }
@@ -210,6 +246,7 @@ public class FixationsUtil {
 
         for (final Fixation fixation : this.fixations) {
             final Point center = fixation.getCenter();
+            if (center == null) continue;
             min.x = Math.min(min.x, center.x);
             min.y = Math.min(min.y, center.y);
         }
@@ -232,7 +269,7 @@ public class FixationsUtil {
      * @return . 
      */
     public long getStartTime() {
-        return this.fixations.get(0).getTrackingEvents().get(0).getEventTime();
+        return this.$fixations.compact().get(0).getTrackingEvents().get(0).getEventTime();
     }
 
     /**
@@ -241,9 +278,6 @@ public class FixationsUtil {
      * @return . 
      */
     public long getStopTime() {
-        final int fs = this.fixations.size();
-        final List<EyeTrackingEvent> trackingEvents = this.fixations.get(fs - 1).getTrackingEvents();
-        final int ts = trackingEvents.size();
-        return trackingEvents.get(ts - 1).getEventTime();
+        return $(this.$fixations.compact().get(-1).getTrackingEvents()).compact().get(-1).getEventTime();
     }
 }
