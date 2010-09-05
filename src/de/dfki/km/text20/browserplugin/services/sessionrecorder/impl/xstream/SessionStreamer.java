@@ -1,21 +1,21 @@
 /*
  * SessionStreamer.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -93,11 +93,11 @@ public class SessionStreamer implements Serializable {
 
     /**
      * set the alias names for the provided XStream object
-     * to tweak the xml output by replacing the full qualified object names 
-     * with shorter equivalents 
-     * 
+     * to tweak the xml output by replacing the full qualified object names
+     * with shorter equivalents
+     *
      * @param xstream
-     * 
+     *
      */
     public static void setAlias(final XStream xstream) {
         xstream.alias("Record", SessionStreamer.class);
@@ -153,10 +153,10 @@ public class SessionStreamer implements Serializable {
 
     /**
      * Create a new session record.
-     * 
+     *
      * @param screenSize
-     * @param filename 
-     * @param date 
+     * @param filename
+     * @param date
      */
     public SessionStreamer(final Dimension screenSize, final String filename,
                            final Date date) {
@@ -184,9 +184,10 @@ public class SessionStreamer implements Serializable {
 
         // Create our session writer
         final Thread writerThread = new Thread(new Runnable() {
+            @Override
             public void run() {
                 while (true) {
-                    // Get number of events to write 
+                    // Get number of events to write
                     int size = SessionStreamer.this.eventQueue.size();
 
                     // Write every event
@@ -195,7 +196,7 @@ public class SessionStreamer implements Serializable {
                         try {
                             next = SessionStreamer.this.eventQueue.take();
                         } catch (InterruptedException e) {
-                            // 
+                            //
                         }
                         addToStream(next);
                     }
@@ -241,7 +242,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param key
      * @param deflt
      */
@@ -273,26 +274,26 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     * @param type 
-     * @param button 
+     * @param type
+     * @param button
      */
     public void mouseClickEvent(final int type, final int button) {
         addEvent(new MouseClickEvent(this.lastKnownMousePosition.x, this.lastKnownMousePosition.y, type, button));
     }
 
     /**
-     * @param x 
-     * @param y 
-     * @param type 
-     * @param button 
+     * @param x
+     * @param y
+     * @param type
+     * @param button
      */
     public void mouseClickEvent(final int x, final int y, final int type, final int button) {
         addEvent(new MouseClickEvent(x, y, type, button));
     }
 
     /**
-     * @param x 
-     * @param y 
+     * @param x
+     * @param y
      *
      */
     public void mouseMovement(final int x, final int y) {
@@ -302,8 +303,8 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     * 
-     * @param file 
+     *
+     * @param file
      */
     public void newImage(final String file) {
         addEvent(new ImageEvent(file));
@@ -345,7 +346,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param trackingEvent
      */
     public void trackingEvent(final EyeTrackingEvent trackingEvent) {
@@ -353,8 +354,8 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     * 
-     * @param p 
+     *
+     * @param p
      */
     public void updateDocumentViewport(final Point p) {
         addEvent(new ViewportEvent(p));
@@ -370,7 +371,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param id
      * @param type
      * @param content
@@ -383,8 +384,8 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     * 
-     * @param r 
+     *
+     * @param r
      */
     public void updateGeometry(final Rectangle r) {
         addEvent(new GeometryEvent(r));
@@ -392,12 +393,13 @@ public class SessionStreamer implements Serializable {
 
     /**
      * Writes this object to a xml stream
-     * @param evt 
+     * @param evt
      */
     protected synchronized void addToStream(final AbstractSessionEvent evt) {
         if (evt == null) return;
 
         AccessController.doPrivileged(new PrivilegedAction<AbstractSessionEvent>() {
+            @Override
             public AbstractSessionEvent run() {
                 try {
                     SessionStreamer.this.out.writeObject(evt);
@@ -411,11 +413,12 @@ public class SessionStreamer implements Serializable {
 
     /**
      * Writes this object to a xml stream
-     * @param evt 
+     * @param evt
      */
     protected synchronized void flush() {
 
         AccessController.doPrivileged(new PrivilegedAction<AbstractSessionEvent>() {
+            @Override
             public AbstractSessionEvent run() {
                 try {
                     SessionStreamer.this.out.flush();
@@ -452,7 +455,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     * 
+     *
      * @param evt
      */
     protected synchronized void addEvent(final AbstractSessionEvent evt) {

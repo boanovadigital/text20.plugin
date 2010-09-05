@@ -1,21 +1,21 @@
 /*
  * Pseudorenderer.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -43,7 +43,7 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderE
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
- * 
+ *
  * @author rb
  *
  */
@@ -76,8 +76,8 @@ public class PseudorendererImpl implements Pseudorenderer {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#convertPoint(java.awt.Point, de.dfki.km.augmentedtext.services.pseudorenderer.CoordinatesType)
      */
-    public Point convertPoint(final Point p, final CoordinatesType from,
-                              CoordinatesType to) {
+    @Override
+    public Point convertPoint(final Point p, final CoordinatesType from, CoordinatesType to) {
         if (p == null) return null;
 
         final Point r = (Point) p.clone();
@@ -101,6 +101,7 @@ public class PseudorendererImpl implements Pseudorenderer {
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#createElement()
      */
     @SuppressWarnings("unchecked")
+    @Override
     public <T extends RenderElement> T createElement(Class<T> renderElement) {
 
         RenderElement re = null;
@@ -137,6 +138,7 @@ public class PseudorendererImpl implements Pseudorenderer {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#getAllElementsIntersecting(java.awt.Rectangle, de.dfki.km.augmentedtext.services.pseudorenderer.CoordinatesType, de.dfki.km.augmentedtext.services.pseudorenderer.options.GetAllElementsIntersectingOption[])
      */
+    @Override
     public Collection<RenderElement> getAllElementsIntersecting(final Rectangle rectangle,
                                                                 final CoordinatesType position,
                                                                 final GetAllElementsIntersectingOption... options) {
@@ -231,6 +233,7 @@ public class PseudorendererImpl implements Pseudorenderer {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#getGeometry()
      */
+    @Override
     public Rectangle getGeometry() {
         return (Rectangle) this.currentGeometry.clone();
     }
@@ -238,6 +241,7 @@ public class PseudorendererImpl implements Pseudorenderer {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#getStatus()
      */
+    @Override
     public Collection<PseudorendererStatus> getStatus() {
         return this.allStatus;
     }
@@ -245,6 +249,7 @@ public class PseudorendererImpl implements Pseudorenderer {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#getViewport()
      */
+    @Override
     public Point getViewport() {
         return (Point) this.viewportStart.clone();
     }
@@ -252,6 +257,7 @@ public class PseudorendererImpl implements Pseudorenderer {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#setGeometry(int, int, int, int)
      */
+    @Override
     public void setGeometry(final Rectangle g) {
         this.currentGeometry.x = g.x;
         this.currentGeometry.y = g.y;
@@ -264,6 +270,7 @@ public class PseudorendererImpl implements Pseudorenderer {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#setStatus(de.dfki.km.augmentedtext.services.pseudorenderer.PseudorendererStatus, boolean)
      */
+    @Override
     public void setStatus(final PseudorendererStatus status, final boolean value) {
         if (value == false) {
             this.allStatus.remove(status);
@@ -278,6 +285,7 @@ public class PseudorendererImpl implements Pseudorenderer {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#setViewport(int, int)
      */
+    @Override
     public void setViewport(final Point start) {
         this.viewportStart.x = start.x;
         this.viewportStart.y = start.y;
@@ -295,6 +303,7 @@ public class PseudorendererImpl implements Pseudorenderer {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.Pseudorenderer#removeElement(de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement)
      */
+    @Override
     public void removeElement(final RenderElement renderElementImpl) {
 
         // Hide the element

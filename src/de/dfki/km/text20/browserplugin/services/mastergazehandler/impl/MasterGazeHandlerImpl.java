@@ -1,21 +1,21 @@
 /*
  * TrackingListener.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -52,7 +52,7 @@ import de.dfki.km.text20.util.filter.displacement.ReferenceBasedDisplacementFilt
 
 /**
  * Listens to tracking events.
- * 
+ *
  * @author rb
  *
  */
@@ -99,9 +99,9 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
     // AbstractFilter filter = new EmptyFilter();
 
     /**
-    * @param pluginManager   
-    * @param browserPlugin 
-    * @param pseudorenderer 
+    * @param pluginManager
+    * @param browserPlugin
+    * @param pseudorenderer
     */
     public MasterGazeHandlerImpl(final PluginManager pluginManager,
                                  final JSExecutor browserPlugin,
@@ -120,7 +120,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
 
     /**
      * Returns the corresponding evaluator
-     * 
+     *
      * @return .
      */
     public GazeEvaluator getGazeEvaluator() {
@@ -129,10 +129,11 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
 
     /**
      * Return all registered handler of a given type.
-     * 
+     *
      * @param type
      * @return .
      */
+    @Override
     public List<String> getHandlerForType(final String type) {
         if (!this.callbackHandler.containsKey(type)) {
             this.callbackHandler.put(type, new ArrayList<String>());
@@ -143,6 +144,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.mastergazehandler.MasterGazeHandler#reduceJSLoad(int)
      */
+    @Override
     public void reduceJSLoad(final int timeToDisable) {
         for (final AbstractGazeHandler gazeHandler : this.allGazeHandler) {
             gazeHandler.setReducedCommunication(true);
@@ -156,6 +158,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.mastergazehandler.impl.MasterGazeHandler#registerJSCallback(java.lang.String, java.lang.String)
      */
+    @Override
     public void registerJSCallback(final String type, final String listener) {
 
         // Make sure we have something for the type
@@ -170,6 +173,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.mastergazehandler.impl.MasterGazeHandler#removeJSCallback(java.lang.String)
      */
+    @Override
     public void removeJSCallback(final String listener) {
         for (final String type : this.callbackHandler.keySet()) {
             final List<String> all = this.callbackHandler.get(type);
@@ -186,6 +190,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.mastergazehandler.MasterGazeHandler#setTrackingDevice(de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice)
      */
+    @Override
     public void setTrackingDevice(final EyeTrackingDevice device) {
         init(device);
     }
@@ -199,7 +204,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
         // Setup filter
         this.filter.addFilter(this.smoothingFilter);
 
-        // Create gaze evaluator 
+        // Create gaze evaluator
         final GazeEvaluatorManager evaluationManager = this.pluginManager.getPlugin(GazeEvaluatorManager.class);
 
         this.evaluator = evaluationManager.createEvaluator(trackingDevice);
@@ -220,6 +225,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
 
         trackingDevice.addTrackingListener(new EyeTrackingListener() {
 
+            @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
                 MasterGazeHandlerImpl.this.lastObservedTime.set(event.getEventTime());
 
@@ -239,6 +245,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
     /**
      * @return the filter
      */
+    @Override
     public ChainedFilter getMasterFilterChain() {
         return this.filter;
     }

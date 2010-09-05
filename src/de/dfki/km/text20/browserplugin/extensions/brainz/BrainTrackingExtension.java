@@ -1,19 +1,19 @@
 /*
  * ScreenShotExtension.java
- * 
+ *
  * Copyright (c) 2009, Ralf Biedert All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
- * 
+ *
  * Redistributions of source code must retain the above copyright notice, this list of
  * conditions and the following disclaimer. Redistributions in binary form must reproduce the
  * above copyright notice, this list of conditions and the following disclaimer in the
  * documentation and/or other materials provided with the distribution.
- * 
+ *
  * Neither the name of the author nor the names of its contributors may be used to endorse or
  * promote products derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
  * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -23,7 +23,7 @@
  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
  * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- * 
+ *
  */
 package de.dfki.km.text20.browserplugin.extensions.brainz;
 
@@ -45,7 +45,7 @@ import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingListener;
 
 /**
  * @author rb
- * 
+ *
  */
 @PluginImplementation
 public class BrainTrackingExtension implements Extension {
@@ -66,8 +66,8 @@ public class BrainTrackingExtension implements Extension {
 	TrainedPeakEmotionClassifier trainedPeakEmotionClassifier = new TrainedPeakEmotionClassifier();
 	SimpleAvgEmotionClassifier simpleAvgEmotionClassifier = new SimpleAvgEmotionClassifier();
 	SimplePeakEmotionClassifier simplePeakEmotionClassifier = new SimplePeakEmotionClassifier();
-	
-	
+
+
 	//
 	//UserTrainingModel trainingModel;
 
@@ -75,11 +75,13 @@ public class BrainTrackingExtension implements Extension {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension
 	 * #executeFunction(java.lang.String, java.lang.String)
 	 */
+	@SuppressWarnings("boxing")
+    @Override
 	public Object executeDynamicFunction(String function, String args) {
 
 		if (function.equals("brainTrackerInitTraining")) {
@@ -90,7 +92,7 @@ public class BrainTrackingExtension implements Extension {
 			//trainedPeakEmotionClassifier.clearEvents();
 			//simpleAvgEmotionClassifier.clearEvents();
 			//simplePeakEmotionClassifier.clearEvents();
-			
+
 			// for training
 			//String modelname = args.substring(1, args.length()-1);
 			//trainingModel = new UserTrainingModel(modelname);
@@ -99,45 +101,44 @@ public class BrainTrackingExtension implements Extension {
 			this.deviceManager.getBrainTrackingDevice().addTrackingListener(
 					new BrainTrackingListener() {
 
-						@SuppressWarnings("boxing")
 						@Override
 						public void newTrackingEvent(BrainTrackingEvent event) {
 							//emotionDetector.addEvent(event);
-							
+
 							// Root Mean Square Error Training
-							
-						
+
+
 							//trainedAvgEmotionClassifier.model.addEvent(event);
-							trainedPeakEmotionClassifier.model.addEvent(event);
-							
+							BrainTrackingExtension.this.trainedPeakEmotionClassifier.model.addEvent(event);
+
 							//trainedAvgEmotionClassifier.addEvent(event);
 							//trainedPeakEmotionClassifier.addEvent(event);
 							//simpleAvgEmotionClassifier.addEvent(event);
 							//simplePeakEmotionClassifier.addEvent(event);
-							
-							
-							
-							
+
+
+
+
 							// for training
 							//trainingModel.addEvent(event);
-							
+
 							//String next = event.getChannels().iterator().next();
-							//double value = event.getValue(next);							
+							//double value = event.getValue(next);
 							//BrainTrackingExtension.this.jsExecutor.executeJSFunction("specialCallback","brainTrackerValues", next, value);
 						}
 					});
 			return "Brain Tracker Initialized for Training!";
 		}
-		
+
 		if (function.equals("brainTrackerInitEvaluation")) {
 
 			// farida start
 			//emotionDetector = new EmotionClassifierImpl();
 			//trainedAvgEmotionClassifier.clearEvents();
-			trainedPeakEmotionClassifier.clearEvents();
+			this.trainedPeakEmotionClassifier.clearEvents();
 			//simpleAvgEmotionClassifier.clearEvents();
 			//simplePeakEmotionClassifier.clearEvents();
-			
+
 			// for training
 			//String modelname = args.substring(1, args.length()-1);
 			//trainingModel = new UserTrainingModel(modelname);
@@ -146,30 +147,29 @@ public class BrainTrackingExtension implements Extension {
 			this.deviceManager.getBrainTrackingDevice().addTrackingListener(
 					new BrainTrackingListener() {
 
-						@SuppressWarnings("boxing")
 						@Override
 						public void newTrackingEvent(BrainTrackingEvent event) {
 							//emotionDetector.addEvent(event);
-							
+
 							// Root Mean Square Error Training
-							
-						
+
+
 							//trainedAvgEmotionClassifier.model.addEvent(event);
 							//trainedPeakEmotionClassifier.model.addEvent(event);
-							
+
 							//trainedAvgEmotionClassifier.addEvent(event);
-							trainedPeakEmotionClassifier.addEvent(event);
+							BrainTrackingExtension.this.trainedPeakEmotionClassifier.addEvent(event);
 							//simpleAvgEmotionClassifier.addEvent(event);
 							//simplePeakEmotionClassifier.addEvent(event);
-							
-							
-							
-							
+
+
+
+
 							// for training
 							//trainingModel.addEvent(event);
-							
+
 							//String next = event.getChannels().iterator().next();
-							//double value = event.getValue(next);							
+							//double value = event.getValue(next);
 							//BrainTrackingExtension.this.jsExecutor.executeJSFunction("specialCallback","brainTrackerValues", next, value);
 						}
 					});
@@ -177,78 +177,80 @@ public class BrainTrackingExtension implements Extension {
 		}
 
 		if (function.equals("getTrainedAvgEmotion")) {
-			// String emotion = args.substring(1, args.length()-1);			
+			// String emotion = args.substring(1, args.length()-1);
 			// trainingModel.addEmotionClass(emotion);
 			// trainingModel.generateTrainingFile();
 			//return emotionDetector.getEmotion();
-			return trainedAvgEmotionClassifier.getEmotion();
+			return this.trainedAvgEmotionClassifier.getEmotion();
 		}
 		if (function.equals("getTrainedPeakEmotion")){
-			return trainedPeakEmotionClassifier.getSimpleTrainedEmotion();
+			return this.trainedPeakEmotionClassifier.getSimpleTrainedEmotion();
 		}
-		
+
 		if (function.equals("getSimpleAvgEmotion")){
-			return simpleAvgEmotionClassifier.getEmotion();
+			return this.simpleAvgEmotionClassifier.getEmotion();
 		}
 		if (function.equals("getSimplePeakEmotion")){
-			return simplePeakEmotionClassifier.getEmotion();
+			return this.simplePeakEmotionClassifier.getEmotion();
 		}
-		
+
 		if (function.equals("startRmseTraining")){
-			trainedAvgEmotionClassifier.model.clearEvents();
-			trainedPeakEmotionClassifier.model.clearEvents();
-		}		
+			this.trainedAvgEmotionClassifier.model.clearEvents();
+			this.trainedPeakEmotionClassifier.model.clearEvents();
+		}
 		if (function.equals("stopRmseTraining")){
 			String emotion = args.substring(1, args.length()-1);
-			trainedAvgEmotionClassifier.model.calculateAvgSimple(emotion);			
-			trainedPeakEmotionClassifier.model.calculateAvgSimple(emotion);
-			
-			double size = trainedPeakEmotionClassifier.model.avgSimple.size();
-			double avg = trainedPeakEmotionClassifier.model.avgSimple.get(emotion);
+			this.trainedAvgEmotionClassifier.model.calculateAvgSimple(emotion);
+			this.trainedPeakEmotionClassifier.model.calculateAvgSimple(emotion);
+
+			double size = this.trainedPeakEmotionClassifier.model.avgSimple.size();
+			double avg = this.trainedPeakEmotionClassifier.model.avgSimple.get(emotion);
 			return " avg size : "+size+" avg calculated: "+" avg: "+avg; // for debugging
 		}
-		
+
 		if(function.equals("trainValues")){
 			String in = args.substring(1, args.length()-1);
-			String [] sVal = in.split("s");	
-			
-			trainedPeakEmotionClassifier.model.avgSimple.put("happy", Double.parseDouble(sVal[0]));
-			trainedPeakEmotionClassifier.model.avgSimple.put("interested", Double.parseDouble(sVal[1]));
-			trainedPeakEmotionClassifier.model.avgSimple.put("doubt", Double.parseDouble(sVal[2]));
-			trainedPeakEmotionClassifier.model.avgSimple.put("bored", Double.parseDouble(sVal[3]));
-			
-			double size = trainedPeakEmotionClassifier.model.avgSimple.size();
-			double avg = trainedPeakEmotionClassifier.model.avgSimple.get("doubt");
-			
+			String [] sVal = in.split("s");
+
+			this.trainedPeakEmotionClassifier.model.avgSimple.put("happy", Double.parseDouble(sVal[0]));
+			this.trainedPeakEmotionClassifier.model.avgSimple.put("interested", Double.parseDouble(sVal[1]));
+			this.trainedPeakEmotionClassifier.model.avgSimple.put("doubt", Double.parseDouble(sVal[2]));
+			this.trainedPeakEmotionClassifier.model.avgSimple.put("bored", Double.parseDouble(sVal[3]));
+
+			double size = this.trainedPeakEmotionClassifier.model.avgSimple.size();
+			double avg = this.trainedPeakEmotionClassifier.model.avgSimple.get("doubt");
+
 			return " avg size : "+size+" avg calculated: "+" avg: "+avg; // for debugging
 		}
-		
-		
+
+
 
 		return null;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension
 	 * #getSupportedFunctions()
 	 */
-	public String[] getDynamicFunctions() {
+	@Override
+    public String[] getDynamicFunctions() {
 		return new String[] { "brainTrackerInitTraining", "brainTrackerInitEvaluation", "getTrainedAvgEmotion", "getTrainedPeakEmotion", "getSimpleAvgEmotion", "getSimplePeakEmotion","startRmseTraining", "stopRmseTraining", "trainValues"};
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension
 	 * #
 	 * setParameter(de.dfki.km.augmentedtext.browserplugin.services.extensionmanager
 	 * .SetupParameter, java.lang.Object)
 	 */
-	public void setParameter(SetupParameter parameter, Object value) {
+	@Override
+    public void setParameter(SetupParameter parameter, Object value) {
 		if (parameter == SetupParameter.JAVASCRIPT_EXECUTOR) {
 			this.jsExecutor = (JSExecutor) value;
 		}

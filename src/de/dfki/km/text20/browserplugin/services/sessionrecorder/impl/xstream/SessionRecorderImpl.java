@@ -1,21 +1,21 @@
 /*
  * SessionRecorderImpl.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -109,6 +109,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#getPreference(java.lang.String, java.lang.String)
      */
+    @Override
     public void getPreference(final String key, final String deflt) {
 
         if (this.sessionStreamer == null) return;
@@ -118,6 +119,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#markLog(java.lang.String)
      */
+    @Override
     public void markLog(final String tag) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.markLog(tag);
@@ -127,6 +129,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#mouseClicked(int, int)
      */
+    @Override
     public void mouseClicked(final int type, final int button) {
         if (this.sessionStreamer == null) return;
 
@@ -136,6 +139,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#takeScreenshot()
      */
+    @Override
     public void takeScreenshot() {
         if (SessionRecorderImpl.this.sessionStreamer == null) return;
         // FIXME: Why do we have the delay when taking screenshots?
@@ -145,6 +149,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#callFunction(java.lang.String)
      */
+    @Override
     public void callFunction(final String function) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.callFunction(function);
@@ -153,8 +158,9 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#executeJSFunction(java.lang.String, java.lang.Object[])
      */
+    @Override
     public void executeJSFunction(final String function, final Object... args) {
-        //  FIXME: Better record the failed calls and store them separately 
+        //  FIXME: Better record the failed calls and store them separately
         if (this.sessionStreamer == null) return;
 
         String s[] = new String[0];
@@ -173,6 +179,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#newTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent)
      */
+    @Override
     public void newTrackingEvent(final EyeTrackingEvent event) {
         if (this.sessionStreamer == null) return;
 
@@ -182,6 +189,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#registerListener(java.lang.String, java.lang.String)
      */
+    @Override
     public void registerListener(final String type, final String listener) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.registerListener(type, listener);
@@ -191,6 +199,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#removeListener(java.lang.String)
      */
+    @Override
     public void removeListener(final String listener) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.removeListener(listener);
@@ -199,6 +208,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#setParameter(java.lang.String, java.lang.String)
      */
+    @Override
     public void setParameter(final String key, final String value) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.putProperty(key, value);
@@ -207,6 +217,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#setPreference(java.lang.String, java.lang.String)
      */
+    @Override
     public void setPreference(final String key, final String value) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.setPreference(key, value);
@@ -227,6 +238,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
     * @see de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#start()
     */
+    @Override
     public void start() {
 
         // Obtain the session dir (should have been set by now)
@@ -247,6 +259,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#stop()
      */
+    @Override
     public void stop() {
         // We'd rather use autosave ...
         // this.sessionRecord.writeTo(this.sessiondir + "/" + "session.ser");
@@ -256,6 +269,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /**
      * @param deviceInfo
      */
+    @Override
     public void storeDeviceInfo(final EyeTrackingDeviceInfo deviceInfo) {
         final String[] keys = deviceInfo.getKeys();
         for (final String key : keys) {
@@ -265,9 +279,9 @@ public class SessionRecorderImpl implements SessionRecorder {
     }
 
     /**
-     * 
+     *
      * @param pm
-     * @param options 
+     * @param options
      */
     public SessionRecorderImpl(final PluginManager pm, CreateRecorderOption... options) {
         this.infoBroker = pm.getPlugin(InformationBroker.class);
@@ -310,8 +324,8 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void updateElementMetaInformation(final String id, final String key,
-                                             final String value) {
+    @Override
+    public void updateElementMetaInformation(final String id, final String key, final String value) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.updateMetaInformation(id, key, value);
     }
@@ -319,6 +333,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#updateElementFlag(java.lang.String, java.lang.String, boolean)
      */
+    @Override
     public void updateElementFlag(final String id, final String flag, final boolean value) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.updateElementFlag(id, flag, value);
@@ -327,8 +342,8 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#updateElementGeometry(java.lang.String, java.lang.String, java.lang.String, java.awt.Rectangle)
      */
-    public void updateElementGeometry(final String id, final String type,
-                                      final String content, final Rectangle r) {
+    @Override
+    public void updateElementGeometry(final String id, final String type, final String content, final Rectangle r) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.updateElementGeometry(id, type, content, r);
     }
@@ -336,6 +351,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#updateGeometry(java.awt.Rectangle)
      */
+    @Override
     public void updateGeometry(final Rectangle rectangle) {
         if (this.sessionStreamer == null) return;
         this.currentRectangle = rectangle;
@@ -343,6 +359,7 @@ public class SessionRecorderImpl implements SessionRecorder {
         takeScreenshotDelayed();
     }
 
+    @Override
     public void updateMousePosition(final int x, final int y) {
 
         if (this.lastMousePos.x != x || this.lastMousePos.y != y) {
@@ -358,6 +375,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#updateViewport(java.awt.Point)
      */
+    @Override
     public void updateViewport(final Point viewportStart) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.updateDocumentViewport(viewportStart);
@@ -366,7 +384,7 @@ public class SessionRecorderImpl implements SessionRecorder {
 
     /**
      * Takes a screenshot after the given delay.
-     * 
+     *
      * @param delay
      */
     private void takeScreenshotDelayed(final int delay) {
@@ -405,6 +423,7 @@ public class SessionRecorderImpl implements SessionRecorder {
         // We need this priviledged stuff for applets...
         AccessController.doPrivileged(new PrivilegedAction<BufferedImage>() {
 
+            @Override
             public BufferedImage run() {
                 // Try to save the image.
                 final BufferedImage createScreenCapture = SessionRecorderImpl.this.robot.createScreenCapture(SessionRecorderImpl.this.currentRectangle);
@@ -430,7 +449,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     }
 
     /**
-     * @return generated file path: 
+     * @return generated file path:
      * [session_directory]/[filePrefix]_[startTimeInMilliSeconds].[filenameExtension]
      */
     private String createFileName() {

@@ -1,21 +1,21 @@
 /*
  * TrackingDeviceImpl.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -50,9 +50,9 @@ import de.dfki.km.text20.trackingserver.eyes.remote.TrackingServerRegistry;
 import de.dfki.km.text20.trackingserver.eyes.remote.options.SendCommandOption;
 
 /**
- * 
+ *
  * @author rb
- * 
+ *
  */
 @PluginImplementation
 public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvider {
@@ -84,7 +84,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
         /**
          * @param string
          * @throws URISyntaxException
-         * 
+         *
          */
         public ServerTrackingDevice(final String string) throws URISyntaxException {
             // Get remote proxy of the server
@@ -113,12 +113,13 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * addTrackingListener
          * (de.dfki.km.augmentedtext.services.trackingdevices.TrackingListener)
          */
+        @Override
         public void addTrackingListener(final EyeTrackingListener listener) {
             if (!this.isProperlyConnected) { return; }
             this.listenerLock.lock();
@@ -131,14 +132,16 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * getDeviceInfo()
          */
+        @Override
         public EyeTrackingDeviceInfo getDeviceInfo() {
             return new EyeTrackingDeviceInfo() {
 
+                @Override
                 public String getInfo(final String key) {
                     if (ServerTrackingDevice.this.deviceInformation == null) return null;
 
@@ -152,6 +155,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     return null;
                 }
 
+                @Override
                 public String[] getKeys() {
                     return new String[] { "DEVICE_NAME", "HARDWARE_ID", "DEVICE_MANUFACTURER" };
                 }
@@ -166,11 +170,12 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * getDeviceType()
          */
+        @Override
         public EyeTrackingDeviceType getDeviceType() {
             return EyeTrackingDeviceType.TRACKER;
         }
@@ -184,12 +189,13 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * de.dfki.km.augmentedtext.trackingserver.remote.TrackingClientCallback
          * #newTrackingEvent(de.dfki.km.augmentedtext.trackingserver.remote.
          * TrackingEvent)
          */
+        @Override
         public void newTrackingEvent(final TrackingEvent e) {
             // Sometimes null events might occur. Filter them.
             if (e == null) return;
@@ -199,12 +205,13 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #areValid(de.dfki.km.augmentedtext.services.trackingdevices.
                  * TrackingEventValidity[])
                  */
+                @Override
                 public boolean areValid(final EyeTrackingEventValidity... validities) {
                     boolean rval = true;
                     for (final EyeTrackingEventValidity v : validities) {
@@ -217,22 +224,24 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #eventTime()
                  */
+                @Override
                 public long getEventTime() {
                     return e.date;
                 }
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #getGazeCenter()
                  */
+                @Override
                 public Point getGazeCenter() {
                     if (e.centerGaze == null) return new Point(-1, -1);
                     return new Point(e.centerGaze.x + ServerTrackingDevice.this.recalibration.x, e.centerGaze.y + ServerTrackingDevice.this.recalibration.y);
@@ -240,18 +249,19 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #getHeadPosition()
                  */
+                @Override
                 public float[] getHeadPosition() {
                     final float rval[] = new float[3];
-                    final float invalid[] = new float[] {-1, -1, -1}; 
+                    final float invalid[] = new float[] {-1, -1, -1};
 
                     boolean leftEyeFound = true;
                     boolean rightEyeFound = true;
-                    
+
                     final float leftEyePos[] = (e.leftEyePos != null) ? e.leftEyePos : invalid;
                     final float rightEyePos[] = (e.rightEyePos != null) ? e.rightEyePos : invalid;
 
@@ -344,43 +354,49 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see java.lang.Object#toString()
                  */
+                @Override
                 public float getLeftEyeDistance() {
                     return e.eyeDistances[0];
                 }
 
+                @Override
                 public float[] getLeftEyePosition() {
                     return e.leftEyePos;
                 }
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #pupilSizeLeft()
                  */
+                @Override
                 public float getPupilSizeLeft() {
                     return e.pupilSizeLeft;
                 }
 
                 /*
                  * (non-Javadoc)
-                 * 
+                 *
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #pupilSizeRight()
                  */
+                @Override
                 public float getPupilSizeRight() {
                     return e.pupilSizeRight;
                 }
 
+                @Override
                 public float getRightEyeDistance() {
                     return e.eyeDistances[1];
                 }
 
+                @Override
                 public float[] getRightEyePosition() {
                     return e.rightEyePos;
                 }
@@ -396,18 +412,22 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     return sb.toString();
                 }
 
+                @Override
                 public Point getLeftEyeGazePoint() {
                     return e.leftGaze;
                 }
 
+                @Override
                 public float[] getLeftEyeGazePosition() {
                     return e.gazeLeftPos;
                 }
 
+                @Override
                 public Point getRightEyeGazePoint() {
                     return e.rightGaze;
                 }
 
+                @Override
                 public float[] getRightEyeGazePosition() {
                     return e.gazeRightPos;
                 }
@@ -433,7 +453,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * sendCommand
@@ -441,18 +461,19 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
          * de.dfki
          * .km.augmentedtext.trackingserver.remote.options.SendCommandOption[])
          */
-        public void sendLowLevelCommand(TrackingCommand command,
-                                        SendCommandOption... options) {
+        @Override
+        public void sendLowLevelCommand(TrackingCommand command, SendCommandOption... options) {
             this.registry.sendCommand(command, options);
         }
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * closeDevice()
          */
+        @Override
         public void closeDevice() {
             // TODO Auto-generated method stub
 
@@ -476,7 +497,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
     /**
      * Return what we can do...
-     * 
+     *
      * @return .
      */
     @Capabilities
@@ -486,11 +507,12 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDeviceProvider
      * #openDevice(java.lang.String)
      */
+    @Override
     public EyeTrackingDevice openDevice(final String url) {
         try {
             ServerTrackingDevice serverTrackingDevice = new ServerTrackingDevice(url);

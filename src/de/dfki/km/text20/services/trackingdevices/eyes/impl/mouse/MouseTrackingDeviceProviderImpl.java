@@ -1,21 +1,21 @@
 /*
  * TrackingDeviceImpl.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -50,8 +50,8 @@ import de.dfki.km.text20.trackingserver.eyes.remote.options.SendCommandOption;
 public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvider {
     /**
      * Uses the mouse as a tracking device
-     * 
-     * @author rb    
+     *
+     * @author rb
      */
     private static class MouseTrackingDevice implements EyeTrackingDevice {
 
@@ -71,6 +71,7 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
         MouseTrackingDevice() {
             final Thread t = new Thread(new Runnable() {
 
+                @Override
                 public void run() {
                     while (true) {
 
@@ -106,6 +107,7 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
         /* (non-Javadoc)
          * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#addTrackingListener(de.dfki.km.augmentedtext.services.trackingdevices.TrackingListener)
          */
+        @Override
         public void addTrackingListener(final EyeTrackingListener listener) {
             this.listenerLock.lock();
             try {
@@ -120,65 +122,79 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
 
                 long et = System.currentTimeMillis();
 
+                @Override
                 public boolean areValid(final EyeTrackingEventValidity... validities) {
                     return true;
                 }
 
+                @Override
                 public long getEventTime() {
                     return this.et;
                 }
 
+                @Override
                 public Point getGazeCenter() {
                     return p;
                 }
 
+                @Override
                 public float[] getHeadPosition() {
                     return new float[] { 0f, 0f, 0.5f };
                 }
 
+                @Override
                 public float getLeftEyeDistance() {
                     // TODO Auto-generated method stub
                     return 0;
                 }
 
+                @Override
                 public float[] getLeftEyePosition() {
                     return new float[] { 0f, 0f, 0.5f };
                 }
 
+                @Override
                 public float getPupilSizeLeft() {
                     // TODO Auto-generated method stub
                     return 0;
                 }
 
+                @Override
                 public float getPupilSizeRight() {
                     // TODO Auto-generated method stub
                     return 0;
                 }
 
+                @Override
                 public float getRightEyeDistance() {
                     // TODO Auto-generated method stub
                     return 0;
                 }
 
+                @Override
                 public float[] getRightEyePosition() {
                     return new float[] { 0f, 0f, 0.5f };
                 }
 
+                @Override
                 public Point getLeftEyeGazePoint() {
                     // TODO Auto-generated method stub
                     return null;
                 }
 
+                @Override
                 public float[] getLeftEyeGazePosition() {
                     // TODO Auto-generated method stub
                     return null;
                 }
 
+                @Override
                 public Point getRightEyeGazePoint() {
                     // TODO Auto-generated method stub
                     return null;
                 }
 
+                @Override
                 public float[] getRightEyeGazePosition() {
                     // TODO Auto-generated method stub
                     return null;
@@ -186,13 +202,16 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
             };
         }
 
+        @Override
         public EyeTrackingDeviceInfo getDeviceInfo() {
             return new EyeTrackingDeviceInfo() {
 
+                @Override
                 public String getInfo(final String key) {
                     return null;
                 }
 
+                @Override
                 public String[] getKeys() {
                     return new String[0];
                 }
@@ -208,6 +227,7 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
         /* (non-Javadoc)
          * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#getDeviceType()
          */
+        @Override
         public EyeTrackingDeviceType getDeviceType() {
             return EyeTrackingDeviceType.MOUSE;
         }
@@ -215,14 +235,15 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
         /* (non-Javadoc)
          * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#sendCommand(de.dfki.km.augmentedtext.trackingserver.remote.TrackingCommand, de.dfki.km.augmentedtext.trackingserver.remote.options.SendCommandOption[])
          */
-        public void sendLowLevelCommand(TrackingCommand command,
-                                        SendCommandOption... options) {
+        @Override
+        public void sendLowLevelCommand(TrackingCommand command, SendCommandOption... options) {
             // TODO Auto-generated method stub
         }
 
         /* (non-Javadoc)
          * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#closeDevice()
          */
+        @Override
         public void closeDevice() {
             // TODO Auto-generated method stub
 
@@ -239,7 +260,7 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
 
     /**
      * Return what we can do...
-     * 
+     *
      * @return .
      */
     @Capabilities
@@ -250,6 +271,7 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDeviceProvider#openDevice(java.lang.String)
      */
+    @Override
     public EyeTrackingDevice openDevice(final String url) {
 
         this.logger.info("Mouse device was opened with URL " + url);

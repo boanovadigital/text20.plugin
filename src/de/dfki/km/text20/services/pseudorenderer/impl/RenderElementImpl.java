@@ -1,21 +1,21 @@
 /*
  * RenderElementImpl.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -34,7 +34,7 @@ import de.dfki.km.text20.services.pseudorenderer.RenderElementMetaAttribute;
 
 /**
  * Implementation of the RenderElement interface
- * 
+ *
  * @author rb
  */
 public class RenderElementImpl implements RenderElement {
@@ -76,6 +76,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#getCoordinatesType()
      */
+    @Override
     public CoordinatesType getCoordinatesType() {
         return this.coordinatesType;
     }
@@ -83,9 +84,10 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#getGeometry(de.dfki.km.augmentedtext.services.pseudorenderer.CoordinatesType)
      */
+    @Override
     public Rectangle getGeometry(final CoordinatesType ct) {
 
-        // 1. normalize element position to document               
+        // 1. normalize element position to document
         final Rectangle rval = (Rectangle) this.rectangle.clone();
 
         final Point viewport = this.pseudorenderer.getViewport();
@@ -123,6 +125,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#getIdentifier()
      */
+    @Override
     public String getIdentifier() {
         return this.identifier;
     }
@@ -130,6 +133,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#setGeometry(java.awt.Rectangle, de.dfki.km.augmentedtext.services.pseudorenderer.CoordinatesType)
      */
+    @Override
     public void setGeometry(final Rectangle rectangle, final CoordinatesType type) {
         updateChangeID();
 
@@ -149,6 +153,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#setIdentifier(java.lang.String)
      */
+    @Override
     public void setIdentifier(final String id) {
         updateChangeID();
         this.identifier = id;
@@ -179,6 +184,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#getZIndex()
      */
+    @Override
     public int getZIndex() {
         return this.zindex;
     }
@@ -186,6 +192,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#setZIndex(int)
      */
+    @Override
     public void setZIndex(int zindex) {
         updateChangeID();
         this.zindex = zindex;
@@ -194,6 +201,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#getMetaInformation(java.lang.String)
      */
+    @Override
     public Serializable getMetaAttribute(RenderElementMetaAttribute key) {
         return this.metaInformation.get(key);
     }
@@ -201,6 +209,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#hasMetaAttribute(java.lang.String)
      */
+    @Override
     public boolean hasMetaAttribute(RenderElementMetaAttribute key) {
         return this.metaInformation.containsKey(key);
     }
@@ -208,6 +217,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#setMetaAttribute(java.lang.String, java.io.Serializable)
      */
+    @Override
     public void setMetaAttribute(RenderElementMetaAttribute key, Serializable value) {
         updateChangeID();
         this.metaInformation.put(key, value);
@@ -216,6 +226,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#isVisible()
      */
+    @Override
     public boolean isVisible() {
         return this.visible;
     }
@@ -223,6 +234,7 @@ public class RenderElementImpl implements RenderElement {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.pseudorenderer.RenderElement#setVisible(boolean)
      */
+    @Override
     public void setVisible(boolean visible) {
         this.visible = visible;
     }

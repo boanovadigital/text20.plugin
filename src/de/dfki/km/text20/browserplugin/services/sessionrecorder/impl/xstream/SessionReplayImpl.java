@@ -56,7 +56,7 @@ public class SessionReplayImpl implements SessionReplay {
     final XStream xstream = new XStream();
 
     /**
-     * Makes other threads wait for this element to be finished. 
+     * Makes other threads wait for this element to be finished.
      */
     final Lock finishedLock = new ReentrantLock();
 
@@ -82,7 +82,7 @@ public class SessionReplayImpl implements SessionReplay {
     private List<DisplacementRegion> fixationDisplacementRegions;
 
     /**
-     * @param file 
+     * @param file
      */
     public SessionReplayImpl(final File file) {
         if (!file.exists())
@@ -116,6 +116,7 @@ public class SessionReplayImpl implements SessionReplay {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#getProperties()
      */
+    @Override
     public Map<String, String> getProperties(String... properties) {
         waitForFinish();
         return this.propertyMap;
@@ -124,6 +125,7 @@ public class SessionReplayImpl implements SessionReplay {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#getScreenSize()
      */
+    @Override
     public Dimension getScreenSize() {
         waitForFinish();
         return this.screenSize;
@@ -143,13 +145,13 @@ public class SessionReplayImpl implements SessionReplay {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#replay(de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.ReplayListener, de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.options.ReplayOption[])
      */
-    public synchronized void replay(final ReplayListener listener,
-                                    final ReplayOption... options) {
+    @Override
+    public synchronized void replay(final ReplayListener listener, final ReplayOption... options) {
 
-        // Create a barrier that allows us to wait for synchronous replay 
+        // Create a barrier that allows us to wait for synchronous replay
         final CyclicBarrier barrier = new CyclicBarrier(2);
 
-        // First check if we have a .ZIP ... 
+        // First check if we have a .ZIP ...
         if (this.file.getAbsolutePath().endsWith(".zip")) {
             this.loader = new ZIPLoader(this.file);
 
@@ -162,7 +164,7 @@ public class SessionReplayImpl implements SessionReplay {
 
         // ... and check if we have .xstream file
         if (this.file.getAbsolutePath().endsWith(".xstream")) {
-            // Load the input stream 
+            // Load the input stream
             try {
                 this.in = this.xstream.createObjectInputStream(new FileReader(this.file));
             } catch (final FileNotFoundException e) {
@@ -204,6 +206,7 @@ public class SessionReplayImpl implements SessionReplay {
 
             private boolean hasMore = true;
 
+            @Override
             public void run() {
                 try {
                     // Lock until we finished
@@ -253,7 +256,7 @@ public class SessionReplayImpl implements SessionReplay {
                                 continue;
                             }
 
-                            // Can be switched off, to make replay as fast as possible. 
+                            // Can be switched off, to make replay as fast as possible.
                             if (realtimeReplay.get()) {
                                 long delta = event.originalEventTime - previousEvent.originalEventTime;
 
@@ -347,7 +350,7 @@ public class SessionReplayImpl implements SessionReplay {
 
     /**
      * Events of that class wont be passed.
-     * 
+     *
      * @param filter
      */
     @SuppressWarnings("unused")

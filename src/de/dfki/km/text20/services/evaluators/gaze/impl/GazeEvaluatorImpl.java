@@ -1,21 +1,21 @@
 /*
  * GazeEvaluatorImpl.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -74,9 +74,9 @@ public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
     final List<GazeHandler> gazeHandler = new ArrayList<GazeHandler>();
 
     /**
-     * Add ourselves to the tracking listener list. 
-     * @param gazeEvaluatorManagerImpl 
-     * 
+     * Add ourselves to the tracking listener list.
+     * @param gazeEvaluatorManagerImpl
+     *
      * @param trackingDevice
      */
     protected GazeEvaluatorImpl(final PluginManager pluginManager,
@@ -96,8 +96,8 @@ public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeEvaluator#addGazeEvaluationListener(de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeEvaluationListener)
      */
-    public void addEvaluationListener(final GazeEvaluationListener<?> listener,
-                                      AddGazeEvaluationListenerOption... options) {
+    @Override
+    public void addEvaluationListener(final GazeEvaluationListener<?> listener, AddGazeEvaluationListenerOption... options) {
 
         final OptionUtils<AddGazeEvaluationListenerOption> ou = new OptionUtils<AddGazeEvaluationListenerOption>(options);
         final Collection<OptionRequestVersion> requestedVersions = ou.getAll(OptionRequestVersion.class);
@@ -187,6 +187,7 @@ public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingListener#newTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent)
      */
+    @Override
     public void newTrackingEvent(final EyeTrackingEvent event) {
         EyeTrackingEvent filteredEvent = event;
 
@@ -231,6 +232,7 @@ public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeEvaluator#setGazeFilter(de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeFilter)
      */
+    @Override
     public void setFilter(final GazeFilter gazeFilter) {
         this.gazeFilter = gazeFilter;
     }

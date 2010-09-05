@@ -1,21 +1,21 @@
 /*
  * PageManager.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -37,7 +37,7 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderE
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
- * 
+ *
  * @author rb
  *
  */
@@ -54,9 +54,9 @@ public class PageManagerImpl implements PageManager {
     private final Pseudorenderer pseudorenderer;
 
     /**
-     * 
+     *
      * @param pm
-     * @param pseudorenderer 
+     * @param pseudorenderer
      */
     public PageManagerImpl(final PluginManager pm, final Pseudorenderer pseudorenderer) {
         this.pluginManager = pm;
@@ -66,6 +66,7 @@ public class PageManagerImpl implements PageManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#updateBrowserGeometry(int, int, int, int)
      */
+    @Override
     public void updateBrowserGeometry(final int x, final int y, final int w, final int h) {
         this.pseudorenderer.setGeometry(new Rectangle(x, y, w, h));
     }
@@ -73,6 +74,7 @@ public class PageManagerImpl implements PageManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#updateDocumentViewport(int, int)
      */
+    @Override
     public void updateDocumentViewport(final int x, final int y) {
         this.pseudorenderer.setViewport(new Point(x, y));
     }
@@ -80,6 +82,7 @@ public class PageManagerImpl implements PageManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#updateElementFlag(java.lang.String, java.lang.String, boolean)
      */
+    @Override
     public void updateElementFlag(final String id, final String flag, final boolean value) {
         if (id == null) return;
 
@@ -117,6 +120,7 @@ public class PageManagerImpl implements PageManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#updateElementGeometry(java.lang.String, java.lang.String, java.lang.String, int, int, int, int)
      */
+    @Override
     public void updateElementGeometry(final String id, final String type,
                                       final String content, final int x, final int y,
                                       final int w, final int h) {
@@ -158,6 +162,7 @@ public class PageManagerImpl implements PageManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.PageManager#updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
      */
+    @Override
     public void updateElementMetaInformation(String id, String key, String value) {
         if (id == null) return;
         if (key == null) return;

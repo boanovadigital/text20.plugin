@@ -27,13 +27,14 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.Di
 
 /**
  * @author rb
- * 
+ *
  */
 public class SessionReplayImpl implements SessionReplay {
 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#replay(de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.ReplayListener, de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.options.ReplayOption[])
      */
+    @Override
     public void replay(final ReplayListener listener, final ReplayOption... options) {
 
         final List<AbstractSessionEvent> allEvents = this.record.getAllEvents();
@@ -50,6 +51,7 @@ public class SessionReplayImpl implements SessionReplay {
         // Create replay thread
         final Thread t = new Thread(new Runnable() {
 
+            @Override
             public void run() {
 
                 AbstractSessionEvent previousEvent = null;
@@ -71,7 +73,7 @@ public class SessionReplayImpl implements SessionReplay {
                         if (!isGettingMetaInfo()) {
                             listener.nextEvent(event);
 
-                            // Can be switched off, to make replay as fast as possible. 
+                            // Can be switched off, to make replay as fast as possible.
                             if (SessionReplayImpl.this.realtimeReplay && !isGettingMetaInfo()) {
                                 // Sleep till next event
                                 long delta = event.originalEventTime - previousEvent.originalEventTime;
@@ -187,7 +189,7 @@ public class SessionReplayImpl implements SessionReplay {
 
     /**
      * Events of that class wont be passed.
-     * 
+     *
      * @param filter
      */
     @SuppressWarnings("unused")
@@ -244,18 +246,20 @@ public class SessionReplayImpl implements SessionReplay {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#getProperties()
      */
+    @Override
     public Map<String, String> getProperties(String... properties) {
         return this.record.getProperties();
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#getScreenSize()
      */
+    @Override
     public Dimension getScreenSize() {
         return this.record.getScreenSize();
     }
@@ -292,6 +296,7 @@ public class SessionReplayImpl implements SessionReplay {
     /* (non-Javadoc)
      * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay#getDisplacements()
      */
+    @Override
     public List<DisplacementRegion> getDisplacements() {
         return (this.record.fixationDisplacementRegions != null) ? this.record.fixationDisplacementRegions : new ArrayList<DisplacementRegion>();
     }
