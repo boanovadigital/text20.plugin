@@ -1,0 +1,144 @@
+<html>
+    <head>
+        <!-- Style goes here -->
+        <style type="text/css">
+            body {
+                background: lightgray;
+            }
+            
+            #hitthedot {
+                position: relative;
+                left: 30px;
+                top: 30px;
+                width: 300px;
+                font-family: sans-serif;
+                font-variant: small-caps;
+                line-height: 140%;
+                font-size: 130%;
+                visibility: hidden;
+            }
+            
+            #thedot {
+                margin-left: auto;
+                margin-right: auto;
+                width: 3px;
+                height: 3px;
+                margin-top: 200;
+                background-color: black;
+                text-decoration: blink;
+                font-size: 120%;
+                visibility: hidden;
+            }
+            
+            #target {
+                visibility: visible;
+                position: absolute;
+                width: 2px;
+                height: 2px;
+                color: red;
+                background-color:red;
+                font-size: 100%;
+            }
+            
+            #initializing {
+                margin-left: auto;
+                margin-right: auto;
+                position: relative;
+                left: 30px;
+                top: 250px;
+                width: 400px;
+                font-family: sans-serif;
+                font-variant: small-caps;
+                line-height: 140%;
+                font-size: 120%;
+            }
+            
+            #thankyou {
+                margin-left: auto;
+                margin-right: auto;
+                visibility: hidden;
+                position: relative;
+                left: 30px;
+                top: 250px;
+                width: 400px;
+                font-family: sans-serif;
+                font-variant: small-caps;
+                line-height: 140%;
+                font-size: 130%;
+                text-align: center;
+            }
+        </style>
+        
+        <!-- Logic -->
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="jquery.timers.js"></script>
+        <script type="text/javascript" src="text20.js"></script>
+        <script type="text/javascript">
+        
+            /** Misc variables */                  
+            var dx = dy = 0, lastGazeX, lastGazeY, connector = text20.connector;
+        
+            /** Called when the target was hit */
+            function hit(){
+                // Get our position
+                var p = text20.dom.documentPosition($("#thedot").get(0));
+                    x = p[0], y = p[1];
+                
+                // Update deltas
+                if (dy == 0) dy = lastGazeY - y 
+                if (dx == 0) dx = lastGazeX - x
+                
+                // Register deltas
+                var browserID = text20.browser.id()
+                connector.connection.preference("connector:calibration:" + browserID + ":offset:x", dx) 
+                connector.connection.preference("connector:calibration:" + browserID + ":offset:y", dy) 
+      
+      
+                // Inform user
+                $("#hitthedot").css("visibility", "hidden")
+                $("#thedot").css("visibility", "hidden")                
+                $("#target").css("visibility", "visible")
+                $("#thankyou").css("visibility", "visible")
+            }
+            
+            // Wait for raw gaze
+            connector.listener("reducedApplicationGaze", function(evt) {
+                    var tx = (evt.x) - dx,
+                        ty = (evt.y) - dy;
+                    
+                    if (tx < 0 || ty < 0) return;
+                    
+                    $("#target").css("top", ty+ "px").css("left", tx + "px")
+                    
+                    lastGazeX = tx;
+                    lastGazeY = ty;
+            });
+            
+            
+            // Wait for initialization
+            connector.listener("INITIALIZED", function(evt) {
+                $("#initializing").css("visibility", "hidden")
+                $("#hitthedot").css("visibility", "visible")
+                $("#thedot").css("visibility", "visible")
+            });
+            
+                        
+            // Configure text20 plugin
+            text20.browser.overrideOffset = [0, 0]
+            connector.config.registerHighVolumeListeners = true           
+            connector.config.trackingDevice = "eyetrackingdevice:mouse"           
+            connector.config.logging = "FINER"           
+            
+            text20.core.init()
+        </script>		
+    </head>
+    
+    <body>      
+        <!-- Entities -->
+        <div id="initializing">Please wait while the plugin is starting up</div>
+        <div id="thankyou">Thank you. You're good to go.</div>
+        <div id="hitthedot">There is a small dot below<br/>Approach it from the top</div>
+        <div id="thedot" onmouseover="hit()">&nbsp;</div>
+        <div id="target">&nbsp;</div>		      
+    </body>
+</html>
