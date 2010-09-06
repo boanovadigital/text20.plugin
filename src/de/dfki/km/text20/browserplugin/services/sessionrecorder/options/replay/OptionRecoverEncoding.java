@@ -21,14 +21,34 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOption;
 
 /**
- * If specified, the replay will load and return images instead of only filename events. 
+ * If specified, the replay will try to recover damaged encodings.  
  * 
  * @author Ralf Biedert
  */
-public class OptionLoadImages implements ReplayOption {
+public class OptionRecoverEncoding implements ReplayOption {
+
     /** */
-    private static final long serialVersionUID = 4718902145003522316L;
+    private static final long serialVersionUID = 5307288667092030370L;
+
+    /** */
+    private List<String[]> recovery = new ArrayList<String[]>();
+
+    /**
+     */
+    public OptionRecoverEncoding() {
+        this.recovery.add(new String[] { "", "ö" });
+    }
+
+    /**
+     * @return .
+     */
+    public List<String[]> getRecovery() {
+        return this.recovery;
+    }
 }

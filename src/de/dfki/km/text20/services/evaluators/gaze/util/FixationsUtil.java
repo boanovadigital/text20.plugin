@@ -36,6 +36,7 @@ import net.jcores.interfaces.functions.F2DeltaObjects;
 import net.jcores.interfaces.functions.F2ReduceObjects;
 import net.jcores.utils.Staple;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
  * Methods regarding fixations.
@@ -273,7 +274,13 @@ public class FixationsUtil {
      * @return .
      */
     public long getStartTime() {
-        return this.$fixations.compact().get(0).getTrackingEvents().get(0).getEventTime();
+        final Fixation fixation = this.$fixations.compact().get(0);
+        if (fixation == null || fixation.getTrackingEvents() == null) return 0;
+
+        final EyeTrackingEvent trackingEvent = fixation.getTrackingEvents().get(0);
+        if (trackingEvent == null) return 0;
+
+        return trackingEvent.getEventTime();
     }
 
     /**
@@ -282,6 +289,12 @@ public class FixationsUtil {
      * @return .
      */
     public long getStopTime() {
-        return $(this.$fixations.compact().get(-1).getTrackingEvents()).compact().get(-1).getEventTime();
+        final Fixation fixation = this.$fixations.compact().get(-1);
+        if (fixation == null || fixation.getTrackingEvents() == null) return 0;
+
+        final EyeTrackingEvent trackingEvent = $(fixation.getTrackingEvents()).get(-1);
+        if (trackingEvent == null) return 0;
+
+        return trackingEvent.getEventTime();
     }
 }
