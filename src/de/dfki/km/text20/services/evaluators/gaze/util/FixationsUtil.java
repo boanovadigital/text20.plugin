@@ -132,6 +132,33 @@ public class FixationsUtil {
     }
 
     /**
+     * Returns all saccade lengths.
+     *  
+     * @return .
+     */
+    @SuppressWarnings("boxing")
+    public double[] getAllSaccadeLengths() {
+        CoreObject<Double> fill = this.$fixations.map(new F1<Fixation, Point>() {
+            public Point f(Fixation arg0) {
+                return arg0.getCenter();
+            }
+        }).delta(new F2DeltaObjects<Point, Double>() {
+            @Override
+            public Double f(Point arg0, Point arg1) {
+                return arg0.distance(arg1);
+            }
+        });
+
+        // And now the ugly part: unbox
+        final double rval[] = new double[fill.size()];
+        for (int i = 0; i < rval.length; i++) {
+            rval[i] = fill.get(i, Double.NaN);
+        }
+
+        return rval;
+    }
+
+    /**
      * Returns all angles between the fixations
      *
      * @return .
@@ -148,12 +175,12 @@ public class FixationsUtil {
             public Double f(Point c1, Point c2) {
                 return Math.atan2(c2.y - c1.y, c2.x - c1.x);
             }
-        }).fill(Double.NaN);
+        });
 
         // And now the ugly part: unbox
         final double rval[] = new double[fill.size()];
         for (int i = 0; i < rval.length; i++) {
-            rval[i] = fill.get(i);
+            rval[i] = fill.get(i, Double.NaN);
         }
 
         return rval;
