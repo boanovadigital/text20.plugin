@@ -24,11 +24,11 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOption;
 
 /**
+ * If specified, the replay will load and return images instead of only filename events. 
  * 
  * @author Ralf Biedert
  */
 public class OptionLoadImages implements ReplayOption {
     /** */
     private static final long serialVersionUID = 4718902145003522316L;
-
 }

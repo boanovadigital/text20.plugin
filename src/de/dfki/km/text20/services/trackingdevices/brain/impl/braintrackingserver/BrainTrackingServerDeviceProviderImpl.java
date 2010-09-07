@@ -1,21 +1,21 @@
 /*
  * TrackingDeviceImpl.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -47,9 +47,9 @@ import de.dfki.km.text20.trackingserver.brain.remote.TrackingEvent;
 import de.dfki.km.text20.trackingserver.brain.remote.TrackingServerRegistry;
 
 /**
- * 
+ *
  * @author rb
- * 
+ *
  */
 @PluginImplementation
 public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDeviceProvider {
@@ -75,7 +75,7 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
         /**
          * @param string
          * @throws URISyntaxException
-         * 
+         *
          */
         public ServerTrackingDevice(final String string) throws URISyntaxException {
             // Get remote proxy of the server
@@ -99,12 +99,13 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * addTrackingListener
          * (de.dfki.km.augmentedtext.services.trackingdevices.TrackingListener)
          */
+        @Override
         public void addTrackingListener(final BrainTrackingListener listener) {
             if (!this.isProperlyConnected) { return; }
             this.listenerLock.lock();
@@ -117,14 +118,16 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * getDeviceInfo()
          */
+        @Override
         public BrainTrackingDeviceInfo getDeviceInfo() {
             return new BrainTrackingDeviceInfo() {
 
+                @Override
                 public String getInfo(final String key) {
                     if (ServerTrackingDevice.this.deviceInformation == null) return null;
 
@@ -138,6 +141,7 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
                     return null;
                 }
 
+                @Override
                 public String[] getKeys() {
                     return new String[] { "DEVICE_NAME", "HARDWARE_ID", "DEVICE_MANUFACTURER" };
                 }
@@ -159,12 +163,13 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * de.dfki.km.augmentedtext.trackingserver.remote.TrackingClientCallback
          * #newTrackingEvent(de.dfki.km.augmentedtext.trackingserver.remote.
          * TrackingEvent)
          */
+        @Override
         public void newTrackingEvent(final TrackingEvent e) {
             // Sometimes null events might occur. Filter them.
             if (e == null) return;
@@ -217,11 +222,12 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * closeDevice()
          */
+        @Override
         public void closeDevice() {
             // TODO Auto-generated method stub
         }
@@ -244,7 +250,7 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
 
     /**
      * Return what we can do...
-     * 
+     *
      * @return .
      */
     @Capabilities
@@ -254,11 +260,12 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDeviceProvider
      * #openDevice(java.lang.String)
      */
+    @Override
     public BrainTrackingDevice openDevice(final String url) {
         try {
             ServerTrackingDevice serverTrackingDevice = new ServerTrackingDevice(url);

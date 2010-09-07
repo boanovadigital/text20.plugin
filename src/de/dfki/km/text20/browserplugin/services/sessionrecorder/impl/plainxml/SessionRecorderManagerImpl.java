@@ -1,21 +1,21 @@
 /*
  * SessionRecorderManager.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -53,6 +53,7 @@ public class SessionRecorderManagerImpl implements SessionRecorderManager {
     /* (non-Javadoc)
      * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorderManager#createSessionRecorder()
      */
+    @Override
     public SessionRecorder createSessionRecorder(CreateRecorderOption... options) {
         final SessionRecorderImpl sr = new SessionRecorderImpl(this.pluginManager);
 
@@ -75,6 +76,7 @@ public class SessionRecorderManagerImpl implements SessionRecorderManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorderManager#loadSessionReplay(java.io.File)
      */
+    @Override
     public SessionReplay loadSessionReplay(File file) {
         if (!file.exists()) return null;
         return new SessionReplayImpl(file);
@@ -82,7 +84,7 @@ public class SessionRecorderManagerImpl implements SessionRecorderManager {
 
     /**
      * Return what we can do...
-     * 
+     *
      * @return .
      */
     @Capabilities

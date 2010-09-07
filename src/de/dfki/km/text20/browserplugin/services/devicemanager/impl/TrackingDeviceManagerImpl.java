@@ -1,21 +1,21 @@
 /*
  * TrackingDeviceManager.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -45,7 +45,7 @@ import de.dfki.km.text20.util.rd3party.sound.AePlayWave;
 
 /**
  * Manages the tracking device
- * 
+ *
  * @author rb
  *
  */
@@ -86,6 +86,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.devicemanager.TrackingDeviceManager#getTrackingDevice()
      */
+    @Override
     public EyeTrackingDevice getEyeTrackingDevice() {
         return this.eyeTrackingDevice;
     }
@@ -93,8 +94,8 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.devicemanager.TrackingDeviceManager#initTrackerConnection(java.lang.String, java.lang.String)
      */
-    public void initEyeTrackerConnection(final String _deviceSelector,
-                                         final String _trackerConnection) {
+    @Override
+    public void initEyeTrackerConnection(final String _deviceSelector, final String _trackerConnection) {
 
         boolean autoDetection = false;
 
@@ -119,7 +120,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         this.logger.info("Device is now " + deviceSelector);
         this.logger.info("Auto detecion is set to " + autoDetection);
 
-        // Check if we should get our connection from the environment 
+        // Check if we should get our connection from the environment
         if (trackerConnection.startsWith(ENVIRONMENT_URL)) {
             this.logger.info("Getting connection from " + trackerConnection);
             final String getenv = System.getenv(trackerConnection.substring(ENVIRONMENT_URL.length()));
@@ -195,6 +196,8 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         final AtomicBoolean warned = new AtomicBoolean(false);
 
         this.eyeTrackingDevice.addTrackingListener(new EyeTrackingListener() {
+
+            @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
                 lng.set(System.currentTimeMillis());
             }

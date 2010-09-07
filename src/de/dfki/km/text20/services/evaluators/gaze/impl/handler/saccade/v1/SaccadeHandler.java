@@ -1,21 +1,21 @@
 /*
  * FixationHandler.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -32,7 +32,7 @@ import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListe
 import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler;
 
 /**
- * 
+ *
  * @author rb
  */
 public class SaccadeHandler extends AbstractGazeHandler<SaccadeEvent, SaccadeListener> {
@@ -42,7 +42,7 @@ public class SaccadeHandler extends AbstractGazeHandler<SaccadeEvent, SaccadeLis
 
     /**
      * @param listener
-     * @param options 
+     * @param options
      */
     public SaccadeHandler(final SaccadeListener listener,
                           AddGazeEvaluationListenerOption... options) {
@@ -57,6 +57,7 @@ public class SaccadeHandler extends AbstractGazeHandler<SaccadeEvent, SaccadeLis
     public void init(AddGazeEvaluationListenerOption... options) {
         this.gazeEvaluator.addEvaluationListener(new FixationListener() {
 
+            @Override
             public void newEvaluationEvent(final FixationEvent event) {
                 if (event.getType().equals(FixationEventType.FIXATION_START)) {
                     nextFixation(event.getGenerationTime(), event.getFixation());
@@ -66,34 +67,38 @@ public class SaccadeHandler extends AbstractGazeHandler<SaccadeEvent, SaccadeLis
     }
 
     /**
-     * @param l 
+     * @param l
      * @param current
      */
     void nextFixation(final long l, final Fixation current) {
-        // In case we only had one fixation, don't do anything.                
+        // In case we only had one fixation, don't do anything.
         if (this.lastFixation == null) {
             this.lastFixation = current;
             return;
         }
 
-        // TODO: Proper handling of non-saccades between two fixations, i.e. when the time and or distance between two 
+        // TODO: Proper handling of non-saccades between two fixations, i.e. when the time and or distance between two
         // fixation was too long, you wouldn't call it a saccade anymore.
 
         final Fixation last = this.lastFixation;
 
         callListener(new SaccadeEvent() {
 
+            @Override
             public long getGenerationTime() {
                 return l;
             }
 
+            @Override
             public Saccade getSaccade() {
                 return new Saccade() {
 
+                    @Override
                     public Fixation getEnd() {
                         return current;
                     }
 
+                    @Override
                     public Fixation getStart() {
                         return last;
                     }

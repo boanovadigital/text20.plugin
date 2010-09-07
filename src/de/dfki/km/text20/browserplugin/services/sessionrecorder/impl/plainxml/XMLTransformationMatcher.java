@@ -1,21 +1,21 @@
 /*
  * MyMatcher.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -34,10 +34,12 @@ import org.simpleframework.xml.transform.Transform;
  */
 public class XMLTransformationMatcher implements Matcher {
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("rawtypes")
+    @Override
     public Transform<?> match(final Class arg0) throws Exception {
         if (arg0.equals(Rectangle.class)) return new Transform<Rectangle>() {
 
+            @Override
             public Rectangle read(final String s) throws Exception {
                 final String[] split = s.split(",");
                 final int x = Integer.parseInt(split[0]);
@@ -48,6 +50,7 @@ public class XMLTransformationMatcher implements Matcher {
                 return new Rectangle(x, y, w, h);
             }
 
+            @Override
             public String write(final Rectangle r) throws Exception {
                 return r.x + "," + r.y + "," + r.width + "," + r.height;
             }
@@ -56,6 +59,7 @@ public class XMLTransformationMatcher implements Matcher {
 
         if (arg0.equals(Dimension.class)) return new Transform<Dimension>() {
 
+            @Override
             public Dimension read(final String s) throws Exception {
                 final String[] split = s.split(",");
                 final int w = Integer.parseInt(split[0]);
@@ -64,6 +68,7 @@ public class XMLTransformationMatcher implements Matcher {
                 return new Dimension(w, h);
             }
 
+            @Override
             public String write(final Dimension r) throws Exception {
                 return r.width + "," + r.height;
             }
@@ -72,6 +77,7 @@ public class XMLTransformationMatcher implements Matcher {
 
         if (arg0.equals(Point.class)) return new Transform<Point>() {
 
+            @Override
             public Point read(final String s) throws Exception {
                 final String[] split = s.split(",");
                 final int x = Integer.parseInt(split[0]);
@@ -80,6 +86,7 @@ public class XMLTransformationMatcher implements Matcher {
                 return new Point(x, y);
             }
 
+            @Override
             public String write(final Point r) throws Exception {
                 return r.x + "," + r.y;
             }

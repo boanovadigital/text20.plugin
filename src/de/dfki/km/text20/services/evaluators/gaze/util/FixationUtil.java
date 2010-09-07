@@ -22,6 +22,7 @@
 package de.dfki.km.text20.services.evaluators.gaze.util;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,9 +47,10 @@ public final class FixationUtil {
      * @param fixation
      */
     public FixationUtil(final Fixation fixation) {
-        this.fixation = fixation;
+        final List<EyeTrackingEvent> te = fixation.getTrackingEvents();
 
-        this.trackingEvents = this.fixation.getTrackingEvents();
+        this.fixation = fixation;
+        this.trackingEvents = te == null ? new ArrayList<EyeTrackingEvent>() : te;
     }
 
     /**

@@ -1,21 +1,21 @@
 /*
  * FixationHandler.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -47,12 +47,12 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderEle
 import de.dfki.km.text20.services.pseudorenderer.util.TextualRenderElementCharPositions;
 
 /**
- * Detects perusal progress. 
- * 
+ * Detects perusal progress.
+ *
  * TODO: Hard coded values MUST be replaced by sensible ones.
- * 
- * TODO: Replace this with latest version from experimental branch.   
- * 
+ *
+ * TODO: Replace this with latest version from experimental branch.
+ *
  * @author Ralf Biedert
  */
 public class PerusalHandlerImpl3 extends
@@ -69,7 +69,7 @@ public class PerusalHandlerImpl3 extends
 
     /**
      * @param listener
-     * @param options 
+     * @param options
      */
     public PerusalHandlerImpl3(final PerusalListener listener,
                                AddGazeEvaluationListenerOption... options) {
@@ -82,6 +82,8 @@ public class PerusalHandlerImpl3 extends
         this.pseudorenderer = this.attachedListener.getPseudorenderer();
 
         this.gazeEvaluator.addEvaluationListener(new FixationLineListener() {
+
+            @Override
             public void newEvaluationEvent(final FixationLineEvent event) {
                 PerusalHandlerImpl3.this.currentTime = event.getGenerationTime();
                 newFixationLineEvent(event);
@@ -97,12 +99,12 @@ public class PerusalHandlerImpl3 extends
 
     /**
      * Dispatches the new event to the listener.
-     * 
-     * @param rectangle 
-     * @param elementsForDocumentArea 
-     * @param flu 
-     * @param word 
-     * @param positionOf 
+     *
+     * @param rectangle
+     * @param elementsForDocumentArea
+     * @param flu
+     * @param word
+     * @param positionOf
      * @param type
      */
     private void dispatch(final float speed, final Rectangle rectangle,
@@ -115,24 +117,29 @@ public class PerusalHandlerImpl3 extends
         callListener(new PerusalEvent() {
 
             /** */
+            @SuppressWarnings("unused")
             public List<Fixation> getCorrectedFixations() {
                 return fl.getFixations();
             }
 
             /** */
+            @Override
             public long getGenerationTime() {
                 return time;
             }
 
             /** */
+            @SuppressWarnings("unused")
             public float getCharactersSkipped() {
                 return speed;
             }
 
+            @SuppressWarnings("unused")
             public Rectangle getPerusedArea() {
                 return (Rectangle) rectangle.clone();
             }
 
+            @SuppressWarnings("unused")
             public Collection<RenderElement> getPerusedRenderElements() {
                 return elementsForDocumentArea;
             }
@@ -146,11 +153,12 @@ public class PerusalHandlerImpl3 extends
 
     /**
      * Calculate perusal information based on the last two fixations of the line
-     * @param flu 
-     * 
+     * @param flu
+     *
      * @param a
      * @param b
      */
+    @SuppressWarnings({ "unused", "null" })
     private void dispatchWith(final FixationLine fl, final Fixation a, final Fixation b) {
 
         final List<Fixation> lastFixations = new ArrayList<Fixation>();
@@ -202,9 +210,9 @@ public class PerusalHandlerImpl3 extends
 
         // In this case we have to guess ...
         if (characters == null) {
-            // Get default font size 
+            // Get default font size
 
-            // Calculate approx. number of characters based on horizontal distance 
+            // Calculate approx. number of characters based on horizontal distance
         }
 
         // Big, fat TODO: Adjust this based on the actual speed.

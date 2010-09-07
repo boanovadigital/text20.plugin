@@ -21,6 +21,10 @@
  */
 package de.dfki.km.text20.services.evaluators.common;
 
+/**
+ * @author rb
+ *
+ */
 public interface EvaluationEvent {
 
     /**

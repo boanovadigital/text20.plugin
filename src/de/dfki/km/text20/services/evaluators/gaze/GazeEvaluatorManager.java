@@ -33,4 +33,5 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 public interface GazeEvaluatorManager
         extends
         EvaluatorManager<EyeTrackingEvent, EyeTrackingListener, GazeEvaluator, EyeTrackingDevice> {
+    //
 }
