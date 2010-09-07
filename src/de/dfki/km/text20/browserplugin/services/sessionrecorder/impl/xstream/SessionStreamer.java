@@ -25,10 +25,11 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -166,7 +167,10 @@ public class SessionStreamer implements Serializable {
 
         try {
             this.logger.fine("Create our output file " + filename);
-            this.out = this.xstream.createObjectOutputStream((new BufferedWriter(new FileWriter(filename))));
+
+            // FIXED: #26
+            this.out = this.xstream.createObjectOutputStream(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "UTF-8")));
+
             // this.out = this.xstream.createObjectOutputStream(new ZOutputStream(new FileOutputStream(filename), JZlib.Z_BEST_COMPRESSION));
         } catch (final IOException e) {
             e.printStackTrace();
