@@ -18,18 +18,19 @@ public class TrainingModel {
 
     /** Constructor */
     public TrainingModel() {
-        events = new ArrayList<BrainTrackingEvent>();
-        avgSimple = new HashMap<String, Double>();
-        avgComplex = new HashMap<String, double[]>();
+        this.events = new ArrayList<BrainTrackingEvent>();
+        this.avgSimple = new HashMap<String, Double>();
+        this.avgComplex = new HashMap<String, double[]>();
     }
 
+    @SuppressWarnings("boxing")
     public void calculateAvgSimple(String emotion) {
         if (emotion.equals("happy")) {
             double emoAvg;
             double sum = 0;
             int cnt = 0;
-            synchronized (events) {
-                for (BrainTrackingEvent e : events) {
+            synchronized (this.events) {
+                for (BrainTrackingEvent e : this.events) {
                     double value = e.getValue("channel:smile");
                     if (value != 0) {
                         sum += value;
@@ -38,9 +39,9 @@ public class TrainingModel {
                 }
                 if (cnt == 0) return;
                 emoAvg = sum / cnt;
-                events.clear();
+                this.events.clear();
             }
-            avgSimple.put(emotion, emoAvg);
+            this.avgSimple.put(emotion, emoAvg);
             return;
         }
 
@@ -48,8 +49,8 @@ public class TrainingModel {
             double emoAvg;
             double sum = 0;
             int cnt = 0;
-            synchronized (events) {
-                for (BrainTrackingEvent e : events) {
+            synchronized (this.events) {
+                for (BrainTrackingEvent e : this.events) {
                     double value = e.getValue("channel:furrow");
                     if (value != 0) {
                         sum += value;
@@ -58,24 +59,26 @@ public class TrainingModel {
                 }
                 if (cnt == 0) return;
                 emoAvg = sum / cnt;
-                events.clear();
+                this.events.clear();
             }
-            avgSimple.put(emotion, emoAvg);
+            this.avgSimple.put(emotion, emoAvg);
             return;
         }
 
         if (emotion.equals("interested") || emotion.equals("bored")) {
             double emoAvg;
             double sum = 0;
-            synchronized (events) {
-                for (BrainTrackingEvent e : events) {
+            synchronized (this.events) {
+                for (BrainTrackingEvent e : this.events) {
                     sum += e.getValue("channel:engagement");
                 }
-                if (events.size() == 0) return;
-                emoAvg = sum / events.size();
-                events.clear();
+
+                if (this.events.size() == 0) return;
+                emoAvg = sum / this.events.size();
+                this.events.clear();
             }
-            avgSimple.put(emotion, emoAvg);
+
+            this.avgSimple.put(emotion, emoAvg);
             return;
         }
     }
@@ -83,31 +86,32 @@ public class TrainingModel {
     public void calculateAvgComplex(String emotion) {
         double[] values = new double[3];
         int cnt = 0;
-        synchronized (events) {
-            cnt = events.size();
-            for (BrainTrackingEvent e : events) {
+        synchronized (this.events) {
+            cnt = this.events.size();
+            for (BrainTrackingEvent e : this.events) {
                 values[0] += e.getValue("channel:furrow");
                 values[1] += e.getValue("channel:smile");
                 values[2] += e.getValue("channel:engagement");
             }
-            events.clear();
+
+            this.events.clear();
         }
 
         for (double d : values)
             d = d / cnt;
 
-        avgComplex.put(emotion, values);
+        this.avgComplex.put(emotion, values);
     }
 
     public void addEvent(BrainTrackingEvent event) {
-        synchronized (events) {
-            events.add(event);
+        synchronized (this.events) {
+            this.events.add(event);
         }
     }
 
     public void clearEvents() {
-        synchronized (events) {
-            events.clear();
+        synchronized (this.events) {
+            this.events.clear();
         }
     }
 }

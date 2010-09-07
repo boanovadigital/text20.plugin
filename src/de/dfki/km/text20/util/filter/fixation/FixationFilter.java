@@ -1,21 +1,21 @@
 /*
  * FixationFilter.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -108,10 +108,12 @@ public class FixationFilter extends AbstractFilter {
 
         return new Fixation() {
 
+            @Override
             public Point getCenter() {
                 return center;
             }
 
+            @Override
             public List<EyeTrackingEvent> getTrackingEvents() {
                 // TODO Auto-generated method stub
                 return null;
@@ -149,7 +151,7 @@ public class FixationFilter extends AbstractFilter {
 
     /**
      * Tries to assure a certain size.
-     * 
+     *
      * @return
      */
     private boolean assertSize() {
@@ -163,8 +165,8 @@ public class FixationFilter extends AbstractFilter {
      */
 
     /**
-     * Check if the last fixation has stopped 
-     * 
+     * Check if the last fixation has stopped
+     *
      * @return .
      */
     private boolean checkLastFixationStopped() {
@@ -189,7 +191,7 @@ public class FixationFilter extends AbstractFilter {
 
     /**
      * Check if we have a new fixation
-     * 
+     *
      * @return .
      */
     private boolean checkNewFixation() {
@@ -221,7 +223,7 @@ public class FixationFilter extends AbstractFilter {
 
     /**
      * Check if the gaze is fixating
-     * 
+     *
      * @return .
      */
     private boolean checkStillInsideFixation() {
@@ -239,7 +241,7 @@ public class FixationFilter extends AbstractFilter {
 
     /**
      * Returns the last n events.
-     * 
+     *
      * @param n
      * @return
      */

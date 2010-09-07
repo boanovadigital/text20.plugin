@@ -9,24 +9,24 @@ public class SimplePeakEmotionClassifier implements EmotionClassifier {
     /** Contains the brain tracking events to be evaluated for the next emotion */
     private ArrayList<BrainTrackingEvent> events = new ArrayList<BrainTrackingEvent>();
 
-    
+
 	@SuppressWarnings("unchecked")
 	@Override
     public String getEmotion() {
-    	if(!events.isEmpty()){    		
+    	if(!this.events.isEmpty()){
 	    	ArrayList<BrainTrackingEvent> currEvents;
-	    	
+
 	    	// retrieve events and clear for coming events
-	    	synchronized (events) {
-	    		currEvents = (ArrayList<BrainTrackingEvent>)events.clone();
-	    		events.clear();
+	    	synchronized (this.events) {
+	    		currEvents = (ArrayList<BrainTrackingEvent>) this.events.clone();
+	    		this.events.clear();
 			}
-	    	
+
 	    	if(currEvents.isEmpty())
 	    		return null;
-	    	
+
 	    	boolean bored = false, doubt = false, interested = false, happy = false;
-	    	
+
 	    	// bored or interested (continuous, take average)
 	    	double sum = 0;
 	    	double avg = 0;
@@ -34,17 +34,17 @@ public class SimplePeakEmotionClassifier implements EmotionClassifier {
 	    		sum += b.getValue("channel:engagement");
 	    	}
 	    	avg = sum / currEvents.size();
-	    	
+
 	    	if(avg <= 0.4)
 	    		bored = true;
 	    	else if(avg >= 0.7)
 	    			interested = true;
-	    	
+
 	    	// doubt or happy (have peaks)
-	    	
+
 	    	double peakFurrow = 0;
 	    	double peakSmile = 0;
-	    	
+
 	    	for(BrainTrackingEvent b : currEvents){
 	    		if(b.getValue("channel:furrow") >= 0.2){
 	    			doubt = true;
@@ -54,8 +54,8 @@ public class SimplePeakEmotionClassifier implements EmotionClassifier {
 	    			happy = true;
 	    			peakSmile = b.getValue("channel:smile") > peakSmile ? b.getValue("channel:smile") : peakSmile;
 	    		}
-	    	}	    	
-	    	
+	    	}
+
 	    	// return by priorities (bored > doubt > interested > happy)
 	    	String emotion = "";
 	    	if(bored)
@@ -65,35 +65,35 @@ public class SimplePeakEmotionClassifier implements EmotionClassifier {
 	    	else if(interested)
 	    			emotion += "interested";
 	    	else if(happy)
-	    			emotion += "happy";	    	
+	    			emotion += "happy";
 	    	else emotion +="neutral";
-	    	
+
 	    	emotion += " " + round(peakFurrow) +" "+ round(peakSmile) +" "+ round(avg);
-	    	
+
 	    	return emotion;
     	}
     	return null;
     }
-    
+
     /**
      * Adds an event to the list
-     * 
+     *
      * @param event the new event to be added to the list
      */
     public void addEvent(BrainTrackingEvent event){
-    	synchronized (events) {
-    		events.add(event);
+    	synchronized (this.events) {
+    		this.events.add(event);
 		}
     }
-    
+
     /** Clears event list */
     public void clearEvents(){
-    	synchronized (events) {
-    		events.clear();
+    	synchronized (this.events) {
+    		this.events.clear();
 		}
     }
-    
+
     private double round(double num){
-    	return ((double)Math.round(num*100))/100.0;
+    	return Math.round(num * 100) / 100.0;
     }
 }

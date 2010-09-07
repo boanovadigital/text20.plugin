@@ -1,19 +1,19 @@
 /*
 * BrowserPluginImpl.java
-* 
+*
 * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
-* 
+*
 * Redistribution and use in source and binary forms, with or without modification, are
 * permitted provided that the following conditions are met:
-* 
+*
 * Redistributions of source code must retain the above copyright notice, this list of
 * conditions and the following disclaimer. Redistributions in binary form must reproduce the
 * above copyright notice, this list of conditions and the following disclaimer in the
 * documentation and/or other materials provided with the distribution.
-* 
+*
 * Neither the name of the author nor the names of its contributors may be used to endorse or
 * promote products derived from this software without specific prior written permission.
-* 
+*
 * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS
 * OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -23,7 +23,7 @@
 * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 * TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-* 
+*
 */
 package de.dfki.km.text20.browserplugin.browser.browserplugin.impl;
 
@@ -82,7 +82,7 @@ import de.dfki.km.text20.util.system.OS;
 
 /**
  * Will be instantiated by the browser.
- * 
+ *
  * @author rb
  *
  */
@@ -160,6 +160,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#batch(java.lang.String)
      */
+    @Override
     public void batch(final String call) {
         this.batchHandler.batch(call);
     }
@@ -167,6 +168,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#callFunction(java.lang.String, java.lang.String)
      */
+    @Override
     public Object callFunction(final String function) {
         this.logger.finer("Received callFunction('" + function + "')");
 
@@ -192,7 +194,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
             if (this.extensionManager.getExtensions().contains(name)) {
                 final Object rval = this.extensionManager.executeFunction(name, args);
 
-                // Log the result 
+                // Log the result
                 if (rval != null) {
                     this.logger.fine("Returning object of type " + rval.getClass() + " with toString() value of '" + rval.toString() + "'");
                 } else {
@@ -228,6 +230,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      * (non-Javadoc)
      * @see de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor#executeJSFunction(java.lang.String, java.lang.Object[])
      */
+    @Override
     public Object executeJSFunction(final String _function, final Object... args) {
         // In case we're in the matrix, dont try to call applet function, otherwise Agent Smith will
         // roundhouse kick your butt.
@@ -278,6 +281,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         // This is the ugly way (Safari likes it)
         if (this.transmitMode.equals(TransmitMode.ASYNC)) {
             this.singleThreadExecutor.execute(new Runnable() {
+                @Override
                 public void run() {
                     try {
                         BrowserPluginImpl.this.window.call(function, args);
@@ -322,6 +326,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#getPreference(java.lang.String, java.lang.String)
      */
+    @Override
     public String getPreference(final String key, final String deflt) {
         this.sessionRecorder.getPreference(key, deflt);
         final String rval = this.preferences.getString(key, deflt);
@@ -338,7 +343,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void init() {
-        // We want to save from the first second 
+        // We want to save from the first second
         obtainMasterFilePath();
 
         final JSPFProperties props = new JSPFProperties();
@@ -457,6 +462,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#logString(java.lang.String)
      */
+    @Override
     public void logString(final String toLog) {
         this.logger.info(toLog);
     }
@@ -464,6 +470,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.impl.BrowserAPI#registerListener(java.lang.String, java.lang.String)
      */
+    @Override
     public void registerListener(final String type, final String listener) {
         this.logger.info("Registering listener of type " + type + " with name " + listener);
         this.sessionRecorder.registerListener(type, listener);
@@ -473,6 +480,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.impl.BrowserAPI#removeListener(java.lang.String)
      */
+    @Override
     public void removeListener(final String listener) {
         this.sessionRecorder.removeListener(listener);
         this.gazeHandler.removeJSCallback(listener);
@@ -480,7 +488,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
     /**
      * Call this if you're in applet mode
-     * 
+     *
      * @param value
      */
     public void setBrowserImitation(final boolean value) {
@@ -489,7 +497,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
     /**
      * Sets an override for parameters
-     * 
+     *
      * @param override
      */
     public void setParameterOverride(final Map<String, String> override) {
@@ -499,6 +507,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#setPreference(java.lang.String, java.lang.String)
      */
+    @Override
     public void setPreference(final String key, final String value) {
         this.logger.finer("Received setPreference('" + key + "', '" + value + "')");
         this.sessionRecorder.setPreference(key, value);
@@ -508,6 +517,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#setSessionParameter(java.lang.String, java.lang.String)
      */
+    @Override
     public void setSessionParameter(final String key, final String value) {
         this.sessionRecorder.setParameter("#sessionparameter." + key, value);
     }
@@ -546,6 +556,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.impl.BrowserAPI#testBasicFunctionality(java.lang.String)
      */
+    @Override
     public void testBasicFunctionality(final String callback) {
         this.logger.info("testBasicFunctionality() reached!");
 
@@ -555,6 +566,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.impl.BrowserAPI#updateBrowserGeometry(int, int, int, int)
      */
+    @Override
     public void updateBrowserGeometry(final int x, final int y, final int w, final int h) {
         this.sessionRecorder.updateGeometry(new Rectangle(x, y, w, h));
         this.pageManager.updateBrowserGeometry(x, y, w, h);
@@ -563,6 +575,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.impl.BrowserAPI#updateDocumentViewport(int, int)
      */
+    @Override
     public void updateDocumentViewport(final int x, final int y) {
         this.sessionRecorder.updateViewport(new Point(x, y));
         this.pageManager.updateDocumentViewport(x, y);
@@ -571,6 +584,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#updateElementFlag(java.lang.String, java.lang.String, boolean)
      */
+    @Override
     public void updateElementFlag(final String id, final String flag, final boolean value) {
         this.sessionRecorder.updateElementFlag(id, flag, value);
         this.pageManager.updateElementFlag(id, flag, value);
@@ -579,6 +593,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.impl.BrowserAPI#updateBrowserGeometry(int, int, int, int)
      */
+    @Override
     public void updateElementGeometry(final String id, final String type,
                                       final String content, final int x, final int y,
                                       final int w, final int h) {
@@ -595,6 +610,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.deviceManager.initEyeTrackerConnection(getParameter("trackingdevice"), getParameter("trackingconnection"));
         this.deviceManager.getEyeTrackingDevice().addTrackingListener(new EyeTrackingListener() {
 
+            @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
                 BrowserPluginImpl.this.sessionRecorder.newTrackingEvent(event);
             }
@@ -623,12 +639,13 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         }
     }
 
-    /** 
+    /**
      * Initializes recording of the mouse position
      */
     private void initMouseRecording() {
-        // Start a background thread to record the current mouse position. 
+        // Start a background thread to record the current mouse position.
         final Thread t = new Thread(new Runnable() {
+            @Override
             public void run() {
                 while (true) {
                     final SessionRecorder sr = BrowserPluginImpl.this.sessionRecorder;
@@ -669,6 +686,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         try {
             AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
                 @SuppressWarnings("boxing")
+                @Override
                 public Boolean run() {
                     // Create the dir
                     return new File(finalPath).mkdirs();
@@ -727,7 +745,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     }
 
     /**
-     * 
+     *
      */
     private void publishBrokerItems() {
         // Publish information broker items
@@ -746,7 +764,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
     /**
      * Tell JS some status ...
-     * 
+     *
      * @param status
      */
     private void tellJSStatus(final String status) {
@@ -770,6 +788,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#getExtensions()
      */
+    @Override
     public List<String> getExtensions() {
         return this.extensionManager.getExtensions();
     }
@@ -777,8 +796,8 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
      */
-    public void updateElementMetaInformation(final String id, final String key,
-                                             final String value) {
+    @Override
+    public void updateElementMetaInformation(final String id, final String key, final String value) {
         this.sessionRecorder.updateElementMetaInformation(id, key, value);
         this.pageManager.updateElementMetaInformation(id, key, value);
     }

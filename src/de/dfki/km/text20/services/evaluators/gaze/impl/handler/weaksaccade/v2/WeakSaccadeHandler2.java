@@ -1,21 +1,21 @@
 /*
  * FixationHandler.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -36,9 +36,9 @@ import de.dfki.km.text20.services.evaluators.gaze.util.FixationUtil;
 import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler;
 
 /**
- * 
- * Weak Saccade Handler. 
- * 
+ *
+ * Weak Saccade Handler.
+ *
  * @author Ralf Biedert
  */
 public class WeakSaccadeHandler2 extends
@@ -53,7 +53,7 @@ public class WeakSaccadeHandler2 extends
 
     /**
      * @param listener
-     * @param options 
+     * @param options
      */
     public WeakSaccadeHandler2(WeakSaccadeListener listener,
                                AddGazeEvaluationListenerOption... options) {
@@ -69,6 +69,7 @@ public class WeakSaccadeHandler2 extends
 
         this.gazeEvaluator.addEvaluationListener(new FixationListener() {
 
+            @Override
             public void newEvaluationEvent(final FixationEvent event) {
                 newGazeEvent(event);
             }
@@ -81,7 +82,7 @@ public class WeakSaccadeHandler2 extends
      */
     void newGazeEvent(FixationEvent event) {
 
-        // In case we have a fixation ended, memorize its position, 
+        // In case we have a fixation ended, memorize its position,
         if (event.getType() == FixationEventType.FIXATION_END) {
             this.lastFixation = event.getFixation();
         }
@@ -94,10 +95,12 @@ public class WeakSaccadeHandler2 extends
 
             final Saccade saccade = new Saccade() {
 
+                @Override
                 public Fixation getStart() {
                     return finalLastFixation;
                 }
 
+                @Override
                 public Fixation getEnd() {
                     return currentFixation;
                 }
@@ -105,10 +108,12 @@ public class WeakSaccadeHandler2 extends
 
             callListener(new SaccadeEvent() {
 
+                @Override
                 public Saccade getSaccade() {
                     return saccade;
                 }
 
+                @Override
                 public long getGenerationTime() {
                     return new FixationUtil(currentFixation).getEndDate().getTime();
                 }

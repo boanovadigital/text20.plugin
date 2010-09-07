@@ -1,21 +1,21 @@
 /*
  * ExtensionManagerImpl.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -52,6 +52,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.ExtensionManager#executeFunction(java.lang.String, java.lang.String)
      */
+    @Override
     public Object executeFunction(String function, String args) {
         // TODO: Improve the loop, hash the functions instead..
         for (Extension e : this.allKnownExtensions) {
@@ -66,6 +67,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.ExtensionManager#setParameter(de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.SetupParameter, java.lang.Object)
      */
+    @Override
     public void setParameter(SetupParameter parameter, Object value) {
         this.knownParamter.put(parameter, value);
 
@@ -78,6 +80,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.ExtensionManager#getExtensions()
      */
+    @Override
     public List<String> getExtensions() {
         final List<String> rval = new ArrayList<String>();
 
@@ -103,7 +106,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
             this.logger.fine("Module supportes extension function " + string);
         }
 
-        // Set all parameters 
+        // Set all parameters
         for (SetupParameter p : this.knownParamter.keySet()) {
             Object object = this.knownParamter.get(p);
             extension.setParameter(p, object);

@@ -20,14 +20,17 @@
  *
  */
 package de.dfki.km.text20.services.evaluators.common;
+
 import net.xeoh.plugins.base.Option;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
-
 
 /**
  * A evaluator bound to a specific device. Different listeners may be registered using the method below.
  * 
  * @author rb
+ * @param <T> 
+ * @param <U> 
+ * @param <V> 
  */
 public interface Evaluator<T extends EvaluationListener<? extends EvaluationEvent>, U extends Option, V extends Filter<? extends TrackingEvent>> {
 

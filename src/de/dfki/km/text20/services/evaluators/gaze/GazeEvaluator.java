@@ -32,4 +32,5 @@ import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListe
 public interface GazeEvaluator
         extends
         Evaluator<GazeEvaluationListener<? extends GazeEvaluationEvent>, AddGazeEvaluationListenerOption, GazeFilter> {
+    //
 }

@@ -10,13 +10,13 @@ import java.util.ArrayList;
  * Generates ARFF Files for training
  */
 public class ARFFGenerator {
-		
+
 	public static String generateFile(final String fileName, ArrayList<EmotionClass> classes){
 		final StringBuilder s = new StringBuilder();
-		
+
 		// build header
 		s.append("@RELATION emotions\n");
-		
+
 		// header attributes
 		if(!classes.get(0).data.isEmpty()){
 			for(int i=0; i<classes.get(0).data.get(0).length*FeatureVectorGenerator.WINDOWSIZE; i++)
@@ -33,7 +33,7 @@ public class ARFFGenerator {
 		}
 		// data
 		s.append("@DATA\n");
-		
+
 		// go through all classes and add feature vectors to string
 		for(EmotionClass e : classes){
 			if(!e.data.isEmpty()){
@@ -44,11 +44,13 @@ public class ARFFGenerator {
 					s.append(e.emotion+"\n");
 				}
 			}
-		}		
-		
-		// write to file		
-		try {			
+		}
+
+		// write to file
+		try {
 			AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+
+                @Override
                 @SuppressWarnings("boxing")
                 public Boolean run() {
                     try {
@@ -64,12 +66,12 @@ public class ARFFGenerator {
 					return false;
                 }
             });
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return "finished";
 	}
-	
+
 }

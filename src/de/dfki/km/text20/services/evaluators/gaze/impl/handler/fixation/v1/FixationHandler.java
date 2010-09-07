@@ -1,21 +1,21 @@
 /*
  * FixationHandler.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -38,7 +38,7 @@ import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandl
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * 
+ *
  * @author rb
  */
 public class FixationHandler extends AbstractGazeHandler<FixationEvent, FixationListener> {
@@ -65,7 +65,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
 
     /**
      * @param listener
-     * @param options 
+     * @param options
      */
     public FixationHandler(final FixationListener listener,
                            AddGazeEvaluationListenerOption... options) {
@@ -89,7 +89,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
             // FIXME: Does not appear to be a general problem, investigate more closely.
             this.logger.fine("The last observed tracking event was very long ago. You should really check your tracking input!");
 
-            // Inform about the last event 
+            // Inform about the last event
             callListener(filteredEvent, FixationEventType.FIXATION_END, this.currentFixation);
 
             // And reset fixation information
@@ -104,14 +104,14 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
         // Now for the real processing
         final Point center = getCenter(this.currentFixation);
 
-        // We have two lists, one containing all points which add to the current fixation, and a 
+        // We have two lists, one containing all points which add to the current fixation, and a
         // list of point that are unrelated to the current fixation (i.e., outliers)
 
         // Here we check if a new point is inside or outside the current area of the fixation list
-        // If it is inside (code far down below), we will simply add the new point, this is the "good" 
+        // If it is inside (code far down below), we will simply add the new point, this is the "good"
         // case. If the point is outside a given radius, we need some logic to decide what to do.
-        // Basically this can be caused by two things: A random outlier (measurement failure), or a 
-        // systematic gaze to another position. 
+        // Basically this can be caused by two things: A random outlier (measurement failure), or a
+        // systematic gaze to another position.
         if (center.distance(filteredEvent.getGazeCenter()) > this.radiusFixationTime) {
 
             // In any case, increase the number of outliers and add the new "bad point"
@@ -123,13 +123,13 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
             final float maxOSize = getMaxCenterDistance(this.outliers);
 
             // If the maximal size is too large we just remove the oldest point the rejuvenate the list. If we don't do this
-            // old outliers might prevent us from detecting a new fixation properly. 
+            // old outliers might prevent us from detecting a new fixation properly.
             if (maxOSize > this.radiusFixationTime) {
                 this.outliers.remove(0);
             }
 
-            // If the size it good enough AND we have enough evidence (in this part at least 3 points) we assume 
-            // we found a new fixation point.  
+            // If the size it good enough AND we have enough evidence (in this part at least 3 points) we assume
+            // we found a new fixation point.
             if (maxOSize <= this.radiusFixationTime && this.outliers.size() >= 3 && timeOf(this.outliers) >= this.minimalTime) {
                 // If we already had a fixaion, call listener to end it.
                 if (this.currentFixation.size() > 0) {
@@ -146,9 +146,9 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
                 callListener(filteredEvent, FixationEventType.FIXATION_START, this.currentFixation);
             }
 
-            // If we have a current fixation and we have more than three randomly scattered outliers this 
+            // If we have a current fixation and we have more than three randomly scattered outliers this
             // fixation is is considered as finished, but without the creation of a new fixation. This could happen if, for example,
-            // the user started to followed a moving target.             
+            // the user started to followed a moving target.
             if (this.numConsecutiveOutliers > 3 && this.currentFixation.size() > 0) {
                 this.numConsecutiveOutliers = 0;
                 this.outliers.clear();
@@ -167,7 +167,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
 
     /**
      * Compute time of events.
-     * 
+     *
      * @param events
      * @return
      */
@@ -181,7 +181,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
 
     /**
      * Call listener with a new point.
-     * 
+     *
      * @param originalEvent
      * @param fixation
      */
@@ -193,14 +193,16 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
         final List<EyeTrackingEvent> myTrackingEvents = new ArrayList<EyeTrackingEvent>(trackingEvents);
 
         callListener(new FixationEvent() {
-
+            @Override
             public Fixation getFixation() {
                 return new Fixation() {
 
+                    @Override
                     public Point getCenter() {
                         return (Point) center.clone();
                     }
 
+                    @Override
                     public List<EyeTrackingEvent> getTrackingEvents() {
                         return Collections.unmodifiableList(myTrackingEvents);
                     }
@@ -208,11 +210,13 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
                 };
             }
 
+            @Override
             public long getGenerationTime() {
                 if (trackingEvents.size() == 0) return 0;
                 return trackingEvents.get(trackingEvents.size() - 1).getEventTime();
             }
 
+            @Override
             public FixationEventType getType() {
                 return type;
             }
@@ -221,7 +225,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
 
     /**
      * Returns the age of the list.
-     * 
+     *
      * @param events
      * @return
      */
@@ -237,7 +241,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
 
     /**
      * Returns the center of the points.
-     * 
+     *
      * @param events
      * @return
      */
@@ -262,7 +266,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
 
     /**
      * The maximal distance of the points from their center.
-     * 
+     *
      * @param events
      * @return
      */

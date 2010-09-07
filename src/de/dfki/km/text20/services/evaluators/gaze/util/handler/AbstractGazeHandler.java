@@ -1,21 +1,21 @@
 /*
  * AbstractGazeHandler.java
- * 
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -36,8 +36,8 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 
 /**
  * @author Ralf Biedert
- * 
- * @param <E> 
+ *
+ * @param <E>
  * @param <L>
  */
 public abstract class AbstractGazeHandler<E extends GazeEvaluationEvent, L extends GazeEvaluationListener<E>>
@@ -61,7 +61,7 @@ public abstract class AbstractGazeHandler<E extends GazeEvaluationEvent, L exten
 
     /**
      * Calls the attached listener with an event.
-     * 
+     *
      * @param event
      */
     public void callListener(final E event) {
@@ -69,18 +69,19 @@ public abstract class AbstractGazeHandler<E extends GazeEvaluationEvent, L exten
     }
 
     /**
-     * Called after all fields have been set and gives the handler a chance to use these 
+     * Called after all fields have been set and gives the handler a chance to use these
      * fields to set itself up.
-     *   
-     * @param options 
+     *
+     * @param options
      */
     public void init(AddGazeEvaluationListenerOption... options) {
-        // 
+        //
     }
 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingListener#newTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent)
      */
+    @Override
     public void newTrackingEvent(final EyeTrackingEvent filteredEvent) {
         // Nothing to see here, move on.
     }
@@ -88,6 +89,7 @@ public abstract class AbstractGazeHandler<E extends GazeEvaluationEvent, L exten
     /* (non-Javadoc)
      * @see de.dfki.km.text20.services.gazeevaluator.GazeHandler#getFlags()
      */
+    @Override
     public Collection<GazeHandlerFlags> getFlags() {
         return new ArrayList<GazeHandlerFlags>();
     }
