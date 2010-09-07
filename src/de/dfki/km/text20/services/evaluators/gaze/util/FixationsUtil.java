@@ -126,6 +126,34 @@ public class FixationsUtil {
 
         return (int) (staple.staple() / staple.size());
     }
+    
+    
+    /**
+     * Returns all saccade lengths.
+     *  
+     * @return .
+     */
+    @SuppressWarnings("boxing")
+    public double[] getAllSaccadeLengths() {
+        CoreObject<Double> fill = this.$fixations.map(new F1<Fixation, Point>() {
+            public Point f(Fixation arg0) {
+                return arg0.getCenter();
+            }
+        }).delta(new F2DeltaObjects<Point, Double>() {
+            @Override
+            public Double f(Point arg0, Point arg1) {
+            	return arg0.distance(arg1);
+            }
+        }).fill(Double.NaN);
+
+        // And now the ugly part: unbox
+        final double rval[] = new double[fill.size()];
+        for (int i = 0; i < rval.length; i++) {
+            rval[i] = fill.get(i);
+        }
+
+        return rval;
+    }
 
     /**
      * Returns all angles between the fixations
