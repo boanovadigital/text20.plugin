@@ -2,12 +2,14 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,27 +153,27 @@ public class SessionReplayImpl implements SessionReplay {
         // Create a barrier that allows us to wait for synchronous replay
         final CyclicBarrier barrier = new CyclicBarrier(2);
 
-        // First check if we have a .ZIP ...
-        if (this.file.getAbsolutePath().endsWith(".zip")) {
-            this.loader = new ZIPLoader(this.file);
+        try {
+            InputStream input = null;
 
-            try {
-                this.in = this.xstream.createObjectInputStream(this.loader.getSessionInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
+            // First check if we have a .zip ...
+            if (this.file.getAbsolutePath().endsWith(".xstream")) {
+                input = new FileInputStream(this.file);
             }
-        }
 
-        // ... and check if we have .xstream file
-        if (this.file.getAbsolutePath().endsWith(".xstream")) {
-            // Load the input stream
-            try {
-                this.in = this.xstream.createObjectInputStream(new FileReader(this.file));
-            } catch (final FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (final IOException e) {
-                e.printStackTrace();
+            // ... and check if we have .xstream file
+            if (this.file.getAbsolutePath().endsWith(".zip")) {
+                this.loader = new ZIPLoader(this.file);
+                input = this.loader.getSessionInputStream();
             }
+
+            // FIXED: #26
+            this.in = this.xstream.createObjectInputStream(new BufferedReader(new InputStreamReader(input, "UTF-8")));
+
+        } catch (final FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (final IOException e) {
+            e.printStackTrace();
         }
 
         // Sanity check
