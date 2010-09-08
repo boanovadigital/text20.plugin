@@ -24,8 +24,9 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder.events;
 import org.simpleframework.xml.Element;
 
 /**
- * @author rb
- *
+ * Position of the current mouse, in screen coordinates. 
+ * 
+ * @author Ralf Biedert
  */
 public class MouseMotionEvent extends AbstractSessionEvent {
 
