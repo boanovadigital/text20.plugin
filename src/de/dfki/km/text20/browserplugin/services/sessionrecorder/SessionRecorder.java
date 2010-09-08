@@ -179,7 +179,7 @@ public interface SessionRecorder {
     public void updateGeometry(Rectangle rectangle);
 
     /**
-     * Set the current mouse position
+     * Set the current mouse position in screen coordinates.
      * 
      * @param x 
      * @param y 
