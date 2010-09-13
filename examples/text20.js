@@ -994,6 +994,9 @@ var text20 = {},
                                 
                                 // Only use the new offset if there was no previous override set 
                                 text20.browser.calibratedOffset = newoffset;								
+                            } else {
+                                // We should probably inform the user that the current browser is not calibrated
+                                $("body").append("<div style='position: absolute; top:50px; width: 100%; text-align:center; font-size:150%; background-color:red; color:white;'>You should run the browser-calibration first!<br/><br/><span style='font-size:60%;'>Otherwise your gaze data will be off.<br/> You only have to do this calibration once </br>per browser (unless you change things<br/> like the menu- or bookmark-bar...). </span></div>")                                        
                             }               
                                             
                             
