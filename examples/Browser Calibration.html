@@ -1,74 +1,9 @@
 <html>
     <head>
         <!-- Style goes here -->
-        <style type="text/css">
-            body {
-                background: lightgray;
-            }
-            
-            #hitthedot {
-                position: relative;
-                left: 30px;
-                top: 30px;
-                width: 300px;
-                font-family: sans-serif;
-                font-variant: small-caps;
-                line-height: 140%;
-                font-size: 130%;
-                visibility: hidden;
-            }
-            
-            #thedot {
-                margin-left: auto;
-                margin-right: auto;
-                width: 3px;
-                height: 3px;
-                margin-top: 200;
-                background-color: black;
-                text-decoration: blink;
-                font-size: 120%;
-                visibility: hidden;
-            }
-            
-            #target {
-                visibility: visible;
-                position: absolute;
-                width: 2px;
-                height: 2px;
-                color: red;
-                background-color:red;
-                font-size: 100%;
-            }
-            
-            #initializing {
-                margin-left: auto;
-                margin-right: auto;
-                position: relative;
-                left: 30px;
-                top: 250px;
-                width: 400px;
-                font-family: sans-serif;
-                font-variant: small-caps;
-                line-height: 140%;
-                font-size: 120%;
-            }
-            
-            #thankyou {
-                margin-left: auto;
-                margin-right: auto;
-                visibility: hidden;
-                position: relative;
-                left: 30px;
-                top: 250px;
-                width: 400px;
-                font-family: sans-serif;
-                font-variant: small-caps;
-                line-height: 140%;
-                font-size: 130%;
-                text-align: center;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="style.css" />
         
+
         <!-- Logic -->
         <script type="text/javascript" src="jquery.js"></script>
         <script type="text/javascript" src="jquery.timers.js"></script>
