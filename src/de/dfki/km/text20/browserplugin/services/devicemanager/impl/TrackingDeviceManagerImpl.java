@@ -103,7 +103,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         String deviceSelector = _deviceSelector;
         String trackerConnection = _trackerConnection;
 
-        this.logger.info("Setting up tracker connection");
+        this.logger.fine("Setting up tracker connection");
 
         if (deviceSelector == null) {
             deviceSelector = "eyetrackingdevice:mouse";
@@ -118,11 +118,11 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         }
 
         this.logger.info("Device is now " + deviceSelector);
-        this.logger.info("Auto detecion is set to " + autoDetection);
+        this.logger.fine("Auto detecion is set to " + autoDetection);
 
         // Check if we should get our connection from the environment
         if (trackerConnection.startsWith(ENVIRONMENT_URL)) {
-            this.logger.info("Getting connection from " + trackerConnection);
+            this.logger.fine("Getting connection from " + trackerConnection);
             final String getenv = System.getenv(trackerConnection.substring(ENVIRONMENT_URL.length()));
             this.logger.info("Connection is " + getenv);
             trackerConnection = getenv;
@@ -134,7 +134,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
             }
         }
 
-        this.logger.info("Getting device with selector " + deviceSelector);
+        this.logger.fine("Getting device with selector " + deviceSelector);
 
         // Obtain the proper tracking device here
         EyeTrackingDeviceProvider deviceProvider = this.pluginManager.getPlugin(EyeTrackingDeviceProvider.class, new OptionCapabilities(deviceSelector));

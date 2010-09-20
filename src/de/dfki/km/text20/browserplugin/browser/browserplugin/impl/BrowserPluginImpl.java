@@ -373,7 +373,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         storeParameters();
 
         // Evaluate additional parameter
-        processAdditionalParameter();
+        processAdditionalParameters();
 
         // setup extensions
         setupExtensions();
@@ -472,7 +472,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void registerListener(final String type, final String listener) {
-        this.logger.info("Registering listener of type " + type + " with name " + listener);
+        this.logger.fine("Registering listener of type " + type + " with name " + listener);
         this.sessionRecorder.registerListener(type, listener);
         this.gazeHandler.registerJSCallback(type, listener);
     }
@@ -706,7 +706,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /**
      * Obtain additional parameters
      */
-    private void processAdditionalParameter() {
+    private void processAdditionalParameters() {
         // Initialize the transmission mode. Determines how Java calls Javascript.
         final String tm = getParameter("transmitmode");
         if (tm != null) {
@@ -736,10 +736,15 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
             // Use them
             for (final String path : extensionpaths) {
-                final URI uri = OS.absoluteBrowserPathToURI(path);
-                // final URI uri = new File(path).toURI();
-                this.logger.info("Trying to load user defined extension at " + uri);
-                this.pluginManager.addPluginsFrom(uri);
+                try {
+                    final URI uri = OS.absoluteBrowserPathToURI(path);
+                    // final URI uri = new File(path).toURI();
+                    this.logger.info("Trying to load user defined extension at " + uri);
+                    this.pluginManager.addPluginsFrom(uri);
+                } catch (Exception e) {
+                    this.logger.warning("Unable to load extension " + path);
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -797,7 +802,8 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public void updateElementMetaInformation(final String id, final String key, final String value) {
+    public void updateElementMetaInformation(final String id, final String key,
+                                             final String value) {
         this.sessionRecorder.updateElementMetaInformation(id, key, value);
         this.pageManager.updateElementMetaInformation(id, key, value);
     }
