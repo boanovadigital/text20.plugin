@@ -29,7 +29,6 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Date;
@@ -59,8 +58,8 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceInfo;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * @author rb
- * @author buhl
+ * @author Ralf Biedert
+ * @author Andreas Buhl
  *
  */
 public class SessionRecorderImpl implements SessionRecorder {
@@ -325,7 +324,8 @@ public class SessionRecorderImpl implements SessionRecorder {
      * @see de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
-    public void updateElementMetaInformation(final String id, final String key, final String value) {
+    public void updateElementMetaInformation(final String id, final String key,
+                                             final String value) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.updateMetaInformation(id, key, value);
     }
@@ -343,7 +343,8 @@ public class SessionRecorderImpl implements SessionRecorder {
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#updateElementGeometry(java.lang.String, java.lang.String, java.lang.String, java.awt.Rectangle)
      */
     @Override
-    public void updateElementGeometry(final String id, final String type, final String content, final Rectangle r) {
+    public void updateElementGeometry(final String id, final String type,
+                                      final String content, final Rectangle r) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.updateElementGeometry(id, type, content, r);
     }
@@ -425,17 +426,21 @@ public class SessionRecorderImpl implements SessionRecorder {
 
             @Override
             public BufferedImage run() {
-                // Try to save the image.
-                final BufferedImage createScreenCapture = SessionRecorderImpl.this.robot.createScreenCapture(SessionRecorderImpl.this.currentRectangle);
-
                 try {
+                    // Try to save the image.
+                    final BufferedImage createScreenCapture = SessionRecorderImpl.this.robot.createScreenCapture(SessionRecorderImpl.this.currentRectangle);
+
                     ImageIO.write(createScreenCapture, "png", new File(fullpath));
+
                     SessionRecorderImpl.this.sessionStreamer.newImage(file);
-                } catch (final IOException e) {
+
+                    return createScreenCapture;
+                } catch (final NullPointerException e) {
+                    SessionRecorderImpl.this.logger.finer("NullPointerException when creating a screenshot.");
+                } catch (final Exception e) {
                     e.printStackTrace();
                 }
-
-                return createScreenCapture;
+                return null;
             }
         });
     }
