@@ -596,35 +596,50 @@ var text20 = {},
     
     connector = {
         config: {
-            /** Archive to use */
+            /** Archive to use. If you place the .jar to another directory you
+             *  have to change this path. */
             archive: "text20.jar",
 
-            /** Should we present a load indicator? */			
+            /** Should we present a load indicator? (Does not really work at 
+             *  the moment) */			
             loadIndicator : false,
             
-            /** Should we warn if the browser was not calibrated */
+            /** Should we warn if the browser was not calibrated. Best to 
+             *  keep this enabled! */
             warnIfNotCalibrated : true,
             
-            /** Eye tracking devices and locations */          
+            /** Eye tracking devices and locations. */          
             trackingDevice: "eyetrackingdevice:auto",
             trackingURL : "discover://nearest",
             
-            /** Brain tracking device enabled*/
+            /** Brain tracking device enabled. Best keep this off, as the code 
+             * is very experimental. */
             enableBrainTracker: false,
             brainTrackingURL: "discover://any",
             
-            /** Performance */
+            /** Performance. If you want high volume listeners (that act on 
+             *  raw data, like the head position), then you have to set this
+             *  to true. Otherwise keep it for for performance reasons */
             registerHighVolumeListeners: false,
 
-            /** 3rd party extensions */          
+            /** List of 3rd party extensions to load. See the documentation
+             *  for more info on how to write extensions. */          
             extensions : [],
             
-            /** logging */          			
+            /** Specifies if, how and where logging and recording should be
+             *  performed. Logging means application debug output, recording
+             *  means generating a session replay file. Please note that for a
+             *  proper replay elements also have to be register()ed first. */          			
             recordingEnabled : false,
             sessionPath : "/tmp/sessions",			
             logging : "default",
+
+            /** If the plugin should check for new versions (see Java console 
+             *  output). Sends an anonymous ID for statistical purposes, but no 
+             *  personal information whatsoever. */                      
+            updateCheck : true,
             
-            /** Internal variables */
+            /** Internal variables. */
             transmitMode : "ASYNC",    // DO NOT TOUCH THIS
         },
         
@@ -1121,6 +1136,7 @@ var text20 = {},
                             "<param name='sessionpath' value='" + connector.config.sessionPath + "'/>" +
                             "<param name='recordingenabled' value='" + connector.config.recordingEnabled + "'/>" +
                             "<param name='extensions' value='" + allExtensions + "'/>" +    
+                            "<param name='updatecheck' value='" + connector.config.updateCheck + "'/>" +
                             "<param name='logging' value='" + connector.config.logging + "'/>" +                
                     "</applet>");
                     
@@ -1183,8 +1199,8 @@ var text20 = {},
                     this.enginecheck(function(e, v, s) {
                         
                         // If we have a batch call, call that one
-                        if (this.variables.batch) {
-                            this.variables.batch.updateElementFlag(id, "REMOVED", true);
+                        if (v.batch) {
+                            v.batch.updateElementFlag(id, "REMOVED", true);
                             return;
                         }
                         

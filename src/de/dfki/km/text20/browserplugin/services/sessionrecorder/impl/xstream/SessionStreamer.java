@@ -206,8 +206,6 @@ public class SessionStreamer implements Serializable {
                     }
 
                     // And flush our stream when we're done;
-                    System.out.println(size);
-                    System.out.println("Flushing");
                     flush();
 
                     // Wait some time (TODO: Fix this, so that even for small apps using this plugin no event get lost when they quit instantly)

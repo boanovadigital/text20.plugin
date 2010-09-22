@@ -27,6 +27,8 @@
 */
 package de.dfki.km.text20.browserplugin.browser.browserplugin.impl;
 
+import static net.jcores.CoreKeeper.$;
+
 import java.applet.Applet;
 import java.applet.AppletContext;
 import java.awt.MouseInfo;
@@ -50,6 +52,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.jcores.interfaces.functions.F2ReduceObjects;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.util.JSPFProperties;
 import net.xeoh.plugins.informationbroker.InformationBroker;
@@ -81,9 +84,11 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 import de.dfki.km.text20.util.system.OS;
 
 /**
- * Will be instantiated by the browser.
+ * Will be instantiated by the browser. 
+ * 
+ * Main entry point!
  *
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI {
@@ -96,6 +101,9 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
     /** Appened to all live-connect callbacks */
     private String callbackPrefix;
+    
+    /** The value to transmit to the updatecheck plugin */
+    private String updatecheck;
 
     /** Keeps reference to the tracking device */
     private TrackingDeviceManager deviceManager;
@@ -110,7 +118,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     private PageManager pageManager;
 
     /** Keeps a reference to the plugin manager, in order not to overload this class */
-    private PluginManager pluginManager;
+    PluginManager pluginManager;
 
     /** Used to store persistent prefrences. */
     private PersistentPreferences preferences;
@@ -156,6 +164,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
     /** Browser window */
     JSObject window;
+
 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#batch(java.lang.String)
@@ -344,13 +353,13 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     @Override
     public void init() {
         // We want to save from the first second
-        obtainMasterFilePath();
+        processBootstrapParameters();
 
         final JSPFProperties props = new JSPFProperties();
         props.setProperty(RemoteAPI.class, "proxy.timeout", "1000");
         props.setProperty(RemoteDiscovery.class, "startup.locktime", "1000");
         props.setProperty(UpdateCheck.class, "update.url", "http://api.text20.net/common/versioncheck/");
-        props.setProperty(UpdateCheck.class, "update.enabled", "true");
+        props.setProperty(UpdateCheck.class, "update.enabled", this.updatecheck);
         props.setProperty(UpdateCheck.class, "product.name", "text20.plugin");
         props.setProperty(UpdateCheck.class, "product.version", "1.3"); // TODO: Get this version number from a better place!
 
@@ -404,9 +413,9 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         Level level = null;
 
         // Setup JSPF logging level
-        final String logging = getParameter("logging");
+        final String logging = $(getParameter("logging")).get("default");
 
-        if (logging != null && !logging.equals("default")) {
+        if (!logging.equals("default")) {
             level = Level.parse(logging);
         }
 
@@ -621,7 +630,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.sessionRecorder.storeDeviceInfo(trackingDevice.getDeviceInfo());
 
         // Setup eye tracking device
-        if (getParameter("enablebraintracker") != null && getParameter("enablebraintracker").equals("true")) {
+        if ($(getParameter("enablebraintracker")).get("false").equals("true")) {
             this.logger.info("Enabling Brain Tracker");
             this.deviceManager.initBrainTrackerConnection(null, getParameter("braintrackingconnection"));
 
@@ -669,27 +678,17 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /**
      * Gets plugin parameter specifying master file path
      */
-    private void obtainMasterFilePath() {
-        // Set session path in preferences.
-        final String root = getParameter("sessionpath");
-        String path = "/" + System.currentTimeMillis() + "/";
-        if (root != null) {
-            path = root + path;
-        } else {
-            path = "/tmp/" + path;
-        }
+    private void processBootstrapParameters() {
+        this.recordingEnabled = Boolean.parseBoolean($(getParameter("recordingenabled")).get("true"));
+        this.masterFilePath = $(getParameter("sessionpath")).get("/tmp/") + "/" + System.currentTimeMillis() + "/";
+        this.updatecheck = $(getParameter("updatecheck")).get("true");
 
-        this.masterFilePath = path + "/";
-
-        final String finalPath = path;
-
+        // Try to create the masterpath
         try {
             AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
                 @SuppressWarnings("boxing")
-                @Override
                 public Boolean run() {
-                    // Create the dir
-                    return new File(finalPath).mkdirs();
+                    return new File(BrowserPluginImpl.this.masterFilePath).mkdirs();
                 }
             });
         } catch (final Exception e) {
@@ -697,10 +696,6 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
             e.printStackTrace();
         }
 
-        final String recording = getParameter("recordingenabled");
-        if (recording != null) {
-            this.recordingEnabled = Boolean.parseBoolean(recording);
-        }
     }
 
     /**
@@ -708,45 +703,24 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     private void processAdditionalParameters() {
         // Initialize the transmission mode. Determines how Java calls Javascript.
-        final String tm = getParameter("transmitmode");
-        if (tm != null) {
-            this.transmitMode = TransmitMode.valueOf(tm.toUpperCase());
-        }
+        this.transmitMode = TransmitMode.valueOf($(getParameter("transmitmode")).get("DIRECT").toUpperCase());
+        this.callbackPrefix = $(getParameter("callbackprefix")).get("");
 
-        final String cp = getParameter("callbackprefix");
-        if (cp != null) {
-            this.callbackPrefix = cp;
-        } else {
-            this.callbackPrefix = "";
-        }
-
-        final String extensions = getParameter("extensions");
-        if (extensions != null) {
-
-            String extensionpaths[] = new String[] {};
-
-            // Parse extensions
-            if (extensions.contains(";")) {
-                extensionpaths = extensions.split(";");
-            } else {
-                if (extensions.length() > 0) {
-                    extensionpaths = new String[] { extensions };
-                }
-            }
-
-            // Use them
-            for (final String path : extensionpaths) {
+        $(getParameter("extensions")).split(";").reduce(new F2ReduceObjects<String>() {
+            @Override
+            public String f(String left, String path) {
                 try {
                     final URI uri = OS.absoluteBrowserPathToURI(path);
-                    // final URI uri = new File(path).toURI();
-                    this.logger.info("Trying to load user defined extension at " + uri);
-                    this.pluginManager.addPluginsFrom(uri);
+                    BrowserPluginImpl.this.logger.info("Trying to load user defined extension at " + uri);
+                    BrowserPluginImpl.this.pluginManager.addPluginsFrom(uri);
                 } catch (Exception e) {
-                    this.logger.warning("Unable to load extension " + path);
+                    BrowserPluginImpl.this.logger.warning("Unable to load extension " + path);
                     e.printStackTrace();
                 }
+
+                return null;
             }
-        }
+        });
     }
 
     /**
