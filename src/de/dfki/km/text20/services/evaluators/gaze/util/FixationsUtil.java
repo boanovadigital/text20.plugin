@@ -133,12 +133,13 @@ public class FixationsUtil {
 
     /**
      * Returns all saccade lengths.
-     *  
+     *
      * @return .
      */
     @SuppressWarnings("boxing")
     public double[] getAllSaccadeLengths() {
         CoreObject<Double> fill = this.$fixations.map(new F1<Fixation, Point>() {
+            @Override
             public Point f(Fixation arg0) {
                 return arg0.getCenter();
             }
