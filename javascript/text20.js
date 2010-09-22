@@ -1457,8 +1457,8 @@ var text20 = {},
                     }
 
                     // Remove flag
-					// NOTE: Don't remove untransmitted tag for images... if they are shown onGazeOver or similar, the image type and content is null
-					// TODO: Fix this!
+					// NOTE: Don't remove untransmitted tag for images... if they are shown onGazeOver/onGazeOut, the image type and content is null
+					// TODO: Fix this! But How?! :(
 					if (this.tagName != "IMG") {
 						self.removeClass("untransmitted")
 					}
