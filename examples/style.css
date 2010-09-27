@@ -1,0 +1,94 @@
+body {
+    background: lightgray;
+    font-family: sans-serif;
+    font-variant: small-caps;
+    
+}
+
+#hitthedot {
+    position: relative;
+    left: 30px;
+    top: 30px;
+    width: 300px;
+    font-family: sans-serif;
+    font-variant: small-caps;
+    line-height: 140%;
+    font-size: 130%;
+    visibility: hidden;
+}
+
+#thedot {
+    margin-left: auto;
+    margin-right: auto;
+    width: 3px;
+    height: 3px;
+    margin-top: 200;
+    background-color: black;
+    text-decoration: blink;
+    font-size: 120%;
+    visibility: hidden;
+}
+
+#target {
+    visibility: visible;
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    color: red;
+    background-color:red;
+    font-size: 100%;
+}
+
+#initializing {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    left: 30px;
+    top: 250px;
+    width: 400px;
+    font-family: sans-serif;
+    font-variant: small-caps;
+    line-height: 140%;
+    font-size: 120%;
+}
+
+#thankyou {
+    margin-left: auto;
+    margin-right: auto;
+    visibility: hidden;
+    position: relative;
+    left: 30px;
+    top: 250px;
+    width: 400px;
+    font-family: sans-serif;
+    font-variant: small-caps;
+    line-height: 140%;
+    font-size: 130%;
+    text-align: center;
+}
+
+#fixationsample {
+    position: absolute;
+    background-color: white;
+    vertical-align: middle;
+    text-align: center;
+    opacity: 0.8;
+    padding-top: 40px;
+    top: 50px;
+    left: 70px;
+    width: 350px;
+    height: 260px;
+}
+
+#gazeoversample {
+    position: absolute;
+    background-color: white;
+    vertical-align: middle;
+    text-align: center;
+    opacity: 0.7;
+    padding-top: 40px;
+    top: 250px;
+    left: 550px;
+    width: 470px;
+    height: 390px;
+}
