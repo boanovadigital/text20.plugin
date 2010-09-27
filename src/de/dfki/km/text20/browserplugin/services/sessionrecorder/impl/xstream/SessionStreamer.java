@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Logger;
+import java.util.zip.GZIPOutputStream;
 
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
@@ -173,7 +174,8 @@ public class SessionStreamer implements Serializable {
 
         this.logger.fine("Create our output file " + filename);
         try {
-            final ObjectOutputStream output = xstream.createObjectOutputStream(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "UTF-8")));
+            // (Fixed Issue #16)
+            final ObjectOutputStream output = xstream.createObjectOutputStream(new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(filename+".gz")), "UTF-8")));
 
             Thread writerThread = new Thread(new WriterThread(output));
             writerThread.setDaemon(true);

@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 
 import javax.imageio.ImageIO;
 
@@ -133,17 +134,6 @@ public class SessionReplayImpl implements SessionReplay {
         return this.screenSize;
     }
 
-    /**
-     * @param inStream
-     * @return .
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    public Object loadFromStream(final ObjectInputStream inStream) throws IOException,
-                                                                  ClassNotFoundException {
-        return (inStream.readObject());
-    }
-
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#replay(de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.ReplayListener, de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.options.ReplayOption[])
      */
@@ -151,6 +141,8 @@ public class SessionReplayImpl implements SessionReplay {
     public synchronized void replay(final ReplayListener listener, final ReplayOption... options) {
 
         // Create a barrier that allows us to wait for synchronous replay
+        // TODO: Remove barriers... Options: 1) Singlethread + waiting 2) Multithreaded multicallable
+        // (Issue #30)
         final CyclicBarrier barrier = new CyclicBarrier(2);
 
         try {
@@ -167,7 +159,13 @@ public class SessionReplayImpl implements SessionReplay {
                 input = this.loader.getSessionInputStream();
             }
 
-            // FIXED: #26
+            // ... and it might be a gz file
+            // (Fixed Issue #16)
+            if (this.file.getAbsolutePath().endsWith(".gz")) {
+                input = new GZIPInputStream(new FileInputStream(this.file));
+            }
+
+            // (Fixed Issue #26)
             this.in = this.xstream.createObjectInputStream(new BufferedReader(new InputStreamReader(input, "UTF-8")));
 
         } catch (final FileNotFoundException e) {
@@ -231,7 +229,7 @@ public class SessionReplayImpl implements SessionReplay {
 
                         try {
                             // Load the next event
-                            event = (AbstractSessionEvent) loadFromStream(SessionReplayImpl.this.in);
+                            event = (AbstractSessionEvent) SessionReplayImpl.this.in.readObject();
 
                             // In case we have no previous event, save the first event time
                             if (previousEvent == null) {
@@ -249,8 +247,9 @@ public class SessionReplayImpl implements SessionReplay {
 
                             // Check if we only get meta events ...
                             if (gettingMetaInfo.get()) {
-                                if (event instanceof ScreenSizeEvent)
+                                if (event instanceof ScreenSizeEvent) {
                                     SessionReplayImpl.this.screenSize = ((ScreenSizeEvent) event).screenSize;
+                                }
 
                                 if (event instanceof PropertyEvent) {
                                     SessionReplayImpl.this.propertyMap.put(((PropertyEvent) event).key, ((PropertyEvent) event).value);
@@ -295,7 +294,8 @@ public class SessionReplayImpl implements SessionReplay {
 
                             previousEvent = event;
                         } catch (EOFException e) {
-                            e.printStackTrace();
+//                            SessionReplayImpl.this.logger.info("EOFException thrown. File might not be closed correctly when it was written.");
+
                             this.hasMore = false;
                             if (gettingMetaInfo.get()) {
                                 realtimeDuration.set(currentEvenTime.get() - firstEventTime.get());
@@ -310,6 +310,8 @@ public class SessionReplayImpl implements SessionReplay {
                     SessionReplayImpl.this.finishedLock.unlock();
 
                     try {
+                        // TODO: Why is the barrier awaited again, because it has a size of 2 and is already
+                        // awaited by the surrounding method's end and this thread's start.
                         barrier.await();
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
