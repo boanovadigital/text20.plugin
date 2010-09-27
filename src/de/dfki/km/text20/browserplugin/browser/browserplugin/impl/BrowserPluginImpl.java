@@ -84,8 +84,8 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 import de.dfki.km.text20.util.system.OS;
 
 /**
- * Will be instantiated by the browser. 
- * 
+ * Will be instantiated by the browser.
+ *
  * Main entry point!
  *
  * @author Ralf Biedert
@@ -692,6 +692,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         // Try to create the masterpath
         try {
             AccessController.doPrivileged(new PrivilegedAction<Boolean>() {
+                @Override
                 @SuppressWarnings("boxing")
                 public Boolean run() {
                     return new File(BrowserPluginImpl.this.masterFilePath).mkdirs();

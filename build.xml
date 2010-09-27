@@ -2,11 +2,11 @@
 
 <!-- General project description -->
 <project name="Text20" default="all">
-	
+
 	<!-- SET YOUR KEYSTORE HERE -->
-    <!--property name="keystore" value="dependencies/keytool/text20keystore.p12" /-->
-    <property name="keystore" value="/Users/rb/Documents/DFKI und Uni/DFKI Keystore/text20keystore.p12" />
-	
+    <property name="keystore" value="dependencies/keytool/text20keystore.p12" />
+    <!--property name="keystore" value="/Users/rb/Documents/DFKI und Uni/DFKI Keystore/text20keystore.p12" /-->
+
 	<!-- Include aspectj and proguard support -->
 	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" classpath="dependencies/aspectj/aspectjtools.jar" />
 
@@ -21,7 +21,7 @@
 	<property name="build.root" value="ant.build/" />
 	<property name="distribution.root" value="dist/" />
 
-	
+
 	<!-- Sets the current configuration -->
 	<property name="configuration" value="all" />
 
