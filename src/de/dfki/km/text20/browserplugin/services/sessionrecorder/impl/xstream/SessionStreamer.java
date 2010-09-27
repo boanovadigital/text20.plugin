@@ -25,12 +25,14 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
@@ -89,9 +91,6 @@ public class SessionStreamer implements Serializable {
     /** Our logger*/
     protected final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    /** XStream used for serialization */
-    private final XStream xstream = new XStream();
-
     /**
      * set the alias names for the provided XStream object
      * to tweak the xml output by replacing the full qualified object names
@@ -146,9 +145,6 @@ public class SessionStreamer implements Serializable {
     /** Event queue to for things that go to the file */
     LinkedBlockingQueue<AbstractSessionEvent> eventQueue = new LinkedBlockingQueue<AbstractSessionEvent>();
 
-    /** Output stream we use to write our results */
-    ObjectOutputStream out;
-
     /** If set will be used to set the next event time */
     private Date nextDate;
 
@@ -159,22 +155,11 @@ public class SessionStreamer implements Serializable {
      * @param filename
      * @param date
      */
-    public SessionStreamer(final Dimension screenSize, final String filename,
-                           final Date date) {
-
+    public SessionStreamer(final Dimension screenSize, final String filename, final Date date) {
         this.screenSize = screenSize;
-        SessionStreamer.setAlias(this.xstream);
 
-        try {
-            this.logger.fine("Create our output file " + filename);
-
-            // FIXED: #26
-            this.out = this.xstream.createObjectOutputStream(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "UTF-8")));
-
-            // this.out = this.xstream.createObjectOutputStream(new ZOutputStream(new FileOutputStream(filename), JZlib.Z_BEST_COMPRESSION));
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
+        final XStream xstream = new XStream();
+        SessionStreamer.setAlias(xstream);
 
         // Put initial events
         nextDate(date);
@@ -186,39 +171,33 @@ public class SessionStreamer implements Serializable {
         // Generate our unique session id
         generateUniqueSessionID();
 
-        // Create our session writer
-        final Thread writerThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    // Get number of events to write
-                    int size = SessionStreamer.this.eventQueue.size();
+        this.logger.fine("Create our output file " + filename);
+        try {
+            final ObjectOutputStream output = xstream.createObjectOutputStream(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename), "UTF-8")));
 
-                    // Write every event
-                    for (int i = 0; i < size; i++) {
-                        AbstractSessionEvent next = null;
-                        try {
-                            next = SessionStreamer.this.eventQueue.take();
-                        } catch (InterruptedException e) {
-                            //
-                        }
-                        addToStream(next);
-                    }
+            Thread writerThread = new Thread(new WriterThread(output));
+            writerThread.setDaemon(true);
+            writerThread.start();
 
-                    // And flush our stream when we're done;
-                    flush();
-
-                    // Wait some time (TODO: Fix this, so that even for small apps using this plugin no event get lost when they quit instantly)
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+               @Override
+               public void run() {
+                   try {
+                    output.writeObject("Hook");
+                    output.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            }
-        });
-        writerThread.setDaemon(true);
-        writerThread.start();
+               }
+            });
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -394,53 +373,12 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     * Writes this object to a xml stream
-     * @param evt
-     */
-    protected synchronized void addToStream(final AbstractSessionEvent evt) {
-        if (evt == null) return;
-
-        AccessController.doPrivileged(new PrivilegedAction<AbstractSessionEvent>() {
-            @Override
-            public AbstractSessionEvent run() {
-                try {
-                    SessionStreamer.this.out.writeObject(evt);
-                } catch (final IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        });
-    }
-
-    /**
-     * Writes this object to a xml stream
-     * @param evt
-     */
-    protected synchronized void flush() {
-
-        AccessController.doPrivileged(new PrivilegedAction<AbstractSessionEvent>() {
-            @Override
-            public AbstractSessionEvent run() {
-                try {
-                    SessionStreamer.this.out.flush();
-                } catch (final IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        });
-    }
-
-    /**
      * @param in
      * @return .
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public static AbstractSessionEvent loadFromStream(final ObjectInputStream in)
-                                                                                 throws IOException,
-                                                                                 ClassNotFoundException {
+    public static AbstractSessionEvent loadFromStream(final ObjectInputStream in) throws IOException, ClassNotFoundException {
         return (AbstractSessionEvent) in.readObject();
     }
 
@@ -491,8 +429,7 @@ public class SessionStreamer implements Serializable {
      * @param key
      * @param value
      */
-    public void updateMetaInformation(final String id, final String key,
-                                      final String value) {
+    public void updateMetaInformation(final String id, final String key, final String value) {
         addEvent(new ElementMetaInformation(id, key, value));
     }
 
@@ -521,5 +458,83 @@ public class SessionStreamer implements Serializable {
             ss.updateGeometry(new Rectangle(r.nextInt(), r.nextInt(), r.nextInt(), r.nextInt()));
         }
         Thread.sleep(3000);
+    }
+
+
+
+
+    /**
+     * @author Vartan
+     *
+     */
+    private class WriterThread implements Runnable {
+
+        protected final ObjectOutputStream output;
+
+        WriterThread(ObjectOutputStream output) {
+            this.output = output;
+        }
+
+        @Override
+        public void run() {
+            try {
+
+                while (!Thread.currentThread().isInterrupted()) {
+
+                    // Write elements of the eventQueue to the stream until it's empty
+                    while (!SessionStreamer.this.eventQueue.isEmpty()) {
+                        final AbstractSessionEvent next = SessionStreamer.this.eventQueue.poll();
+
+                        if (next == null) return;
+
+                        // Priviled writing to stream
+                        AccessController.doPrivileged(new PrivilegedAction<AbstractSessionEvent>() {
+
+                            @Override
+                            public AbstractSessionEvent run() {
+                                try {
+                                    WriterThread.this.output.writeObject(next);
+                                } catch (final IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                                return null;
+                            }
+                        });
+                    }
+
+
+                    // And flush our stream when we're done
+                    AccessController.doPrivileged(new PrivilegedAction<AbstractSessionEvent>() {
+                        @Override
+                        public AbstractSessionEvent run() {
+                            try {
+                                WriterThread.this.output.flush();
+                            } catch (final IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            return null;
+                        }
+                    });
+
+                    // Take a breath ^^
+                    try {
+                        Thread.sleep(250);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } finally {
+                // Close the stream when done
+                if (this.output != null) {
+                    try {
+                        this.output.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 }
