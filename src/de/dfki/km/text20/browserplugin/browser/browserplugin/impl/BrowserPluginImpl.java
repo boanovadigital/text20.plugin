@@ -101,7 +101,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
     /** Appened to all live-connect callbacks */
     private String callbackPrefix;
-    
+
     /** The value to transmit to the updatecheck plugin */
     private String updatecheck;
 
@@ -165,6 +165,10 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /** Browser window */
     JSObject window;
 
+    /** */
+    public BrowserPluginImpl() {
+        System.out.println("Browser.new()");
+    }
 
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#batch(java.lang.String)
@@ -352,6 +356,8 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void init() {
+        System.out.println("Plugin.init()");
+
         // We want to save from the first second
         processBootstrapParameters();
 
