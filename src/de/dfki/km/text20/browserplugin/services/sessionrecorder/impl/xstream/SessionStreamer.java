@@ -30,6 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -85,6 +86,9 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 public class SessionStreamer implements Serializable {
     /** Serialization version */
     private static final int VERSION = 200;
+
+    /** Hard-coded flag whether the stream should be gzipped or not */
+    private final boolean compressed = true;
 
     /**  */
     private static final long serialVersionUID = -3269345193816331063L;
@@ -175,7 +179,8 @@ public class SessionStreamer implements Serializable {
         this.logger.fine("Create our output file " + filename);
         try {
             // (Fixed Issue #16)
-            final ObjectOutputStream output = xstream.createObjectOutputStream(new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(new FileOutputStream(filename+".gz")), "UTF-8")));
+            final OutputStream stream = (this.compressed) ? new GZIPOutputStream(new FileOutputStream(filename+".gz")) : new FileOutputStream(filename);
+            final ObjectOutputStream output = xstream.createObjectOutputStream(new BufferedWriter(new OutputStreamWriter(stream, "UTF-8")));
 
             Thread writerThread = new Thread(new WriterThread(output));
             writerThread.setDaemon(true);
