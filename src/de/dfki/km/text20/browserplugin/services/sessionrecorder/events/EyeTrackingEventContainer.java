@@ -33,8 +33,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
  *
  * @author rb
  */
-public class EyeTrackingEventContainer extends AbstractSessionEvent implements
-        EyeTrackingEvent {
+public class EyeTrackingEventContainer extends AbstractSessionEvent implements EyeTrackingEvent {
 
     /** */
     private static final long serialVersionUID = -4224591581456166382L;
@@ -68,9 +67,13 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements
     private boolean validity = true;
 
     // If version = 0 this is an old event
-    @SuppressWarnings("unused")
     @Element(required = false)
     private int version = 0;
+
+
+    public EyeTrackingEventContainer() {
+
+    }
 
     /**
      * @param trackingEvent
@@ -89,10 +92,6 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements
 
         // Current version
         this.version = 1;
-    }
-
-    protected EyeTrackingEventContainer() {
-        //
     }
 
     /* (non-Javadoc)
@@ -114,28 +113,31 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements
         return rval;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent#eventTime()
-     */
     @Override
     public long getEventTime() {
         return this.originalEventTime;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent#getGazeCenter()
-     */
+    public void setEventTime(long originalEventTime) {
+        this.originalEventTime = originalEventTime;
+    }
+
     @Override
     public Point getGazeCenter() {
         return (Point) this.combinedCenter.clone();
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent#getHeadPosition()
-     */
+    public void setGazeCenter(Point combinedCenter) {
+        this.combinedCenter = combinedCenter;
+    }
+
     @Override
     public float[] getHeadPosition() {
         return this.headPosition;
+    }
+
+    public void setHeadPosition(float[] headPosition) {
+        this.headPosition = headPosition;
     }
 
     @Override
@@ -143,64 +145,100 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements
         return this.leftEyeDistance;
     }
 
+    public void setLeftEyeDistance(float leftEyeDistance) {
+        this.leftEyeDistance = leftEyeDistance;
+    }
+
     @Override
     public float[] getLeftEyePosition() {
         return this.leftEyePosition;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent#pupilSizeLeft()
-     */
+    public void setLeftEyePosition(float[] leftEyePosition) {
+        this.leftEyePosition = leftEyePosition;
+    }
+
     @Override
     public float getPupilSizeLeft() {
         return this.pupilSizeLeft;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent#pupilSizeRight()
-     */
+    public void setPupilSizeLeft(float pupilSizeLeft) {
+        this.pupilSizeLeft = pupilSizeLeft;
+    }
+
     @Override
     public float getPupilSizeRight() {
         return this.pupilSizeRight;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent#getRightEyeDistance()
-     */
+    public void setPupilSizeRight(float pupilSizeRight) {
+        this.pupilSizeRight = pupilSizeRight;
+    }
+
     @Override
     public float getRightEyeDistance() {
         return this.rightEyeDistance;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent#getRightEyePosition()
-     */
+    public void setRightEyeDistance(float rightEyeDistance) {
+        this.rightEyeDistance = rightEyeDistance;
+    }
+
     @Override
     public float[] getRightEyePosition() {
         return this.rightEyePosition;
     }
 
+    public void setRightEyePosition(float[] rightEyePosition) {
+        this.rightEyePosition = rightEyePosition;
+    }
+
     @Override
     public Point getLeftEyeGazePoint() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public float[] getLeftEyeGazePosition() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Point getRightEyeGazePoint() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public float[] getRightEyeGazePosition() {
-        // TODO Auto-generated method stub
         return null;
+    }
+
+    /**
+     * @return the validity
+     */
+    public boolean isValidity() {
+        return this.validity;
+    }
+
+    /**
+     * @param validity the validity to set
+     */
+    public void setValidity(boolean validity) {
+        this.validity = validity;
+    }
+
+    /**
+     * @return the version
+     */
+    public int getVersion() {
+        return this.version;
+    }
+
+    /**
+     * @param version the version to set
+     */
+    public void setVersion(int version) {
+        this.version = version;
     }
 }

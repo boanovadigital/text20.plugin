@@ -94,6 +94,7 @@ public class SessionReplayImpl implements SessionReplay {
         this.file = file;
 
         SessionStreamer.setAlias(this.xstream);
+        SessionStreamer.registerConverters(this.xstream);
 
         // parse file to get properties and screen size
         replay(null, new OptionGetMetaInfo());
