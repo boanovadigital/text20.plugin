@@ -314,6 +314,7 @@ public class SessionRecorderImpl implements SessionRecorder {
 
         try {
             SessionStreamer.setAlias(this.xstream);
+            SessionStreamer.registerConverters(this.xstream);
         } catch (Exception e) {
             this.logger.warning("Error setting alias. No session recorder available!");
             e.printStackTrace();

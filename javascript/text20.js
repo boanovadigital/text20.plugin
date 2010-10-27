@@ -1121,24 +1121,54 @@ var text20 = {},
                     })
 
                     // Append <applet> tag
-                    $("body").append("<applet " +
+/*
+                    $("body").append(
+						"<object type='application/x-java-applet' width='1' height='1'" +
+
+						"id='" + this.variables.appletID + "'" +
+
+						"<param name='name' value='Text20Engine'>" +
+						"<param name='archive' value='" + connector.config.archive + "'>" +
+						"<param name='code' value='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl'>" +
+
+
+                        "<param name='trackingdevice' value='" + connector.config.trackingDevice + "'>" +
+	                    "<param name='trackingconnection' value='" + connector.config.trackingURL + "'>" +
+	                    "<param name='enablebraintracker' value='" + connector.config.enableBrainTracker + "'>" +
+	                    "<param name='braintrackingconnection' value='" + connector.config.brainTrackingURL + "'>" +
+	                    "<param name='callbackprefix' value='" + callbacks.prefix() + "'>" +
+	                    "<param name='transmitmode' value='" + connector.config.transmitMode + "'>" +
+	                    "<param name='sessionpath' value='" + connector.config.sessionPath + "'>" +
+	                    "<param name='recordingenabled' value='" + connector.config.recordingEnabled + "'>" +
+	                    "<param name='extensions' value='" + allExtensions + "'>" +
+	                    "<param name='updatecheck' value='" + connector.config.updateCheck + "'>" +
+	                    "<param name='logging' value='" + connector.config.logging + "'>" +
+
+						"</object>");
+*/
+
+
+
+                   $("body").append("<applet " +
                         "id='" + this.variables.appletID + "'" +
                         "name='Text20Engine'" +
                         "archive='" + connector.config.archive + "'" +
-                        "code='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl'" +
+                        "code='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl.class'" +
                         "width='1' height='1'" + "mayscript='true'" + ">" +
-                            "<param name='trackingdevice' value='" + connector.config.trackingDevice + "'/>" +
-                            "<param name='trackingconnection' value='" + connector.config.trackingURL + "'/>" +
-                            "<param name='enablebraintracker' value='" + connector.config.enableBrainTracker + "'/>" +
-                            "<param name='braintrackingconnection' value='" + connector.config.brainTrackingURL + "'/>" +
-                            "<param name='callbackprefix' value='" + callbacks.prefix() + "'/>" +
-                            "<param name='transmitmode' value='" + connector.config.transmitMode + "'/>" +
-                            "<param name='sessionpath' value='" + connector.config.sessionPath + "'/>" +
-                            "<param name='recordingenabled' value='" + connector.config.recordingEnabled + "'/>" +
-                            "<param name='extensions' value='" + allExtensions + "'/>" +
-                            "<param name='updatecheck' value='" + connector.config.updateCheck + "'/>" +
-                            "<param name='logging' value='" + connector.config.logging + "'/>" +
+
+                        "<param name='trackingdevice' value='" + connector.config.trackingDevice + "'/>" +
+                        "<param name='trackingconnection' value='" + connector.config.trackingURL + "'/>" +
+                        "<param name='enablebraintracker' value='" + connector.config.enableBrainTracker + "'/>" +
+                        "<param name='braintrackingconnection' value='" + connector.config.brainTrackingURL + "'/>" +
+                        "<param name='callbackprefix' value='" + callbacks.prefix() + "'/>" +
+                        "<param name='transmitmode' value='" + connector.config.transmitMode + "'/>" +
+                        "<param name='sessionpath' value='" + connector.config.sessionPath + "'/>" +
+                        "<param name='recordingenabled' value='" + connector.config.recordingEnabled + "'/>" +
+                        "<param name='extensions' value='" + allExtensions + "'/>" +
+                        "<param name='updatecheck' value='" + connector.config.updateCheck + "'/>" +
+                        "<param name='logging' value='" + connector.config.logging + "'/>" +
                     "</applet>");
+
 
                     this.updateaLoadingStatus("Plugin added. Waiting for a lifesign. This usually takes 5-10 seconds.");
 
