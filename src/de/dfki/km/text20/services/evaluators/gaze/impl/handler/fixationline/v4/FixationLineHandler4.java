@@ -1,5 +1,5 @@
 /*
- * FixationHandler.java
+ * FixationLineHandler4.java
  *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  *

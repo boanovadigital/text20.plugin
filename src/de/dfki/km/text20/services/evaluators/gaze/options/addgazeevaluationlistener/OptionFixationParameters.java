@@ -1,5 +1,5 @@
 /*
- * OptionDummy.java
+ * OptionFixationParameters.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
