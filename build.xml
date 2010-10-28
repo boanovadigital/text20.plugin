@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+
+<!-- General project description -->
+<project name="Text20" default="all">
+
+	<!-- SET YOUR KEYSTORE HERE -->
+    <!--<property name="keystore" value="dependencies/keytool/text20keystore.p12" />-->
+    property name="keystore" value="/Users/rb/Documents/DFKI und Uni/DFKI Keystore/text20keystore.p12" />
+
+	<!-- Include aspectj and proguard support -->
+	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" classpath="dependencies/aspectj/aspectjtools.jar" />
+
+	<!-- because java.home is set not properly -->
+	<property name="jdkhome" value="D:/Programme/Java/jdk1.6.0_12" />
+
+	<!-- Define different global variables -->
+	<property name="prefix" value="text20" />
+	<property name="version" value="1.3.0" />
+
+	<!-- Define different roots -->
+	<property name="build.root" value="ant.build/" />
+	<property name="distribution.root" value="dist/" />
+
+
+	<!-- Sets the current configuration -->
+	<property name="configuration" value="all" />
+
+	<!-- Clear everything up -->
+	<target name="clean" description="Remove all previous build files">
+		<delete dir="${build.root}" />
+		<delete dir="${distribution.root}" />
+		<delete dir="documentation/api" />
+
+		<!--mkdir dir="documentation/api" /-->
+	</target>
+
+
+
+	<!-- Build and pack target -->
+	<target name="plugin" depends="clean, compile, pack, sign" />
+
+	<!-- Compile the plugin -->
+	<target name="compile" description="Compile the framework">
+		<!-- Create output folder -->
+		<mkdir dir="${build.root}/${prefix}/" />
+
+		<!-- Compile all classes -->
+		<javac srcdir="src" destdir="${build.root}/${prefix}/" source="1.6" target="1.6" debug="false">
+			<classpath>
+				<fileset dir="dependencies/">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="dependencies/jdkbrowserapi">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<!-- Update the atframework.js file -->
+		<concat destfile="${build.root}/javascript/text20.js" force="no">
+			<filelist dir="javascript/" files="text20.js" />
+		</concat>
+	</target>
+
+
+	<!-- Pack the plugin -->
+	<target name="pack" description="Pack the core plugin with its dependencies">
+		<!-- Create output folder -->
+		<mkdir dir="${distribution.root}/" />
+
+		<!-- Copy .wav files -->
+		<copy file="src/de/dfki/km/text20/browserplugin/services/devicemanager/impl/mouse.wav" tofile="${build.root}/${prefix}/de/dfki/km/text20/browserplugin/services/devicemanager/impl/mouse.wav" />
+		<copy file="src/de/dfki/km/text20/browserplugin/services/devicemanager/impl/tracker.wav" tofile="${build.root}/${prefix}/de/dfki/km/text20/browserplugin/services/devicemanager/impl/tracker.wav" />
+		<copy file="src/de/dfki/km/text20/browserplugin/services/devicemanager/impl/dataratelow.wav" tofile="${build.root}/${prefix}/de/dfki/km/text20/browserplugin/services/devicemanager/impl/dataratelow.wav" />
+
+		<!-- Rejar everything -->
+		<jar destfile="${distribution.root}/${prefix}-${version}.jar" basedir="${build.root}/${prefix}/" />
+
+
+		<!-- TODO: Pack200 would be nice ... -->
+
+		<!-- Obfuscation  -->
+		<!--antcall target="obfuscation"/-->
+
+		<!-- Unjar related -->
+		<unjar dest="${build.root}/${prefix}">
+			<fileset dir=".">
+				<include name="dependencies/*.jar" />
+			</fileset>
+		</unjar>
+
+		<jar destfile="${distribution.root}/${prefix}-${version}.jar">
+			<fileset dir="${build.root}/${prefix}/">
+				<!-- And exlude the rest -->
+				<include name="**/*" />
+			</fileset>
+		</jar>
+	</target>
+
+
+	<!-- Pack the plugin -->
+	<target name="sign" description="Sign the jar">
+		<signjar jar="${distribution.root}/${prefix}-${version}.jar" alias="text20" storetype="PKCS12" storepass="replacethis" keystore="${keystore} " />
+		<signjar jar="${distribution.root}/${prefix}-${version}.core.jar" alias="text20" storetype="PKCS12" storepass="replacethis" keystore="${keystore}" />
+	</target>
+
+
+	<!-- Create the API documentation -->
+	<target name="documentation">
+		<javadoc destdir="documentation/api/" author="true" version="true" use="true" windowtitle="Text 2.0 Plugin API">
+
+			<packageset dir="src/" defaultexcludes="yes">
+				<include name="de/dfki/km/text20/*" />
+			</packageset>
+
+			<doctitle>MyTitle</doctitle>
+
+			<link href="http://developer.java.sun.com/developer/products/xml/docs/api/" />
+		</javadoc>
+	</target>
+
+
+
+	<!-- Update the examples -->
+	<target name="updateexamples" depends="plugin">
+		<!-- <mkdir dir="${build.root}/javascript/" /> is used above now -->
+
+		<copy file="${distribution.root}/${prefix}-${version}.jar" tofile="examples/${prefix}.jar" />
+
+
+		<!-- Distribute the atframework.js file -->
+		<copy file="${build.root}/javascript/text20.js" todir="examples" />
+		<copy file="${build.root}/javascript/text20.js" tofile="${distribution.root}/text20-${version}.js" />
+	</target>
+
+
+	<!-- Prepare distributables -->
+	<target name="preparepublish" description="Eventually generates distributable files" depends="plugin, updateexamples">
+
+		<!-- Zip binary -->
+		<zip destfile="${distribution.root}/${prefix}-${version}.bin.zip">
+			<fileset dir=".">
+				<include name="documentation/**/*" />
+				<include name="${distribution.root}/*.jar" />
+				<include name="examples/**" />
+				<include name="javascript/**" />
+			</fileset>
+		</zip>
+
+		<!-- Zip sources -->
+		<zip destfile="${distribution.root}/${prefix}-${version}.src.zip">
+			<fileset dir=".">
+				<include name="**/*" />
+			</fileset>
+		</zip>
+
+	</target>
+
+	<!-- All together -->
+	<!--target name="all" depends="plugin, obfuscation, trim, updateexamples" /-->
+    <target name="all" depends="plugin, updateexamples" />
+
+</project>
