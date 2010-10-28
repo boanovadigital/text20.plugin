@@ -1,5 +1,5 @@
 /*
- * TrackingEvent.java
+ * EyeTrackingEvent.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
