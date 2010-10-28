@@ -1,5 +1,5 @@
 /*
- * TrackingDevice.java
+ * EyeTrackingDeviceProvider.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 

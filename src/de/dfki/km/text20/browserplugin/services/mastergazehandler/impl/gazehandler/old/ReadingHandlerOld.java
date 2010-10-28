@@ -1,21 +1,21 @@
 /*
- * RawGazeHandler.java
- * 
+ * ReadingHandlerOld.java
+ *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
- * 
+ *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301  USA
  *
  */
@@ -64,10 +64,10 @@ public class ReadingHandlerOld extends AbstractGazeHandler {
     final List<Event> lastFixations = new ArrayList<Event>();
 
     /**
-     * Returns the first textual element at the given position, or null if there is no such. 
-     * 
+     * Returns the first textual element at the given position, or null if there is no such.
+     *
      * @param p
-     * @return  
+     * @return
      */
     @SuppressWarnings("unused")
     private RenderElement getTextualElementAt(final Point p) {
@@ -139,7 +139,7 @@ public class ReadingHandlerOld extends AbstractGazeHandler {
         if (!this.pseudorenderer.getStatus().contains(PseudorendererStatus.VISIBLE))
             return;
 
-        // a) Put entry in filter 
+        // a) Put entry in filter
         final EyeTrackingEvent filterEvent = this.fixationFilter.filterEvent(event);
 
         // b) Update filters with data near the current gaze point
@@ -152,7 +152,7 @@ public class ReadingHandlerOld extends AbstractGazeHandler {
         // We're only interested in new fixations
         if (!this.fixationFilter.isNewFixation()) return;
 
-        // Now we hopefully have better fixation information 
+        // Now we hopefully have better fixation information
         final Point fixation = attracted.getGazeCenter();
 
         updateFixations(filterEvent.getEventTime(), fixation);
