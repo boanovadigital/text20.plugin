@@ -50,9 +50,9 @@ import de.dfki.km.text20.trackingserver.eyes.remote.TrackingServerRegistry;
 import de.dfki.km.text20.trackingserver.eyes.remote.options.SendCommandOption;
 
 /**
- *
+ * 
  * @author rb
- *
+ * 
  */
 @PluginImplementation
 public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvider {
@@ -81,7 +81,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
         /**
          * @param string
          * @throws URISyntaxException
-         *
+         * 
          */
         public ServerTrackingDevice(final String string) throws URISyntaxException {
             // Get remote proxy of the server
@@ -110,7 +110,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * addTrackingListener
@@ -129,7 +129,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * getDeviceInfo()
@@ -167,7 +167,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * getDeviceType()
@@ -186,7 +186,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see
          * de.dfki.km.augmentedtext.trackingserver.remote.TrackingClientCallback
          * #newTrackingEvent(de.dfki.km.augmentedtext.trackingserver.remote.
@@ -202,7 +202,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 *
+                 * 
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #areValid(de.dfki.km.augmentedtext.services.trackingdevices.
@@ -221,7 +221,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 *
+                 * 
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #eventTime()
@@ -233,7 +233,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 *
+                 * 
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #getGazeCenter()
@@ -246,7 +246,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 *
+                 * 
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #getHeadPosition()
@@ -351,7 +351,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 *
+                 * 
                  * @see java.lang.Object#toString()
                  */
                 @Override
@@ -366,7 +366,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 *
+                 * 
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #pupilSizeLeft()
@@ -378,7 +378,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                 /*
                  * (non-Javadoc)
-                 *
+                 * 
                  * @see
                  * de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent
                  * #pupilSizeRight()
@@ -440,7 +440,12 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                 // And dispatch it to the listener
                 for (int i = 0; i < ServerTrackingDevice.this.trackingListener.size(); i++) {
                     final EyeTrackingListener l = ServerTrackingDevice.this.trackingListener.get(i);
-                    l.newTrackingEvent(trackingEvent);
+                    try {
+                        l.newTrackingEvent(trackingEvent);
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                        TrackingServerDeviceProviderImpl.this.logger.warning(exception.getMessage());
+                    }
                 }
             } finally {
                 ServerTrackingDevice.this.listenerLock.unlock();
@@ -450,7 +455,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * sendCommand
@@ -466,7 +471,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
         /*
          * (non-Javadoc)
-         *
+         * 
          * @see
          * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
          * closeDevice()
@@ -495,7 +500,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
     /**
      * Return what we can do...
-     *
+     * 
      * @return .
      */
     @Capabilities
@@ -505,7 +510,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDeviceProvider
      * #openDevice(java.lang.String)

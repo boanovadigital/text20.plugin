@@ -44,16 +44,19 @@ import de.dfki.km.text20.trackingserver.eyes.remote.options.SendCommandOption;
 
 /**
  * @author rb
- *
+ * 
  */
 @PluginImplementation
 public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvider {
     /**
      * Uses the mouse as a tracking device
-     *
+     * 
      * @author rb
      */
     private static class MouseTrackingDevice implements EyeTrackingDevice {
+
+        /** */
+        final Logger logger = Logger.getLogger(this.getClass().getName());
 
         /**
          * Manages acces to the listener.
@@ -86,7 +89,12 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
                         // And dispatch it to the listener
                         for (int i = 0; i < MouseTrackingDevice.this.trackingListener.size(); i++) {
                             final EyeTrackingListener l = MouseTrackingDevice.this.trackingListener.get(i);
-                            l.newTrackingEvent(event);
+                            try {
+                                l.newTrackingEvent(event);
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                                MouseTrackingDevice.this.logger.warning(exception.getMessage());
+                            }
                         }
                         MouseTrackingDevice.this.listenerLock.unlock();
 
@@ -104,8 +112,12 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
             t.start();
         }
 
-        /* (non-Javadoc)
-         * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#addTrackingListener(de.dfki.km.augmentedtext.services.trackingdevices.TrackingListener)
+        /*
+         * (non-Javadoc)
+         * 
+         * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#
+         * addTrackingListener
+         * (de.dfki.km.augmentedtext.services.trackingdevices.TrackingListener)
          */
         @Override
         public void addTrackingListener(final EyeTrackingListener listener) {
@@ -224,24 +236,37 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
             };
         }
 
-        /* (non-Javadoc)
-         * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#getDeviceType()
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#getDeviceType
+         * ()
          */
         @Override
         public EyeTrackingDeviceType getDeviceType() {
             return EyeTrackingDeviceType.MOUSE;
         }
 
-        /* (non-Javadoc)
-         * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#sendCommand(de.dfki.km.augmentedtext.trackingserver.remote.TrackingCommand, de.dfki.km.augmentedtext.trackingserver.remote.options.SendCommandOption[])
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#sendCommand
+         * (de.dfki.km.augmentedtext.trackingserver.remote.TrackingCommand,
+         * de.dfki.km.augmentedtext.trackingserver.remote.options.SendCommandOption[])
          */
         @Override
-        public void sendLowLevelCommand(TrackingCommand command, SendCommandOption... options) {
+        public void sendLowLevelCommand(TrackingCommand command,
+                                        SendCommandOption... options) {
             // TODO Auto-generated method stub
         }
 
-        /* (non-Javadoc)
-         * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#closeDevice()
+        /*
+         * (non-Javadoc)
+         * 
+         * @see
+         * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice#closeDevice()
          */
         @Override
         public void closeDevice() {
@@ -260,7 +285,7 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
 
     /**
      * Return what we can do...
-     *
+     * 
      * @return .
      */
     @Capabilities
@@ -268,8 +293,12 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
         return new String[] { "eyetrackingdevice:mouse" };
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingDeviceProvider#openDevice(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.services.trackingdevices.TrackingDeviceProvider#openDevice
+     * (java.lang.String)
      */
     @Override
     public EyeTrackingDevice openDevice(final String url) {
