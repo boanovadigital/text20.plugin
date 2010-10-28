@@ -1,7 +1,8 @@
 /*
  * text20.js
  *
- * Copyright (c) 2010, Ralf Biedert, German Research Center For Artificial Intelligence.
+ * Copyright (c) 2010, Ralf Biedert, German Research Center For 
+ * Artificial Intelligence.
  *
  * All rights reserved.
  *
@@ -1487,8 +1488,8 @@ var text20 = {},
                     }
 
                     // Remove flag
-					// NOTE: Don't remove untransmitted tag for images... if they are shown onGazeOver/onGazeOut, the image type and content is null
-					// TODO: Fix this! But How?! :(
+					// NOTE: Don't remove untransmitted tag for images... if they are shown onGazeOver/onGazeOut, the 
+                    // image type and content is null TODO: Fix this! But How?! :(
 					if (this.tagName != "IMG") {
 						self.removeClass("untransmitted")
 					}

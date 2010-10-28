@@ -223,6 +223,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         }
         return null;
     }
+    
 
     /* (non-Javadoc)
      * @see java.applet.Applet#destroy()

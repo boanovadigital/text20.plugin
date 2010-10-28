@@ -81,29 +81,30 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
  * @author buhl
- *
+ * 
  */
 @Root
 public class SessionStreamer implements Serializable {
     /** Serialization version */
     private static final int VERSION = 200;
 
-    /** Hard-coded flag whether the stream should be gzipped or not */
-    private final boolean compressed = true;
+    /** Hard-coded flag whether the stream should be gzipped or not. TODO: Make this 
+     * configurable in the future (or even default-on) */
+    private final boolean compressed = false;
 
     /**  */
     private static final long serialVersionUID = -3269345193816331063L;
 
-    /** Our logger*/
+    /** Our logger */
     protected final Logger logger = Logger.getLogger(this.getClass().getName());
 
     /**
      * set the alias names for the provided XStream object
      * to tweak the xml output by replacing the full qualified object names
      * with shorter equivalents
-     *
+     * 
      * @param xstream
-     *
+     * 
      */
     public static void setAlias(final XStream xstream) {
         xstream.alias("Record", SessionStreamer.class);
@@ -131,11 +132,9 @@ public class SessionStreamer implements Serializable {
         xstream.alias("PropertyEvent", PropertyEvent.class);
     }
 
-
     public static void registerConverters(final XStream xstream) {
         xstream.registerConverter(new EyeTrackingEventContainerConverter());
     }
-
 
     /** List of occured events */
     @ElementList
@@ -162,12 +161,13 @@ public class SessionStreamer implements Serializable {
 
     /**
      * Create a new session record.
-     *
+     * 
      * @param screenSize
      * @param filename
      * @param date
      */
-    public SessionStreamer(final Dimension screenSize, final String filename, final Date date) {
+    public SessionStreamer(final Dimension screenSize, final String filename,
+                           final Date date) {
         this.screenSize = screenSize;
 
         final XStream xstream = new XStream();
@@ -186,7 +186,7 @@ public class SessionStreamer implements Serializable {
         this.logger.fine("Create our output file " + filename);
         try {
             // (Fixed Issue #16)
-            final OutputStream stream = (this.compressed) ? new GZIPOutputStream(new FileOutputStream(filename+".gz")) : new FileOutputStream(filename);
+            final OutputStream stream = (this.compressed) ? new GZIPOutputStream(new FileOutputStream(filename + ".gz")) : new FileOutputStream(filename);
             final ObjectOutputStream output = xstream.createObjectOutputStream(new BufferedWriter(new OutputStreamWriter(stream, "UTF-8")));
 
             Thread writerThread = new Thread(new WriterThread(output));
@@ -194,15 +194,15 @@ public class SessionStreamer implements Serializable {
             writerThread.start();
 
             Runtime.getRuntime().addShutdownHook(new Thread() {
-               @Override
-               public void run() {
-                   try {
-                    output.writeObject("Hook");
-                    output.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                @Override
+                public void run() {
+                    try {
+                        output.writeObject("Hook");
+                        output.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-               }
             });
 
         } catch (UnsupportedEncodingException e) {
@@ -237,7 +237,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     *
+     * 
      * @param key
      * @param deflt
      */
@@ -289,7 +289,7 @@ public class SessionStreamer implements Serializable {
     /**
      * @param x
      * @param y
-     *
+     * 
      */
     public void mouseMovement(final int x, final int y) {
         this.lastKnownMousePosition.x = x;
@@ -298,7 +298,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     *
+     * 
      * @param file
      */
     public void newImage(final String file) {
@@ -341,7 +341,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     *
+     * 
      * @param trackingEvent
      */
     public void trackingEvent(final EyeTrackingEvent trackingEvent) {
@@ -349,7 +349,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     *
+     * 
      * @param p
      */
     public void updateDocumentViewport(final Point p) {
@@ -366,7 +366,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     *
+     * 
      * @param id
      * @param type
      * @param content
@@ -379,7 +379,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     *
+     * 
      * @param r
      */
     public void updateGeometry(final Rectangle r) {
@@ -392,7 +392,9 @@ public class SessionStreamer implements Serializable {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public static AbstractSessionEvent loadFromStream(final ObjectInputStream in) throws IOException, ClassNotFoundException {
+    public static AbstractSessionEvent loadFromStream(final ObjectInputStream in)
+                                                                                 throws IOException,
+                                                                                 ClassNotFoundException {
         return (AbstractSessionEvent) in.readObject();
     }
 
@@ -409,7 +411,7 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     *
+     * 
      * @param evt
      */
     protected synchronized void addEvent(final AbstractSessionEvent evt) {
@@ -443,7 +445,8 @@ public class SessionStreamer implements Serializable {
      * @param key
      * @param value
      */
-    public void updateMetaInformation(final String id, final String key, final String value) {
+    public void updateMetaInformation(final String id, final String key,
+                                      final String value) {
         addEvent(new ElementMetaInformation(id, key, value));
     }
 
@@ -474,12 +477,9 @@ public class SessionStreamer implements Serializable {
         Thread.sleep(3000);
     }
 
-
-
-
     /**
      * @author Vartan
-     *
+     * 
      */
     private class WriterThread implements Runnable {
 
@@ -516,7 +516,6 @@ public class SessionStreamer implements Serializable {
                             }
                         });
                     }
-
 
                     // And flush our stream when we're done
                     AccessController.doPrivileged(new PrivilegedAction<AbstractSessionEvent>() {

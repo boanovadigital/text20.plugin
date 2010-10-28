@@ -60,9 +60,6 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
     private class ServerTrackingDevice implements EyeTrackingDevice,
             TrackingClientCallback {
 
-        /** Can be set to recalibrate points from the tracker */
-        public Point recalibration = new Point();
-
         /** */
         TrackingDeviceInformation deviceInformation;
 
@@ -244,7 +241,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                 @Override
                 public Point getGazeCenter() {
                     if (e.centerGaze == null) return new Point(-1, -1);
-                    return new Point(e.centerGaze.x + ServerTrackingDevice.this.recalibration.x, e.centerGaze.y + ServerTrackingDevice.this.recalibration.y);
+                    return new Point(e.centerGaze.x, e.centerGaze.y);
                 }
 
                 /*
@@ -257,7 +254,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                 @Override
                 public float[] getHeadPosition() {
                     final float rval[] = new float[3];
-                    final float invalid[] = new float[] {-1, -1, -1};
+                    final float invalid[] = new float[] { -1, -1, -1 };
 
                     boolean leftEyeFound = true;
                     boolean rightEyeFound = true;
@@ -462,7 +459,8 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
          * .km.augmentedtext.trackingserver.remote.options.SendCommandOption[])
          */
         @Override
-        public void sendLowLevelCommand(TrackingCommand command, SendCommandOption... options) {
+        public void sendLowLevelCommand(TrackingCommand command,
+                                        SendCommandOption... options) {
             this.registry.sendCommand(command, options);
         }
 
