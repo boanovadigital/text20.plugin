@@ -78,7 +78,7 @@ public class BackgroundServicesExtension implements Extension {
                 s = URLDecoder.decode(s, "UTF-8");
 
                 if (this.dbpedia == null) {
-                    this.logger.warning("Unable to get abstract for " + s + " as no DBPedia was found.");
+                    this.logger.warning("Unable to get abstract for '" + s + "' as no DBPedia was found.");
                     return null;
                 }
 
@@ -91,7 +91,7 @@ public class BackgroundServicesExtension implements Extension {
                 s = URLDecoder.decode(s, "UTF-8");
 
                 if (this.statistics == null) {
-                    this.logger.warning("Unable to get probability for " + s + " as no DBPedia was found.");
+                    this.logger.warning("Unable to get probability for '" + s + "' as no DBPedia was found.");
                     return null;
                 }
 
