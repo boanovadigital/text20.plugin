@@ -19,7 +19,6 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
@@ -44,11 +43,12 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.O
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionLoadImages;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionRealtime;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionSlowMotion;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionWaitForFinish;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.DisplacementRegion;
 
 /**
  * @author rb
- *
+ * 
  */
 public class SessionReplayImpl implements SessionReplay {
 
@@ -59,9 +59,10 @@ public class SessionReplayImpl implements SessionReplay {
     final XStream xstream = new XStream();
 
     /**
-     * Makes other threads wait for this element to be finished.
+     * Makes other threads wait for this element to be finished. TODO: Can probably be
+     * removed.
      */
-    final Lock finishedLock = new ReentrantLock();
+    final ReentrantLock _finishedLock = new ReentrantLock();
 
     /** Input stream to read the content from */
     ObjectInputStream in;
@@ -75,7 +76,10 @@ public class SessionReplayImpl implements SessionReplay {
     /** The recorded screen size */
     Dimension screenSize;
 
-    /** The file to replay. This can either be a zip file (with an internal .xstream) or an xstream directly. */
+    /**
+     * The file to replay. This can either be a zip file (with an internal .xstream) or an
+     * xstream directly.
+     */
     private File file;
 
     /** The loader to access elements */
@@ -97,13 +101,24 @@ public class SessionReplayImpl implements SessionReplay {
         SessionStreamer.registerConverters(this.xstream);
 
         // parse file to get properties and screen size
-        replay(null, new OptionGetMetaInfo());
+        // replay(null, new OptionGetMetaInfo());
+        replay(new ReplayListener() {
 
-        waitForFinish();
+            @Override
+            public void nextEvent(AbstractSessionEvent event) {
+                // ...
+            }
+        });
+
+        // waitForFinish();
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay#getDisplacements()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay#getDisplacements
+     * ()
      */
     @Override
     public List<DisplacementRegion> getDisplacements() {
@@ -117,32 +132,47 @@ public class SessionReplayImpl implements SessionReplay {
         return this.fixationDisplacementRegions;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#getProperties()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#
+     * getProperties()
      */
     @Override
     public Map<String, String> getProperties(String... properties) {
-        waitForFinish();
+        // waitForFinish();
         return this.propertyMap;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#getScreenSize()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#
+     * getScreenSize()
      */
     @Override
     public Dimension getScreenSize() {
-        waitForFinish();
+        // waitForFinish();
         return this.screenSize;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#replay(de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.ReplayListener, de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.options.ReplayOption[])
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionReplay#replay
+     * (de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.ReplayListener,
+     * de.
+     * dfki.km.augmentedtext.browserplugin.services.sessionrecorder.options.ReplayOption
+     * [])
      */
     @Override
-    public synchronized void replay(final ReplayListener listener, final ReplayOption... options) {
+    public synchronized void replay(final ReplayListener listener,
+                                    final ReplayOption... options) {
 
         // Create a barrier that allows us to wait for synchronous replay
-        // TODO: Remove barriers... Options: 1) Singlethread + waiting 2) Multithreaded multicallable
+        // TODO: Remove barriers... Options: 1) Singlethread + waiting 2) Multithreaded
+        // multicallable
         // (Issue #30)
         final CyclicBarrier barrier = new CyclicBarrier(2);
 
@@ -194,6 +224,7 @@ public class SessionReplayImpl implements SessionReplay {
 
         // Process options
         final OptionUtils<ReplayOption> ou = new OptionUtils<ReplayOption>(options);
+        if (ou.contains(OptionWaitForFinish.class)) throw new IllegalArgumentException();
         if (ou.contains(OptionGetMetaInfo.class)) gettingMetaInfo.set(true);
         if (ou.contains(OptionRealtime.class)) realtimeReplay.set(true);
         if (ou.contains(OptionLoadImages.class)) loadImages.set(true);
@@ -232,7 +263,8 @@ public class SessionReplayImpl implements SessionReplay {
                             // Load the next event
                             event = (AbstractSessionEvent) SessionReplayImpl.this.in.readObject();
 
-                            // In case we have no previous event, save the first event time
+                            // In case we have no previous event, save the first event
+                            // time
                             if (previousEvent == null) {
                                 firstEventTime.set(event.originalEventTime);
                                 previousEvent = event;
@@ -256,7 +288,9 @@ public class SessionReplayImpl implements SessionReplay {
                                     SessionReplayImpl.this.propertyMap.put(((PropertyEvent) event).key, ((PropertyEvent) event).value);
                                 }
 
-                                continue;
+                                // FIXME: Remove gettingMetaInfo and put this into
+                                // constructor
+                                throw new IllegalStateException();
                             }
 
                             // Can be switched off, to make replay as fast as possible.
@@ -277,7 +311,8 @@ public class SessionReplayImpl implements SessionReplay {
                                 }
                             }
 
-                            // Check what kind of event it is and if we have some special rules
+                            // Check what kind of event it is and if we have some special
+                            // rules
                             if (event instanceof ImageEvent && loadImages.get()) {
                                 final ImageEvent e = (ImageEvent) event;
                                 final InputStream is = SessionReplayImpl.this.loader.getFile(e.associatedFilename);
@@ -295,7 +330,7 @@ public class SessionReplayImpl implements SessionReplay {
 
                             previousEvent = event;
                         } catch (EOFException e) {
-//                            SessionReplayImpl.this.logger.info("EOFException thrown. File might not be closed correctly when it was written.");
+                            // SessionReplayImpl.this.logger.info("EOFException thrown. File might not be closed correctly when it was written.");
 
                             this.hasMore = false;
                             if (gettingMetaInfo.get()) {
@@ -311,8 +346,10 @@ public class SessionReplayImpl implements SessionReplay {
                     SessionReplayImpl.this.finishedLock.unlock();
 
                     try {
-                        // TODO: Why is the barrier awaited again, because it has a size of 2 and is already
-                        // awaited by the surrounding method's end and this thread's start.
+                        // TODO: Why is the barrier awaited again, because it has a size
+                        // of 2 and is already
+                        // awaited by the surrounding method's end and this thread's
+                        // start.
                         barrier.await();
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
@@ -324,6 +361,8 @@ public class SessionReplayImpl implements SessionReplay {
                 }
             }
         });
+
+        // TODO: Check for OptionWaitForFinish!!!
 
         t.setDaemon(true);
         t.start();
@@ -348,7 +387,7 @@ public class SessionReplayImpl implements SessionReplay {
     /**
      * Waits until the thread has finished.
      */
-    public void waitForFinish() {
+    public void _waitForFinish() {
         // If the lock is unlocked, do nothing
         if (this.finishedLock.tryLock()) return;
 
@@ -361,7 +400,7 @@ public class SessionReplayImpl implements SessionReplay {
 
     /**
      * Events of that class wont be passed.
-     *
+     * 
      * @param filter
      */
     @SuppressWarnings("unused")
