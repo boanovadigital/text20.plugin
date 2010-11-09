@@ -79,9 +79,7 @@ public class SessionReplayImpl implements SessionReplay {
     /** Xstream (de)serializer */
     final XStream xstream = new XStream();
 
-    /**
-     * Makes other threads wait for this element to be finished.
-     */
+    /** Makes other threads wait for this element to be finished. */
     final Lock finishedLock = new ReentrantLock();
 
     /** Input stream to read the content from */
@@ -117,7 +115,8 @@ public class SessionReplayImpl implements SessionReplay {
         SessionStreamer.setAlias(this.xstream);
         SessionStreamer.registerConverters(this.xstream);
 
-        // parse file to get properties and screen size
+        // Parse file to get properties and screen size
+        // TODO: Why do we always get the MetaInfo?
         replay(null, new OptionGetMetaInfo());
 
         waitForFinish();
@@ -143,7 +142,7 @@ public class SessionReplayImpl implements SessionReplay {
      */
     @Override
     public Map<String, String> getProperties(String... properties) {
-        waitForFinish();
+//        waitForFinish();
         return this.propertyMap;
     }
 
@@ -152,7 +151,7 @@ public class SessionReplayImpl implements SessionReplay {
      */
     @Override
     public Dimension getScreenSize() {
-        waitForFinish();
+//        waitForFinish();
         return this.screenSize;
     }
 
@@ -161,11 +160,6 @@ public class SessionReplayImpl implements SessionReplay {
      */
     @Override
     public synchronized void replay(final ReplayListener listener, final ReplayOption... options) {
-
-        // Create a barrier that allows us to wait for synchronous replay
-        // TODO: Remove barriers... Options: 1) Singlethread + waiting 2) Multithreaded multicallable
-        // (Issue #30)
-        final CyclicBarrier barrier = new CyclicBarrier(2);
 
         try {
             InputStream input = null;
@@ -223,8 +217,13 @@ public class SessionReplayImpl implements SessionReplay {
             slowdownFactor.set(ou.get(OptionSlowMotion.class).getFactor());
         }
 
+        // Create a barrier that allows us to wait for synchronous replay
+        // TODO: Remove barriers... Options: 1) Singlethread + waiting 2) Multithreaded multicallable
+        // (Issue #30)
+        final CyclicBarrier barrier = new CyclicBarrier(2);
+
         // Create the actual replay thread
-        final Thread t = new Thread(new Runnable() {
+        final Thread thread = new Thread(new Runnable() {
 
             private boolean hasMore = true;
 
@@ -308,10 +307,12 @@ public class SessionReplayImpl implements SessionReplay {
                             }
 
                             // Now we are permitted to fire the event.
-                            try {
-                                listener.nextEvent(event);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                            if (listener != null) {
+                                try {
+                                    listener.nextEvent(event);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
 
                             previousEvent = event;
@@ -336,18 +337,18 @@ public class SessionReplayImpl implements SessionReplay {
                         // awaited by the surrounding method's end and this thread's start.
                         barrier.await();
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     } catch (BrokenBarrierException e) {
-                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
         });
 
-        t.setDaemon(true);
-        t.start();
+        thread.setDaemon(true);
+        thread.start();
 
         // Synchronize with starting of thread.
         try {
@@ -380,13 +381,12 @@ public class SessionReplayImpl implements SessionReplay {
         return;
     }
 
-    /**
-     * Events of that class wont be passed.
-     *
-     * @param filter
-     */
-    @SuppressWarnings("unused")
-    private void addFilter(final Class<? extends AbstractSessionEvent> filter) {
-        this.toFilter.add(filter);
-    }
+//    /**
+//     * Events of that class wont be passed.
+//     *
+//     * @param filter
+//     */
+//    private void addFilter(final Class<? extends AbstractSessionEvent> filter) {
+//        this.toFilter.add(filter);
+//    }
 }
