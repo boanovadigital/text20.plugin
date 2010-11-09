@@ -101,13 +101,11 @@ public class SessionReplayImpl implements SessionReplay {
 
     @Override
     public Map<String, String> getProperties(String... properties) {
-        // waitForFinish();
         return this.propertyMap;
     }
 
     @Override
     public Dimension getScreenSize() {
-        // waitForFinish();
         return this.screenSize;
     }
 
