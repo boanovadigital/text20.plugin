@@ -1,5 +1,5 @@
 /*
- * BrainTrackingExtension
+ * BrainTrackingExtension.java
  *
  * Copyright (c) 2010, Farida Ismail, DFKI. All rights reserved.
  *
