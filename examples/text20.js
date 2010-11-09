@@ -1,8 +1,7 @@
 /*
  * text20.js
  *
- * Copyright (c) 2010, Ralf Biedert, German Research Center For 
- * Artificial Intelligence.
+ * Copyright (c) 2010, Ralf Biedert, German Research Center For Artificial Intelligence.
  *
  * All rights reserved.
  *
@@ -1121,34 +1120,39 @@ var text20 = {},
                         allExtensions += file.absolutePath(i) + ";"
                     })
 
-                    // Append <applet> tag
+                   	// Append <object> tag
+
+					var parameterString = "<param name='trackingdevice' value='" + connector.config.trackingDevice + "'>" +
+		                    			  "<param name='trackingconnection' value='" + connector.config.trackingURL + "'>" +
+		                    			  "<param name='enablebraintracker' value='" + connector.config.enableBrainTracker + "'>" +
+		                    			  "<param name='braintrackingconnection' value='" + connector.config.brainTrackingURL + "'>" +
+		                    			  "<param name='callbackprefix' value='" + callbacks.prefix() + "'>" +
+		                    			  "<param name='transmitmode' value='" + connector.config.transmitMode + "'>" +
+		                    			  "<param name='sessionpath' value='" + connector.config.sessionPath + "'>" +
+		                    			  "<param name='recordingenabled' value='" + connector.config.recordingEnabled + "'>" +
+		                    			  "<param name='extensions' value='" + allExtensions + "'>" +
+		                    			  "<param name='updatecheck' value='" + connector.config.updateCheck + "'>" +
+		                    			  "<param name='logging' value='" + connector.config.logging + "'>";
 /*
-                    $("body").append(
-						"<object type='application/x-java-applet' width='1' height='1'" +
-
-						"id='" + this.variables.appletID + "'" +
-
-						"<param name='name' value='Text20Engine'>" +
-						"<param name='archive' value='" + connector.config.archive + "'>" +
-						"<param name='code' value='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl'>" +
+					var string1 = "type='application/x-java-applet' width='1' height='1' name='Text20Engine' ";
+					var string2 = "id='" + this.variables.appletID + "' ";
+					var string3 = "code='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl' ";
+					var string4 = "archive='" + connector.config.archive + "' ";
+					var string5 = "codebase='./'";
 
 
-                        "<param name='trackingdevice' value='" + connector.config.trackingDevice + "'>" +
-	                    "<param name='trackingconnection' value='" + connector.config.trackingURL + "'>" +
-	                    "<param name='enablebraintracker' value='" + connector.config.enableBrainTracker + "'>" +
-	                    "<param name='braintrackingconnection' value='" + connector.config.brainTrackingURL + "'>" +
-	                    "<param name='callbackprefix' value='" + callbacks.prefix() + "'>" +
-	                    "<param name='transmitmode' value='" + connector.config.transmitMode + "'>" +
-	                    "<param name='sessionpath' value='" + connector.config.sessionPath + "'>" +
-	                    "<param name='recordingenabled' value='" + connector.config.recordingEnabled + "'>" +
-	                    "<param name='extensions' value='" + allExtensions + "'>" +
-	                    "<param name='updatecheck' value='" + connector.config.updateCheck + "'>" +
-	                    "<param name='logging' value='" + connector.config.logging + "'>" +
+					var mightyString = "<object " + string1 + string2 + string3 + string4 + string5 + " >";
 
-						"</object>");
+					alert(mightyString);
+
+					var oneStringToRuleThemAll = mightyString + parameterString + " </object>";
+
+					alert(oneStringToRuleThemAll);
+
+                    $("body").append(oneStringToRuleThemAll);
 */
 
-
+				   // Append <applet> tag
 
                    $("body").append("<applet " +
                         "id='" + this.variables.appletID + "'" +
@@ -1157,19 +1161,9 @@ var text20 = {},
                         "code='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl.class'" +
                         "width='1' height='1'" + "mayscript='true'" + ">" +
 
-                        "<param name='trackingdevice' value='" + connector.config.trackingDevice + "'/>" +
-                        "<param name='trackingconnection' value='" + connector.config.trackingURL + "'/>" +
-                        "<param name='enablebraintracker' value='" + connector.config.enableBrainTracker + "'/>" +
-                        "<param name='braintrackingconnection' value='" + connector.config.brainTrackingURL + "'/>" +
-                        "<param name='callbackprefix' value='" + callbacks.prefix() + "'/>" +
-                        "<param name='transmitmode' value='" + connector.config.transmitMode + "'/>" +
-                        "<param name='sessionpath' value='" + connector.config.sessionPath + "'/>" +
-                        "<param name='recordingenabled' value='" + connector.config.recordingEnabled + "'/>" +
-                        "<param name='extensions' value='" + allExtensions + "'/>" +
-                        "<param name='updatecheck' value='" + connector.config.updateCheck + "'/>" +
-                        "<param name='logging' value='" + connector.config.logging + "'/>" +
-                    "</applet>");
+						parameterString +
 
+                    "</applet>");
 
                     this.updateaLoadingStatus("Plugin added. Waiting for a lifesign. This usually takes 5-10 seconds.");
 
@@ -1488,8 +1482,8 @@ var text20 = {},
                     }
 
                     // Remove flag
-					// NOTE: Don't remove untransmitted tag for images... if they are shown onGazeOver/onGazeOut, the 
-                    // image type and content is null TODO: Fix this! But How?! :(
+					// NOTE: Don't remove untransmitted tag for images... if they are shown onGazeOver/onGazeOut, the image type and content is null
+					// TODO: Fix this! But How?! :(
 					if (this.tagName != "IMG") {
 						self.removeClass("untransmitted")
 					}
