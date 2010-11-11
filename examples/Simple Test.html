@@ -27,29 +27,28 @@
 	            return '#' + x() + x() + x();
 	        };
 
-	        $(document).ready(function() {
-				$('#img').attr('src', spacer);
 
-				// Configure the plugins
-		        text20.connector.config.extensions = ["extensions/yodeling.jar"];
-		        text20.connector.config.logging = "INFO";
-				text20.connector.config.useObjectTag = false;
+			$('#img').attr('src', spacer);
 
-		        // Register startup listener
-		        text20.connector.listener("INITIALIZED", function() {
-		            var sentence = $("body").get(0);
+			// Configure the plugins
+	        text20.connector.config.extensions = ["extensions/yodeling.jar"];
+	        text20.connector.config.logging = "INFO";
+			text20.connector.config.useObjectTag = false;
 
-		            var allTextNodes = text20.dom.textnodesBelow(sentence);
-		            var allSpans = text20.dom.spanify(allTextNodes);
+	        // Register startup listener
+	        text20.connector.listener("INITIALIZED", function() {
+	            var sentence = $("body").get(0);
 
-		            // Register text (please note, all this is optional. You only require core.init() below!)
-		            text20.core.register(allSpans);
-					text20.core.register($("#img"));
-		        });
+	            var allTextNodes = text20.dom.textnodesBelow(sentence);
+	            var allSpans = text20.dom.spanify(allTextNodes);
 
-		        // THIS IS THE ONLY LINE YOU REALLY NEED!
-		        text20.core.init();
-			});
+	            // Register text (please note, all this is optional. You only require core.init() below!)
+	            text20.core.register(allSpans);
+				text20.core.register($("#img"));
+	        });
+
+	        // THIS IS THE ONLY LINE YOU REALLY NEED!
+	        text20.core.init();
 		</script>
 	</head>
 

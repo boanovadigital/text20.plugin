@@ -22,24 +22,11 @@
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.perusal;
 
 /**
- * The level of perusal currently observed.
+ * The classified level of perusal currently observed.
  * 
- * @author rb
- *
+ * @author Ralf Biedert
  */
-@Deprecated
 public enum PerusalLevel {
-    /**
-     * If the progress is significantly faster than reading, the linewise pattern appears to dissolve 
-     * but the progress is still happening on text we classify it as fest skimming  
-     */
-    FAST_SKIMMING,
-
-    /**
-     * If there is reading progress significantly slower than reading we classify it as
-     * slow reading.
-     */
-    INTENSIVE_READING,
 
     /**
      * This is the default mode used upon calibration.
@@ -47,8 +34,9 @@ public enum PerusalLevel {
     READING,
 
     /**
-     * If the reading progress is significantly faster than reading but still mostly line base, we classify
-     * it as skimming 
+     * If the reading progress is significantly faster than reading but still mostly line
+     * base, we classify
+     * it as skimming
      */
     SKIMMING
 }

@@ -1,5 +1,5 @@
 /*
- * FixationLineHandlerFactory.java
+ * PerusalHandlerFactory.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,7 +19,7 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.impl.handler.fixationline.v4;
+package de.dfki.km.text20.services.evaluators.gaze.impl.handler.perusal.v4;
 
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.annotations.Capabilities;
@@ -33,7 +33,7 @@ import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 import de.dfki.km.text20.services.evaluators.gaze.GazeHandler;
 import de.dfki.km.text20.services.evaluators.gaze.GazeHandlerFactory;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixationline.FixationLineListener;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.perusal.PerusalListener;
 import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionGazeEvaluator;
 import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionGazeEvaluatorPassthrough;
@@ -45,7 +45,7 @@ import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionG
 @PluginImplementation
 @Version(version = 10000)
 @Author(name = "Ralf Biedert")
-public class FixationLineHandlerFactory implements GazeHandlerFactory {
+public class PerusalHandlerFactory implements GazeHandlerFactory {
 
     /** */
     @InjectPlugin
@@ -56,7 +56,7 @@ public class FixationLineHandlerFactory implements GazeHandlerFactory {
      */
     @Override
     public Class<? extends GazeEvaluationListener<?>> getEvaluatorType() {
-        return FixationLineListener.class;
+        return PerusalListener.class;
     }
 
     /* (non-Javadoc)
@@ -72,7 +72,7 @@ public class FixationLineHandlerFactory implements GazeHandlerFactory {
         final GazeEvaluator gazeEvaluator = ou.get(OptionGazeEvaluator.class).getGazeEvaluator();
 
         // Create the element
-        final FixationLineHandler4 handler = new FixationLineHandler4((FixationLineListener) listener, passThrough);
+        final PerusalHandlerImpl4 handler = new PerusalHandlerImpl4((PerusalListener) listener, passThrough);
 
         // Perform some setup
         handler.setPluginManager(this.pluginManager);
