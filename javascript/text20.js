@@ -1,7 +1,7 @@
 /*
  * text20.js
  *
- * Copyright (c) 2010, Ralf Biedert, German Research Center For 
+ * Copyright (c) 2010, Ralf Biedert, German Research Center For
  * Artificial Intelligence.
  *
  * All rights reserved.
@@ -642,6 +642,8 @@ var text20 = {},
 
             /** Internal variables. */
             transmitMode : "ASYNC",    // DO NOT TOUCH THIS
+
+			useObjectTag : false,
         },
 
         variables: {
@@ -1121,7 +1123,7 @@ var text20 = {},
                         allExtensions += file.absolutePath(i) + ";"
                     })
 
-                   	// Append <object> tag
+
 
 					var parameterString = "<param name='trackingdevice' value='" + connector.config.trackingDevice + "'>" +
 		                    			  "<param name='trackingconnection' value='" + connector.config.trackingURL + "'>" +
@@ -1134,37 +1136,42 @@ var text20 = {},
 		                    			  "<param name='extensions' value='" + allExtensions + "'>" +
 		                    			  "<param name='updatecheck' value='" + connector.config.updateCheck + "'>" +
 		                    			  "<param name='logging' value='" + connector.config.logging + "'>";
-/*
-					var string1 = "type='application/x-java-applet' width='1' height='1' name='Text20Engine' ";
-					var string2 = "id='" + this.variables.appletID + "' ";
-					var string3 = "code='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl' ";
-					var string4 = "archive='" + connector.config.archive + "' ";
-					var string5 = "codebase='./'";
 
 
-					var mightyString = "<object " + string1 + string2 + string3 + string4 + string5 + " >";
+					// (Issue #32)
+					if(connector.config.useObjectTag) {
+						// Append <object> tag
+						$("body").append(
+							'<object type="application/x-java-applet" name="Text20Engine"' +
+							'id="' + this.variables.appletID + '"' +
+							'archive="' + connector.config.archive + '"' +
+							'code="de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl"' +
+							'codebase="./"' +
+							'width="25" height="25" mayscript="true" >' +
 
-					alert(mightyString);
+							parameterString +
 
-					var oneStringToRuleThemAll = mightyString + parameterString + " </object>";
+							'</object>'
+						);
+					} else {
+						// Append <applet> tag
+	                    $("body").append(
+							"<applet " +
+	                        "id='" + this.variables.appletID + "'" +
+	                        "name='Text20Engine'" +
+	                        "archive='" + connector.config.archive + "'" +
+	                        "code='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl.class'" +
+	                        "width='1' height='1' mayscript='true' >" +
 
-					alert(oneStringToRuleThemAll);
+							parameterString +
 
-                    $("body").append(oneStringToRuleThemAll);
-*/
+	                    	"</applet>"
+						);
+					}
 
-				   // Append <applet> tag
 
-                   $("body").append("<applet " +
-                        "id='" + this.variables.appletID + "'" +
-                        "name='Text20Engine'" +
-                        "archive='" + connector.config.archive + "'" +
-                        "code='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl.class'" +
-                        "width='1' height='1'" + "mayscript='true'" + ">" +
 
-						parameterString +
 
-                    "</applet>");
 
                     this.updateaLoadingStatus("Plugin added. Waiting for a lifesign. This usually takes 5-10 seconds.");
 
@@ -1483,7 +1490,7 @@ var text20 = {},
                     }
 
                     // Remove flag
-					// NOTE: Don't remove untransmitted tag for images... if they are shown onGazeOver/onGazeOut, the 
+					// NOTE: Don't remove untransmitted tag for images... if they are shown onGazeOver/onGazeOut, the
                     // image type and content is null TODO: Fix this! But How?! :(
 					if (this.tagName != "IMG") {
 						self.removeClass("untransmitted")
