@@ -28,9 +28,9 @@ import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 
 /**
  * Base class of all gaze handler
- *
+ * 
  * @author rb
- *
+ * 
  */
 public abstract class AbstractGazeHandler {
     /** The executor to trigger JavaScript */
@@ -47,7 +47,7 @@ public abstract class AbstractGazeHandler {
 
     /**
      * Init the gaze handler
-     *
+     * 
      * @param master
      * @param pr
      * @param bp
@@ -76,7 +76,7 @@ public abstract class AbstractGazeHandler {
     /**
      * Sets this plugin to reduced communication. In that case, plugins should only
      * transmit what is absolutely neccessary.
-     *
+     * 
      * @param b
      */
     public void setReducedCommunication(final boolean b) {
@@ -85,7 +85,7 @@ public abstract class AbstractGazeHandler {
 
     /**
      * We require the handler to register themselves to some evaluator.
-     *
+     * 
      * @param evaluator
      */
     protected abstract void registerToEvaluator(GazeEvaluator evaluator);

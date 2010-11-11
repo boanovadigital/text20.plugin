@@ -22,20 +22,12 @@
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.perusal;
 
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationEvent;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixationline.FixationLine;
 
 /**
+ * Fired when perusal on text is detected.
  * 
- * 
- * @author rb
+ * @author Ralf Biedert
  */
 public interface PerusalEvent extends GazeEvaluationEvent {
-
-    /**
-     * Returns the fixation line upon which perusal happened. 
-     *  
-     * @return .
-     */
-    public FixationLine getFixationLine();
 
 }

@@ -42,8 +42,7 @@ import de.dfki.km.text20.browserplugin.services.persistentpreferences.impl.Persi
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.SessionRecorderManagerImpl;
 import de.dfki.km.text20.services.evaluators.gaze.impl.GazeEvaluatorManagerImpl;
 import de.dfki.km.text20.services.evaluators.gaze.impl.handler.fixation.v1.FixationHandlerFactory;
-import de.dfki.km.text20.services.evaluators.gaze.impl.handler.fixationline.v4.FixationLineHandlerFactory;
-import de.dfki.km.text20.services.evaluators.gaze.impl.handler.perusal.v3.PerusalHandlerFactory;
+import de.dfki.km.text20.services.evaluators.gaze.impl.handler.perusal.v4.PerusalHandlerFactory;
 import de.dfki.km.text20.services.evaluators.gaze.impl.handler.raw.v1.RawHandlerFactory;
 import de.dfki.km.text20.services.evaluators.gaze.impl.handler.saccade.v1.SaccadeHandlerFactory;
 import de.dfki.km.text20.services.evaluators.gaze.impl.handler.weaksaccade.v2.WeakSaccadeHandlerFactory;
@@ -53,9 +52,9 @@ import de.dfki.km.text20.services.trackingdevices.eyes.impl.mouse.MouseTrackingD
 import de.dfki.km.text20.services.trackingdevices.eyes.impl.trackingserver.TrackingServerDeviceProviderImpl;
 
 /**
- *
+ * 
  * @author rb
- *
+ * 
  */
 public class FrameworkManager {
     /**
@@ -65,7 +64,7 @@ public class FrameworkManager {
 
     /**
      * @param props
-     *
+     * 
      */
     public FrameworkManager(JSPFProperties props) {
         initPluginFramework(props);
@@ -73,6 +72,7 @@ public class FrameworkManager {
 
     /**
      * Return ths plugin manager
+     * 
      * @return .
      */
     public PluginManager getPluginManager() {
@@ -81,6 +81,7 @@ public class FrameworkManager {
 
     /**
      * Init the plugin framework
+     * 
      * @param props
      */
     private void initPluginFramework(JSPFProperties props) {
@@ -108,7 +109,6 @@ public class FrameworkManager {
 
         // Add current handler ...
         this.pluginManager.addPluginsFrom(new ClassURI(FixationHandlerFactory.class).toURI());
-        this.pluginManager.addPluginsFrom(new ClassURI(FixationLineHandlerFactory.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(PerusalHandlerFactory.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(RawHandlerFactory.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(SaccadeHandlerFactory.class).toURI());
