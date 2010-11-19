@@ -59,6 +59,7 @@ import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration.SessionDirectoryItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration.TransmissionModeItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.BrowserAPIItem;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.GazeEvaluatorItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.JavaScriptExecutorItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.MasterGazeHandlerItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.PageManagerItem;
@@ -73,6 +74,7 @@ import de.dfki.km.text20.browserplugin.services.pagemanager.PageManagerManager;
 import de.dfki.km.text20.browserplugin.services.persistentpreferences.PersistentPreferences;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorderManager;
+import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 import de.dfki.km.text20.services.pseudorenderer.PseudorendererManager;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
@@ -110,6 +112,9 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
     /** Handles tracking events. */
     private MasterGazeHandler gazeHandler;
+
+    /** Evaluate raw gaze events. */
+    private GazeEvaluator gazeEvaluator;
 
     /** Keeps a reference to the plugin manager, in order not to overload this class */
     private InformationBroker infoBroker;
@@ -417,14 +422,15 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         // Setup mouse recording
         initMouseRecording();
 
-        // Publish items of the information broker
-        publishBrokerItems();
-
         // Try to get the window
         tryGetWindow();
 
         // Provide the tracking device to other listeners.
         this.gazeHandler.setTrackingDevice(this.eyeTrackingDevice);
+        this.gazeEvaluator = this.gazeHandler.getGazeEvaluator();
+
+        // Publish items of the information broker
+        publishBrokerItems();
 
         tellJSStatus("INITIALIZED");
     }
@@ -703,7 +709,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.callbackPrefix = $(getParameter("callbackprefix")).get("");
 
         System.out.println(getParameter("extensions"));
-        
+
         $(getParameter("extensions")).split(";").forEach(new F1<String, String>() {
             @Override
             public String f(String path) {
@@ -730,6 +736,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.infoBroker.publish(MasterGazeHandlerItem.class, this.gazeHandler);
         this.infoBroker.publish(PseudorendererItem.class, this.pseudorender);
         this.infoBroker.publish(SessionRecorderItem.class, this.sessionRecorder);
+        this.infoBroker.publish(GazeEvaluatorItem.class, this.gazeEvaluator);
         this.infoBroker.publish(JavaScriptExecutorItem.class, this);
         this.infoBroker.publish(BrowserAPIItem.class, this);
 
