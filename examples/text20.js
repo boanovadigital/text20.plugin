@@ -713,19 +713,20 @@ var text20 = {},
 
                 /** Adds a listener for the given extension callback channel */
                 listener: function(channel, l) {
-                    listeners.add(channel, l);
+                    this.listeners.add(channel, l);
                 },
 
                 /** Called back by the connector and dispatches calls to our registered elements */
                 callback: function(name, args) {
-                    var l = listeners.get(name),
+                    var l = this.listeners.get(name),
                         opts = "";
+
 
                     // Assemble arguments
                     for(var i=0; i<args.length; i++) {
                         opts += ",args[" + i + "]"
                     }
-
+                    
                     // Remove first comma
                     if(opts.length > 0) { opts = opts.substr(1) }
 
@@ -1082,9 +1083,7 @@ var text20 = {},
                             rest.push(arguments[i])
                         }
 
-                        connector.variables.listeners.process("specialCallback", function(f){
-                            f(name, rest)
-                        });
+                        text20.connector.extensions.registry.callback(name, rest);
                     }
                     catch (e) {
                         alert("specialCallbackListener() failure : " + e);
