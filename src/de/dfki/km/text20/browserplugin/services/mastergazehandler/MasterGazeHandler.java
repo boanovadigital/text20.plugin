@@ -23,19 +23,22 @@ package de.dfki.km.text20.browserplugin.services.mastergazehandler;
 
 import java.util.List;
 
+import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.util.filter.ChainedFilter;
 
 /**
- * A master gaze handler registers itself to the tracking device and receives raw gaze data. It feeds this information 
- * into other plugins (subhandler) which in turn detect different condition (fixations, ...). A given JSHAndler is used to evaluate
- * occured events.
+ * A master gaze handler registers itself to the tracking device and receives raw gaze
+ * data. It feeds this information into other plugins (subhandlers) which in turn detect
+ * different conditions (fixations, ...). A given JSHandler is used to push our events to
+ * JavaScript.
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 public interface MasterGazeHandler {
 
     /**
+     * Returns a handler for the given type of event.
      * 
      * @param type
      * @return .
@@ -43,15 +46,23 @@ public interface MasterGazeHandler {
     public List<String> getHandlerForType(String type);
 
     /**
-     * Call this function to reduce the callback load for a while. The master gaze handler will disable high-frequency calls
-     * in order to reduce computation load in the JS engine.
+     * Returns the gaze evaluator for this handler.
      * 
-     * @param timeToDisable
+     * @return The used gaze evaluator.
+     */
+    public GazeEvaluator getGazeEvaluator();
+
+    /**
+     * Call this function to reduce the callback load for a while. The master gaze handler
+     * will disable high-frequency calls in order to reduce computation load in the JS
+     * engine.
+     * 
+     * @param timeToDisable The number of miliseconds to disable the JavaScript callbacks.
      */
     public void reduceJSLoad(int timeToDisable);
 
     /**
-     * Registers a callback handler 
+     * Registers a callback handler
      * 
      * @param type
      * @param listener
@@ -59,7 +70,7 @@ public interface MasterGazeHandler {
     public void registerJSCallback(String type, String listener);
 
     /**
-     * Remove a handler 
+     * Remove a handler
      * 
      * @param listener
      */
@@ -67,7 +78,7 @@ public interface MasterGazeHandler {
 
     /**
      * Sets the tracking device for this gaze handler.
-     *  
+     * 
      * @param trackingDevice
      */
     public void setTrackingDevice(EyeTrackingDevice trackingDevice);

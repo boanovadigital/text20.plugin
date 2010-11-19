@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.jcores.interfaces.functions.F2ReduceObjects;
+import net.jcores.interfaces.functions.F1;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.util.JSPFProperties;
 import net.xeoh.plugins.informationbroker.InformationBroker;
@@ -702,9 +702,11 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.transmitMode = TransmitMode.valueOf($(getParameter("transmitmode")).get("DIRECT").toUpperCase());
         this.callbackPrefix = $(getParameter("callbackprefix")).get("");
 
-        $(getParameter("extensions")).split(";").reduce(new F2ReduceObjects<String>() {
+        System.out.println(getParameter("extensions"));
+        
+        $(getParameter("extensions")).split(";").forEach(new F1<String, String>() {
             @Override
-            public String f(String left, String path) {
+            public String f(String path) {
                 try {
                     final URI uri = OS.absoluteBrowserPathToURI(path);
                     BrowserPluginImpl.this.logger.info("Trying to load user defined extension at " + uri);

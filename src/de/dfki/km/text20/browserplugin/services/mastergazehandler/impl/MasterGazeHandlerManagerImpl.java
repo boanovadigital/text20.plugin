@@ -30,9 +30,9 @@ import de.dfki.km.text20.browserplugin.services.mastergazehandler.MasterGazeHand
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 
 /**
- *
+ * 
  * @author rb
- *
+ * 
  */
 @PluginImplementation
 public class MasterGazeHandlerManagerImpl implements MasterGazeHandlerManager {
