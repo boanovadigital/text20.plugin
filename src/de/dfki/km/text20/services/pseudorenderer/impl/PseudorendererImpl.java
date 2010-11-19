@@ -59,7 +59,7 @@ public class PseudorendererImpl implements Pseudorenderer {
     final Lock elementsLock = new ReentrantLock();
 
     /** The last change ID we emitted */
-    long lastChangeID = 0;
+    volatile long lastChangeID = 0;
 
     /** Keeps all render elements created in this context */
     final Collection<RenderElement> renderElements = new ArrayList<RenderElement>();
@@ -294,6 +294,8 @@ public class PseudorendererImpl implements Pseudorenderer {
     }
 
     /**
+     * Returns an unique ID to track changes.
+     * 
      * @return
      */
     protected long getChangeID() {

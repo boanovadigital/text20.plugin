@@ -30,16 +30,19 @@ import java.util.logging.Logger;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.Thread;
+import net.xeoh.plugins.base.annotations.events.Init;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
+import net.xeoh.plugins.informationbroker.InformationBroker;
+import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
 import net.xeoh.plugins.remote.RemoteAPILipe;
 import de.dfki.km.augmentedtext.services.datasource.dbpedia.DBPedia;
 import de.dfki.km.augmentedtext.services.language.statistics.Statistics;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.JavaScriptExecutorItem;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.SetupParameter;
 
 /**
- *
+ * 
  * @author rb
  */
 @PluginImplementation
@@ -62,10 +65,17 @@ public class BackgroundServicesExtension implements Extension {
     public RemoteAPILipe lipe;
 
     /** */
+    @InjectPlugin
+    public InformationBroker broker;
+
+    /** */
     JSExecutor jsExecutor;
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#executeFunction(java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#
+     * executeFunction(java.lang.String, java.lang.String)
      */
     @Override
     @SuppressWarnings("boxing")
@@ -108,22 +118,21 @@ public class BackgroundServicesExtension implements Extension {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#getSupportedFunctions()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#
+     * getSupportedFunctions()
      */
     @Override
     public String[] getDynamicFunctions() {
         return new String[] { "getAbstract", "getProbability" };
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#setParameter(de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.SetupParameter, java.lang.Object)
-     */
-    @Override
-    public void setParameter(SetupParameter parameter, Object value) {
-        if (parameter == SetupParameter.JAVASCRIPT_EXECUTOR) {
-            this.jsExecutor = (JSExecutor) value;
-        }
+    /** Called upon init */
+    @Init
+    public void init() {
+        this.jsExecutor = new InformationBrokerUtil(this.broker).get(JavaScriptExecutorItem.class);
     }
 
     /** Is in a separate thread because the lookup can take some time */

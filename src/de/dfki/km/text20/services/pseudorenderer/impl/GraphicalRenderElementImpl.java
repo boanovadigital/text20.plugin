@@ -30,11 +30,31 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderE
 public class GraphicalRenderElementImpl extends RenderElementImpl implements
         GraphicalRenderElement {
 
+    /** Image source of this element */
+    private String source;
+    
     /**
      * @param pseudorendererImpl
      */
     GraphicalRenderElementImpl(PseudorendererImpl pseudorendererImpl) {
         super(pseudorendererImpl);
+    }
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderElement#getSrc()
+     */
+    @Override
+    public String getSource() {
+        return this.source;
+    }
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderElement#setSrc(java.lang.String)
+     */
+    @Override
+    public void setSource(String src) {
+        this.source = src;
+        updateChangeID();
     }
 
 }

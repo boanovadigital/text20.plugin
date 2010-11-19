@@ -25,13 +25,17 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
+import net.xeoh.plugins.base.annotations.events.Init;
+import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
+import net.xeoh.plugins.informationbroker.InformationBroker;
+import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.SessionRecorderItem;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.SetupParameter;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 
 /**
  * @author rb
- *
+ * 
  */
 @PluginImplementation
 public class SessionRecorderExtensions implements Extension {
@@ -39,8 +43,15 @@ public class SessionRecorderExtensions implements Extension {
     /** */
     private SessionRecorder sessionRecorder;
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#executeFunction(java.lang.String, java.lang.String)
+    /** */
+    @InjectPlugin
+    public InformationBroker broker;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#
+     * executeFunction(java.lang.String, java.lang.String)
      */
     @Override
     public Object executeDynamicFunction(String function, String args) {
@@ -79,21 +90,20 @@ public class SessionRecorderExtensions implements Extension {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#getSupportedFunctions()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#
+     * getSupportedFunctions()
      */
     @Override
     public String[] getDynamicFunctions() {
         return new String[] { "markLog", "takeScreenshot", "mouseClicked" };
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#setParameter(de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.SetupParameter, java.lang.Object)
-     */
-    @Override
-    public void setParameter(SetupParameter parameter, Object value) {
-        if (parameter == SetupParameter.SESSION_RECORDER)
-            this.sessionRecorder = (SessionRecorder) value;
+    /** Called upon init */
+    @Init
+    public void init() {
+        this.sessionRecorder = new InformationBrokerUtil(this.broker).get(SessionRecorderItem.class);
     }
-
 }

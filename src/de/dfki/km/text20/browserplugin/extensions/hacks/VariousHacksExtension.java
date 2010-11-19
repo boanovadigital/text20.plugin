@@ -27,9 +27,15 @@ import java.net.URLDecoder;
 import java.util.Collection;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
+import net.xeoh.plugins.base.annotations.events.Init;
+import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
+import net.xeoh.plugins.informationbroker.InformationBroker;
+import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.BrowserAPIItem;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.MasterGazeHandlerItem;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.PseudorendererItem;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.SetupParameter;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.MasterGazeHandler;
 import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
@@ -37,7 +43,7 @@ import de.dfki.km.text20.services.pseudorenderer.RenderElement;
 
 /**
  * @author rb
- *
+ * 
  */
 @PluginImplementation
 public class VariousHacksExtension implements Extension {
@@ -51,8 +57,15 @@ public class VariousHacksExtension implements Extension {
     /** */
     private Pseudorenderer pseudorender;
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#executeFunction(java.lang.String, java.lang.String)
+    /** */
+    @InjectPlugin
+    public InformationBroker broker;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#
+     * executeFunction(java.lang.String, java.lang.String)
      */
     @Override
     public Object executeDynamicFunction(String function, String args) {
@@ -91,28 +104,22 @@ public class VariousHacksExtension implements Extension {
         return null;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#getSupportedFunctions()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#
+     * getSupportedFunctions()
      */
     @Override
     public String[] getDynamicFunctions() {
         return new String[] { "reduceJSLoad", "invalidateRectangle" };
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#setParameter(de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.SetupParameter, java.lang.Object)
-     */
-    @Override
-    public void setParameter(SetupParameter parameter, Object value) {
-        if (parameter == SetupParameter.GAZE_HANDLER)
-            this.gazeHandler = (MasterGazeHandler) value;
-
-        if (parameter == SetupParameter.BROWSER_API)
-            this.browserAPI = (BrowserAPI) value;
-
-        if (parameter == SetupParameter.PSEUDO_RENDERER)
-            this.pseudorender = (Pseudorenderer) value;
-
+    /** Called upon init */
+    @Init
+    public void init() {
+        this.gazeHandler = new InformationBrokerUtil(this.broker).get(MasterGazeHandlerItem.class);
+        this.browserAPI = new InformationBrokerUtil(this.broker).get(BrowserAPIItem.class);
+        this.pseudorender = new InformationBrokerUtil(this.broker).get(PseudorendererItem.class);
     }
-
 }

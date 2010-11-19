@@ -65,19 +65,6 @@ public class BatchHandler {
         }
 
         // Now check which call we have ...
-        if (method.equals("simpleBenchmark")) {
-            for (int i = 0; i < splittedArguments.size(); i++) {
-                final String[] argument = splittedArguments.get(i);
-                if (argument.length == 4) {
-
-                    this.browserAPI.simpleBenchmark(argument[0], argument[1], argument[2], argument[3]);
-
-                } else {
-                    this.logger.warning("Batch: Wrong number of elements!");
-                }
-            }
-        }
-
         if (method.equals("updateElementFlag")) {
             for (int i = 0; i < splittedArguments.size(); i++) {
                 final String[] argument = splittedArguments.get(i);

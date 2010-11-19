@@ -33,7 +33,6 @@ import net.xeoh.plugins.remote.PublishMethod;
 import net.xeoh.plugins.remotediscovery.DiscoveredPlugin;
 import net.xeoh.plugins.remotediscovery.RemoteDiscovery;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.SetupParameter;
 
 /**
  * @author rb
@@ -131,13 +130,4 @@ public class DiscoveryExtension implements Extension {
     public String[] getDynamicFunctions() {
         return new String[] { "obtainServiceURL" };
     }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#setParameter(de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.SetupParameter, java.lang.Object)
-     */
-    @Override
-    public void setParameter(SetupParameter parameter, Object value) {
-        //
-    }
-
 }

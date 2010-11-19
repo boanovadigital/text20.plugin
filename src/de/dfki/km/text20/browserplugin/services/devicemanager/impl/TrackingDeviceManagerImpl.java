@@ -33,8 +33,8 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
 import net.xeoh.plugins.base.options.getplugin.OptionCapabilities;
 import net.xeoh.plugins.informationbroker.InformationBroker;
-import net.xeoh.plugins.informationbroker.standarditems.vanilla.VanillaItem;
 import de.dfki.km.text20.browserplugin.services.devicemanager.TrackingDeviceManager;
+import de.dfki.km.text20.browserplugin.services.devicemanager.brokeritems.devices.EyeTrackingDeviceItem;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDeviceProvider;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
@@ -45,9 +45,8 @@ import de.dfki.km.text20.util.rd3party.sound.AePlayWave;
 
 /**
  * Manages the tracking device
- *
- * @author rb
- *
+ * 
+ * @author Ralf Biedert
  */
 @PluginImplementation
 public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
@@ -83,19 +82,16 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
     /** */
     final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.devicemanager.TrackingDeviceManager#getTrackingDevice()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.devicemanager.TrackingDeviceManager
+     * #initTrackerConnection(java.lang.String, java.lang.String)
      */
     @Override
-    public EyeTrackingDevice getEyeTrackingDevice() {
-        return this.eyeTrackingDevice;
-    }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.devicemanager.TrackingDeviceManager#initTrackerConnection(java.lang.String, java.lang.String)
-     */
-    @Override
-    public void initEyeTrackerConnection(final String _deviceSelector, final String _trackerConnection) {
+    public EyeTrackingDevice initEyeTrackerConnection(final String _deviceSelector,
+                                                      final String _trackerConnection) {
 
         boolean autoDetection = false;
 
@@ -142,7 +138,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         // No device is bad ... at this stage ...
         if (deviceProvider == null) {
             this.logger.warning("No tracking device found for " + deviceSelector + "!");
-            return;
+            return null;
         }
 
         this.logger.info("Device found, opening connection to " + trackerConnection);
@@ -163,7 +159,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
             // No device is bad ... at this stage ...
             if (deviceProvider == null) {
                 this.logger.warning("Still no tracking device found for " + deviceSelector + ". This is really bad.");
-                return;
+                return null;
             }
 
             // Now open the fallback device
@@ -172,19 +168,21 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
             // Bad luck today.
             if (this.eyeTrackingDevice == null) {
                 this.logger.warning("No device found. This is terminal.");
-                return;
+                return null;
             }
         }
 
         // Check if we have a "true" tracking device unrelated to the mouse
         if (deviceSelector.equals("eyetrackingdevice:trackingserver") && this.eyeTrackingDevice != null) {
-            this.infoBroker.publish(new VanillaItem<EyeTrackingDevice>("eyetracking:truedevice", this.eyeTrackingDevice));
+            this.infoBroker.publish(EyeTrackingDeviceItem.class, this.eyeTrackingDevice);
             new AePlayWave(getClass().getResourceAsStream("tracker.wav")).start();
         } else {
             new AePlayWave(getClass().getResourceAsStream("mouse.wav")).start();
         }
 
         addDataRateListener();
+
+        return this.eyeTrackingDevice;
     }
 
     private void addDataRateListener() {
@@ -223,20 +221,15 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         }, 2500, 2500);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.browserplugin.services.devicemanager.TrackingDeviceManager#getBTrackingDevice()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.text20.browserplugin.services.devicemanager.TrackingDeviceManager#
+     * initBrainTrackerConnection(java.lang.String, java.lang.String)
      */
     @Override
-    public BrainTrackingDevice getBrainTrackingDevice() {
-        return this.brainTrackingDevice;
-    }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.browserplugin.services.devicemanager.TrackingDeviceManager#initBrainTrackerConnection(java.lang.String, java.lang.String)
-     */
-    @Override
-    public void initBrainTrackerConnection(String _deviceSelector,
-                                           String _trackerConnection) {
+    public BrainTrackingDevice initBrainTrackerConnection(String _deviceSelector,
+                                                          String _trackerConnection) {
 
         // Setup device
         String trackerConnection = _trackerConnection;
@@ -253,7 +246,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         // No device is bad ... at this stage ...
         if (deviceProvider == null) {
             this.logger.warning("No brain tracker device provide found");
-            return;
+            return null;
         }
 
         this.logger.info("Device found, opening connection to " + trackerConnection);
@@ -264,7 +257,9 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         // If opening the device didn't work and we have autodetection, use the mouse
         if (this.brainTrackingDevice == null) {
             this.logger.info("Device did not open. No brainz today.");
-            return;
+            return null;
         }
+
+        return this.brainTrackingDevice;
     }
 }

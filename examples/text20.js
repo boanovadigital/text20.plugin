@@ -1489,13 +1489,6 @@ var text20 = {},
                         connection.transmitElementMetaInformation(id, "wordID", word);
                     }
 
-                    // Remove flag
-					// NOTE: Don't remove untransmitted tag for images... if they are shown onGazeOver/onGazeOut, the
-                    // image type and content is null TODO: Fix this! But How?! :(
-					if (this.tagName != "IMG") {
-						self.removeClass("untransmitted")
-					}
-
                     // Rember that we registered an element
                     registered = true
                 });
@@ -1523,9 +1516,14 @@ var text20 = {},
 
                     var pos = dom.documentPosition(this),
                         w = parseInt(this.offsetWidth),
-                        h = parseInt(this.offsetHeight);
-
-                    connection.transmitElement(id, null, null, pos[0], pos[1], w, h);
+                        h = parseInt(this.offsetHeight),
+                        content = null;
+                        
+                    // If we have an image tag, check the .src again (might have changed
+                    if(this.tagName == "IMG") content = this.src;    
+                    
+                    
+                    connection.transmitElement(id, null, content, pos[0], pos[1], w, h);
                 });
 
                 connector.connection.endBatch();

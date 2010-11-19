@@ -29,8 +29,7 @@ import de.dfki.km.text20.browserplugin.services.pagemanager.PageManagerManager;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 
 /**
- * @author rb
- *
+ * @author Ralf Biedert
  */
 @PluginImplementation
 public class PageManagerManagerImpl implements PageManagerManager {
@@ -39,6 +38,9 @@ public class PageManagerManagerImpl implements PageManagerManager {
     @InjectPlugin
     public PluginManager pluginManager;
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.browserplugin.services.pagemanager.PageManagerManager#createPageManager(de.dfki.km.text20.services.pseudorenderer.Pseudorenderer)
+     */
     @Override
     public PageManager createPageManager(final Pseudorenderer pseudorenderer) {
         return new PageManagerImpl(this.pluginManager, pseudorenderer);

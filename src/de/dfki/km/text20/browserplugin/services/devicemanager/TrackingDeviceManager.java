@@ -28,40 +28,28 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 /**
  * Manages gaze tracking devices.
  * 
- * @author rb
- *
+ * @author Ralf Biedert
+ * 
  */
 public interface TrackingDeviceManager extends Plugin {
 
     /**
-     * Returns the tracking device
+     * Inits the tracker connection using a given identifier.
      * 
-     * @return The current tracking device
-     *  
+     * @param deviceSelector
+     * @param trackerConnection
+     * @return Returns the initialized eye tracking device.
      */
-    public EyeTrackingDevice getEyeTrackingDevice();
-
-    /**
-     * Returns the brain tracking device
-     * 
-     * @return The current tracking device
-     *  
-     */
-    public BrainTrackingDevice getBrainTrackingDevice();
+    public EyeTrackingDevice initEyeTrackerConnection(String deviceSelector,
+                                                      String trackerConnection);
 
     /**
      * Inits the tracker connection using a given identifier.
      * 
      * @param deviceSelector
      * @param trackerConnection
+     * @return Returns the initialized brain tracking device.
      */
-    public void initEyeTrackerConnection(String deviceSelector, String trackerConnection);
-
-    /**
-     * Inits the tracker connection using a given identifier.
-     * 
-     * @param deviceSelector
-     * @param trackerConnection
-     */
-    public void initBrainTrackerConnection(String deviceSelector, String trackerConnection);
+    public BrainTrackingDevice initBrainTrackerConnection(String deviceSelector,
+                                                          String trackerConnection);
 }

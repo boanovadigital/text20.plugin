@@ -25,24 +25,28 @@ import java.awt.Rectangle;
 import java.io.Serializable;
 
 /**
- * Represents a rendering element. Note that a render element is a 'live' object. Its values might change after you 
- * query it, depending on changes to the element or the pseudorenderer. 
+ * Represents a rendering element. Note that a render element is a 'live' object. Its
+ * values might change after you query it, depending on changes to the element or the
+ * pseudorenderer.
  * 
  * @author Ralf Biedert
- *
+ * 
  */
 public interface RenderElement {
 
     /**
-     * Returns the coordinates type this element conforms to. 
+     * Returns the coordinates type this element conforms to.
      * 
-     * @return .
+     * @return The {@link CoordinatesType} of this element
      */
     public CoordinatesType getCoordinatesType();
 
     /**
-     * Returns the position of this element relative to the given type of coordinate system.
-     * @param type 
+     * Returns the position of this element relative to the given type of coordinate
+     * system.
+     * 
+     * @param type Specified relative to which coordinates system we should return
+     * coordinates.
      * 
      * @return .
      */
@@ -50,26 +54,58 @@ public interface RenderElement {
 
     /**
      * Gets the identifier of that element which is used outside.
-     *   
-     * @return . 
+     * 
+     * @return .
      */
     public String getIdentifier();
 
     /**
+     * Returns a meta attribute value.
+     * 
+     * @param key
+     * @return .
+     */
+    public Serializable getMetaAttribute(RenderElementMetaAttribute key);
+
+    /**
+     * Returns the element's z index.
      * 
      * @return .
      */
     public int getZIndex();
 
     /**
-     * Sets the windowGeometry of this element. Be careful! The type parameter influences how these elements
-     * are treated later on, it is NOT merely a coordinate transformation.
+     * Checks if the render element has the given key.
      * 
-     * Elements with a DOCUMENT_POSITION don't change their position relative to the document start.  
-     * Elements with a VIEWPORT_POSITION "move" their document position when the window scrolls. 
+     * @param key The key to check.
      * 
-     * @param rectangle 
-     * @param type 
+     * @return True if it has the key, false if not.
+     */
+    public boolean hasMetaAttribute(RenderElementMetaAttribute key);
+
+    /**
+     * Returns true if the element is visible.
+     * 
+     * @return True if the element is visible, false if not.
+     */
+    public boolean isVisible();
+
+    /**
+     * Sets the windowGeometry of this element. Be careful! The type parameter influences
+     * how these elements are treated later on, it is NOT merely a coordinate
+     * transformation.<br/>
+     * <br/>
+     * 
+     * Elements with a DOCUMENT_POSITION don't change their position relative to the
+     * document start.<br/>
+     * <br/>
+     * 
+     * Elements with a VIEWPORT_POSITION "move" their document position when the window
+     * scrolls.<br/>
+     * <br/>
+     * 
+     * @param rectangle
+     * @param type
      * 
      */
     public void setGeometry(Rectangle rectangle, CoordinatesType type);
@@ -77,16 +113,9 @@ public interface RenderElement {
     /**
      * Sets the identifier of that element which is used outside.
      * 
-     * @param id
+     * @param id The element's id, mostly the id used in the DOM tree.
      */
     public void setIdentifier(String id);
-
-    /**
-     * Sets a z index.
-     * 
-     * @param zindex
-     */
-    public void setZIndex(int zindex);
 
     /**
      * Sets a meta attribute.
@@ -97,28 +126,16 @@ public interface RenderElement {
     public void setMetaAttribute(RenderElementMetaAttribute key, Serializable value);
 
     /**
-     * @param key
+     * Sets if this element is visible or not.
      * 
-     * @return . 
-     */
-    public boolean hasMetaAttribute(RenderElementMetaAttribute key);
-
-    /**
-     * @param key
-     * @return .
-     */
-    public Serializable getMetaAttribute(RenderElementMetaAttribute key);
-
-    /**
-     * Returns true if the element is visible.
-     * 
-     * @return .
-     */
-    public boolean isVisible();
-
-    /**
-     * 
-     * @param visible
+     * @param visible True if it is, false if not.
      */
     public void setVisible(boolean visible);
+
+    /**
+     * Sets a z index.
+     * 
+     * @param zindex
+     */
+    public void setZIndex(int zindex);
 }

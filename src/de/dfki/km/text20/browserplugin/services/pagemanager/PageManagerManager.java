@@ -25,12 +25,13 @@ import net.xeoh.plugins.base.Plugin;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 
 /**
+ * Provides page managers for pseudorenderers.
  * 
- * @author rb
- *
+ * @author Ralf Biedert
  */
 public interface PageManagerManager extends Plugin {
     /**
+     * Creates a new page manager for a given pseudorenderer.
      * 
      * @param pseudorenderer
      * @return A new page manager

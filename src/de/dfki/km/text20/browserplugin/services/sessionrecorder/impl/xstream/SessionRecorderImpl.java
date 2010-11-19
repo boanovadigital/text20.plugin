@@ -42,11 +42,11 @@ import javax.imageio.ImageIO;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.util.OptionUtils;
 import net.xeoh.plugins.informationbroker.InformationBroker;
-import net.xeoh.plugins.informationbroker.standarditems.strings.StringID;
 import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
 
 import com.thoughtworks.xstream.XStream;
 
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration.SessionDirectoryItem;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.CreateRecorderOption;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.SpecialCommandOption;
@@ -60,7 +60,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 /**
  * @author Ralf Biedert
  * @author Andreas Buhl
- *
+ * 
  */
 public class SessionRecorderImpl implements SessionRecorder {
 
@@ -105,8 +105,12 @@ public class SessionRecorderImpl implements SessionRecorder {
     /** */
     private static final String filenameExtension = ".xstream";
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#getPreference(java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #getPreference(java.lang.String, java.lang.String)
      */
     @Override
     public void getPreference(final String key, final String deflt) {
@@ -115,8 +119,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.getPreference(key, deflt);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#markLog(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #markLog(java.lang.String)
      */
     @Override
     public void markLog(final String tag) {
@@ -125,8 +133,12 @@ public class SessionRecorderImpl implements SessionRecorder {
 
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#mouseClicked(int, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #mouseClicked(int, int)
      */
     @Override
     public void mouseClicked(final int type, final int button) {
@@ -135,8 +147,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.mouseClickEvent(type, button);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#takeScreenshot()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #takeScreenshot()
      */
     @Override
     public void takeScreenshot() {
@@ -145,8 +161,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         takeScreenshotDelayed(100);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#callFunction(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #callFunction(java.lang.String)
      */
     @Override
     public void callFunction(final String function) {
@@ -154,12 +174,16 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.callFunction(function);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#executeJSFunction(java.lang.String, java.lang.Object[])
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #executeJSFunction(java.lang.String, java.lang.Object[])
      */
     @Override
     public void executeJSFunction(final String function, final Object... args) {
-        //  FIXME: Better record the failed calls and store them separately
+        // FIXME: Better record the failed calls and store them separately
         if (this.sessionStreamer == null) return;
 
         String s[] = new String[0];
@@ -175,8 +199,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.executeJSFunction(function, s);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#newTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #newTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent)
      */
     @Override
     public void newTrackingEvent(final EyeTrackingEvent event) {
@@ -185,8 +213,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.trackingEvent(event);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#registerListener(java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #registerListener(java.lang.String, java.lang.String)
      */
     @Override
     public void registerListener(final String type, final String listener) {
@@ -195,8 +227,12 @@ public class SessionRecorderImpl implements SessionRecorder {
 
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#removeListener(java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #removeListener(java.lang.String)
      */
     @Override
     public void removeListener(final String listener) {
@@ -204,8 +240,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.removeListener(listener);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#setParameter(java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #setParameter(java.lang.String, java.lang.String)
      */
     @Override
     public void setParameter(final String key, final String value) {
@@ -213,8 +253,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.putProperty(key, value);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#setPreference(java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #setPreference(java.lang.String, java.lang.String)
      */
     @Override
     public void setPreference(final String key, final String value) {
@@ -234,15 +278,19 @@ public class SessionRecorderImpl implements SessionRecorder {
         }
     }
 
-    /* (non-Javadoc)
-    * @see de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#start()
-    */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#start
+     * ()
+     */
     @Override
     public void start() {
 
         // Obtain the session dir (should have been set by now)
         // Return the session dir
-        this.sessionDir = new InformationBrokerUtil(this.infoBroker).getItem(new StringID("global:sessionDir"), "/tmp/");
+        this.sessionDir = new InformationBrokerUtil(this.infoBroker).get(SessionDirectoryItem.class, "/tmp");
 
         // Create sessiondir
         new File(this.sessionDir).mkdirs();
@@ -255,8 +303,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.started.set(true);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#stop()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#stop
+     * ()
      */
     @Override
     public void stop() {
@@ -278,7 +330,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     }
 
     /**
-     *
+     * 
      * @param pm
      * @param options
      */
@@ -321,8 +373,11 @@ public class SessionRecorderImpl implements SessionRecorder {
         }
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#
+     * updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
     public void updateElementMetaInformation(final String id, final String key,
@@ -331,8 +386,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.updateMetaInformation(id, key, value);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#updateElementFlag(java.lang.String, java.lang.String, boolean)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #updateElementFlag(java.lang.String, java.lang.String, boolean)
      */
     @Override
     public void updateElementFlag(final String id, final String flag, final boolean value) {
@@ -340,8 +399,13 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.updateElementFlag(id, flag, value);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#updateElementGeometry(java.lang.String, java.lang.String, java.lang.String, java.awt.Rectangle)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #updateElementGeometry(java.lang.String, java.lang.String, java.lang.String,
+     * java.awt.Rectangle)
      */
     @Override
     public void updateElementGeometry(final String id, final String type,
@@ -350,8 +414,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.updateElementGeometry(id, type, content, r);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#updateGeometry(java.awt.Rectangle)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #updateGeometry(java.awt.Rectangle)
      */
     @Override
     public void updateGeometry(final Rectangle rectangle) {
@@ -374,8 +442,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         }
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder#updateViewport(java.awt.Point)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
+     * #updateViewport(java.awt.Point)
      */
     @Override
     public void updateViewport(final Point viewportStart) {
@@ -386,7 +458,7 @@ public class SessionRecorderImpl implements SessionRecorder {
 
     /**
      * Takes a screenshot after the given delay.
-     *
+     * 
      * @param delay
      */
     private void takeScreenshotDelayed(final int delay) {
@@ -476,8 +548,14 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionDir = sessionDir;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#specialCommand(de.dfki.km.text20.browserplugin.services.sessionrecorder.options.SpecialCommandOption[])
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#specialCommand
+     * (
+     * de.dfki.km.text20.browserplugin.services.sessionrecorder.options.SpecialCommandOption
+     * [])
      */
     @Override
     public void specialCommand(SpecialCommandOption... options) {
@@ -488,8 +566,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         }
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#newBrainTrackingEvent(de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#
+     * newBrainTrackingEvent
+     * (de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent)
      */
     @Override
     public void newBrainTrackingEvent(BrainTrackingEvent event) {
@@ -498,8 +580,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         this.sessionStreamer.brainTrackingEvent(event);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#storeBrainDeviceInfo(de.dfki.km.text20.services.braintrackingdevices.BrainTrackingDeviceInfo)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#
+     * storeBrainDeviceInfo
+     * (de.dfki.km.text20.services.braintrackingdevices.BrainTrackingDeviceInfo)
      */
     @Override
     public void storeBrainDeviceInfo(BrainTrackingDeviceInfo deviceInfo) {

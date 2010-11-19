@@ -27,5 +27,17 @@ import de.dfki.km.text20.services.pseudorenderer.RenderElement;
  * @author rb
  */
 public interface GraphicalRenderElement extends RenderElement {
-    //
+    /**
+     * Returns the image source of this graphical render element
+     * 
+     * @return .
+     */
+    public String getSource();
+
+    /**
+     * Sets the source of this render element
+     * 
+     * @param src Element's source.
+     */
+    public void setSource(String src);
 }
