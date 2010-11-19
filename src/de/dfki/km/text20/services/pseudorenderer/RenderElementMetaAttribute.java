@@ -24,7 +24,7 @@ package de.dfki.km.text20.services.pseudorenderer;
 /**
  * The status of a render element
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 public enum RenderElementMetaAttribute {
     /**
@@ -33,13 +33,14 @@ public enum RenderElementMetaAttribute {
     CALLBACK_ENTER_EXIT_GAZE,
 
     /**
-     * If an element is set to invalid its presence should be ignored, as it is not know whether
-     * the contained data is still valid (BOOLEAN).
+     * If an element is set to invalid its presence should be ignored,
+     * as it is not known whether the contained data is still valid (BOOLEAN).
      */
     INVALID,
 
     /**
-     * Can be used to store arbitrary information which does not have an attribute yet (Map<String, Serializable>).
+     * Can be used to store arbitrary information which does not have an attribute
+     * yet (Map<String, Serializable>).
      */
     MISC
 }

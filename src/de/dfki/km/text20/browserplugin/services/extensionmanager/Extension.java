@@ -26,21 +26,15 @@ import net.xeoh.plugins.base.Plugin;
 /**
  * 
  * @author rb
- *
+ * 
  */
 public interface Extension extends Plugin {
     /**
-     * Returns a list with all supported functions 
+     * Returns a list with all supported functions
      * 
      * @return .
      */
     public String[] getDynamicFunctions();
-
-    /**
-     * @param parameter
-     * @param value
-     */
-    public void setParameter(SetupParameter parameter, Object value);
 
     /**
      * Executes the given function.

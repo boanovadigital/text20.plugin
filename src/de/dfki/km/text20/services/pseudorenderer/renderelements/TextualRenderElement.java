@@ -24,7 +24,9 @@ package de.dfki.km.text20.services.pseudorenderer.renderelements;
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
 
 /**
- * @author rb
+ * Represents a textual render element.
+ * 
+ * @author Ralf Biedert
  */
 public interface TextualRenderElement extends RenderElement {
     /**
@@ -37,7 +39,7 @@ public interface TextualRenderElement extends RenderElement {
     /**
      * Sets the content of an element
      * 
-     * @param content If text, the text, if image the url
+     * @param content The text this element represents.
      */
     public void setContent(String content);
 
@@ -49,7 +51,7 @@ public interface TextualRenderElement extends RenderElement {
     public int getWordID();
 
     /**
-     * Sets the word ID of this element. Note that a higher ID implicates the word comes 
+     * Sets the word ID of this element. Note that a higher ID implicates the word comes
      * after a word with a lower ID
      * 
      * @param id -1 means invalid / unknown.
@@ -57,17 +59,17 @@ public interface TextualRenderElement extends RenderElement {
     public void setWordID(int id);
 
     /**
-     * Sets the text ID of this element. Words with the same text ID are supposed to be 
-     * ordered by their word ID.  
+     * Sets the text ID of this element. Words with the same text ID are supposed to be
+     * ordered by their word ID.
      * 
-     * @param  id -1 means invalid / unknown.
+     * @param id -1 means invalid / unknown.
      */
     public void setTextID(int id);
 
     /**
      * Returns the text ID.
      * 
-     * @return  -1 means invalid / unknown.
+     * @return -1 means invalid / unknown.
      */
     public int getTextID();
 }

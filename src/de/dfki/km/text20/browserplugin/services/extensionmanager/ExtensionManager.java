@@ -42,12 +42,6 @@ public interface ExtensionManager extends Plugin {
     public Object executeFunction(String function, String args);
 
     /**
-     * @param parameter
-     * @param value
-     */
-    public void setParameter(SetupParameter parameter, Object value);
-
-    /**
      * Lists all supported extensions.
      * 
      * @return .

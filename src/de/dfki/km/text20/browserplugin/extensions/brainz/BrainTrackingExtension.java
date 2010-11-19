@@ -24,15 +24,19 @@ package de.dfki.km.text20.browserplugin.extensions.brainz;
 import java.util.logging.Logger;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
+import net.xeoh.plugins.base.annotations.events.Init;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
+import net.xeoh.plugins.informationbroker.InformationBroker;
+import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.JavaScriptExecutorItem;
 import de.dfki.km.text20.browserplugin.services.devicemanager.TrackingDeviceManager;
+import de.dfki.km.text20.browserplugin.services.devicemanager.brokeritems.devices.BrainTrackingDeviceItem;
 import de.dfki.km.text20.browserplugin.services.emotiondetector.impl.brain.rmserror.TrainedAvgEmotionClassifier;
 import de.dfki.km.text20.browserplugin.services.emotiondetector.impl.brain.rmserror.TrainedPeakEmotionClassifier;
 import de.dfki.km.text20.browserplugin.services.emotiondetector.impl.brain.simple.SimpleAvgEmotionClassifier;
 import de.dfki.km.text20.browserplugin.services.emotiondetector.impl.brain.simple.SimplePeakEmotionClassifier;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.SetupParameter;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingListener;
 
@@ -50,6 +54,10 @@ public class BrainTrackingExtension implements Extension {
     public TrackingDeviceManager deviceManager;
 
     /** */
+    @InjectPlugin
+    public InformationBroker broker;
+
+    /** */
     JSExecutor jsExecutor;
 
     /** */
@@ -60,7 +68,7 @@ public class BrainTrackingExtension implements Extension {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension
      * #executeFunction(java.lang.String, java.lang.String)
@@ -70,7 +78,7 @@ public class BrainTrackingExtension implements Extension {
     public Object executeDynamicFunction(String function, String args) {
 
         if (function.equals("brainTrackerInitTraining")) {
-            this.deviceManager.getBrainTrackingDevice().addTrackingListener(new BrainTrackingListener() {
+            new InformationBrokerUtil(this.broker).get(BrainTrackingDeviceItem.class).addTrackingListener(new BrainTrackingListener() {
                 @Override
                 public void newTrackingEvent(BrainTrackingEvent event) {
                     BrainTrackingExtension.this.trainedPeakEmotionClassifier.model.addEvent(event);
@@ -81,7 +89,7 @@ public class BrainTrackingExtension implements Extension {
 
         if (function.equals("brainTrackerInitEvaluation")) {
             this.trainedPeakEmotionClassifier.clearEvents();
-            this.deviceManager.getBrainTrackingDevice().addTrackingListener(new BrainTrackingListener() {
+            new InformationBrokerUtil(this.broker).get(BrainTrackingDeviceItem.class).addTrackingListener(new BrainTrackingListener() {
 
                 @Override
                 public void newTrackingEvent(BrainTrackingEvent event) {
@@ -111,7 +119,8 @@ public class BrainTrackingExtension implements Extension {
 
             double size = this.trainedPeakEmotionClassifier.model.avgSimple.size();
             double avg = this.trainedPeakEmotionClassifier.model.avgSimple.get(emotion);
-            return " avg size : " + size + " avg calculated: " + " avg: " + avg; // for debugging
+            return " avg size : " + size + " avg calculated: " + " avg: " + avg; // for
+                                                                                 // debugging
         }
 
         if (function.equals("trainValues")) {
@@ -126,7 +135,8 @@ public class BrainTrackingExtension implements Extension {
             double size = this.trainedPeakEmotionClassifier.model.avgSimple.size();
             double avg = this.trainedPeakEmotionClassifier.model.avgSimple.get("doubt");
 
-            return " avg size : " + size + " avg calculated: " + " avg: " + avg; // for debugging
+            return " avg size : " + size + " avg calculated: " + " avg: " + avg; // for
+                                                                                 // debugging
         }
 
         return null;
@@ -134,7 +144,7 @@ public class BrainTrackingExtension implements Extension {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see
      * de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension
      * #getSupportedFunctions()
@@ -144,19 +154,10 @@ public class BrainTrackingExtension implements Extension {
         return new String[] { "brainTrackerInitTraining", "brainTrackerInitEvaluation", "getTrainedAvgEmotion", "getTrainedPeakEmotion", "getSimpleAvgEmotion", "getSimplePeakEmotion", "startRmseTraining", "stopRmseTraining", "trainValues" };
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension
-     * #
-     * setParameter(de.dfki.km.augmentedtext.browserplugin.services.extensionmanager
-     * .SetupParameter, java.lang.Object)
-     */
-    @Override
-    public void setParameter(SetupParameter parameter, Object value) {
-        if (parameter == SetupParameter.JAVASCRIPT_EXECUTOR) {
-            this.jsExecutor = (JSExecutor) value;
-        }
+    /** Called upon init */
+    @Init
+    public void init() {
+        this.jsExecutor = new InformationBrokerUtil(this.broker).get(JavaScriptExecutorItem.class);
     }
+
 }

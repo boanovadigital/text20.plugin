@@ -24,7 +24,7 @@ package de.dfki.km.text20.services.pseudorenderer.impl;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TextualRenderElementImpl extends RenderElementImpl implements
@@ -83,7 +83,6 @@ public class TextualRenderElementImpl extends RenderElementImpl implements
     public void setTextID(int id) {
         this.textID = id;
         updateChangeID();
-
     }
 
     /* (non-Javadoc)

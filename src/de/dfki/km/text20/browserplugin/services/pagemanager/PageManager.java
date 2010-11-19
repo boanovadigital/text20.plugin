@@ -29,7 +29,7 @@ package de.dfki.km.text20.browserplugin.services.pagemanager;
  * The only reason this class is inside the applet-services directory and not the general service 
  * directory is that the String parameter encode a few special messages which are not obvious  
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 public interface PageManager {
 
@@ -74,6 +74,8 @@ public interface PageManager {
                                       int y, int w, int h);
 
     /**
+     * Updates an element's meta information. 
+     * 
      * @param id
      * @param key
      * @param value

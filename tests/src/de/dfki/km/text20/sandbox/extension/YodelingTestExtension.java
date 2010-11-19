@@ -24,14 +24,13 @@ package de.dfki.km.text20.sandbox.extension;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.Init;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.SetupParameter;
 
 /**
  * @author rb
- *
+ * 
  */
 @PluginImplementation
-//@Suppress(listOfPluginsToSuppress ) <-- Does that make sense?
+// @Suppress(listOfPluginsToSuppress ) <-- Does that make sense?
 public class YodelingTestExtension implements Extension {
 
     /**
@@ -42,28 +41,26 @@ public class YodelingTestExtension implements Extension {
         System.out.println("Yodeling Succeded");
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#executeDynamicFunction(java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#
+     * executeDynamicFunction(java.lang.String, java.lang.String)
      */
     @Override
     public Object executeDynamicFunction(String function, String args) {
         return "YODEL WORLD";
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#getDynamicFunctions()
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#
+     * getDynamicFunctions()
      */
     @Override
     public String[] getDynamicFunctions() {
         return new String[] { "YODEL" };
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.Extension#setParameter(de.dfki.km.augmentedtext.browserplugin.services.extensionmanager.SetupParameter, java.lang.Object)
-     */
-    @Override
-    public void setParameter(SetupParameter parameter, Object value) {
-        // TODO Auto-generated method stub
-
-    }
 }

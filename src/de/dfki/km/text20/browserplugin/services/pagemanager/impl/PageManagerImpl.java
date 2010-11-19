@@ -37,24 +37,23 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderE
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
- *
- * @author rb
- *
+ * 
+ * @author Ralf Biedert
  */
 public class PageManagerImpl implements PageManager {
 
-    /** */
-    private final Map<String, RenderElement> id2element = new HashMap<String, RenderElement>();
-
-    /** */
+    /** In case we need a plugin */
     @SuppressWarnings("unused")
     private final PluginManager pluginManager;
 
-    /** */
+    /** Maps IDs to render elements */
+    private final Map<String, RenderElement> id2element = new HashMap<String, RenderElement>();
+
+    /** Needed to register and retrieve elements */
     private final Pseudorenderer pseudorenderer;
 
     /**
-     *
+     * 
      * @param pm
      * @param pseudorenderer
      */
@@ -63,24 +62,33 @@ public class PageManagerImpl implements PageManager {
         this.pseudorenderer = pseudorenderer;
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#updateBrowserGeometry(int, int, int, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#
+     * updateBrowserGeometry(int, int, int, int)
      */
     @Override
     public void updateBrowserGeometry(final int x, final int y, final int w, final int h) {
         this.pseudorenderer.setGeometry(new Rectangle(x, y, w, h));
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#updateDocumentViewport(int, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#
+     * updateDocumentViewport(int, int)
      */
     @Override
     public void updateDocumentViewport(final int x, final int y) {
         this.pseudorenderer.setViewport(new Point(x, y));
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#updateElementFlag(java.lang.String, java.lang.String, boolean)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#
+     * updateElementFlag(java.lang.String, java.lang.String, boolean)
      */
     @Override
     public void updateElementFlag(final String id, final String flag, final boolean value) {
@@ -117,50 +125,69 @@ public class PageManagerImpl implements PageManager {
         }
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#updateElementGeometry(java.lang.String, java.lang.String, java.lang.String, int, int, int, int)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#
+     * updateElementGeometry(java.lang.String, java.lang.String, java.lang.String, int,
+     * int, int, int)
      */
     @Override
     public void updateElementGeometry(final String id, final String type,
                                       final String content, final int x, final int y,
                                       final int w, final int h) {
 
+        // If we have no ID, do nothing.
         if (id == null) return;
 
+        // Get the element, if we already have it.
         RenderElement element = this.id2element.get(id);
         CoordinatesType ct = CoordinatesType.DOCUMENT_BASED;
 
+        // In case we don't have the element, we need to create it
         if (element == null) {
             Class<? extends RenderElement> rType = RenderElement.class;
 
+            // Check what type of element we need to create
             if (type != null) {
                 if (type.equals("text")) rType = TextualRenderElement.class;
                 if (type.equals("image")) rType = GraphicalRenderElement.class;
             }
+
+            // And create it!
             element = this.pseudorenderer.createElement(rType);
         } else {
-            // Obtain last coordinates type, in order not to change it in case it has beed switched
-            // from DOCUMENT_BASED to WINDOW_BASED
+            // Obtain last coordinates type, in order not to change it in case it has beed
+            // switched from DOCUMENT_BASED to WINDOW_BASED
             ct = element.getCoordinatesType();
         }
 
-        // Update the windowGeometry and id
+        // Now we have an element, either a new one, or a preexisting one, update the
+        // windowGeometry and id
         element.setGeometry(new Rectangle(x, y, w, h), ct);
         element.setIdentifier(id);
 
         // Try to update content of the element
-        if (content != null && element instanceof TextualRenderElement) {
-            ((TextualRenderElement) element).setContent(content);
+        if (content != null) {
+            if (element instanceof TextualRenderElement)
+                ((TextualRenderElement) element).setContent(content);
+
+            if (element instanceof GraphicalRenderElement)
+                ((GraphicalRenderElement) element).setSource(content);
         }
 
         // When updated, unset invalidity
         element.setMetaAttribute(RenderElementMetaAttribute.INVALID, Boolean.FALSE);
 
+        // Remember the element's id.
         this.id2element.put(id, element);
     }
 
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.PageManager#updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.PageManager#
+     * updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
     public void updateElementMetaInformation(String id, String key, String value) {
