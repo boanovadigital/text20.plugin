@@ -47,6 +47,7 @@ import de.dfki.km.text20.services.evaluators.gaze.impl.handler.raw.v1.RawHandler
 import de.dfki.km.text20.services.evaluators.gaze.impl.handler.saccade.v1.SaccadeHandlerFactory;
 import de.dfki.km.text20.services.evaluators.gaze.impl.handler.weaksaccade.v2.WeakSaccadeHandlerFactory;
 import de.dfki.km.text20.services.pseudorenderer.impl.PseudorendererManagerImpl;
+import de.dfki.km.text20.services.system.security.impl.PrivilegedExecutorImpl;
 import de.dfki.km.text20.services.trackingdevices.brain.impl.braintrackingserver.BrainTrackingServerDeviceProviderImpl;
 import de.dfki.km.text20.services.trackingdevices.eyes.impl.mouse.MouseTrackingDeviceProviderImpl;
 import de.dfki.km.text20.services.trackingdevices.eyes.impl.trackingserver.TrackingServerDeviceProviderImpl;
@@ -86,10 +87,20 @@ public class FrameworkManager {
      */
     private void initPluginFramework(JSPFProperties props) {
 
+        // Check if we can elevate security. Eases extension development, as otherwise
+        // extensions are checked against their code base, which differs from this one's,
+        // so they are granted not even fundamental privileges (like network connections)
+        try {
+            System.setSecurityManager(null);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+
+        // Create the plugin manager
         this.pluginManager = PluginManagerFactory.createPluginManager(props);
 
         // Manually load the plugins. Not really beautiful ...
-
+        this.pluginManager.addPluginsFrom(new ClassURI(PrivilegedExecutorImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(RemoteAPIImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(RemoteDiscoveryImpl.class).toURI());
 
