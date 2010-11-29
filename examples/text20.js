@@ -1487,10 +1487,10 @@ var text20 = {},
                         connection.transmitElementMetaInformation(id, "textID", text);
                         connection.transmitElementMetaInformation(id, "wordID", word);
                     }
-
+                    
                     // Rember that we registered an element
                     registered = true
-                });
+                }).removeClass("untransmitted");
 
                 // In case subsequent updates are disabled we are finished.
                 if (clustering.disableSubsequentUpdates || (dontUpdateAfterRegister && registered)) {
