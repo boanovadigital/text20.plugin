@@ -38,6 +38,7 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderEle
 
 /**
  * 
+ * 
  * @author Ralf Biedert
  */
 public class PageManagerImpl implements PageManager {
