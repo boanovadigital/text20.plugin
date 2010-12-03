@@ -23,7 +23,7 @@
  *
  *
  * Version:
- *      4.3.0
+ *      4.4.0
  *
  * Dependencies:
  *      jquery > 1.4
@@ -375,17 +375,18 @@ var text20 = {},
          * a new ID is created and it is returned.
          *
          * @param {Object} element to IDify
+         * @param {Object} The id to assign if none was found (optional) 
          *
          * @returns: The ID created
          */
-        ensureID: function(element) {
+        ensureID: function(element, id) {
             var e = $(element);
 
             // If it has an ID return that ...
             if(e.attr("id")) return e.attr("id");
 
             // ... else, add autoID
-            var id = dom.id();
+            var id = id || dom.id();
             e.attr("id", id);
             e.addClass("autoID");
             return id;
@@ -528,16 +529,25 @@ var text20 = {},
 
         /**
          * Split text nodes into words and make spans out of them
+         * 
+         * @param arrayOfTextnodes The text nodes to spanify. 
+         * @param options 
+         *      options.callback: Function accepting one parameter, will be called for every span
+         *      options.idfunction: If set, will be called with each element to ensure it has an id.  
+         *      options.textid: If set, the text id to use.  
          *
          * @returns: Nothing
          */
-        spanify: function(arrayOfTextnodes, spanCallback){
+        spanify: function(arrayOfTextnodes, options){
             if(!this.lastText) this.lastText = 0
+            
+            // Check if we have an options object
+            if (!options) options = {}
 
             var allTokens = [],
-                textID = this.lastText++,    // Uniquely assign a text id
+                textID = options.textid || this.lastText++,    // Uniquely assign a text id
                 wordID = 0,                  // And prepare word IDs
-                eei = dom.ensureID;
+                eei = options.idfunction || dom.ensureID;
 
             // Process every text node we got
             arrayOfTextnodes.forEach(function(node){
@@ -562,7 +572,7 @@ var text20 = {},
                         container.appendChild(document.createTextNode(token));
                     }
 
-                    // In case this is a proper word, spanify  it
+                    // In case this is a proper word, spanify it
                     else {
 
                         // Create textnode and span for every word
@@ -571,13 +581,13 @@ var text20 = {},
 
                         newSpan.setAttribute("_markedText", "true");
                         newSpan.setAttribute("_textID", textID);
-                        newSpan.setAttribute("_wordID", wordID++);
+                        newSpan.setAttribute("_wordID", wordID);
 
                         // The words have an ID
-                        var id = eei(newSpan);
+                        var id = eei(newSpan, "span" + textID + "x" + wordID++);
 
                         // Callback the listener if we have one
-                        if(spanCallback) spanCallback(newSpan, id, token);
+                        if(options.callback) options.callback(newSpan, id, token);
 
                         // Append them
                         newSpan.appendChild(text);

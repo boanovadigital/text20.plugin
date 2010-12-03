@@ -43,8 +43,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.jcores.interfaces.functions.F1;
 import net.xeoh.plugins.base.PluginManager;
@@ -206,18 +204,13 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
                 this.sessionRecorder.callFunction(function);
             }
 
-            final Pattern p = Pattern.compile("(\\w*)\\(([^\\)]*)\\).");
-            final Matcher matcher = p.matcher(function);
+            final int indexOf = function.indexOf("(");
+            final String name = function.substring(0, indexOf);
 
-            boolean matches = matcher.matches();
+            String args = function.substring(indexOf + 1);
+            args = args.substring(0, args.lastIndexOf(')'));
 
-            if (!matches) {
-                this.logger.warning("No match found for " + function);
-                return null;
-            }
-
-            final String name = matcher.group(1);
-            final String args = matcher.group(2);
+            this.logger.fine("Trying to call function '" + name + "'");
 
             // Execute the proper extension ...
             if (this.extensionManager.getExtensions().contains(name)) {
@@ -232,6 +225,9 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
                 return rval;
             }
+
+            this.logger.warning("Extension not found '" + name + "'");
+            return null;
 
         } catch (final Exception e) {
             // TODO Auto-generated catch block
@@ -371,11 +367,6 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /**
      * Wird seltener aufgerufen als start, sollte hier Verbindung mit dem Eye-Tracker-
      * Server aufnehmen und das Pluginframework initialisieren.
-     */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.applet.Applet#init()
      */
     @Override
     public void init() {
