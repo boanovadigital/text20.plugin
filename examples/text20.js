@@ -633,12 +633,12 @@ var text20 = {},
                         // The words have an ID
                         var id = eei(newSpan, "span" + textID + "x" + wordID++);
 
-                        // Callback the listener if we have one
-                        if(options.callback) options.callback(newSpan, id, token);
-
                         // Append them
                         newSpan.appendChild(text);
                         container.appendChild(newSpan);
+
+                        // Callback the listener if we have one
+                        if(options.callback) options.callback(newSpan, id, token);
 
                         // Store child
                         allTokens.push(newSpan);
