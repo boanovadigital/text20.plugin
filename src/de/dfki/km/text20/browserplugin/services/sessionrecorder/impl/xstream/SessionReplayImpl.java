@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
@@ -45,7 +47,7 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.Di
 
 /**
  * @author rb
- *
+ * 
  */
 public class SessionReplayImpl implements SessionReplay {
 
@@ -67,7 +69,10 @@ public class SessionReplayImpl implements SessionReplay {
     /** The recorded screen size */
     Dimension screenSize;
 
-    /** The file to replay. This can either be a zip file (with an internal .xstream) or an xstream directly. */
+    /**
+     * The file to replay. This can either be a zip file (with an internal .xstream) or an
+     * xstream directly.
+     */
     private File file;
 
     /** The loader to access elements */
@@ -76,14 +81,11 @@ public class SessionReplayImpl implements SessionReplay {
     /** Displacement regions to apply */
     private List<DisplacementRegion> fixationDisplacementRegions;
 
-
     /**
      * @param file
      */
     public SessionReplayImpl(final File file) {
-        if (!file.exists()) {
-            throw new IllegalArgumentException("file: " + file.getAbsolutePath() + " does not exist");
-        }
+        if (!file.exists()) { throw new IllegalArgumentException("file: " + file.getAbsolutePath() + " does not exist"); }
 
         this.file = file;
 
@@ -110,7 +112,8 @@ public class SessionReplayImpl implements SessionReplay {
     }
 
     @Override
-    public synchronized void replay(final ReplayListener listener, final ReplayOption... options) {
+    public synchronized void replay(final ReplayListener listener,
+                                    final ReplayOption... options) {
         createInputStream();
 
         // Sanity check
@@ -128,11 +131,13 @@ public class SessionReplayImpl implements SessionReplay {
         final AtomicLong slowdownFactor = new AtomicLong(1);
         final AtomicLong currentEvenTime = new AtomicLong();
         final AtomicLong firstEventTime = new AtomicLong();
-//        final AtomicLong realtimeDuration = new AtomicLong();
+        final AtomicBoolean waitAfterFinish = new AtomicBoolean(false);
+        final CyclicBarrier finishBarrier = new CyclicBarrier(2);
+        // final AtomicLong realtimeDuration = new AtomicLong();
 
         // Process options
         final OptionUtils<ReplayOption> ou = new OptionUtils<ReplayOption>(options);
-        if (ou.contains(OptionWaitForFinish.class)) throw new IllegalArgumentException();
+        if (ou.contains(OptionWaitForFinish.class)) waitAfterFinish.set(true);
         if (ou.contains(OptionGetMetaInfo.class)) gettingMetaInfo.set(true);
         if (ou.contains(OptionRealtime.class)) realtimeReplay.set(true);
         if (ou.contains(OptionLoadImages.class)) loadImages.set(true);
@@ -161,7 +166,8 @@ public class SessionReplayImpl implements SessionReplay {
                             // Load the next event
                             event = (AbstractSessionEvent) SessionReplayImpl.this.in.readObject();
 
-                            // In case we have no previous event, save the first event time
+                            // In case we have no previous event, save the first event
+                            // time
                             if (previousEvent == null) {
                                 firstEventTime.set(event.originalEventTime);
                                 previousEvent = event;
@@ -193,11 +199,13 @@ public class SessionReplayImpl implements SessionReplay {
                                 }
                             }
 
-                            // Check what kind of event it is and if we have some special rules
+                            // Check what kind of event it is and if we have some special
+                            // rules
                             if (loadImages.get() && event instanceof ImageEvent) {
                                 final ImageEvent e = (ImageEvent) event;
 
-                                // TODO: Image loading should be fixed... it's still using a special loader only used with zip files...
+                                // TODO: Image loading should be fixed... it's still using
+                                // a special loader only used with zip files...
                                 if (SessionReplayImpl.this.loader == null) {
                                     continue;
                                 }
@@ -226,16 +234,38 @@ public class SessionReplayImpl implements SessionReplay {
                     }
                 } finally {
                     try {
+                        // Check if we should signal that we have finished
+                        if (waitAfterFinish.get()) {
+                            finishBarrier.await();
+                        }
+
+                        // Close the input stream
                         SessionReplayImpl.this.in.close();
                     } catch (IOException e) {
                         e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (BrokenBarrierException e) {
+                        e.printStackTrace();
                     }
+
                 }
             }
         });
 
         t.setDaemon(true);
         t.start();
+
+        // Java can be so fcking ugly.
+        if (waitAfterFinish.get()) {
+            try {
+                finishBarrier.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (BrokenBarrierException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /** */
@@ -294,7 +324,7 @@ public class SessionReplayImpl implements SessionReplay {
                 isFinishedReading = true;
 
                 // TODO: Is this neccessary and if yes, how to implement it correctly?
-//                realtimeDuration.set(currentEvenTime.get() - firstEventTime.get());
+                // realtimeDuration.set(currentEvenTime.get() - firstEventTime.get());
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -308,7 +338,6 @@ public class SessionReplayImpl implements SessionReplay {
             e.printStackTrace();
         }
     }
-
 
     /**
      * @return .
@@ -326,7 +355,7 @@ public class SessionReplayImpl implements SessionReplay {
 
     /**
      * Events of that class wont be passed.
-     *
+     * 
      * @param filter
      */
     @SuppressWarnings("unused")

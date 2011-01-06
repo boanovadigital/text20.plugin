@@ -34,13 +34,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+import java.util.logging.Logger;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
+import net.xeoh.plugins.base.annotations.configuration.IsDisabled;
 import net.xeoh.plugins.base.annotations.events.Init;
 import de.dfki.km.text20.services.system.security.PrivilegedExecutor;
 
 @PluginImplementation
+@IsDisabled
 public class PrivilegedExecutorImpl implements PrivilegedExecutor {
+
+    /** Logger */
+    final Logger logger = Logger.getLogger(this.getClass().getName());
 
     /** Enables us to execute code */
     private ExecutorService cachePool;
@@ -74,15 +80,24 @@ public class PrivilegedExecutorImpl implements PrivilegedExecutor {
     }
 
     @Init
-    public void init() {
-        final ThreadFactory factory = Executors.privilegedThreadFactory();
-        this.cachePool = Executors.newCachedThreadPool(new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                final Thread thread = factory.newThread(r);
-                thread.setDaemon(true);
-                return thread;
-            }
-        });
+    public boolean init() {
+        try {
+            final ThreadFactory factory = Executors.privilegedThreadFactory();
+            this.cachePool = Executors.newCachedThreadPool(new ThreadFactory() {
+                @Override
+                public Thread newThread(Runnable r) {
+                    final Thread thread = factory.newThread(r);
+                    thread.setDaemon(true);
+                    return thread;
+                }
+            });
+
+            return true;
+        } catch (Exception e) {
+            this.logger.fine("Unable to create priviledged executors, but we can ignore that as the plugin is unused anyways.");
+            // e.printStackTrace();
+        }
+
+        return false;
     }
 }
