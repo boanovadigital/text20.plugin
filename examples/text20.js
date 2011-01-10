@@ -486,6 +486,8 @@ var text20 = {},
          * @returns: The position as an [x, y, relativeTo] array.
          */
         documentPosition: function(obj){
+            if(obj == null) return null;
+            
             // Original Object
             var origObj = obj;
 
