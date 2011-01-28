@@ -1752,6 +1752,9 @@ var text20 = {},
               * @param {Object} y
               */
              onEmotionHandler: function(x, y){
+                 // Check if we are enabled
+                 if(!connector.config.enableBrainTracker) return;
+                 
                  // After this we know all elements which are under gaze.
                  var gazedElement = document.elementFromPoint(x - window.pageXOffset, y - window.pageYOffset),
                      allUnderCurrentGaze = dom.parents(gazedElement),

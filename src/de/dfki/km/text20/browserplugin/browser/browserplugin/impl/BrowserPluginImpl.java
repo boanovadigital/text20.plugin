@@ -30,7 +30,6 @@ import java.awt.Point;
 import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -41,13 +40,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.jcores.interfaces.functions.F1;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.util.JSPFProperties;
 import net.xeoh.plugins.diagnosis.local.Diagnosis;
+import net.xeoh.plugins.diagnosis.local.DiagnosisChannel;
+import net.xeoh.plugins.diagnosis.local.options.status.OptionInfo;
 import net.xeoh.plugins.informationbroker.InformationBroker;
 import net.xeoh.plugins.meta.updatecheck.UpdateCheck;
 import net.xeoh.plugins.remote.RemoteAPI;
@@ -64,6 +63,7 @@ import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.service
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.PageManagerItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.PseudorendererItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.SessionRecorderItem;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.diagnosis.channels.tracing.BrowserPluginTracer;
 import de.dfki.km.text20.browserplugin.services.devicemanager.TrackingDeviceManager;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.ExtensionManager;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.MasterGazeHandler;
@@ -139,20 +139,17 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /** The initialized brain tracking device */
     private BrainTrackingDevice brainTrackingDevice;
 
+    /** Responsible for tracing messages */
+    private DiagnosisChannel<String> diagnosis;
+
     /** Instance id if this plugin */
     final int instanceID = new Random().nextInt();
 
     /** Handles calls with many objects */
     final BatchHandler batchHandler = new BatchHandler(this);
 
-    /** Generate debug output */
-    final Logger logger = Logger.getLogger(this.getClass().getName());
-
     /** If the diagnosis should be enabled */
     boolean diagnosisEnabled;
-    
-    /** Sets up logging */
-    MasterLoggingHandler loggingHandler;
 
     /** Master file path */
     String masterFilePath = "/tmp";
@@ -196,7 +193,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public Object callFunction(final String function) {
-        this.logger.finer("Received callFunction('" + function + "')");
+        this.diagnosis.status("callfunction/start", new OptionInfo("function", function));
 
         try {
             if (this.sessionRecorder != null) {
@@ -209,29 +206,26 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
             String args = function.substring(indexOf + 1);
             args = args.substring(0, args.lastIndexOf(')'));
 
-            this.logger.fine("Trying to call function '" + name + "'");
+            this.diagnosis.status("callfunction/function", new OptionInfo("name", name), new OptionInfo("args", args));
 
             // Execute the proper extension ...
             if (this.extensionManager.getExtensions().contains(name)) {
+                this.diagnosis.status("callfunction/extension/call");
                 final Object rval = this.extensionManager.executeFunction(name, args);
-
-                // Log the result
-                if (rval != null) {
-                    this.logger.fine("Returning object of type " + rval.getClass() + " with toString() value of '" + rval.toString() + "'");
-                } else {
-                    this.logger.fine("Returning null value");
-                }
-
+                
+                this.diagnosis.status("callfunction/end", new OptionInfo("rval", $(rval).get("null").toString()));
                 return rval;
             }
 
-            this.logger.warning("Extension not found '" + name + "'");
+            this.diagnosis.status("callfunction/end/noextension");
             return null;
 
         } catch (final Exception e) {
-            // TODO Auto-generated catch block
+            this.diagnosis.status("callfunction/exception", new OptionInfo("message", e.getMessage()));              
             e.printStackTrace();
         }
+        
+        this.diagnosis.status("callfunction/end/unusual");
         return null;
     }
 
@@ -243,7 +237,6 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     @Override
     public void destroy() {
         this.pluginManager.shutdown();
-        this.loggingHandler.shutdown();
     }
 
     /**
@@ -256,11 +249,12 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public Object executeJSFunction(final String _function, final Object... args) {
+        this.diagnosis.status("executejsfunction/start", new OptionInfo("function", _function), new OptionInfo("args", $(args).string().join(",")));
 
         // Append the callback prefix to the function.
         final String function = this.callbackPrefix + _function;
-
-        // if (true) this.logger.info("Calling function + '" + function + "'");
+        
+        this.diagnosis.status("executejsfunction/function", new OptionInfo("function", function));
 
         tryGetWindow();
 
@@ -268,7 +262,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
         // If the window is still null, we try our fallback solution (maybe slow ...)
         if (this.window == null) {
-            this.logger.warning("Unable to execute JS function : " + function + ". Did you forget to specifiy mayscript='yes' in the applet-tag?");
+            this.diagnosis.status("executejsfunction/call/nowindow");
 
             int ctr = 0;
 
@@ -287,42 +281,54 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
             }
             sb.append(");");
 
-            this.logger.warning("Trying dirty fallback, calling : " + sb.toString());
+            this.diagnosis.status("executejsfunction/call/nowindow/call", new OptionInfo("call", sb.toString()));
 
             try {
                 final AppletContext appletContext = getAppletContext();
                 appletContext.showDocument(new URL(sb.toString()));
             } catch (final MalformedURLException e) {
+                this.diagnosis.status("executejsfunction/call/nowindow/exception", new OptionInfo("message", e.getMessage()));              
                 e.printStackTrace();
             }
-
+            
+            this.diagnosis.status("executejsfunction/end");
             return null;
         }
 
         // This is the ugly way (Safari likes it)
         if (this.transmitMode.equals(TransmitMode.ASYNC)) {
+            this.diagnosis.status("executejsfunction/call/async");
             this.singleThreadExecutor.execute(new Runnable() {
+                @SuppressWarnings("synthetic-access")
                 @Override
                 public void run() {
                     try {
+                        BrowserPluginImpl.this.diagnosis.status("executejsfunction/call/async/executor");
                         BrowserPluginImpl.this.window.call(function, args);
                     } catch (final Exception e) {
+                        BrowserPluginImpl.this.diagnosis.status("executejsfunction/call/async/executor/exception", new OptionInfo("message", e.getMessage()));
                         e.printStackTrace();
                     }
                 }
             });
+            
+            this.diagnosis.status("executejsfunction/end");
             return null;
         }
 
         // This is the nice way (Firefox likes it)
         if (this.transmitMode.equals(TransmitMode.DIRECT)) {
+            this.diagnosis.status("executejsfunction/call/direct");            
             try {
+                this.diagnosis.status("executejsfunction/end");            
                 return this.window.call(function, args);
             } catch (final Exception e) {
+                this.diagnosis.status("executejsfunction/call/direct/exception", new OptionInfo("message", e.getMessage()));              
                 e.printStackTrace();
             }
         }
 
+        this.diagnosis.status("executejsfunction/end/unusual");              
         return null;
     }
 
@@ -357,9 +363,10 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public String getPreference(final String key, final String deflt) {
+        this.diagnosis.status("getpreference/start", new OptionInfo("key", key), new OptionInfo("default", deflt));
         this.sessionRecorder.getPreference(key, deflt);
         final String rval = this.preferences.getString(key, deflt);
-        this.logger.finer("Received getPreference('" + key + "', '" + deflt + "') = " + rval);
+        this.diagnosis.status("getpreference/end", new OptionInfo("key", key), new OptionInfo("rval", rval));
         return rval;
     }
 
@@ -369,7 +376,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void init() {
-        // We want to save from the first second
+        // Get all parameters we need for JSPF initialization
         processBootstrapParameters();
 
         final JSPFProperties props = new JSPFProperties();
@@ -388,10 +395,6 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
                                                                         // from a better
                                                                         // place!
 
-        setupEarlyLogging(props);
-
-        this.logger.info("ID of this instance " + this.instanceID + " init()");
-
         this.pluginManager = new FrameworkManager(props).getPluginManager();
 
         this.extensionManager = this.pluginManager.getPlugin(ExtensionManager.class);
@@ -402,6 +405,10 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.pseudorender = this.pluginManager.getPlugin(PseudorendererManager.class).createPseudorenderer();
         this.gazeHandler = this.pluginManager.getPlugin(MasterGazeHandlerManager.class).createMasterGazeHandler(this, this.pseudorender);
         this.pageManager = this.pluginManager.getPlugin(PageManagerManager.class).createPageManager(this.pseudorender);
+        this.diagnosis = this.pluginManager.getPlugin(Diagnosis.class).channel(BrowserPluginTracer.class);
+
+        
+        this.diagnosis.status("init/start/late");
 
         // Store parameters
         storeParameters();
@@ -409,8 +416,12 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         // Evaluate additional parameter
         processAdditionalParameters();
 
+        this.diagnosis.status("init/init/devices");
+
         // Setup gaze recording
         initTrackingDevice();
+
+        this.diagnosis.status("init/init/mouse");
 
         // Setup mouse recording
         initMouseRecording();
@@ -418,51 +429,22 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         // Try to get the window
         tryGetWindow();
 
+        this.diagnosis.status("init/set/evaluator");
+
         // Provide the tracking device to other listeners.
         this.gazeHandler.setTrackingDevice(this.eyeTrackingDevice);
         this.gazeEvaluator = this.gazeHandler.getGazeEvaluator();
 
+        this.diagnosis.status("init/publish");
+
         // Publish items of the information broker
         publishBrokerItems();
 
+        this.diagnosis.status("init/call/javascript");
+
         tellJSStatus("INITIALIZED");
-    }
 
-    /**
-     * @param props
-     */
-    private void setupEarlyLogging(final JSPFProperties props) {
-
-        Level level = null;
-
-        // Setup JSPF logging level
-        final String logging = $(getParameter("logging")).get("default");
-
-        if (!logging.equals("default")) {
-            level = Level.parse(logging);
-        }
-
-        // Initialize logging handler and others ...
-        try {
-            this.loggingHandler = new MasterLoggingHandler(this.masterFilePath, level);
-        } catch (final SecurityException e) {
-            e.printStackTrace();
-        } catch (final IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.BrowserAPI#logString
-     * (java.lang.String)
-     */
-    @Override
-    public void logString(final String toLog) {
-        this.logger.info(toLog);
+        this.diagnosis.status("init/end");
     }
 
     /*
@@ -473,7 +455,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void registerListener(final String type, final String listener) {
-        this.logger.fine("Registering listener of type " + type + " with name " + listener);
+        this.diagnosis.status("registerlistener/call", new OptionInfo("type", type), new OptionInfo("listener", listener));
         this.sessionRecorder.registerListener(type, listener);
         this.gazeHandler.registerJSCallback(type, listener);
     }
@@ -486,6 +468,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void removeListener(final String listener) {
+        this.diagnosis.status("removelistener/call", new OptionInfo("listener", listener));
         this.sessionRecorder.removeListener(listener);
         this.gazeHandler.removeJSCallback(listener);
     }
@@ -508,7 +491,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void setPreference(final String key, final String value) {
-        this.logger.finer("Received setPreference('" + key + "', '" + value + "')");
+        this.diagnosis.status("setpreference/call", new OptionInfo("key", key), new OptionInfo("value", value));
         this.sessionRecorder.setPreference(key, value);
         this.preferences.setString(key, value);
     }
@@ -521,6 +504,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void setSessionParameter(final String key, final String value) {
+        this.diagnosis.status("setsessionparameter/call", new OptionInfo("key", key), new OptionInfo("value", value));
         this.sessionRecorder.setParameter("#sessionparameter." + key, value);
     }
 
@@ -531,9 +515,8 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void start() {
-        if (this.recordingEnabled) {
-            this.sessionRecorder.start();
-        }
+        if (this.diagnosis != null) this.diagnosis.status("start/call");
+        if (this.recordingEnabled) this.sessionRecorder.start();
     }
 
     /*
@@ -543,9 +526,8 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void stop() {
-        if (this.recordingEnabled) {
-            this.sessionRecorder.stop();
-        }
+        if (this.diagnosis != null) this.diagnosis.status("stop/call");
+        if (this.recordingEnabled) this.sessionRecorder.stop();
     }
 
     /*
@@ -556,8 +538,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void testBasicFunctionality(final String callback) {
-        this.logger.info("testBasicFunctionality() reached!");
-
+        this.diagnosis.status("testbasicfunctionality/call", new OptionInfo("callback", callback));
         executeJSFunction(callback, "Roundtrip communication appears to be working. This means your browser successfully contacted the plugin, and the plugin was able to call the browser.");
     }
 
@@ -569,7 +550,11 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void updateBrowserGeometry(final int x, final int y, final int w, final int h) {
-        this.sessionRecorder.updateGeometry(new Rectangle(x, y, w, h));
+ 
+        final Rectangle r = new Rectangle(x, y, w, h);
+        this.diagnosis.status("updatebrowsergeometry/call", new OptionInfo("rectangle", r));
+        
+        this.sessionRecorder.updateGeometry(r);
         this.pageManager.updateBrowserGeometry(x, y, w, h);
     }
 
@@ -581,7 +566,11 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void updateDocumentViewport(final int x, final int y) {
-        this.sessionRecorder.updateViewport(new Point(x, y));
+        
+        final Point p = new Point(x, y);
+        this.diagnosis.status("updatedocumentviewport/call", new OptionInfo("point", p));
+        
+        this.sessionRecorder.updateViewport(p);
         this.pageManager.updateDocumentViewport(x, y);
     }
 
@@ -593,6 +582,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void updateElementFlag(final String id, final String flag, final boolean value) {
+        // We don't log this, as it will cause lots of overhead
         this.sessionRecorder.updateElementFlag(id, flag, value);
         this.pageManager.updateElementFlag(id, flag, value);
     }
@@ -607,32 +597,37 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     public void updateElementGeometry(final String id, final String type,
                                       final String content, final int x, final int y,
                                       final int w, final int h) {
+        // We don't log this, as it will cause lots of overhead
         this.sessionRecorder.updateElementGeometry(id, type, content, new Rectangle(x, y, w, h));
         this.pageManager.updateElementGeometry(id, type, content, x, y, w, h);
     }
 
+    
     /** Initializes the tracking devices */
     private void initTrackingDevice() {
+        this.diagnosis.status("inittrackingdevice/start");
 
         // Setup brain tracking device
+        this.diagnosis.status("inittrackingdevice/enable/eyetracker");
         this.eyeTrackingDevice = this.deviceManager.initEyeTrackerConnection(getParameter("trackingdevice"), getParameter("trackingconnection"));
         this.eyeTrackingDevice.addTrackingListener(new EyeTrackingListener() {
-
             @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
                 BrowserPluginImpl.this.sessionRecorder.newTrackingEvent(event);
             }
         });
 
+        
         // Store the device info
         this.sessionRecorder.storeDeviceInfo(this.eyeTrackingDevice.getDeviceInfo());
 
         // Setup eye tracking device
         if ($(getParameter("enablebraintracker")).get("false").equals("true")) {
-            this.logger.info("Enabling Brain Tracker");
+            this.diagnosis.status("inittrackingdevice/enable/braintracker");
             this.brainTrackingDevice = this.deviceManager.initBrainTrackerConnection(null, getParameter("braintrackingconnection"));
 
             if (this.brainTrackingDevice != null) {
+                this.diagnosis.status("inittrackingdevice/enable/braintracker/found");
                 this.brainTrackingDevice.addTrackingListener(new BrainTrackingListener() {
 
                     @Override
@@ -640,16 +635,23 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
                         BrowserPluginImpl.this.sessionRecorder.newBrainTrackingEvent(event);
                     }
                 });
+            } else {
+                this.diagnosis.status("inittrackingdevice/enable/braintracker/missing");
             }
         }
+
+        this.diagnosis.status("inittrackingdevice/end");
     }
 
     /** Initializes recording of the mouse position */
     private void initMouseRecording() {
+        this.diagnosis.status("initmouserecording/call");
         // Start a background thread to record the current mouse position.
         final Thread t = new Thread(new Runnable() {
+            @SuppressWarnings("synthetic-access")
             @Override
             public void run() {
+                BrowserPluginImpl.this.diagnosis.status("initmouserecording/worker/start");
                 while (true) {
                     final SessionRecorder sr = BrowserPluginImpl.this.sessionRecorder;
                     final PointerInfo pointerInfo = MouseInfo.getPointerInfo();
@@ -688,31 +690,36 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
                 }
             });
         } catch (final Exception e) {
-            this.logger.warning("Applet security permissions denied creating session directory. You probably forgot to grant the applet some permissions.");
+            System.err.println("Applet security permissions denied creating session directory. You probably forgot to grant the applet some permissions.");
             e.printStackTrace();
         }
-
     }
 
     /**
      * Obtain additional parameters
      */
     private void processAdditionalParameters() {
+        this.diagnosis.status("processadditional/start");
+
         // Initialize the transmission mode. Determines how Java calls Javascript.
         this.transmitMode = TransmitMode.valueOf($(getParameter("transmitmode")).get("DIRECT").toUpperCase());
         this.callbackPrefix = $(getParameter("callbackprefix")).get("");
 
-        System.out.println(getParameter("extensions"));
+        this.diagnosis.status("processadditional/param", new OptionInfo("param", "transmitmode"), new OptionInfo("value", this.transmitMode));
+        this.diagnosis.status("processadditional/param", new OptionInfo("param", "callbackprefix"), new OptionInfo("value", this.callbackPrefix));
+        this.diagnosis.status("processadditional/param", new OptionInfo("param", "extensions"), new OptionInfo("value", getParameter("extensions")));
+
 
         $(getParameter("extensions")).split(";").forEach(new F1<String, String>() {
+            @SuppressWarnings("synthetic-access")
             @Override
             public String f(String path) {
                 try {
                     final URI uri = OS.absoluteBrowserPathToURI(path);
-                    BrowserPluginImpl.this.logger.info("Trying to load user defined extension at " + uri);
+                    BrowserPluginImpl.this.diagnosis.status("processadditional/extension/path", new OptionInfo("path", path), new OptionInfo("uri", uri));
                     BrowserPluginImpl.this.pluginManager.addPluginsFrom(uri);
                 } catch (Exception e) {
-                    BrowserPluginImpl.this.logger.warning("Unable to load extension " + path);
+                    BrowserPluginImpl.this.diagnosis.status("processadditional/extension/exception", new OptionInfo("message", e.getMessage()));
                     e.printStackTrace();
                 }
 
@@ -794,5 +801,15 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
                                              final String value) {
         this.sessionRecorder.updateElementMetaInformation(id, key, value);
         this.pageManager.updateElementMetaInformation(id, key, value);
+    }
+
+    
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI#logString(java.lang.String)
+     */
+    @Override
+    public void logString(String toLog) {
+        this.diagnosis.status("logstring/call", new OptionInfo("message", toLog));
+        System.out.println(toLog);
     }
 }
