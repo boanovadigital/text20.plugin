@@ -28,11 +28,8 @@ import java.util.Arrays;
  * 
  * Some functions about text processing.
  * 
- * @deprecated Is now in augmented text services project
  * @author rb
- *
  */
-@Deprecated
 public class TextProcessing {
 
     /** Characters we want to remove */

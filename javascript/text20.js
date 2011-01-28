@@ -579,6 +579,9 @@ var text20 = {},
         /**
          * Split text nodes into words and make spans out of them
          * 
+         * TODO: Change callback behavior in the future: Only act on 
+         * strings, not on the actual elements.
+         * 
          * @param arrayOfTextnodes The text nodes to spanify. 
          * @param options 
          *      options.callback: Function accepting one parameter, will be called for every span
@@ -693,6 +696,7 @@ var text20 = {},
             recordingEnabled : false,
             sessionPath : "/tmp/sessions",
             logging : "default",
+            diagnosis: true,
 
             /** If the plugin should check for new versions (see Java console
              *  output). Sends an anonymous ID for statistical purposes, but no
@@ -1194,6 +1198,7 @@ var text20 = {},
 		                    			  "<param name='extensions' value='" + allExtensions + "'>" +
 		                    			  "<param name='updatecheck' value='" + connector.config.updateCheck + "'>" +
 		                    			  "<param name='logging' value='" + connector.config.logging + "'>" +
+                                          "<param name='diagnosis' value='" + connector.config.diagnosis + "'>" +
                                           "<param name='java_arguments' value='-Xmx512m'>";
 
 
@@ -1434,6 +1439,13 @@ var text20 = {},
             // time you add or change the DOM tree and add or remove elements containing such attributes
             autoupdateAttributed: true,
         },
+        
+        
+        /** Various gaze related variables and methods */
+        gaze: {
+            /** The latest gaze position */
+            position: [-1, -1],    
+        },
 
 
         /**  Our cache and handlers for attributed (onFixation, onGazeOver, ...) elements */
@@ -1601,7 +1613,6 @@ var text20 = {},
                 var gazedElement = document.elementFromPoint(x - window.pageXOffset, y - window.pageYOffset),
                     allUnderCurrentGaze = dom.parents(gazedElement);
 
-
                 // Or ther onGazeOut handler
                 core.attributed.get("onGazeOut").each(function(i){
                     // If an element with onGazeOut is under gaze, ignore it.
@@ -1655,6 +1666,7 @@ var text20 = {},
                 // After this we know all elements which are under gaze.
                 var gazedElement = document.elementFromPoint(x - window.pageXOffset, y - window.pageYOffset),
                     allUnderCurrentGaze = dom.parents(gazedElement);
+                    
 
                 core.attributed.get("onFixation").each(function(i){
                     // If an element with onGazeOut is under gaze, ignore it.
@@ -1801,7 +1813,11 @@ var text20 = {},
 
                 var x = param.x;
                 var y = param.y;
-
+                
+                // Update current gaze position
+                core.gaze.position[0] = x;
+                core.gaze.position[1] = y;
+               
                 // call onGaze* and onFixation handler
                 core.handler.onGazeHandler(x, y)
                 core.handler.onFixationHandler(x, y)
