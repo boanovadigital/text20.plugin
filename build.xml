@@ -10,8 +10,6 @@
     <!-- Include aspectj and proguard support -->
 	<taskdef resource="org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties" classpath="dependencies/aspectj/aspectjtools.jar" />
 
-	<!-- because java.home is set not properly -->
-	<property name="jdkhome" value="D:/Programme/Java/jdk1.6.0_12" />
 
 	<!-- Define different global variables -->
 	<property name="prefix" value="text20" />
@@ -21,7 +19,7 @@
 	<property name="build.root" value="ant.build/" />
 	<property name="distribution.root" value="dist/" />
 
-
+	
 	<!-- Sets the current configuration -->
 	<property name="configuration" value="all" />
 

@@ -47,6 +47,7 @@ import java.util.logging.Logger;
 import net.jcores.interfaces.functions.F1;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.util.JSPFProperties;
+import net.xeoh.plugins.diagnosis.local.Diagnosis;
 import net.xeoh.plugins.informationbroker.InformationBroker;
 import net.xeoh.plugins.meta.updatecheck.UpdateCheck;
 import net.xeoh.plugins.remote.RemoteAPI;
@@ -147,6 +148,9 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /** Generate debug output */
     final Logger logger = Logger.getLogger(this.getClass().getName());
 
+    /** If the diagnosis should be enabled */
+    boolean diagnosisEnabled;
+    
     /** Sets up logging */
     MasterLoggingHandler loggingHandler;
 
@@ -170,11 +174,6 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
     /** Browser window */
     JSObject window;
-
-    /** */
-    public BrowserPluginImpl() {
-        System.out.println("Browser.new()");
-    }
 
     /*
      * (non-Javadoc)
@@ -370,14 +369,17 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void init() {
-        System.out.println("Plugin.init()");
-
         // We want to save from the first second
         processBootstrapParameters();
 
         final JSPFProperties props = new JSPFProperties();
         props.setProperty(RemoteAPI.class, "proxy.timeout", "1000");
         props.setProperty(RemoteDiscovery.class, "startup.locktime", "1000");
+        props.setProperty(Diagnosis.class, "recording.enabled", Boolean.toString(this.diagnosisEnabled));
+        props.setProperty(Diagnosis.class, "recording.file", this.masterFilePath + "/diagnosis.record");
+        props.setProperty(Diagnosis.class, "recording.format", "java/serialization");
+        props.setProperty(Diagnosis.class, "analysis.stacktraces.enabled", "true");
+        props.setProperty(Diagnosis.class, "analysis.stacktraces.depth", "10000");
         props.setProperty(UpdateCheck.class, "update.url", "http://api.text20.net/common/versioncheck/");
         props.setProperty(UpdateCheck.class, "update.enabled", this.updatecheck);
         props.setProperty(UpdateCheck.class, "product.name", "text20.plugin");
@@ -672,6 +674,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     private void processBootstrapParameters() {
         this.recordingEnabled = Boolean.parseBoolean($(getParameter("recordingenabled")).get("true"));
+        this.diagnosisEnabled = Boolean.parseBoolean($(getParameter("diagnosis")).get("true"));
         this.masterFilePath = $(getParameter("sessionpath")).get("/tmp/") + "/" + System.currentTimeMillis() + "/";
         this.updatecheck = $(getParameter("updatecheck")).get("true");
 
