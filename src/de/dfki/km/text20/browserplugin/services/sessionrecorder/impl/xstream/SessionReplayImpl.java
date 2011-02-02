@@ -27,6 +27,7 @@ import javax.imageio.ImageIO;
 import net.xeoh.plugins.base.util.OptionUtils;
 
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.StreamException;
 
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.ReplayListener;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay;
@@ -224,6 +225,8 @@ public class SessionReplayImpl implements SessionReplay {
                             }
 
                             previousEvent = event;
+                        } catch(StreamException e) { 
+                            this.hasMore = false;
                         } catch (EOFException e) {
                             this.hasMore = false;
                         } catch (IOException e) {
@@ -320,6 +323,8 @@ public class SessionReplayImpl implements SessionReplay {
                     continue;
                 }
 
+            } catch(StreamException e) { 
+                isFinishedReading = true;
             } catch (EOFException e) {
                 isFinishedReading = true;
 
