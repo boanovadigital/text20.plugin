@@ -47,10 +47,18 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.O
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.DisplacementRegion;
 
 /**
- * @author rb
+ * Current replay implementation
  * 
+ * @author Ralf Biedert
+ * @author Arman Vartan
  */
 public class SessionReplayImpl implements SessionReplay {
+
+    /**
+     * The file to replay. This can either be a zip file (with an internal .xstream) or an
+     * xstream directly.
+     */
+    final File file;
 
     /** Logger */
     final Logger logger = Logger.getLogger(this.getClass().getName());
@@ -58,31 +66,28 @@ public class SessionReplayImpl implements SessionReplay {
     /** Xstream (de)serializer */
     final XStream xstream = new XStream();
 
-    /** Input stream to read the content from */
-    ObjectInputStream in;
-
     /** List of events to filter */
     final List<Class<? extends AbstractSessionEvent>> toFilter = new ArrayList<Class<? extends AbstractSessionEvent>>();
 
     /** List of properties stored in the replay */
     final Map<String, String> propertyMap = new HashMap<String, String>();
 
+    /** Input stream to read the content from */
+    ObjectInputStream in;
+    
     /** The recorded screen size */
     Dimension screenSize;
-
-    /**
-     * The file to replay. This can either be a zip file (with an internal .xstream) or an
-     * xstream directly.
-     */
-    private File file;
 
     /** The loader to access elements */
     AbstractLoader loader = null;
 
     /** Displacement regions to apply */
-    private List<DisplacementRegion> fixationDisplacementRegions;
+    List<DisplacementRegion> fixationDisplacementRegions;
 
+    
     /**
+     * Creates a new replay implementation for the given file
+     * 
      * @param file
      */
     public SessionReplayImpl(final File file) {
@@ -97,21 +102,33 @@ public class SessionReplayImpl implements SessionReplay {
         this.getMetaInfo();
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay#getDisplacements()
+     */
     @Override
     public List<DisplacementRegion> getDisplacements() {
         return new ArrayList<DisplacementRegion>();
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay#getProperties(java.lang.String[])
+     */
     @Override
     public Map<String, String> getProperties(String... properties) {
         return this.propertyMap;
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay#getScreenSize()
+     */
     @Override
     public Dimension getScreenSize() {
         return this.screenSize;
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay#replay(de.dfki.km.text20.browserplugin.services.sessionrecorder.ReplayListener, de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOption[])
+     */
     @Override
     public synchronized void replay(final ReplayListener listener,
                                     final ReplayOption... options) {
@@ -271,7 +288,7 @@ public class SessionReplayImpl implements SessionReplay {
         }
     }
 
-    /** */
+    /** Tries to open the input stream depending on the method */
     private void createInputStream() {
         try {
             InputStream input = null;
@@ -295,7 +312,6 @@ public class SessionReplayImpl implements SessionReplay {
 
             // (Fixed Issue #26)
             this.in = this.xstream.createObjectInputStream(new BufferedReader(new InputStreamReader(input, "UTF-8")));
-
         } catch (final FileNotFoundException e) {
             e.printStackTrace();
         } catch (final IOException e) {
@@ -303,21 +319,24 @@ public class SessionReplayImpl implements SessionReplay {
         }
     }
 
-    /** */
+    /** Gets meta information from the replay stream */
     private void getMetaInfo() {
         this.createInputStream();
 
         boolean isFinishedReading = false;
 
+        // We open the file and scan for certain events ...
         while (!isFinishedReading) {
             try {
                 final AbstractSessionEvent event = (AbstractSessionEvent) this.in.readObject();
 
+                // Screen size so we know how large the original desktop was
                 if (event instanceof ScreenSizeEvent) {
                     this.screenSize = ((ScreenSizeEvent) event).screenSize;
                     continue;
                 }
 
+                // Property events might also be required a priori
                 if (event instanceof PropertyEvent) {
                     this.propertyMap.put(((PropertyEvent) event).key, ((PropertyEvent) event).value);
                     continue;
@@ -327,7 +346,6 @@ public class SessionReplayImpl implements SessionReplay {
                 isFinishedReading = true;
             } catch (EOFException e) {
                 isFinishedReading = true;
-
                 // TODO: Is this neccessary and if yes, how to implement it correctly?
                 // realtimeDuration.set(currentEvenTime.get() - firstEventTime.get());
             } catch (IOException e) {
@@ -337,6 +355,7 @@ public class SessionReplayImpl implements SessionReplay {
             }
         }
 
+        // Eventually close the stream 
         try {
             this.in.close();
         } catch (IOException e) {

@@ -80,8 +80,7 @@ import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * @author buhl
- * 
+ * @author Andreas Buhl
  */
 @Root
 public class SessionStreamer implements Serializable {
@@ -140,16 +139,18 @@ public class SessionStreamer implements Serializable {
     @ElementList
     List<AbstractSessionEvent> allEvents = new ArrayList<AbstractSessionEvent>();
 
+    /** List of displacements for this replay */
     @ElementList(required = false)
     List<DisplacementRegion> fixationDisplacementRegions = new ArrayList<DisplacementRegion>();
 
-    /** */
+    /** Last known mouse position */
     Point lastKnownMousePosition = new Point();
 
     /** Size of the screen when recording started */
     @Element
     Dimension screenSize;
 
+    /** Properties we received */
     @ElementMap(required = false)
     Map<String, String> sessionProperties = new HashMap<String, String>();
 
@@ -157,7 +158,7 @@ public class SessionStreamer implements Serializable {
     LinkedBlockingQueue<AbstractSessionEvent> eventQueue = new LinkedBlockingQueue<AbstractSessionEvent>();
 
     /** If set will be used to set the next event time */
-    private Date nextDate;
+    Date nextDate;
 
     /**
      * Create a new session record.
@@ -168,10 +169,11 @@ public class SessionStreamer implements Serializable {
      */
     public SessionStreamer(final Dimension screenSize, final String filename,
                            final Date date) {
-        this.screenSize = screenSize;
-
+        // Create streamer
         final XStream xstream = new XStream();
         SessionStreamer.setAlias(xstream);
+        
+        this.screenSize = screenSize;
 
         // Put initial events
         nextDate(date);
@@ -189,10 +191,12 @@ public class SessionStreamer implements Serializable {
             final OutputStream stream = (this.compressed) ? new GZIPOutputStream(new FileOutputStream(filename + ".gz")) : new FileOutputStream(filename);
             final ObjectOutputStream output = xstream.createObjectOutputStream(new BufferedWriter(new OutputStreamWriter(stream, "UTF-8")));
 
+            // Start background file-writer thread
             Thread writerThread = new Thread(new WriterThread(output));
             writerThread.setDaemon(true);
             writerThread.start();
 
+            // Add shutdown hook that tries to close our stream (works so-so)
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override
                 public void run() {
@@ -204,7 +208,6 @@ public class SessionStreamer implements Serializable {
                     }
                 }
             });
-
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
@@ -411,7 +414,9 @@ public class SessionStreamer implements Serializable {
     }
 
     /**
-     * 
+     * Adds an event to the replay stream. If nextDate() was set, then the time
+     * specified there is used to place the event.
+     *  
      * @param evt
      */
     protected synchronized void addEvent(final AbstractSessionEvent evt) {
