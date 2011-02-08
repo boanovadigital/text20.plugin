@@ -1,4 +1,4 @@
-/*
+ /*
  * FixationHandler.java
  *
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
@@ -72,7 +72,6 @@ public class FixationHandler extends AbstractGazeHandler {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.browserplugin.services.mastergazehandler.impl.gazehandler.AbstractGazeHandler#registerToEvaluator(de.dfki.km.augmentedtext.services.gazeevaluator.GazeEvaluator)
      */
-
     @Override
     protected void registerToEvaluator(final GazeEvaluator evaluator) {
         evaluator.addEvaluationListener(new FixationListener() {

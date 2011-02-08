@@ -47,7 +47,6 @@ public class DisplacingTrackingEventWrapper extends TrackingEventWrapper {
     /* (non-Javadoc)
      * @see de.dfki.km.augmentedtext.services.trackingdevices.util.wrapper.TrackingEventWrapper#getGazeCenter()
      */
-
     @Override
     public Point getGazeCenter() {
         final Point center = this.originalEvent.getGazeCenter();
