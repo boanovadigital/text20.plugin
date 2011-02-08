@@ -99,17 +99,27 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements E
      */
     @Override
     public boolean areValid(final EyeTrackingEventValidity... validities) {
+        // Base return type 
         boolean rval = true;
+        
+        // Check for all validities we got ...
         for (final EyeTrackingEventValidity v : validities) {
+            
+            // Check center position ...
             if (v == EyeTrackingEventValidity.CENTER_POSITION_VALID) {
+                
+                // First combine that with our given validity
                 rval &= this.validity;
 
-                // Override validity for special points ...
-                if (this.combinedCenter.x <= 0 && this.combinedCenter.y <= 0) {
+                // ... and override validity for special points ...
+                if (this.combinedCenter.x < 0 || this.combinedCenter.y < 0) {
                     rval = false;
                 }
             }
         }
+        
+        
+        // Return final validity
         return rval;
     }
 

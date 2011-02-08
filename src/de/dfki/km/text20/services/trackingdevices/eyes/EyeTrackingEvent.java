@@ -33,7 +33,7 @@ import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
  * 
  * TODO: Return gaze positions in float values (as pixel values (212.21) as well as normalized values (0.4361))
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 public interface EyeTrackingEvent extends TrackingEvent {
     /**

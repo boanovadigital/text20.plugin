@@ -29,8 +29,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
 import net.xeoh.plugins.base.PluginInformation;
-import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.PluginInformation.Information;
+import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.options.getplugin.OptionPluginSelector;
 import net.xeoh.plugins.base.options.getplugin.PluginSelector;
 import net.xeoh.plugins.base.util.OptionUtils;
@@ -46,12 +46,10 @@ import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionG
 import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionGazeEvaluatorPassthrough;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 
 /**
- * @author rb
- *
+ * @author Ralf Biedert
  */
 public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
 
@@ -99,17 +97,18 @@ public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
     @Override
     public void addEvaluationListener(final GazeEvaluationListener<?> listener, AddGazeEvaluationListenerOption... options) {
 
+        // First check our prerequisites
         final OptionUtils<AddGazeEvaluationListenerOption> ou = new OptionUtils<AddGazeEvaluationListenerOption>(options);
         final Collection<OptionRequestVersion> requestedVersions = ou.getAll(OptionRequestVersion.class);
 
         GazeEvaluatorImpl.this.logger.fine("Obtained request to return an evaluator for " + listener.getClass());
 
         // Select the proper plugin
-        final GazeHandlerFactory selectedCreator = this.pluginManager.getPlugin(GazeHandlerFactory.class, new OptionPluginSelector<GazeHandlerFactory>(new PluginSelector<GazeHandlerFactory>() {
+        final GazeHandlerFactory selectedCreator = this.pluginManager.getPlugin(GazeHandlerFactory.class, 
+                                                                                new OptionPluginSelector<GazeHandlerFactory>(new PluginSelector<GazeHandlerFactory>() {
 
             @Override
             public boolean selectPlugin(GazeHandlerFactory creator) {
-
                 GazeEvaluatorImpl.this.logger.finer("Examining plugin factory " + creator);
 
                 final PluginInformation pi = GazeEvaluatorImpl.this.pluginInformation;
@@ -194,8 +193,9 @@ public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
         // Sanity check
         if (event == null) return;
 
-        // We ignore invalid points.
-        if (!event.areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID)) return;
+        
+        // We ignore invalid points. NO WE DON'T!!!!!
+        // if (!event.areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID)) return;
 
         // Check for event flooding.
         if (this.gazeEventLock.isLocked()) {
