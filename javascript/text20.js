@@ -506,14 +506,16 @@ var text20 = {},
                         relativeTo = "window"
                     }
 
+                    // Stop on BODY node
+                    if(obj.parentNode.nodeName == "BODY") break;
+                    
                     // Subtract scrolling of parent (some divs might have this ... BUT IGNORE THE BODY)
-                    if (obj.parentNode.scrollTop > 0 && obj.parentNode != document.body) {
+                    if (obj.parentNode.scrollTop > 0)
                         scrollCorrectionY -= obj.parentNode.scrollTop;
-                    }
 
                     obj = obj.parentNode;
             }
-
+            
             // Restore original object
             obj = origObj;
 
