@@ -484,7 +484,6 @@ public class SessionStreamer implements Serializable {
 
     /**
      * @author Vartan
-     * 
      */
     private class WriterThread implements Runnable {
 

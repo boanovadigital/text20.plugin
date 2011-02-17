@@ -23,7 +23,7 @@
  *
  *
  * Version:
- *      4.4.0
+ *      4.5.0
  *
  * Dependencies:
  *      jquery > 1.4
