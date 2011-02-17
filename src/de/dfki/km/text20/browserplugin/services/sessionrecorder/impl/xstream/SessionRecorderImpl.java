@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream;
 
+import static net.jcores.CoreKeeper.$;
+
 import java.awt.AWTException;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -34,7 +36,6 @@ import java.security.PrivilegedAction;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
@@ -50,7 +51,7 @@ import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configu
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.CreateRecorderOption;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.SpecialCommandOption;
-import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.createrecorder.OptionFakeStartDate;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.createrecorder.OptionFakeReplay;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.specialcommand.OptionFakeNextDate;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDeviceInfo;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
@@ -58,52 +59,52 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceInfo;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
+ * Manages writing to sessions.
+ * 
+ * 
  * @author Ralf Biedert
  * @author Andreas Buhl
- * 
  */
 public class SessionRecorderImpl implements SessionRecorder {
 
-    /** */
+    /** The prefix to name this session */
+    private static final String filenamePrefix = "session.";
+
+    /** The suffix to name this session */
+    private static final String filenameExtension = ".xstream";
+
+    /** Remove and replace by diagnosis */
     final Logger logger = Logger.getLogger(this.getClass().getName());
 
-    /** */
-    final Timer autosaveTimer = new Timer();
-
-    /** */
-    Timer currentTimer = new Timer();
-
-    /** */
+    /** Needed to get some information from the rest of the plugins */
     final InformationBroker infoBroker;
 
-    /** */
-    Robot robot;
+    /** Timer to take screenshots */
+    Timer screenshotTimer = new Timer();
 
-    /** */
+    /** Stores the last known mouse position (useful for clicks) */
     Point lastMousePos = new Point();
 
-    /** */
-    volatile Rectangle currentRectangle;
+    /** Fake start date to use */
+    Date fakeStart;
 
-    /** */
-    String sessionDir = "/tmp/session";
+    /** Needed to record screenshots */
+    Robot robot;
 
-    /** */
+    /** Where our document is on our screen */
+    volatile Rectangle documentRectangle;
+
+    /**  */
     volatile SessionStreamer sessionStreamer;
-
-    /** */
-    AtomicBoolean started = new AtomicBoolean(false);
 
     /** */
     XStream xstream;
 
-    /** */
-    private final String filenamePrefix = "session.";
-
-    private Date fakeStart;
-
-    /** */
-    private static final String filenameExtension = ".xstream";
+    /** Working directory to create sessions in */
+    String sessionDir = "/tmp/session";
+    
+    /** Target file if we should generate a zipped output */
+    String targetFile = null;
 
     /*
      * (non-Javadoc)
@@ -114,7 +115,6 @@ public class SessionRecorderImpl implements SessionRecorder {
      */
     @Override
     public void getPreference(final String key, final String deflt) {
-
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.getPreference(key, deflt);
     }
@@ -143,7 +143,6 @@ public class SessionRecorderImpl implements SessionRecorder {
     @Override
     public void mouseClicked(final int type, final int button) {
         if (this.sessionStreamer == null) return;
-
         this.sessionStreamer.mouseClickEvent(type, button);
     }
 
@@ -185,18 +184,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     public void executeJSFunction(final String function, final Object... args) {
         // FIXME: Better record the failed calls and store them separately
         if (this.sessionStreamer == null) return;
-
-        String s[] = new String[0];
-
-        if (args != null) {
-            s = new String[args.length];
-            for (int i = 0; i < s.length; i++) {
-                final Object o = args[i];
-                s[i] = o.toString();
-            }
-        }
-
-        this.sessionStreamer.executeJSFunction(function, s);
+        this.sessionStreamer.executeJSFunction(function, $(args).string().array(String.class));
     }
 
     /*
@@ -209,7 +197,6 @@ public class SessionRecorderImpl implements SessionRecorder {
     @Override
     public void newTrackingEvent(final EyeTrackingEvent event) {
         if (this.sessionStreamer == null) return;
-
         this.sessionStreamer.trackingEvent(event);
     }
 
@@ -224,7 +211,6 @@ public class SessionRecorderImpl implements SessionRecorder {
     public void registerListener(final String type, final String listener) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.registerListener(type, listener);
-
     }
 
     /*
@@ -272,9 +258,8 @@ public class SessionRecorderImpl implements SessionRecorder {
      */
     public void shutdown() {
         stop();
-        this.autosaveTimer.cancel();
-        if (this.currentTimer != null) {
-            this.currentTimer.cancel();
+        if (this.screenshotTimer != null) {
+            this.screenshotTimer.cancel();
         }
     }
 
@@ -297,10 +282,8 @@ public class SessionRecorderImpl implements SessionRecorder {
 
         // Create streamer
         final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.sessionStreamer = new SessionStreamer(screenSize, createFileName(), this.fakeStart);
 
-        // Only set started if we were successful.
-        this.started.set(true);
+        this.sessionStreamer = new SessionStreamer(screenSize, createFileName(), this.fakeStart);
     }
 
     /*
@@ -335,8 +318,10 @@ public class SessionRecorderImpl implements SessionRecorder {
      * @param options
      */
     public SessionRecorderImpl(final PluginManager pm, CreateRecorderOption... options) {
+        // Get our information broker
         this.infoBroker = pm.getPlugin(InformationBroker.class);
 
+        // Create the streamer to write XML into a file
         try {
             this.xstream = new XStream();
         } catch (Exception e) {
@@ -345,10 +330,13 @@ public class SessionRecorderImpl implements SessionRecorder {
             this.xstream = null;
         }
 
-        final OptionUtils<CreateRecorderOption> ou = new OptionUtils<CreateRecorderOption>(options);
-        if (ou.contains(OptionFakeStartDate.class)) {
-            this.fakeStart = new Date(ou.get(OptionFakeStartDate.class).getStartDate());
+        // Process options
+        final OptionFakeReplay fake = $(options).cast(OptionFakeReplay.class).compact().get(0);
+        if(fake != null) {
+            this.fakeStart = new Date(fake.getStartDate());
+            this.targetFile = fake.getFile();
         }
+        
 
         this.logger.fine("Session streamer created");
 
@@ -424,7 +412,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     @Override
     public void updateGeometry(final Rectangle rectangle) {
         if (this.sessionStreamer == null) return;
-        this.currentRectangle = rectangle;
+        this.documentRectangle = rectangle;
         this.sessionStreamer.updateGeometry(rectangle);
         takeScreenshotDelayed();
     }
@@ -466,20 +454,20 @@ public class SessionRecorderImpl implements SessionRecorder {
 
         // Cancel all pending tasks
         try {
-            this.currentTimer.cancel();
+            this.screenshotTimer.cancel();
         } catch (final Throwable e) {
             // Why does the language has to be so crappy ?
         }
 
-        this.currentTimer = new Timer();
-        this.currentTimer.schedule(new TimerTask() {
+        this.screenshotTimer = new Timer();
+        this.screenshotTimer.schedule(new TimerTask() {
 
             @Override
             public void run() {
                 doTakeScreenshot();
 
                 // Don't invoke us again.
-                SessionRecorderImpl.this.currentTimer.cancel();
+                SessionRecorderImpl.this.screenshotTimer.cancel();
             }
 
         }, delay);
@@ -501,7 +489,7 @@ public class SessionRecorderImpl implements SessionRecorder {
             public BufferedImage run() {
                 try {
                     // Try to save the image.
-                    final BufferedImage createScreenCapture = SessionRecorderImpl.this.robot.createScreenCapture(SessionRecorderImpl.this.currentRectangle);
+                    final BufferedImage createScreenCapture = SessionRecorderImpl.this.robot.createScreenCapture(SessionRecorderImpl.this.documentRectangle);
 
                     ImageIO.write(createScreenCapture, "png", new File(fullpath));
 

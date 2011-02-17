@@ -24,10 +24,11 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.creater
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.CreateRecorderOption;
 
 /**
- * @author rb
- *
+ * If given, the generated replay will be faked.
+ * 
+ * @author Ralf Biedert
  */
-public class OptionFakeStartDate implements CreateRecorderOption {
+public class OptionFakeReplay implements CreateRecorderOption {
 
     /** */
     private static final long serialVersionUID = 7045264790144268252L;
@@ -35,11 +36,16 @@ public class OptionFakeStartDate implements CreateRecorderOption {
     /** */
     private final long startdate;
 
+    /** */
+    private String file;
+
     /**
+     * @param file
      * @param startdate
-     *
+     * 
      */
-    public OptionFakeStartDate(long startdate) {
+    public OptionFakeReplay(String file, long startdate) {
+        this.file = file;
         this.startdate = startdate;
     }
 
@@ -50,4 +56,10 @@ public class OptionFakeStartDate implements CreateRecorderOption {
         return this.startdate;
     }
 
+    /**
+     * @return the file
+     */
+    public String getFile() {
+        return this.file;
+    }
 }
