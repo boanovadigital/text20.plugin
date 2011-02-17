@@ -160,6 +160,8 @@ public class SessionStreamer implements Serializable {
     /** If set will be used to set the next event time */
     Date nextDate;
 
+    Thread writerThread;
+
     /**
      * Create a new session record.
      * 
@@ -180,9 +182,9 @@ public class SessionStreamer implements Serializable {
         addEvent(new InitEvent(VERSION));
         nextDate(date);
         addEvent(new ScreenSizeEvent(screenSize));
-        nextDate(date);
 
         // Generate our unique session id
+        nextDate(date);
         generateUniqueSessionID();
 
         this.logger.fine("Create our output file " + filename);
@@ -192,9 +194,9 @@ public class SessionStreamer implements Serializable {
             final ObjectOutputStream output = xstream.createObjectOutputStream(new BufferedWriter(new OutputStreamWriter(stream, "UTF-8")));
 
             // Start background file-writer thread
-            Thread writerThread = new Thread(new WriterThread(output));
-            writerThread.setDaemon(true);
-            writerThread.start();
+            this.writerThread = new Thread(new WriterThread(output));
+            this.writerThread.setDaemon(true);
+            this.writerThread.start();
 
             // Add shutdown hook that tries to close our stream (works so-so)
             Runtime.getRuntime().addShutdownHook(new Thread() {
@@ -215,6 +217,14 @@ public class SessionStreamer implements Serializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    
+    /**
+     * Closes the streamer
+     */
+    public void close() {
+        this.writerThread.interrupt();
     }
 
     /**
@@ -539,7 +549,6 @@ public class SessionStreamer implements Serializable {
                     try {
                         Thread.sleep(250);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
                     }
                 }
             } finally {

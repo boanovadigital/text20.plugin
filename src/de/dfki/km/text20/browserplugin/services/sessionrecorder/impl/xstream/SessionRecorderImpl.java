@@ -41,7 +41,6 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 import net.xeoh.plugins.base.PluginManager;
-import net.xeoh.plugins.base.util.OptionUtils;
 import net.xeoh.plugins.informationbroker.InformationBroker;
 import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
 
@@ -60,7 +59,6 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
  * Manages writing to sessions.
- * 
  * 
  * @author Ralf Biedert
  * @author Andreas Buhl
@@ -85,8 +83,8 @@ public class SessionRecorderImpl implements SessionRecorder {
     /** Stores the last known mouse position (useful for clicks) */
     Point lastMousePos = new Point();
 
-    /** Fake start date to use */
-    Date fakeStart;
+    /** If set, we use a fake replay */
+    OptionFakeReplay fakeReplay;
 
     /** Needed to record screenshots */
     Robot robot;
@@ -102,9 +100,6 @@ public class SessionRecorderImpl implements SessionRecorder {
 
     /** Working directory to create sessions in */
     String sessionDir = "/tmp/session";
-    
-    /** Target file if we should generate a zipped output */
-    String targetFile = null;
 
     /*
      * (non-Javadoc)
@@ -191,8 +186,8 @@ public class SessionRecorderImpl implements SessionRecorder {
      * (non-Javadoc)
      * 
      * @see
-     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
-     * #newTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent)
+     * de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#newTrackingEvent(de.dfki.km.text20.services
+     * .trackingdevices.eyes.EyeTrackingEvent)
      */
     @Override
     public void newTrackingEvent(final EyeTrackingEvent event) {
@@ -203,9 +198,8 @@ public class SessionRecorderImpl implements SessionRecorder {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
-     * #registerListener(java.lang.String, java.lang.String)
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#registerListener(java.lang.String,
+     * java.lang.String)
      */
     @Override
     public void registerListener(final String type, final String listener) {
@@ -216,9 +210,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
-     * #removeListener(java.lang.String)
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#removeListener(java.lang.String)
      */
     @Override
     public void removeListener(final String listener) {
@@ -275,15 +267,16 @@ public class SessionRecorderImpl implements SessionRecorder {
 
         // Obtain the session dir (should have been set by now)
         // Return the session dir
-        this.sessionDir = new InformationBrokerUtil(this.infoBroker).get(SessionDirectoryItem.class, "/tmp");
+        this.sessionDir = new InformationBrokerUtil(this.infoBroker).get(SessionDirectoryItem.class, $.tempfile().getAbsolutePath() + ".dir");
 
         // Create sessiondir
         new File(this.sessionDir).mkdirs();
 
         // Create streamer
-        final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        final Dimension screenSize = this.fakeReplay != null ? this.fakeReplay.getScreenSize() : Toolkit.getDefaultToolkit().getScreenSize();
+        final Date fakeDate = this.fakeReplay != null ? new Date(this.fakeReplay.getStartDate()) : null;
 
-        this.sessionStreamer = new SessionStreamer(screenSize, createFileName(), this.fakeStart);
+        this.sessionStreamer = new SessionStreamer(screenSize, createFileName(fakeDate), fakeDate);
     }
 
     /*
@@ -295,12 +288,27 @@ public class SessionRecorderImpl implements SessionRecorder {
      */
     @Override
     public void stop() {
-        // We'd rather use autosave ...
-        // this.sessionRecord.writeTo(this.sessiondir + "/" + "session.ser");
+        if(this.sessionStreamer == null) return;
+        
+        // Very nasty hack to wait for the streamer to save everything. TODO: Improve this 
+        try {
+            Thread.sleep(500);
+            this.sessionStreamer.close();
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+        }
+        
+        // In case we receive a stop event, check if we had a fake session, in that case, zip our ouput
+        if (this.fakeReplay != null) {
+            $(this.sessionDir).file().zip(this.fakeReplay.getFile());
+        }
+
         this.sessionStreamer = null;
     }
 
     /**
+     * Stores the device info of the given eye tracking device.
+     * 
      * @param deviceInfo
      */
     @Override
@@ -313,6 +321,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     }
 
     /**
+     * Creates a new session recorder.
      * 
      * @param pm
      * @param options
@@ -331,19 +340,12 @@ public class SessionRecorderImpl implements SessionRecorder {
         }
 
         // Process options
-        final OptionFakeReplay fake = $(options).cast(OptionFakeReplay.class).compact().get(0);
-        if(fake != null) {
-            this.fakeStart = new Date(fake.getStartDate());
-            this.targetFile = fake.getFile();
-        }
-        
-
-        this.logger.fine("Session streamer created");
+        this.fakeReplay = $(options).cast(OptionFakeReplay.class).compact().get(0);
 
         init();
     }
 
-    /** */
+    /** Called to set up serializer and stuff */
     void init() {
 
         try {
@@ -364,8 +366,9 @@ public class SessionRecorderImpl implements SessionRecorder {
     /*
      * (non-Javadoc)
      * 
-     * @see de.dfki.km.augmentedtext.browserplugin.services.eventrecorder.SessionStreamer#
-     * updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
+     * @see
+     * de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#updateElementMetaInformation(java.lang
+     * .String, java.lang.String, java.lang.String)
      */
     @Override
     public void updateElementMetaInformation(final String id, final String key,
@@ -377,9 +380,8 @@ public class SessionRecorderImpl implements SessionRecorder {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
-     * #updateElementFlag(java.lang.String, java.lang.String, boolean)
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#updateElementFlag(java.lang.String,
+     * java.lang.String, boolean)
      */
     @Override
     public void updateElementFlag(final String id, final String flag, final boolean value) {
@@ -391,9 +393,8 @@ public class SessionRecorderImpl implements SessionRecorder {
      * (non-Javadoc)
      * 
      * @see
-     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
-     * #updateElementGeometry(java.lang.String, java.lang.String, java.lang.String,
-     * java.awt.Rectangle)
+     * de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#updateElementGeometry(java.lang.String,
+     * java.lang.String, java.lang.String, java.awt.Rectangle)
      */
     @Override
     public void updateElementGeometry(final String id, final String type,
@@ -405,9 +406,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * de.dfki.km.augmentedtext.browserplugin.services.sessionrecorder.SessionRecorder
-     * #updateGeometry(java.awt.Rectangle)
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#updateGeometry(java.awt.Rectangle)
      */
     @Override
     public void updateGeometry(final Rectangle rectangle) {
@@ -417,6 +416,11 @@ public class SessionRecorderImpl implements SessionRecorder {
         takeScreenshotDelayed();
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#updateMousePosition(int, int)
+     */
     @Override
     public void updateMousePosition(final int x, final int y) {
 
@@ -450,7 +454,7 @@ public class SessionRecorderImpl implements SessionRecorder {
      * @param delay
      */
     private void takeScreenshotDelayed(final int delay) {
-        if (this.sessionStreamer == null) return;
+        if (this.sessionStreamer == null || this.fakeReplay != null) return;
 
         // Cancel all pending tasks
         try {
@@ -477,7 +481,7 @@ public class SessionRecorderImpl implements SessionRecorder {
      * Really takes a screenshots.
      */
     void doTakeScreenshot() {
-        if (this.sessionStreamer == null) return;
+        if (this.sessionStreamer == null || this.fakeReplay != null) return;
 
         final String file = System.currentTimeMillis() + ".png";
         final String fullpath = SessionRecorderImpl.this.sessionDir + "/" + file;
@@ -510,19 +514,24 @@ public class SessionRecorderImpl implements SessionRecorder {
      * Takes a screenshot soon.
      */
     private void takeScreenshotDelayed() {
-        if (this.sessionStreamer == null) return;
+        if (this.sessionStreamer == null || this.fakeReplay != null) return;
         takeScreenshotDelayed(500);
     }
 
     /**
+     * Creates a filename for the session file
+     * @param fakeDate 
+     * 
      * @return generated file path:
      * [session_directory]/[filePrefix]_[startTimeInMilliSeconds].[filenameExtension]
      */
-    private String createFileName() {
-        return this.sessionDir + "/" + this.filenamePrefix + System.currentTimeMillis() + filenameExtension;
+    private String createFileName(Date fakeDate) {
+        return this.sessionDir + "/" + filenamePrefix + (fakeDate != null ? fakeDate.getTime() : System.currentTimeMillis()) + filenameExtension;
     }
 
     /**
+     * Returns the used session directory.
+     * 
      * @return .
      */
     public String getSessionDir() {
@@ -539,27 +548,23 @@ public class SessionRecorderImpl implements SessionRecorder {
     /*
      * (non-Javadoc)
      * 
-     * @see
-     * de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#specialCommand
-     * (
-     * de.dfki.km.text20.browserplugin.services.sessionrecorder.options.SpecialCommandOption
-     * [])
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#specialCommand(de.dfki.km.text20.
+     * browserplugin.services.sessionrecorder.options.SpecialCommandOption[])
      */
     @Override
     public void specialCommand(SpecialCommandOption... options) {
-        final OptionUtils<SpecialCommandOption> ou = new OptionUtils<SpecialCommandOption>(options);
-        if (ou.contains(OptionFakeNextDate.class)) {
-            long next = ou.get(OptionFakeNextDate.class).getDate();
-            this.sessionStreamer.nextDate(new Date(next));
+        final OptionFakeNextDate fakeNextDate = $(options).cast(OptionFakeNextDate.class).compact().get(0);
+        if (fakeNextDate != null) {
+            this.sessionStreamer.nextDate(new Date(fakeNextDate.getDate()));
         }
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#
-     * newBrainTrackingEvent
-     * (de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent)
+     * @see
+     * de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#newBrainTrackingEvent(de.dfki.km.text20
+     * .services.trackingdevices.brain.BrainTrackingEvent)
      */
     @Override
     public void newBrainTrackingEvent(BrainTrackingEvent event) {
@@ -571,9 +576,9 @@ public class SessionRecorderImpl implements SessionRecorder {
     /*
      * (non-Javadoc)
      * 
-     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#
-     * storeBrainDeviceInfo
-     * (de.dfki.km.text20.services.braintrackingdevices.BrainTrackingDeviceInfo)
+     * @see
+     * de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder#storeBrainDeviceInfo(de.dfki.km.text20
+     * .services.trackingdevices.brain.BrainTrackingDeviceInfo)
      */
     @Override
     public void storeBrainDeviceInfo(BrainTrackingDeviceInfo deviceInfo) {
