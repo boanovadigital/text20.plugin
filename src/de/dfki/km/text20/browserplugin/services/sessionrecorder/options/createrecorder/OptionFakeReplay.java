@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.createrecorder;
 
+import java.awt.Dimension;
+
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.CreateRecorderOption;
 
 /**
@@ -37,15 +39,20 @@ public class OptionFakeReplay implements CreateRecorderOption {
     private final long startdate;
 
     /** */
-    private String file;
+    private final String file;
+
+    /** */
+    private final Dimension screenSize;
 
     /**
      * @param file
+     * @param screenSize 
      * @param startdate
      * 
      */
-    public OptionFakeReplay(String file, long startdate) {
+    public OptionFakeReplay(String file, Dimension screenSize, long startdate) {
         this.file = file;
+        this.screenSize = screenSize;
         this.startdate = startdate;
     }
 
@@ -61,5 +68,12 @@ public class OptionFakeReplay implements CreateRecorderOption {
      */
     public String getFile() {
         return this.file;
+    }
+
+    /**
+     * @return the screenSize
+     */
+    public Dimension getScreenSize() {
+        return this.screenSize;
     }
 }
