@@ -25,8 +25,7 @@ package de.dfki.km.text20.browserplugin.browser.browserplugin;
  * Interface to the browser plugin. The corresponding class is *not* initialized by the PluginManager,
  * but by the browser, use BrowserPluginManager to retrieve it.
  *
- * @author rb
- *
+ * @author Ralf Biedert
  */
 public interface JSExecutor {
     /**

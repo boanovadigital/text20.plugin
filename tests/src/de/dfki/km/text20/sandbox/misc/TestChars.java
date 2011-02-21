@@ -32,6 +32,7 @@ public class TestChars {
      * @param args
      */
     public static void main(final String[] args) {
+        
         final TextualRenderElementCharPositions recp = new TextualRenderElementCharPositions();
         System.out.println(recp.getWidthRelation('a', 'b'));
     }
