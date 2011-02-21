@@ -113,20 +113,24 @@ public class EyeTrackingEventContainerConverter implements Converter {
     @Override
     public Object unmarshal(HierarchicalStreamReader reader, UnmarshallingContext context) {
         EyeTrackingEventContainer event = new EyeTrackingEventContainer();
+        String value = "";
 
         reader.moveDown();
-        event.setEventTime(Long.parseLong(reader.getValue()));
+        value = reader.getValue();
+        event.setEventTime((value != null) ? Long.parseLong(value) : 0);
         reader.moveUp();
 
         reader.moveDown();
             Point combinedCenter = new Point();
 
             reader.moveDown();
-            combinedCenter.x = Integer.parseInt(reader.getValue());
+            value = reader.getValue();
+            combinedCenter.x = (value != null) ? Integer.parseInt(value) : 0;
             reader.moveUp();
 
             reader.moveDown();
-            combinedCenter.y = Integer.parseInt(reader.getValue());
+            value = reader.getValue();
+            combinedCenter.y = (value != null) ? Integer.parseInt(value) : 0;
             reader.moveUp();
 
             event.setGazeCenter(combinedCenter);
@@ -137,15 +141,18 @@ public class EyeTrackingEventContainerConverter implements Converter {
             float[] headPosition = new float[3];
 
             reader.moveDown();
-            headPosition[0] = Float.parseFloat(reader.getValue());
+            value = reader.getValue();
+            headPosition[0] = (value != null) ? Float.parseFloat(value) : 0f;
             reader.moveUp();
 
             reader.moveDown();
-            headPosition[1] = Float.parseFloat(reader.getValue());
+            value = reader.getValue();
+            headPosition[1] = (value != null) ? Float.parseFloat(value) : 0f;
             reader.moveUp();
 
             reader.moveDown();
-            headPosition[2] = Float.parseFloat(reader.getValue());
+            value = reader.getValue();
+            headPosition[2] = (value != null) ? Float.parseFloat(value) : 0f;
             reader.moveUp();
 
             event.setHeadPosition(headPosition);
@@ -153,7 +160,8 @@ public class EyeTrackingEventContainerConverter implements Converter {
 
 
         reader.moveDown();
-            event.setLeftEyeDistance(Float.parseFloat(reader.getValue()));
+            value = reader.getValue();
+            event.setLeftEyeDistance((value != null) ? Float.parseFloat(value) : 0f);
         reader.moveUp();
 
 
@@ -161,15 +169,18 @@ public class EyeTrackingEventContainerConverter implements Converter {
             float[] leftEyePosition = new float[3];
 
             reader.moveDown();
-            leftEyePosition[0] = Float.parseFloat(reader.getValue());
+            value = reader.getValue();
+            leftEyePosition[0] = (value != null) ? Float.parseFloat(value) : 0f;
             reader.moveUp();
 
             reader.moveDown();
-            leftEyePosition[1] = Float.parseFloat(reader.getValue());
+            value = reader.getValue();
+            leftEyePosition[1] = (value != null) ? Float.parseFloat(value) : 0f;
             reader.moveUp();
 
             reader.moveDown();
-            leftEyePosition[2] = Float.parseFloat(reader.getValue());
+            value = reader.getValue();
+            leftEyePosition[2] = (value != null) ? Float.parseFloat(value) : 0f;
             reader.moveUp();
 
             event.setLeftEyePosition(leftEyePosition);
@@ -177,15 +188,18 @@ public class EyeTrackingEventContainerConverter implements Converter {
 
 
         reader.moveDown();
-        event.setPupilSizeLeft(Float.parseFloat(reader.getValue()));
+        value = reader.getValue();
+        event.setPupilSizeLeft((value != null) ? Float.parseFloat(value) : 0f);
         reader.moveUp();
 
         reader.moveDown();
-        event.setPupilSizeRight(Float.parseFloat(reader.getValue()));
+        value = reader.getValue();
+        event.setPupilSizeRight((value != null) ? Float.parseFloat(value) : 0f);
         reader.moveUp();
 
         reader.moveDown();
-        event.setRightEyeDistance(Float.parseFloat(reader.getValue()));
+        value = reader.getValue();
+        event.setRightEyeDistance((value != null) ? Float.parseFloat(value) : 0f);
         reader.moveUp();
 
 
@@ -193,15 +207,18 @@ public class EyeTrackingEventContainerConverter implements Converter {
             float[] rightEyePosition = new float[3];
 
             reader.moveDown();
-            rightEyePosition[0] = Float.parseFloat(reader.getValue());
+            value = reader.getValue();
+            rightEyePosition[0] = (value != null) ? Float.parseFloat(value) : 0f;
             reader.moveUp();
 
             reader.moveDown();
-            rightEyePosition[1] = Float.parseFloat(reader.getValue());
+            value = reader.getValue();
+            rightEyePosition[1] = (value != null) ? Float.parseFloat(value) : 0f;
             reader.moveUp();
 
             reader.moveDown();
-            rightEyePosition[2] = Float.parseFloat(reader.getValue());
+            value = reader.getValue();
+            rightEyePosition[2] = (value != null) ? Float.parseFloat(value) : 0f;
             reader.moveUp();
 
             event.setRightEyePosition(rightEyePosition);
@@ -210,12 +227,14 @@ public class EyeTrackingEventContainerConverter implements Converter {
 
 
         reader.moveDown();
-        event.setValidity(Boolean.parseBoolean(reader.getValue()));
+        value = reader.getValue();
+        event.setValidity((value != null) ? Boolean.parseBoolean(value) : true);
         reader.moveUp();
 
 
         reader.moveDown();
-        event.setVersion(Integer.parseInt(reader.getValue()));
+        value = reader.getValue();
+        event.setVersion((value != null) ? Integer.parseInt(value) : 1);
         reader.moveUp();
 
 
