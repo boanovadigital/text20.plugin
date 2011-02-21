@@ -1,0 +1,7 @@
+
+syntax: regexp
+^ant\.build$
+syntax: regexp
+^dist$
+syntax: regexp
+^examples/text20\.jar$
