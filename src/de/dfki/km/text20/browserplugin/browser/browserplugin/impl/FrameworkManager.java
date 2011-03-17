@@ -35,6 +35,7 @@ import de.dfki.km.text20.browserplugin.extensions.hacks.VariousHacksExtension;
 import de.dfki.km.text20.browserplugin.extensions.sessionrecorder.SessionRecorderExtensions;
 import de.dfki.km.text20.browserplugin.extensions.speechio.SpeechIOExtension;
 import de.dfki.km.text20.browserplugin.services.devicemanager.impl.TrackingDeviceManagerImpl;
+import de.dfki.km.text20.browserplugin.services.diagnosticoverlay.impl.DiagnosticOverlayImpl;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.impl.ExtensionManagerImpl;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.MasterGazeHandlerManagerImpl;
 import de.dfki.km.text20.browserplugin.services.pagemanager.impl.PageManagerManagerImpl;
@@ -118,6 +119,8 @@ public class FrameworkManager {
         this.pluginManager.addPluginsFrom(new ClassURI(TrackingDeviceManagerImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(ExtensionManagerImpl.class).toURI());
 
+        this.pluginManager.addPluginsFrom(new ClassURI(DiagnosticOverlayImpl.class).toURI());
+        
         // Add current handler ...
         this.pluginManager.addPluginsFrom(new ClassURI(FixationHandlerFactory.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(PerusalHandlerFactory.class).toURI());
