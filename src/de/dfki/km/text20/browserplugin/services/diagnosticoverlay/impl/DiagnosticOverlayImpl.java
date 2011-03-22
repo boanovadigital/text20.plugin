@@ -36,4 +36,12 @@ import de.dfki.km.text20.browserplugin.services.diagnosticoverlay.DiagnosticOver
 @PluginImplementation
 public class DiagnosticOverlayImpl implements DiagnosticOverlay {
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.browserplugin.services.diagnosticoverlay.DiagnosticOverlay#setVisible(boolean)
+     */
+    @Override
+    public void setVisible(boolean visibility) {
+        // TODO Auto-generated method stub
+        
+    }
 }

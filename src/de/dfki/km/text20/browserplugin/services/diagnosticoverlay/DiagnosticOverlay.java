@@ -30,5 +30,10 @@ package de.dfki.km.text20.browserplugin.services.diagnosticoverlay;
 import net.xeoh.plugins.base.Plugin;
 
 public interface DiagnosticOverlay extends Plugin {
-
+    /**
+     * Sets the visibility of the gaze overlay. 
+     * 
+     * @param visibility 
+     */
+    public void setVisible(boolean visibility);
 }
