@@ -1001,13 +1001,13 @@ var text20 = {},
                         
                         // Parse optional arguments
                         var args = _args.toString().split(",");
-                        for(var i = 0; i < args; i++) {
+                        for(var i = 0; i < args.length; i++) {
                             var t = args[i].split("=");
                             var k = t[0];
                             var v = t[1];
                             
-                            if(k=="duration") duration = parseInt(v)
-                            if(k=="meanderivation") meanderivation = parseInt(v)
+                            if(k == "duration") duration = parseInt(v)
+                            if(k == "meanderivation") meanderivation = parseInt(v)
                         }
                         
 

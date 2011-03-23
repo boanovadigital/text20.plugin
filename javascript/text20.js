@@ -988,16 +988,30 @@ var text20 = {},
                     },
 
                     /** Called when fixation events arrive */
-                    onRawFixation: function(_x, _y){
+                    onRawFixation: function(_type, _x, _y, _args){
                         var x = parseInt(_x),
                             y = parseInt(_y),
-                            s = "fixationStart"
+                            s = "UNDEFINED"
 
-                        if (x < 0 || y < 0) {
-                            s = "fixationEnd"
+                        if(_type == "FIXATION_START") s = "START";
+                        if(_type == "FIXATION_END") s = "END";
+                        
+                        var duration = 0;
+                        var meanderivation = 0;
+                        
+                        // Parse optional arguments
+                        var args = _args.toString().split(",");
+                        for(var i = 0; i < args.length; i++) {
+                            var t = args[i].split("=");
+                            var k = t[0];
+                            var v = t[1];
+                            
+                            if(k == "duration") duration = parseInt(v)
+                            if(k == "meanderivation") meanderivation = parseInt(v)
                         }
+                        
 
-                        connector.connection.handler.generic("fixation", ["x", "y", "type"], x, y, s)
+                        connector.connection.handler.generic("fixation", ["x", "y", "type", "duration", "meanderivation"], x, y, s, duration, meanderivation)
                     },
 
                     /** Called when head movements arrives */
