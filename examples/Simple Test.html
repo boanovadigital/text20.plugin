@@ -47,6 +47,12 @@
 	            text20.core.register(allSpans);
 				text20.core.register($("#img"));
 	        });
+            
+            text20.connector.listener("fixation", function(evt) {
+                if(evt.type != "END") return;
+                $("#debug").html("Fixation (" + evt.x + "/" + evt.y + ") " + evt.duration + "ms, " + evt.meanderivation + "px")
+            });            
+
 
 	        // THIS IS THE ONLY LINE YOU REALLY NEED!
 	        text20.core.init();
@@ -57,6 +63,8 @@
 	    <div id="fixationsample" onFixation="$('#fixationsample').css('background-color', c())">Changes color on every fixation.</div>
 		<br/><br/><br/><br/>
 	    <div id="gazeoversample" onGazeOver="$('#img').attr('src', data)" onGazeOut="$('#img').attr('src', spacer)">Acts when you enter or leave.<br><img id='img' src=""/></div>
+        <br/><br/><br/><br/>
+        <div id="debug"></div>
 	</body>
 </html>
 
