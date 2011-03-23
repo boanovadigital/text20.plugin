@@ -210,7 +210,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
         this.evaluator = evaluationManager.createEvaluator(trackingDevice);
         this.evaluator.setFilter(this.filter);
 
-        // Create gaze handler
+        // Create the individual gaze handlers
         this.allGazeHandler.add(new RawGazeHandler());
         this.allGazeHandler.add(new RawApplicationGazeHandler());
         this.allGazeHandler.add(new FixationHandler());
@@ -219,10 +219,12 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
         this.allGazeHandler.add(new HeadPositionHandler());
         this.allGazeHandler.add(new WeakSaccadeHandler());
 
+        // Initialize them
         for (final AbstractGazeHandler gazeHandler : this.allGazeHandler) {
             gazeHandler.init(this, this.pseudorenderer, this.browserPlugin, this.evaluator);
         }
 
+        // Check if we should reset the reduced mode
         trackingDevice.addTrackingListener(new EyeTrackingListener() {
 
             @Override
