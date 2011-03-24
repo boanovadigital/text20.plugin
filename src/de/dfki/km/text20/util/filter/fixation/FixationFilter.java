@@ -27,7 +27,7 @@ import java.util.List;
 
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper.TrackingEventWrapper;
+import de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper.EyeTrackingEventWrapper;
 import de.dfki.km.text20.util.filter.AbstractFilter;
 
 /**
@@ -86,7 +86,7 @@ public class FixationFilter extends AbstractFilter {
         if (this.fixation != null) {
             final Point f = this.fixation;
 
-            return new TrackingEventWrapper(event) {
+            return new EyeTrackingEventWrapper(event) {
 
                 @Override
                 public Point getGazeCenter() {

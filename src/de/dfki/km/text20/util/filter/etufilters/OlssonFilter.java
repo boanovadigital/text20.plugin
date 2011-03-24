@@ -27,7 +27,7 @@ import java.util.List;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper.TrackingEventWrapper;
+import de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper.EyeTrackingEventWrapper;
 import de.dfki.km.text20.util.filter.AbstractFilter;
 
 /**
@@ -75,7 +75,7 @@ public class OlssonFilter extends AbstractFilter {
 
         if (resPoint == null) return event;
 
-        return new TrackingEventWrapper(event) {
+        return new EyeTrackingEventWrapper(event) {
 
             @Override
             public Point getGazeCenter() {

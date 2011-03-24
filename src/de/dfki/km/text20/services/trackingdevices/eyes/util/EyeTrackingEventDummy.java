@@ -33,7 +33,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
  * 
  * @author Ralf Biedert
  */
-public class TrackingEventDummy implements EyeTrackingEvent {
+public class EyeTrackingEventDummy implements EyeTrackingEvent {
 
     /** Default dimension to use */
     static Dimension defaultDimension;
@@ -86,7 +86,7 @@ public class TrackingEventDummy implements EyeTrackingEvent {
     /**
      * Creates an empty dummy with the current screen size
      */
-    public TrackingEventDummy() {
+    public EyeTrackingEventDummy() {
         this(null);
     }
     
@@ -95,7 +95,7 @@ public class TrackingEventDummy implements EyeTrackingEvent {
      * 
      * @param screenSize Size of the screen.
      */
-    public TrackingEventDummy(Dimension screenSize) {
+    public EyeTrackingEventDummy(Dimension screenSize) {
         this.screenSize = screenSize;
         this.eventTime = System.currentTimeMillis();
         this.gazeCenter = new Point(0, 0);
@@ -116,7 +116,7 @@ public class TrackingEventDummy implements EyeTrackingEvent {
      * @param screen Point on the screen where the user looked at.
      * @return This object
      */
-    public TrackingEventDummy simulate(Point screen) {
+    public EyeTrackingEventDummy simulate(Point screen) {
         this.eventTime = System.currentTimeMillis();
 
         this.gazeCenter = (Point) screen.clone();
@@ -152,7 +152,7 @@ public class TrackingEventDummy implements EyeTrackingEvent {
      * @param time The time to set.
      * @return This object.
      */
-    public TrackingEventDummy time(long time) {
+    public EyeTrackingEventDummy time(long time) {
         this.eventTime = time;
         return this;
     }

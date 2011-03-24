@@ -28,14 +28,14 @@ import net.xeoh.plugins.base.util.uri.ClassURI;
 import net.xeoh.plugins.meta.updatecheck.impl.UpdateCheckImpl;
 import net.xeoh.plugins.remote.impl.lipermi.RemoteAPIImpl;
 import net.xeoh.plugins.remotediscovery.impl.v4.RemoteDiscoveryImpl;
-import de.dfki.km.text20.browserplugin.extensions.backgroundservices.BackgroundServicesExtension;
-import de.dfki.km.text20.browserplugin.extensions.brainz.BrainTrackingExtension;
-import de.dfki.km.text20.browserplugin.extensions.discovery.DiscoveryExtension;
-import de.dfki.km.text20.browserplugin.extensions.hacks.VariousHacksExtension;
-import de.dfki.km.text20.browserplugin.extensions.sessionrecorder.SessionRecorderExtensions;
-import de.dfki.km.text20.browserplugin.extensions.speechio.SpeechIOExtension;
+import de.dfki.km.text20.browserplugin.extensions.misc.backgroundservices.BackgroundServicesExtension;
+import de.dfki.km.text20.browserplugin.extensions.misc.discovery.DiscoveryExtension;
+import de.dfki.km.text20.browserplugin.extensions.misc.hacks.VariousHacksExtension;
+import de.dfki.km.text20.browserplugin.extensions.qc.diagnosticoverlay.DiagnosticOverlayExtension;
+import de.dfki.km.text20.browserplugin.extensions.qc.sessionrecorder.SessionRecorderExtensions;
+import de.dfki.km.text20.browserplugin.extensions.userio.brainz.BrainTrackingExtension;
+import de.dfki.km.text20.browserplugin.extensions.userio.speech.SpeechIOExtension;
 import de.dfki.km.text20.browserplugin.services.devicemanager.impl.TrackingDeviceManagerImpl;
-import de.dfki.km.text20.browserplugin.services.diagnosticoverlay.impl.DiagnosticOverlayImpl;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.impl.ExtensionManagerImpl;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.MasterGazeHandlerManagerImpl;
 import de.dfki.km.text20.browserplugin.services.pagemanager.impl.PageManagerManagerImpl;
@@ -119,7 +119,7 @@ public class FrameworkManager {
         this.pluginManager.addPluginsFrom(new ClassURI(TrackingDeviceManagerImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(ExtensionManagerImpl.class).toURI());
 
-        this.pluginManager.addPluginsFrom(new ClassURI(DiagnosticOverlayImpl.class).toURI());
+        this.pluginManager.addPluginsFrom(new ClassURI(DiagnosticOverlayExtension.class).toURI());
         
         // Add current handler ...
         this.pluginManager.addPluginsFrom(new ClassURI(FixationHandlerFactory.class).toURI());
@@ -129,6 +129,7 @@ public class FrameworkManager {
         this.pluginManager.addPluginsFrom(new ClassURI(WeakSaccadeHandlerFactory.class).toURI());
 
         // Add extensions ...
+        this.pluginManager.addPluginsFrom(new ClassURI(DiagnosticOverlayExtension.class).toURI());        
         this.pluginManager.addPluginsFrom(new ClassURI(DiscoveryExtension.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(BackgroundServicesExtension.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(VariousHacksExtension.class).toURI());

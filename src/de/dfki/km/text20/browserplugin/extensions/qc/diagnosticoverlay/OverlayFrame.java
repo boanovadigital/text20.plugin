@@ -25,21 +25,28 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
  */
-package de.dfki.km.text20.browserplugin.services.diagnosticoverlay.impl;
+package de.dfki.km.text20.browserplugin.extensions.qc.diagnosticoverlay;
 
 import static net.jcores.CoreKeeper.$;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
 import net.jcores.interfaces.java.KeyStroke;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventDummy;
 
 /**
  * @author Ralf Biedert
@@ -47,15 +54,21 @@ import net.jcores.interfaces.java.KeyStroke;
 public class OverlayFrame extends JFrame {
     /** */
     private static final long serialVersionUID = -4574172025569108274L;
-    
+
     /** */
     private Robot robot;
-    
+
     /** */
     private Toolkit toolkit;
 
     /** */
     private BufferedImage image;
+
+    /** */
+    private final LinkedList<EyeTrackingEvent> events = new LinkedList<EyeTrackingEvent>();
+
+    /** */
+    private volatile Fixation fixation = null;
 
     /** */
     public OverlayFrame() {
@@ -66,7 +79,7 @@ public class OverlayFrame extends JFrame {
         setResizable(false);
         setUndecorated(true);
         setSize(this.toolkit.getScreenSize());
-        
+
         $(this).keypress(KeyEvent.VK_ESCAPE, new KeyStroke() {
             @Override
             public void keystroke(KeyEvent arg0) {
@@ -74,33 +87,91 @@ public class OverlayFrame extends JFrame {
             }
         });
     }
-    
-    /** */
+
+    /** Activates the overlay. */
     public void activate() {
-        if(this.robot == null) return;
-        
+        if (this.robot == null) return;
+
         final Dimension size = this.toolkit.getScreenSize();
-        
+
         this.image = this.robot.createScreenCapture(new Rectangle(0, 0, size.width, size.height));
-        
+
         setVisible(true);
+        setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+        toFront();
+        requestFocus();
         setBounds(0, 0, size.width, size.height);
     }
+
+    /**
+     * @param event
+     */
+    public void trackingEvent(EyeTrackingEvent event) {
+        if (!isVisible()) return;
+
+        // Update the list
+        synchronized (this.events) {
+            this.events.add(event);
+            if (this.events.size() > 5) this.events.remove(0);
+        }
+        
+        repaint(50, 0, 0, getWidth(), getHeight());
+    }
     
-    
-    /* (non-Javadoc)
+    /**
+     * Sets the current fixation
+     * 
+     * @param f
+     */
+    public void fixation(Fixation f) {
+        this.fixation = f;
+        
+        repaint(50, 0, 0, getWidth(), getHeight());
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.awt.Window#paint(java.awt.Graphics)
      */
     @Override
     public void paint(Graphics g) {
         g.drawImage(this.image, 0, 0, null);
+
+        // Draw the raw data
+        synchronized (this.events) {
+            g.setColor(Color.BLACK);
+            for (EyeTrackingEvent event: this.events) {
+                final Point p = event.getGazeCenter();
+                g.fillOval(p.x - 2, p.y - 2, 4, 4);
+            }
+        }
+        
+        
+        // Draw the fixation
+        if(this.fixation != null) {
+            final Point p = this.fixation.getCenter();
+            g.setColor(Color.RED);
+            g.drawOval(p.x - 10, p.y - 10, 20, 20);
+
+        }
     }
-    
+
     /**
      * @param args
+     * @throws InterruptedException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         OverlayFrame frame = new OverlayFrame();
         frame.activate();
+        
+        for(int i = 0; i<1000; i++) {
+            EyeTrackingEventDummy dummy = new EyeTrackingEventDummy(new Dimension(1000, 400));
+            dummy.simulate(new Point($.random().nextInt(1000), $.random().nextInt(1000)));
+            frame.trackingEvent(dummy);
+            Thread.sleep(1);
+        }
     }
+
+  
 }
