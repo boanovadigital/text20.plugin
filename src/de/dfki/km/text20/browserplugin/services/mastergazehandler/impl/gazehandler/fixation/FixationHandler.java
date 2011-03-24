@@ -24,18 +24,21 @@ package de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehand
 import java.awt.Point;
 import java.util.List;
 
+import net.xeoh.plugins.informationbroker.InformationBroker;
+import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration.OptionFixationParametersItem;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehandler.AbstractGazeHandler;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEventType;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationListener;
+import de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener.OptionFixationParameters;
 import de.dfki.km.text20.services.evaluators.gaze.util.FixationUtil;
 import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.PseudorendererStatus;
 
 /**
- * @author rb
- * 
+ * @author Ralf Biedert
  */
 public class FixationHandler extends AbstractGazeHandler {
 
@@ -77,11 +80,15 @@ public class FixationHandler extends AbstractGazeHandler {
      */
     @Override
     protected void registerToEvaluator(final GazeEvaluator evaluator) {
+        final InformationBrokerUtil broker = new InformationBrokerUtil(this.pluginManager.getPlugin(InformationBroker.class));
+        final OptionFixationParameters fixationParameters = broker.get(OptionFixationParametersItem.class);
+        
+        // Create fixation listener
         evaluator.addEvaluationListener(new FixationListener() {
             @Override
             public void newEvaluationEvent(final FixationEvent event) {
                 handleEvent(event);
             }
-        });
+        }, fixationParameters);
     }
 }

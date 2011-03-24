@@ -221,7 +221,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
 
         // Initialize them
         for (final AbstractGazeHandler gazeHandler : this.allGazeHandler) {
-            gazeHandler.init(this, this.pseudorenderer, this.browserPlugin, this.evaluator);
+            gazeHandler.init(this.pluginManager, this, this.pseudorenderer, this.browserPlugin, this.evaluator);
         }
 
         // Check if we should reset the reduced mode
