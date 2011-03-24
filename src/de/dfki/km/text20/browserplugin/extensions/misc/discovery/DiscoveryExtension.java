@@ -19,7 +19,7 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.browserplugin.extensions.discovery;
+package de.dfki.km.text20.browserplugin.extensions.misc.discovery;
 
 import java.net.URI;
 import java.net.URISyntaxException;

@@ -33,7 +33,7 @@
 			// Configure the plugins
             text20.core.config.fixation.minimumDuration = 50
             text20.core.config.fixation.minEvents = 1
-	        text20.connector.config.trackingDevice = "eyetrackingdevice:mouse"
+            text20.connector.config.trackingDevice = "eyetrackingdevice:mouse"
 	        text20.connector.config.extensions = ["extensions/yodeling.jar"];
 	        text20.connector.config.logging = "INFO";
 			text20.connector.config.useObjectTag = false;
@@ -66,7 +66,7 @@
 		<br/><br/><br/><br/>
 	    <div id="gazeoversample" onGazeOver="$('#img').attr('src', data)" onGazeOut="$('#img').attr('src', spacer)">Acts when you enter or leave.<br><img id='img' src=""/></div>
         <br/><br/><br/><br/>
-        <div id="debug"></div>
+        <div id="debug" onclick="text20.connector.extensions.diagnosticOverlay()"></div>
 	</body>
 </html>
 

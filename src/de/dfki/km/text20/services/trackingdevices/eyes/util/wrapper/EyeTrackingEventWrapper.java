@@ -31,7 +31,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
  *
  * @author rb
  */
-public class TrackingEventWrapper implements EyeTrackingEvent {
+public class EyeTrackingEventWrapper implements EyeTrackingEvent {
 
     final EyeTrackingEvent originalEvent;
 
@@ -40,7 +40,7 @@ public class TrackingEventWrapper implements EyeTrackingEvent {
      *
      * @param trackingEvent
      */
-    public TrackingEventWrapper(final EyeTrackingEvent trackingEvent) {
+    public EyeTrackingEventWrapper(final EyeTrackingEvent trackingEvent) {
         this.originalEvent = trackingEvent;
     }
 

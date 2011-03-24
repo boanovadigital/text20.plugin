@@ -19,7 +19,7 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.browserplugin.extensions.speechio;
+package de.dfki.km.text20.browserplugin.extensions.userio.speech;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;

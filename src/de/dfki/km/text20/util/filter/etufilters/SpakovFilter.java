@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper.TrackingEventWrapper;
+import de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper.EyeTrackingEventWrapper;
 import de.dfki.km.text20.util.filter.AbstractFilter;
 
 /**
@@ -74,7 +74,7 @@ public class SpakovFilter extends AbstractFilter {
 
         if (resPoint == null) return event;
 
-        return new TrackingEventWrapper(event) {
+        return new EyeTrackingEventWrapper(event) {
 
             @Override
             public Point getGazeCenter() {

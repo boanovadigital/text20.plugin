@@ -19,7 +19,7 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.browserplugin.extensions.brainz;
+package de.dfki.km.text20.browserplugin.extensions.userio.brainz;
 
 import java.util.logging.Logger;
 
