@@ -31,6 +31,8 @@
 			$('#img').attr('src', spacer);
 
 			// Configure the plugins
+            text20.core.config.fixation.minimumDuration = 50
+            text20.core.config.fixation.minEvents = 1
 	        text20.connector.config.trackingDevice = "eyetrackingdevice:mouse"
 	        text20.connector.config.extensions = ["extensions/yodeling.jar"];
 	        text20.connector.config.logging = "INFO";

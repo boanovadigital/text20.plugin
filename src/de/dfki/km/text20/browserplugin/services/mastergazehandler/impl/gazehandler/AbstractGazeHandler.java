@@ -21,6 +21,7 @@
  */
 package de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehandler;
 
+import net.xeoh.plugins.base.PluginManager;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.MasterGazeHandler;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
@@ -33,6 +34,9 @@ import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
  * 
  */
 public abstract class AbstractGazeHandler {
+    /** Main plugin manager */
+    protected PluginManager pluginManager;
+    
     /** The executor to trigger JavaScript */
     protected JSExecutor browserPlugin;
 
@@ -42,19 +46,23 @@ public abstract class AbstractGazeHandler {
     /** Pseudo rendering surface equal to the window receiving gaze events */
     protected Pseudorenderer pseudorenderer;
 
+    
     /** If set, be as quiet as possible */
     protected boolean reducedCommunication = false;
+
 
     /**
      * Init the gaze handler
      * 
+     * @param mgr 
      * @param master
      * @param pr
      * @param bp
      * @param evaluator
      */
-    public void init(final MasterGazeHandler master, final Pseudorenderer pr,
+    public void init(final PluginManager mgr, final MasterGazeHandler master, final Pseudorenderer pr,
                      final JSExecutor bp, final GazeEvaluator evaluator) {
+        this.pluginManager = mgr;
         this.masterGazeHandler = master;
         this.pseudorenderer = pr;
         this.browserPlugin = bp;
