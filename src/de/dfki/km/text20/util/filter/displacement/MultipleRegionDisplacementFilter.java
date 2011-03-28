@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper.TrackingEventWrapper;
+import de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper.EyeTrackingEventWrapper;
 import de.dfki.km.text20.util.filter.AbstractFilter;
 
 /**
@@ -60,7 +60,7 @@ public class MultipleRegionDisplacementFilter extends AbstractFilter {
         final Point rval = point;
 
         // Return wrapped point
-        return new TrackingEventWrapper(event) {
+        return new EyeTrackingEventWrapper(event) {
 
             /* (non-Javadoc)
              * @see de.dfki.km.augmentedtext.services.trackingdevices.util.wrapper.TrackingEventWrapper#getGazeCenter()

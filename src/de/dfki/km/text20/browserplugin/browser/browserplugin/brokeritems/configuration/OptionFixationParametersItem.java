@@ -1,7 +1,7 @@
 /*
- * DiagnosticOverlay.java
+ * PageManagerItem.java
  * 
- * Copyright (c) 2011, Ralf Biedert All rights reserved.
+ * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without modification, are
  * permitted provided that the following conditions are met:
@@ -25,10 +25,14 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
  */
-package de.dfki.km.text20.browserplugin.services.diagnosticoverlay;
+package de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration;
 
-import net.xeoh.plugins.base.Plugin;
+import net.xeoh.plugins.informationbroker.InformationItem;
+import de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener.OptionFixationParameters;
 
-public interface DiagnosticOverlay extends Plugin {
-
-}
+/**
+ * Reflects the transmission mode to use
+ * 
+ * @author Ralf Biedert
+ */
+public interface OptionFixationParametersItem extends InformationItem<OptionFixationParameters> {}

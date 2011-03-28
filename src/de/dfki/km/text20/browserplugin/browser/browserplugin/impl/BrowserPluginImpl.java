@@ -54,6 +54,7 @@ import net.xeoh.plugins.remotediscovery.RemoteDiscovery;
 import netscape.javascript.JSObject;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration.OptionFixationParametersItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration.SessionDirectoryItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration.TransmissionModeItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.BrowserAPIItem;
@@ -74,6 +75,7 @@ import de.dfki.km.text20.browserplugin.services.persistentpreferences.Persistent
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorderManager;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
+import de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener.OptionFixationParameters;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 import de.dfki.km.text20.services.pseudorenderer.PseudorendererManager;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
@@ -706,7 +708,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.diagnosis.status("processadditional/param", new OptionInfo("param", "callbackprefix"), new OptionInfo("value", this.callbackPrefix));
         this.diagnosis.status("processadditional/param", new OptionInfo("param", "extensions"), new OptionInfo("value", getParameter("extensions")));
 
-
+        // Load extensions
         $(getParameter("extensions")).split(";").forEach(new F1<String, String>() {
             @SuppressWarnings("synthetic-access")
             @Override
@@ -723,6 +725,15 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
                 return null;
             }
         });
+        
+        // Process additional configuration
+        final Map<String, String> config = $(getParameter("configuration")).decode().split("&").hashmap();
+        
+        // Read fixation parameters
+        int fixationDuration = Integer.parseInt(config.get("fixation[minimumDuration]"));
+        int fixationRadius = Integer.parseInt(config.get("fixation[maxFixationRadius]"));
+        int fixationMinEvents = Integer.parseInt(config.get("fixation[minEvents]"));
+        this.infoBroker.publish(OptionFixationParametersItem.class, new OptionFixationParameters(fixationRadius, fixationDuration, fixationMinEvents));
     }
 
     /**
@@ -749,6 +760,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     private void storeParameters() {
         for (final String[] elem : getParameterInfo()) {
             this.sessionRecorder.setParameter(elem[0], getParameter(elem[0]));
+            this.diagnosis.status("parameter", new OptionInfo(elem[0], getParameter(elem[0])));
         }
     }
 

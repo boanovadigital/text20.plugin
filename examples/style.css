@@ -2,7 +2,6 @@ body {
     background: lightgray;
     font-family: sans-serif;
     font-variant: small-caps;
-
 }
 
 #hitthedot {
@@ -92,3 +91,20 @@ body {
     width: 470px;
     height: 390px;
 }
+
+
+#debug {
+    position: absolute;
+    background-color: white;
+    vertical-align: middle;
+    text-align: center;
+    opacity: 0.7;
+    padding-top: 40px;
+    top: 50px;
+    right: 90px;
+    width: 320px;
+    height: 40px;
+    font-family: sans-serif;
+    font-variant: small-caps;    
+}
+

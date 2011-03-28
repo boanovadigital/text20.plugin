@@ -58,10 +58,14 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
     private final int minimalTime;
 
     /** Minimal time for a fixation to be recognized */
-    private final int radiusFixationTime;
+    private final int radiusFixationSize;
+    
+    /** Minimal number of events we need */
+    private final int minNumberOfEvents;
 
     /** Used to detect event flow anomalies */
     private long lastObservedEventTime = Long.MAX_VALUE;
+
 
     /**
      * @param listener
@@ -76,7 +80,9 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
         final OptionUtils<AddGazeEvaluationListenerOption> ou = new OptionUtils<AddGazeEvaluationListenerOption>(options);
 
         this.minimalTime = ou.get(OptionFixationParameters.class, defaultParameters).getMinimalTime();
-        this.radiusFixationTime = ou.get(OptionFixationParameters.class, defaultParameters).getRadiusFixationSize();
+        this.radiusFixationSize = ou.get(OptionFixationParameters.class, defaultParameters).getRadiusFixationSize();
+        this.minNumberOfEvents = ou.get(OptionFixationParameters.class, defaultParameters).getMinFixationEvents();
+        
     }
 
     @Override
@@ -112,7 +118,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
         // case. If the point is outside a given radius, we need some logic to decide what to do.
         // Basically this can be caused by two things: A random outlier (measurement failure), or a
         // systematic gaze to another position.
-        if (center.distance(filteredEvent.getGazeCenter()) > this.radiusFixationTime) {
+        if (center.distance(filteredEvent.getGazeCenter()) > this.radiusFixationSize) {
 
             // In any case, increase the number of outliers and add the new "bad point"
             this.numConsecutiveOutliers++;
@@ -124,13 +130,13 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
 
             // If the maximal size is too large we just remove the oldest point the rejuvenate the list. If we don't do this
             // old outliers might prevent us from detecting a new fixation properly.
-            if (maxOSize > this.radiusFixationTime) {
+            if (maxOSize > this.radiusFixationSize) {
                 this.outliers.remove(0);
             }
 
             // If the size it good enough AND we have enough evidence (in this part at least 3 points) we assume
             // we found a new fixation point.
-            if (maxOSize <= this.radiusFixationTime && this.outliers.size() >= 3 && timeOf(this.outliers) >= this.minimalTime) {
+            if (maxOSize <= this.radiusFixationSize && this.outliers.size() >= this.minNumberOfEvents && timeOf(this.outliers) >= this.minimalTime) {
                 // If we already had a fixaion, call listener to end it.
                 if (this.currentFixation.size() > 0) {
                     callListener(filteredEvent, FixationEventType.FIXATION_END, this.currentFixation);
@@ -149,7 +155,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
             // If we have a current fixation and we have more than three randomly scattered outliers this
             // fixation is is considered as finished, but without the creation of a new fixation. This could happen if, for example,
             // the user started to followed a moving target.
-            if (this.numConsecutiveOutliers > 3 && this.currentFixation.size() > 0) {
+            if (this.numConsecutiveOutliers > this.minNumberOfEvents && this.currentFixation.size() > 0) {
                 this.numConsecutiveOutliers = 0;
                 this.outliers.clear();
                 callListener(filteredEvent, FixationEventType.FIXATION_END, this.currentFixation);

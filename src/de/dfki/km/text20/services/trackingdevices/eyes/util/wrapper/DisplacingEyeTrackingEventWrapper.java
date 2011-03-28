@@ -29,7 +29,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author rb
  *
  */
-public class DisplacingTrackingEventWrapper extends TrackingEventWrapper {
+public class DisplacingEyeTrackingEventWrapper extends EyeTrackingEventWrapper {
 
     private final Point displacement;
 
@@ -37,7 +37,7 @@ public class DisplacingTrackingEventWrapper extends TrackingEventWrapper {
      * @param trackingEvent
      * @param displacement
      */
-    public DisplacingTrackingEventWrapper(final EyeTrackingEvent trackingEvent,
+    public DisplacingEyeTrackingEventWrapper(final EyeTrackingEvent trackingEvent,
                                           final Point displacement) {
         super(trackingEvent);
 

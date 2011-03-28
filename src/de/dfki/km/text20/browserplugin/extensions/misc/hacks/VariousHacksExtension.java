@@ -19,7 +19,7 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.browserplugin.extensions.hacks;
+package de.dfki.km.text20.browserplugin.extensions.misc.hacks;
 
 import java.awt.Rectangle;
 import java.io.UnsupportedEncodingException;

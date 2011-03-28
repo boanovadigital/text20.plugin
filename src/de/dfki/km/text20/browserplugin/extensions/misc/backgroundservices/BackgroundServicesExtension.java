@@ -19,7 +19,7 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.browserplugin.extensions.backgroundservices;
+package de.dfki.km.text20.browserplugin.extensions.misc.backgroundservices;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;

@@ -23,7 +23,7 @@
  *
  *
  * Version:
- *      4.5.0
+ *      4.6.0
  *
  * Dependencies:
  *      jquery > 1.4
@@ -701,7 +701,7 @@ var text20 = {},
             /** Internal variables. */
             transmitMode : "ASYNC",    // DO NOT TOUCH THIS
 
-			useObjectTag : false,
+            useObjectTag : false,
         },
 
         variables: {
@@ -988,16 +988,30 @@ var text20 = {},
                     },
 
                     /** Called when fixation events arrive */
-                    onRawFixation: function(_x, _y){
+                    onRawFixation: function(_type, _x, _y, _args){
                         var x = parseInt(_x),
                             y = parseInt(_y),
-                            s = "fixationStart"
+                            s = "UNDEFINED"
 
-                        if (x < 0 || y < 0) {
-                            s = "fixationEnd"
+                        if(_type == "FIXATION_START") s = "START";
+                        if(_type == "FIXATION_END") s = "END";
+                        
+                        var duration = 0;
+                        var meanderivation = 0;
+                        
+                        // Parse optional arguments
+                        var args = _args.toString().split(",");
+                        for(var i = 0; i < args.length; i++) {
+                            var t = args[i].split("=");
+                            var k = t[0];
+                            var v = t[1];
+                            
+                            if(k == "duration") duration = parseInt(v)
+                            if(k == "meanderivation") meanderivation = parseInt(v)
                         }
+                        
 
-                        connector.connection.handler.generic("fixation", ["x", "y", "type"], x, y, s)
+                        connector.connection.handler.generic("fixation", ["x", "y", "type", "duration", "meanderivation"], x, y, s, duration, meanderivation)
                     },
 
                     /** Called when head movements arrives */
@@ -1109,12 +1123,12 @@ var text20 = {},
 
                             // Setup Emotion Engine :-)
                             if(connector.config.enableBrainTracker) {
-                            	var r = connector.extensions.brainTrackerInitEvaluation();
-                            	alert(r)
+                                var r = connector.extensions.brainTrackerInitEvaluation();
+                                alert(r)
                             }
 
 
-							// Register mouse clicked listener
+                            // Register mouse clicked listener
                             window.document.onclick = function(e) {
                                 connector.extensions.mouseClicked(0, e.button)
                             }
@@ -1151,6 +1165,7 @@ var text20 = {},
 
                 /** Updates the loading status screen with the given message */
                 updateaLoadingStatus: function(status) {
+                    if(console && console.log) console.log(status);
                     if (this.variables.loadIndicator) $("#text20loadingindicator").html(status)
                 },
 
@@ -1181,52 +1196,52 @@ var text20 = {},
                     })
 
 
-
-					var parameterString = "<param name='trackingdevice' value='" + connector.config.trackingDevice + "'>" +
-		                    			  "<param name='trackingconnection' value='" + connector.config.trackingURL + "'>" +
-		                    			  "<param name='enablebraintracker' value='" + connector.config.enableBrainTracker + "'>" +
-		                    			  "<param name='braintrackingconnection' value='" + connector.config.brainTrackingURL + "'>" +
-		                    			  "<param name='callbackprefix' value='" + callbacks.prefix() + "'>" +
-		                    			  "<param name='transmitmode' value='" + connector.config.transmitMode + "'>" +
-		                    			  "<param name='sessionpath' value='" + connector.config.sessionPath + "'>" +
-		                    			  "<param name='recordingenabled' value='" + connector.config.recordingEnabled + "'>" +
-		                    			  "<param name='extensions' value='" + allExtensions + "'>" +
-		                    			  "<param name='updatecheck' value='" + connector.config.updateCheck + "'>" +
-		                    			  "<param name='logging' value='" + connector.config.logging + "'>" +
+                    var parameterString = "<param name='trackingdevice' value='" + connector.config.trackingDevice + "'>" +
+                                          "<param name='trackingconnection' value='" + connector.config.trackingURL + "'>" +
+                                          "<param name='enablebraintracker' value='" + connector.config.enableBrainTracker + "'>" +
+                                          "<param name='braintrackingconnection' value='" + connector.config.brainTrackingURL + "'>" +
+                                          "<param name='callbackprefix' value='" + callbacks.prefix() + "'>" +
+                                          "<param name='transmitmode' value='" + connector.config.transmitMode + "'>" +
+                                          "<param name='sessionpath' value='" + connector.config.sessionPath + "'>" +
+                                          "<param name='recordingenabled' value='" + connector.config.recordingEnabled + "'>" +
+                                          "<param name='extensions' value='" + allExtensions + "'>" +
+                                          "<param name='updatecheck' value='" + connector.config.updateCheck + "'>" +
+                                          "<param name='logging' value='" + connector.config.logging + "'>" +
                                           "<param name='diagnosis' value='" + connector.config.diagnosis + "'>" +
+                                          "<param name='configuration' value='" + $.param(text20.core.config) + "'>" +
                                           "<param name='java_arguments' value='-Xmx512m'>";
 
 
-					// (Issue #32)
-					if(connector.config.useObjectTag) {
-						// Append <object> tag
-						$("body").append(
-							'<object type="application/x-java-applet" name="Text20Engine"' +
-							'id="' + this.variables.appletID + '"' +
-							'archive="' + connector.config.archive + '"' +
-							'code="de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl"' +
-							'codebase="./"' +
-							'width="25" height="25" mayscript="true" >' +
+                    // (Issue #32)
+                    if(connector.config.useObjectTag) {
+                        // Append <object> tag
+                        $("body").append(
+                            '<object type="application/x-java-applet" name="Text20Engine"' +
+                            'id="' + this.variables.appletID + '"' +
+                            'archive="' + connector.config.archive + '"' +
+                            'code="de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl"' +
+                            'codebase="./"' +
+                            'width="25" height="25" mayscript="true" >' +
 
-							parameterString +
+                            parameterString +
 
-							'</object>'
-						);
-					} else {
-						// Append <applet> tag
-	                    $("body").append(
-							"<applet " +
-	                        "id='" + this.variables.appletID + "'" +
-	                        "name='Text20Engine'" +
-	                        "archive='" + connector.config.archive + "'" +
-	                        "code='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl.class'" +
-	                        "width='1' height='1' mayscript='true' >" +
+                            '</object>'
+                        );
+                    } else {
+                        // Append <applet> tag
+                        $("body").append(
+                            "<applet " +
+                            "id='" + this.variables.appletID + "'" +
+                            "name='Text20Engine'" +
+                            "archive='" + connector.config.archive + "'" +
+                            "code='de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl.class'" +
+                            "width='1' height='1' mayscript='true' >" +
 
-							parameterString +
+                            parameterString +
 
-	                    	"</applet>"
-						);
-					}
+                            "</applet>"
+                        );
+                    }
 
 
 
@@ -1425,20 +1440,32 @@ var text20 = {},
     core = {
         /** Configure core settings in here ... */
         config: {
-            clusters: 1,                 // How many clusters we have for transmission
+            clusters: 1,  // How many clusters we have for transmission (TODO: Move to connector)
 
             // If set to true, the core will try to find all elements that have onGaze/onFixation/...
             // attributes. This works quite well, but takes some time every new fixation and might
             // add significant overhead for larger pages. If set to false you have to call
             // core.attributed.update('onFixation') -- (change onFixation with what you need) -- every
-            // time you add or change the DOM tree and add or remove elements containing such attributes
+            // time you add or change the DOM tree and add or remove elements containing such attributes (TODO: Move to connector)
             autoupdateAttributed: true,
+            
+            // Fixation settings
+            fixation: {
+                // Minimum required duration to accept a fixation
+                minimumDuration: 100,
+                
+                // Maxium radius in pixel to accept a fixation
+                maxFixationRadius: 25,
+                
+                // Minimum number of events before we consider events a fixation
+                minEvents: 1,
+            }
         },
         
         
         /** Various gaze related variables and methods */
         gaze: {
-            /** The latest gaze position */
+            /** The latest gaze position in document coordinates */
             position: [-1, -1],    
         },
 
@@ -1521,25 +1548,25 @@ var text20 = {},
                     if (pos == null) { return; }
 
 
-					// Check if the element is of the type SPAN
-					if (this.tagName == "SPAN") {
-	                    // Check type and content (SPAN-test)
-	                    if (this.firstChild && this.firstChild.nodeValue) {
-	                        type = "text"
-	                        content = this.firstChild.nodeValue;
+                    // Check if the element is of the type SPAN
+                    if (this.tagName == "SPAN") {
+                        // Check type and content (SPAN-test)
+                        if (this.firstChild && this.firstChild.nodeValue) {
+                            type = "text"
+                            content = this.firstChild.nodeValue;
 
-	                        // Try to get optional values
-	                        text = self.attr("_textID")
-	                        word = self.attr("_wordID")
-	                    }
-					}
+                            // Try to get optional values
+                            text = self.attr("_textID")
+                            word = self.attr("_wordID")
+                        }
+                    }
 
-					// Handle image elements here
-					if (this.tagName == "IMG") {
-						// Setting type to image and content to image-url
-						type = "image"
-						content = this.src;
-					}
+                    // Handle image elements here
+                    if (this.tagName == "IMG") {
+                        // Setting type to image and content to image-url
+                        type = "image"
+                        content = this.src;
+                    }
 
                     // Transmit basic data first time
                     connection.transmitElement(id, type, content, pos[0], pos[1], w, h);
@@ -1758,16 +1785,16 @@ var text20 = {},
                  if (!emotion) return;
 
                  var map = {
-                	 "happy" : "onSmile",
-                	 "interested" : "onInterest",
-                	 "doubt" : "onFurrow",
-                	 "bored" : "onBoredom",
+                     "happy" : "onSmile",
+                     "interested" : "onInterest",
+                     "doubt" : "onFurrow",
+                     "bored" : "onBoredom",
                  }
 
                  var handler = map[emotion.split(" ")[0]];
                  if (!handler) return;
 
-              	 core.attributed.get(handler).each(function(i){
+                 core.attributed.get(handler).each(function(i){
                      if (allUnderCurrentGaze.indexOf(this) < 0)
                          return;
 
@@ -1806,7 +1833,7 @@ var text20 = {},
 
             /** Called when new fixations come in */
             fixationListener: function(param){
-                if (param.type != "fixationStart")
+                if (param.type != "START")
                     return;
 
                 var x = param.x;

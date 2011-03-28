@@ -223,7 +223,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
         this.evaluator = evaluationManager.createEvaluator(trackingDevice);
         this.evaluator.setFilter(this.filter);
 
-        // Create gaze handler
+        // Create the individual gaze handlers
         this.allGazeHandler.add(new RawGazeHandler());
         this.allGazeHandler.add(new RawApplicationGazeHandler());
         this.allGazeHandler.add(new FixationHandler());
@@ -232,8 +232,9 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
         this.allGazeHandler.add(new HeadPositionHandler());
         this.allGazeHandler.add(new WeakSaccadeHandler());
 
+        // Initialize them
         for (final AbstractGazeHandler gazeHandler : this.allGazeHandler) {
-            gazeHandler.init(this, this.pseudorenderer, this.browserPlugin, this.evaluator);
+            gazeHandler.init(this.pluginManager, this, this.pseudorenderer, this.browserPlugin, this.evaluator);
         }
 
         this.diagnosis.status("init/register/listener");
