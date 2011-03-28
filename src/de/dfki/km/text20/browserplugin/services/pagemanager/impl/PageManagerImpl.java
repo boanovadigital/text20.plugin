@@ -27,7 +27,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.xeoh.plugins.base.PluginManager;
+import net.xeoh.plugins.diagnosis.local.Diagnosis;
+import net.xeoh.plugins.diagnosis.local.DiagnosisChannel;
+import net.xeoh.plugins.diagnosis.local.options.status.OptionInfo;
 import de.dfki.km.text20.browserplugin.services.pagemanager.PageManager;
+import de.dfki.km.text20.browserplugin.services.pagemanager.diagnosis.channels.tracing.PageManagerTracer;
 import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 import de.dfki.km.text20.services.pseudorenderer.PseudorendererStatus;
@@ -37,14 +41,11 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderE
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
- * 
- * 
  * @author Ralf Biedert
  */
 public class PageManagerImpl implements PageManager {
 
     /** In case we need a plugin */
-    @SuppressWarnings("unused")
     private final PluginManager pluginManager;
 
     /** Maps IDs to render elements */
@@ -53,47 +54,65 @@ public class PageManagerImpl implements PageManager {
     /** Needed to register and retrieve elements */
     private final Pseudorenderer pseudorenderer;
 
+    /** Responsible for tracing messages */
+    private final DiagnosisChannel<String> diagnosis;
+
     /**
-     * 
-     * @param pm
+     *
+     * @param pluginManager
      * @param pseudorenderer
      */
-    public PageManagerImpl(final PluginManager pm, final Pseudorenderer pseudorenderer) {
-        this.pluginManager = pm;
+    public PageManagerImpl(final PluginManager pluginManager, final Pseudorenderer pseudorenderer) {
+        this.pluginManager = pluginManager;
         this.pseudorenderer = pseudorenderer;
+
+        this.diagnosis = this.pluginManager.getPlugin(Diagnosis.class).channel(PageManagerTracer.class);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#
      * updateBrowserGeometry(int, int, int, int)
      */
     @Override
     public void updateBrowserGeometry(final int x, final int y, final int w, final int h) {
-        this.pseudorenderer.setGeometry(new Rectangle(x, y, w, h));
+        final Rectangle r = new Rectangle(x, y, w, h);
+
+        this.diagnosis.status("updateBrowserGeometry/call", new OptionInfo("rectangle", r));
+
+        this.pseudorenderer.setGeometry(r);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#
      * updateDocumentViewport(int, int)
      */
     @Override
     public void updateDocumentViewport(final int x, final int y) {
-        this.pseudorenderer.setViewport(new Point(x, y));
+        final Point p = new Point(x, y);
+
+        this.diagnosis.status("updateDocumentViewport/call", new OptionInfo("point", p));
+
+        this.pseudorenderer.setViewport(p);
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#
      * updateElementFlag(java.lang.String, java.lang.String, boolean)
      */
     @Override
     public void updateElementFlag(final String id, final String flag, final boolean value) {
-        if (id == null) return;
+        this.diagnosis.status("updateElementFlag/start", new OptionInfo("id", id), new OptionInfo("flag", flag), new OptionInfo("value", Boolean.valueOf(value)));
+
+        if (id == null) {
+            this.diagnosis.status("updateElementFlag/end/id/unusual", new OptionInfo("id", id));
+            return;
+        }
 
         // Special handler
         if (id.equals("#window")) {
@@ -101,7 +120,10 @@ public class PageManagerImpl implements PageManager {
         }
 
         final RenderElement renderElement = this.id2element.get(id);
-        if (renderElement == null) return;
+        if (renderElement == null) {
+            this.diagnosis.status("updateElementFlag/end/renderelement/unusual");
+            return;
+        }
 
         if (flag.equals("REMOVED") && value) {
             this.id2element.remove(id);
@@ -117,18 +139,22 @@ public class PageManagerImpl implements PageManager {
         }
 
         if (flag.equals("FIXED_ON_WINDOW") && value) {
-            if (renderElement.getCoordinatesType() == CoordinatesType.VIEWPORT_BASED)
+            if (renderElement.getCoordinatesType() == CoordinatesType.VIEWPORT_BASED) {
+                this.diagnosis.status("updateElementFlag/end/coordinatestype/viewportbased");
                 return;
+            }
 
             // TODO: Basically we assume our coordinates haven't changed much since then.
             final Rectangle geometry = renderElement.getGeometry(CoordinatesType.DOCUMENT_BASED);
             renderElement.setGeometry(geometry, CoordinatesType.VIEWPORT_BASED);
         }
+
+        this.diagnosis.status("updateElementFlag/end");
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.impl.PageManager#
      * updateElementGeometry(java.lang.String, java.lang.String, java.lang.String, int,
      * int, int, int)
@@ -137,9 +163,13 @@ public class PageManagerImpl implements PageManager {
     public void updateElementGeometry(final String id, final String type,
                                       final String content, final int x, final int y,
                                       final int w, final int h) {
+        this.diagnosis.status("updateElementGeometry/start");
 
         // If we have no ID, do nothing.
-        if (id == null) return;
+        if (id == null) {
+            this.diagnosis.status("updateElementGeometry/end/id/unusual", new OptionInfo("id", id));
+            return;
+        }
 
         // Get the element, if we already have it.
         RenderElement element = this.id2element.get(id);
@@ -182,19 +212,23 @@ public class PageManagerImpl implements PageManager {
 
         // Remember the element's id.
         this.id2element.put(id, element);
+
+        this.diagnosis.status("updateElementGeometry/end");
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see de.dfki.km.augmentedtext.browserplugin.services.pagemanager.PageManager#
      * updateElementMetaInformation(java.lang.String, java.lang.String, java.lang.String)
      */
     @Override
     public void updateElementMetaInformation(String id, String key, String value) {
-        if (id == null) return;
-        if (key == null) return;
-        if (value == null) return;
+        this.diagnosis.status("updateElementMetaInformation/start", new OptionInfo("id", id), new OptionInfo("key", key), new OptionInfo("value", value));
+        if (id == null || key == null || value == null) {
+            this.diagnosis.status("updateElementMetaInformation/end/unusual");
+            return;
+        }
 
         RenderElement element = this.id2element.get(id);
 
@@ -205,8 +239,11 @@ public class PageManagerImpl implements PageManager {
             if (key.equals("textID")) rType = TextualRenderElement.class;
             if (key.equals("wordID")) rType = TextualRenderElement.class;
 
-            if (rType == null)
+            if (rType == null) {
+                this.diagnosis.status("updateElementMetaInformation/exception", new OptionInfo("message", "Unable to get infer element type"));
+
                 throw new IllegalArgumentException("Unable to get infer element type");
+            }
 
             element = this.pseudorenderer.createElement(rType);
 
@@ -223,5 +260,7 @@ public class PageManagerImpl implements PageManager {
             if (element instanceof TextualRenderElement)
                 ((TextualRenderElement) element).setWordID(Integer.parseInt(value));
         }
+
+        this.diagnosis.status("updateElementMetaInformation/end");
     }
 }
