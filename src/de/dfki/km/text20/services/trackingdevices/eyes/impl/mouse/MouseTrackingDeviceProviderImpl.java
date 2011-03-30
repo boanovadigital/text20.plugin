@@ -32,6 +32,7 @@ import java.util.logging.Logger;
 
 import net.xeoh.plugins.base.annotations.Capabilities;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
+import net.xeoh.plugins.base.annotations.events.Shutdown;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceInfo;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceProvider;
@@ -68,11 +69,13 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
          */
         final List<EyeTrackingListener> trackingListener = new ArrayList<EyeTrackingListener>();
 
+        Thread thread;
+
         /**
          * Construct a standard MouseTrackigDevice which will start instantly.
          */
         MouseTrackingDevice() {
-            final Thread t = new Thread(new Runnable() {
+            thread = new Thread(new Runnable() {
 
                 @Override
                 public void run() {
@@ -103,13 +106,14 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
                             Thread.sleep(50);
                         } catch (final InterruptedException e) {
                             e.printStackTrace();
+                            return;
                         }
                     }
                 }
 
             });
-            t.setDaemon(true);
-            t.start();
+            thread.setDaemon(true);
+            thread.start();
         }
 
         /*
@@ -312,6 +316,13 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
         }
 
         return this.trackingDevice;
+    }
+    
+    @Shutdown
+    public void shutdown() {
+        if(this.trackingDevice!= null) {
+            this.trackingDevice.thread.interrupt();
+        }
     }
 
 }

@@ -174,6 +174,12 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /** Browser window */
     JSObject window;
 
+    private Thread mouseThread;
+    
+    public BrowserPluginImpl() {
+        System.out.println("BrowserPluginImpl.new()");
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -238,6 +244,8 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void destroy() {
+        System.out.println("BrowserPluginImpl.destroy()");
+        this.diagnosis.status("destroy/call");
         this.pluginManager.shutdown();
     }
 
@@ -378,6 +386,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void init() {
+        System.out.println("BrowserPluginImpl.init()");
         // Get all parameters we need for JSPF initialization
         processBootstrapParameters();
 
@@ -387,7 +396,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         props.setProperty(Diagnosis.class, "recording.enabled", Boolean.toString(this.diagnosisEnabled));
         props.setProperty(Diagnosis.class, "recording.file", this.masterFilePath + "/diagnosis.record");
         props.setProperty(Diagnosis.class, "recording.format", "java/serialization");
-        props.setProperty(Diagnosis.class, "analysis.stacktraces.enabled", "true");
+        props.setProperty(Diagnosis.class, "analysis.stacktraces.enabled", "false");
         props.setProperty(Diagnosis.class, "analysis.stacktraces.depth", "10000");
         props.setProperty(UpdateCheck.class, "update.url", "http://api.text20.net/common/versioncheck/");
         props.setProperty(UpdateCheck.class, "update.enabled", this.updatecheck);
@@ -517,6 +526,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void start() {
+        System.out.println("BrowserPluginImpl.start()");
         if (this.diagnosis != null) this.diagnosis.status("start/call");
         if (this.recordingEnabled) this.sessionRecorder.start();
     }
@@ -528,6 +538,8 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      */
     @Override
     public void stop() {
+        System.out.println("BrowserPluginImpl.stop()");      
+        this.mouseThread.interrupt();
         if (this.diagnosis != null) this.diagnosis.status("stop/call");
         if (this.recordingEnabled) this.sessionRecorder.stop();
     }
@@ -648,8 +660,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /** Initializes recording of the mouse position */
     private void initMouseRecording() {
         this.diagnosis.status("initmouserecording/call");
-        // Start a background thread to record the current mouse position.
-        final Thread t = new Thread(new Runnable() {
+        this.mouseThread = new Thread(new Runnable() {
             @SuppressWarnings("synthetic-access")
             @Override
             public void run() {
@@ -664,13 +675,13 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
                     try {
                         Thread.sleep(25);
                     } catch (final InterruptedException e) {
-                        e.printStackTrace();
+                        return;
                     }
                 }
             }
         });
-        t.setDaemon(true);
-        t.start();
+        this.mouseThread.setDaemon(true);
+        this.mouseThread.start();
     }
 
     /**

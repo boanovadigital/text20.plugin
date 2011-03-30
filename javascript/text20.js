@@ -852,6 +852,13 @@ var text20 = {},
                     offset: null,                       // Browser offset to use
                     batch: null,                        // Batch call for bulk transmission
                     loadIndicator: this.loadIndicator,  // TODO: What does this do?
+                    times: {
+                        jsinit: new Date().getTime(),
+                        appletadded: false,
+                        appletinitialized: false,
+                        callinginit: false,
+                        finishedinit: false,                        
+                    }
                 },
 
                 /** Creates a new batch for submission to the applet */
@@ -1047,9 +1054,14 @@ var text20 = {},
                         engine = self.variables.engine,
                         registry = text20.connector.extensions.registry
 
+
                     try {
                         if (status == "INITIALIZED") {
-                            text20.browser.log("Callback from plugin received. This means the plugin runs.");
+                            var times = self.variables.times
+                            times.appletinitialized = new Date().getTime()
+                            var time = times.appletinitialized - times.appletadded  
+                            
+                            text20.browser.log("Callback from plugin received. This means the plugin runs. Init time " + time + "ms.");
                             
                             self.variables.initialized = true;
 
@@ -1134,12 +1146,18 @@ var text20 = {},
                                 connector.extensions.mouseClicked(0, e.button)
                             }
                             
-                            text20.browser.log("Functions registered. Transfering control to client. Have fun.");
+                            times.callinginit = new Date().getTime()
+                            text20.browser.log("Functions registered. Calling registered handlers. Midsection time " + (times.callinginit - times.appletinitialized) + "ms.");
 
                             // Process all initialized listener
                             connector.variables.listeners.process("INITIALIZED", function(f){
                                 f();
                             });
+                            
+                            times.finishedinit = new Date().getTime()
+                            text20.browser.log("Time in handlers " + (times.finishedinit - times.callinginit) + "ms.");
+                            text20.browser.log("Transfering control to application. Overall init time " + (times.finishedinit - times.jsinit) + "ms. Have fun.");
+
                         }
                     }
                     catch (e) {
@@ -1174,7 +1192,8 @@ var text20 = {},
                     connector.config.extensions.forEach(function f(i) {
                         allExtensions += file.absolutePath(i) + ";"
                     })
-
+                    
+                    this.variables.times.appletadded = new Date().getTime()
 
                     var parameterString = "<param name='trackingdevice' value='" + connector.config.trackingDevice + "'>" +
                                           "<param name='trackingconnection' value='" + connector.config.trackingURL + "'>" +
@@ -1189,8 +1208,9 @@ var text20 = {},
                                           "<param name='logging' value='" + connector.config.logging + "'>" +
                                           "<param name='diagnosis' value='" + connector.config.diagnosis + "'>" +
                                           "<param name='configuration' value='" + $.param(text20.core.config) + "'>" +
-                                          "<param name='java_arguments' value='-Xmx512m'>";
-
+                                          "<param name='java_arguments' value='-Xmx512m'>" +
+                                          "<param name='classloader_cache' value='true'>" +
+                                          "<param name='separate_jvm' value='true'>";
 
                     // (Issue #32)
                     if(connector.config.useObjectTag) {
@@ -1201,7 +1221,7 @@ var text20 = {},
                             'archive="' + connector.config.archive + '"' +
                             'code="de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl"' +
                             'codebase="./"' +
-                            'width="25" height="25" mayscript="true" >' +
+                            'width="1" height="1" mayscript="true" >' +
 
                             parameterString +
 
@@ -1228,7 +1248,6 @@ var text20 = {},
 
                     // Set applet engine
                     this.variables.engine = $("#" + this.variables.appletID).get(0);
-
 
                     // Prepare special callbacks
                     callbacks.register("_augmentedTextStatusFunction", this.onStatus)

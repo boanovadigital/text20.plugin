@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.impl;
 
+import static net.jcores.CoreKeeper.$;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -95,9 +97,10 @@ public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
      * @see de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeEvaluator#addGazeEvaluationListener(de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeEvaluationListener)
      */
     @Override
-    public void addEvaluationListener(final GazeEvaluationListener<?> listener, AddGazeEvaluationListenerOption... options) {
-
+    public void addEvaluationListener(final GazeEvaluationListener<?> listener, AddGazeEvaluationListenerOption... _options) {
+        
         // First check our prerequisites
+        final AddGazeEvaluationListenerOption options[] = $(_options).compact().array(AddGazeEvaluationListenerOption.class);
         final OptionUtils<AddGazeEvaluationListenerOption> ou = new OptionUtils<AddGazeEvaluationListenerOption>(options);
         final Collection<OptionRequestVersion> requestedVersions = ou.getAll(OptionRequestVersion.class);
 
