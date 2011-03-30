@@ -1,5 +1,5 @@
 /*
- * EyeTrackingEventValidity.java
+ * TestSerialization.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,29 +19,20 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.trackingdevices.eyes;
+package de.dfki.km.text20.sandbox.misc;
+
+import static net.jcores.CoreKeeper.$;
 
 /**
- * Are elements valid?
- * 
- * @author Ralf Biedert
+ * @author rb
+ *
  */
-public enum EyeTrackingEventValidity {
-    /** Is the center position valid? */
-    CENTER_POSITION_VALID,
+public class TestStartupTime {
 
-    /** Is the head position valid? */
-    HEAD_POSITION_VALID,
-
-    /** Is the left eye position valid */
-    LEFT_EYE_POSITION_VALID,
-
-    /** Is the gaze position for the left eye valid */
-    LEFT_GAZE_POSITION_VALID,
-
-    /** Is the right eye position valid */
-    RIGHT_EYE_POSITION_VALID,
-
-    /** Is the gaze position for the right eye valid */
-    RIGHT_GAZE_POSITION_VALID
+    /**
+     * @param args
+     */
+    public static void main(final String[] args) {
+       $("/private/tmp/sessions/1301499700608/diagnosis.record.txt").file().text().split("\n").filter(".*PluginManagerTracer add.*").print();
+    }
 }
