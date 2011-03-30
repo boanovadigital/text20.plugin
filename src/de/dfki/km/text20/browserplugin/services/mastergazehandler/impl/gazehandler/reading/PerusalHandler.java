@@ -33,7 +33,7 @@ import de.dfki.km.text20.services.pseudorenderer.PseudorendererStatus;
 
 /**
  * Handles computed perusal events and dispatches them to the JavaScript layer.
- * 
+ *
  * @author Ralf Biedert
  */
 public class PerusalHandler extends AbstractGazeHandler {
@@ -42,7 +42,7 @@ public class PerusalHandler extends AbstractGazeHandler {
 
     /**
      * Handles the next event
-     * 
+     *
      * @param event
      */
     protected void handleEvent(final PerusalEvent event) {
@@ -71,9 +71,7 @@ public class PerusalHandler extends AbstractGazeHandler {
 
             @Override
             public void newEvaluationEvent(PerusalEvent event) {
-                 // TODO Auto-generated method stub
-
-             }
+            }
 
             @SuppressWarnings("synthetic-access")
             @Override
