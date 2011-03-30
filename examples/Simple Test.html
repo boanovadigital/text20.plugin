@@ -1,6 +1,8 @@
 <?xml version="1.0" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+       
+<!-- This file looks best in Eclipse / Aptana. -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 	<head>
@@ -31,30 +33,27 @@
 			$('#img').attr('src', spacer);
 
 			// Configure the plugins
-            text20.core.config.fixation.minimumDuration = 50
-            text20.core.config.fixation.minEvents = 1
-            text20.connector.config.trackingDevice = "eyetrackingdevice:mouse"
 	        text20.connector.config.extensions = ["extensions/yodeling.jar"];
-	        text20.connector.config.logging = "INFO";
 			text20.connector.config.useObjectTag = true;
 
 	        // Register startup listener
 	        text20.connector.listener("INITIALIZED", function() {
+                // Register some text for later evaluation (please note, all this is optional. You 
+                // only require core.init() below!)
 	            var sentence = $("body").get(0);
 
 	            var allTextNodes = text20.dom.textnodesBelow(sentence);
 	            var allSpans = text20.dom.spanify(allTextNodes);
 
-	            // Register text (please note, all this is optional. You only require core.init() below!)
 	            text20.core.register(allSpans);
 				text20.core.register($("#img"));
 	        });
             
+            // Print some debug information on each new fixation
             text20.connector.listener("fixation", function(evt) {
                 if(evt.type != "END") return;
                 $("#debug").html("Fixation (" + evt.x + "/" + evt.y + ") " + evt.duration + "ms, " + evt.meanderivation + "px")
             });            
-
 
 	        // THIS IS THE ONLY LINE YOU REALLY NEED!
 	        text20.core.init();
