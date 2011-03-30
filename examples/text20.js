@@ -710,7 +710,7 @@ var text20 = {},
             /** Internal variables. */
             transmitMode : "ASYNC",    // DO NOT TOUCH THIS
 
-            useObjectTag : false,
+            useObjectTag : true,
         },
 
         variables: {
