@@ -1,5 +1,5 @@
 /*!
- * jQuery JavaScript Library vPulled Live From Git
+ * jQuery JavaScript Library v1.5.1
  * http://jquery.com/
  *
  * Copyright 2011, John Resig
@@ -11,7 +11,7 @@
  * Copyright 2011, The Dojo Foundation
  * Released under the MIT, BSD, and GPL Licenses.
  *
- * Date: Mon Feb 14 10:12:01 2011
+ * Date: Wed Feb 23 13:55:29 2011 -0500
  */
 (function( window, undefined ) {
 
@@ -75,16 +75,8 @@ var jQuery = function( selector, context ) {
 	// The deferred used on DOM ready
 	readyList,
 
-	// Promise methods (with equivalent for invert)
-	promiseMethods = {
-		then: 0, // will be overwritten for invert
-		done: "fail",
-		fail: "done",
-		isResolved: "isRejected",
-		isRejected: "isResolved",
-		promise: "invert",
-		invert: "promise"
-	},
+	// Promise methods
+	promiseMethods = "then done fail isResolved isRejected promise".split( " " ),
 
 	// The ready event handler
 	DOMContentLoaded,
@@ -210,7 +202,7 @@ jQuery.fn = jQuery.prototype = {
 	selector: "",
 
 	// The current version of jQuery being used
-	jquery: "Pulled Live From Git",
+	jquery: "1.5.1",
 
 	// The default length of a jQuery object is 0
 	length: 0,
@@ -321,7 +313,7 @@ jQuery.fn = jQuery.prototype = {
 jQuery.fn.init.prototype = jQuery.fn;
 
 jQuery.extend = jQuery.fn.extend = function() {
-	 var options, name, src, copy, copyIsArray, clone,
+	var options, name, src, copy, copyIsArray, clone,
 		target = arguments[0] || {},
 		i = 1,
 		length = arguments.length,
@@ -870,6 +862,12 @@ jQuery.extend({
 								callbacks.shift().apply( context, args );
 							}
 						}
+						// We have to add a catch block for
+						// IE prior to 8 or else the finally
+						// block will never get executed
+						catch (e) {
+							throw e;
+						}
 						finally {
 							fired = [ context, args ];
 							firing = 0;
@@ -904,9 +902,8 @@ jQuery.extend({
 	Deferred: function( func ) {
 		var deferred = jQuery._Deferred(),
 			failDeferred = jQuery._Deferred(),
-			promise,
-			invert;
-		// Add errorDeferred methods, then, promise and invert
+			promise;
+		// Add errorDeferred methods, then and promise
 		jQuery.extend( deferred, {
 			then: function( doneCallbacks, failCallbacks ) {
 				deferred.done( doneCallbacks ).fail( failCallbacks );
@@ -925,32 +922,15 @@ jQuery.extend({
 					}
 					promise = obj = {};
 				}
-				for( var methodName in promiseMethods ) {
-					obj[ methodName ] = deferred[ methodName ];
+				var i = promiseMethods.length;
+				while( i-- ) {
+					obj[ promiseMethods[i] ] = deferred[ promiseMethods[i] ];
 				}
-				return obj;
-			},
-			// Get the invert promise for this deferred
-			// If obj is provided, the invert promise aspect is added to the object
-			invert: function( obj ) {
-				if ( obj == null ) {
-					if ( invert ) {
-						return invert;
-					}
-					invert = obj = {};
-				}
-				for( var methodName in promiseMethods ) {
-					obj[ methodName ] = promiseMethods[ methodName ] && deferred[ promiseMethods[methodName] ];
-				}
-				obj.then = invert.then || function( doneCallbacks, failCallbacks ) {
-					deferred.done( failCallbacks ).fail( doneCallbacks );
-					return this;
-				};
 				return obj;
 			}
 		} );
 		// Make sure only one callback list will be used
-		deferred.then( failDeferred.cancel, deferred.cancel );
+		deferred.done( failDeferred.cancel ).fail( deferred.cancel );
 		// Unexpose cancel
 		delete deferred.cancel;
 		// Call given func if any
@@ -962,24 +942,34 @@ jQuery.extend({
 
 	// Deferred helper
 	when: function( object ) {
-		var args = arguments,
-			length = args.length,
-			deferred = length <= 1 && object && jQuery.isFunction( object.promise ) ?
+		var lastIndex = arguments.length,
+			deferred = lastIndex <= 1 && object && jQuery.isFunction( object.promise ) ?
 				object :
 				jQuery.Deferred(),
-			promise = deferred.promise(),
-			resolveArray;
+			promise = deferred.promise();
 
-		if ( length > 1 ) {
-			resolveArray = new Array( length );
-			jQuery.each( args, function( index, element ) {
-				jQuery.when( element ).then( function( value ) {
-					resolveArray[ index ] = arguments.length > 1 ? slice.call( arguments, 0 ) : value;
-					if( ! --length ) {
-						deferred.resolveWith( promise, resolveArray );
-					}
-				}, deferred.reject );
-			} );
+		if ( lastIndex > 1 ) {
+			var array = slice.call( arguments, 0 ),
+				count = lastIndex,
+				iCallback = function( index ) {
+					return function( value ) {
+						array[ index ] = arguments.length > 1 ? slice.call( arguments, 0 ) : value;
+						if ( !( --count ) ) {
+							deferred.resolveWith( promise, array );
+						}
+					};
+				};
+			while( ( lastIndex-- ) ) {
+				object = array[ lastIndex ];
+				if ( object && jQuery.isFunction( object.promise ) ) {
+					object.promise().then( iCallback(lastIndex), deferred.reject );
+				} else {
+					--count;
+				}
+			}
+			if ( !count ) {
+				deferred.resolveWith( promise, array );
+			}
 		} else if ( deferred !== object ) {
 			deferred.resolve( object );
 		}
@@ -1095,7 +1085,7 @@ function doScrollCheck() {
 }
 
 // Expose jQuery to the global object
-return (window.jQuery = window.$ = jQuery);
+return jQuery;
 
 })();
 
@@ -1112,7 +1102,8 @@ return (window.jQuery = window.$ = jQuery);
 	var all = div.getElementsByTagName("*"),
 		a = div.getElementsByTagName("a")[0],
 		select = document.createElement("select"),
-		opt = select.appendChild( document.createElement("option") );
+		opt = select.appendChild( document.createElement("option") ),
+		input = div.getElementsByTagName("input")[0];
 
 	// Can't get basic test support
 	if ( !all || !all.length || !a ) {
@@ -1151,7 +1142,7 @@ return (window.jQuery = window.$ = jQuery);
 		// Make sure that if no value is specified for a checkbox
 		// that it defaults to "on".
 		// (WebKit defaults to "" instead)
-		checkOn: div.getElementsByTagName("input")[0].value === "on",
+		checkOn: input.value === "on",
 
 		// Make sure that a selected-by-default option has a working selected property.
 		// (WebKit defaults to false instead of true, IE too, if it's in an optgroup)
@@ -1162,11 +1153,15 @@ return (window.jQuery = window.$ = jQuery);
 		optDisabled: false,
 		checkClone: false,
 		noCloneEvent: true,
+		noCloneChecked: true,
 		boxModel: null,
 		inlineBlockNeedsLayout: false,
 		shrinkWrapBlocks: false,
 		reliableHiddenOffsets: true
 	};
+
+	input.checked = true;
+	jQuery.support.noCloneChecked = input.cloneNode( true ).checked;
 
 	// Make sure that the options inside disabled selects aren't marked as disabled
 	// (WebKit marks them as diabled)
@@ -1344,7 +1339,7 @@ jQuery.extend({
 	hasData: function( elem ) {
 		elem = elem.nodeType ? jQuery.cache[ elem[jQuery.expando] ] : elem[ jQuery.expando ];
 
-		return !!elem && !jQuery.isEmptyObject(elem);
+		return !!elem && !isEmptyDataObject( elem );
 	},
 
 	data: function( elem, name, data, pvt /* Internal Use Only */ ) {
@@ -1384,6 +1379,13 @@ jQuery.extend({
 
 		if ( !cache[ id ] ) {
 			cache[ id ] = {};
+
+			// TODO: This is a hack for 1.5 ONLY. Avoids exposing jQuery
+			// metadata on plain JS objects when the object is serialized using
+			// JSON.stringify
+			if ( !isNode ) {
+				cache[ id ].toJSON = jQuery.noop;
+			}
 		}
 
 		// An object can be passed to jQuery.data instead of a key/value pair; this gets
@@ -1450,7 +1452,7 @@ jQuery.extend({
 
 				// If there is no data left in the cache, we want to continue
 				// and let the cache object itself get destroyed
-				if ( !jQuery.isEmptyObject(thisCache) ) {
+				if ( !isEmptyDataObject(thisCache) ) {
 					return;
 				}
 			}
@@ -1462,7 +1464,7 @@ jQuery.extend({
 
 			// Don't destroy the parent cache unless the internal data object
 			// had been the only thing left in it
-			if ( !jQuery.isEmptyObject(cache[ id ]) ) {
+			if ( !isEmptyDataObject(cache[ id ]) ) {
 				return;
 			}
 		}
@@ -1483,6 +1485,13 @@ jQuery.extend({
 		// data if it existed
 		if ( internalCache ) {
 			cache[ id ] = {};
+			// TODO: This is a hack for 1.5 ONLY. Avoids exposing jQuery
+			// metadata on plain JS objects when the object is serialized using
+			// JSON.stringify
+			if ( !isNode ) {
+				cache[ id ].toJSON = jQuery.noop;
+			}
+
 			cache[ id ][ internalKey ] = internalCache;
 
 		// Otherwise, we need to eliminate the expando on the node to avoid
@@ -1609,6 +1618,19 @@ function dataAttr( elem, key, data ) {
 	}
 
 	return data;
+}
+
+// TODO: This is a hack for 1.5 ONLY to allow objects with a single toJSON
+// property to be considered empty objects; this property always exists in
+// order to make sure JSON.stringify does not expose internal metadata
+function isEmptyDataObject( obj ) {
+	for ( var name in obj ) {
+		if ( name !== "toJSON" ) {
+			return false;
+		}
+	}
+
+	return true;
 }
 
 
@@ -2125,17 +2147,22 @@ jQuery.event = {
 			return;
 		}
 
-		// For whatever reason, IE has trouble passing the window object
-		// around, causing it to be cloned in the process
-		if ( jQuery.isWindow( elem ) && ( elem !== window && !elem.frameElement ) ) {
-			elem = window;
+		// TODO :: Use a try/catch until it's safe to pull this out (likely 1.6)
+		// Minor release fix for bug #8018
+		try {
+			// For whatever reason, IE has trouble passing the window object
+			// around, causing it to be cloned in the process
+			if ( jQuery.isWindow( elem ) && ( elem !== window && !elem.frameElement ) ) {
+				elem = window;
+			}
 		}
+		catch ( e ) {}
 
 		if ( handler === false ) {
 			handler = returnFalse;
 		} else if ( !handler ) {
 			// Fixes bug #7229. Fix recommended by jdalton
-		  return;
+			return;
 		}
 
 		var handleObjIn, handleObj;
@@ -2811,8 +2838,7 @@ if ( !jQuery.support.submitBubbles ) {
 						type = elem.type;
 
 					if ( (type === "submit" || type === "image") && jQuery( elem ).closest("form").length ) {
-						e.liveFired = undefined;
-						return trigger( "submit", this, arguments );
+						trigger( "submit", this, arguments );
 					}
 				});
 
@@ -2821,8 +2847,7 @@ if ( !jQuery.support.submitBubbles ) {
 						type = elem.type;
 
 					if ( (type === "text" || type === "password") && jQuery( elem ).closest("form").length && e.keyCode === 13 ) {
-						e.liveFired = undefined;
-						return trigger( "submit", this, arguments );
+						trigger( "submit", this, arguments );
 					}
 				});
 
@@ -2885,7 +2910,7 @@ if ( !jQuery.support.changeBubbles ) {
 		if ( data != null || val ) {
 			e.type = "change";
 			e.liveFired = undefined;
-			return jQuery.event.trigger( e, arguments[1], elem );
+			jQuery.event.trigger( e, arguments[1], elem );
 		}
 	};
 
@@ -2899,7 +2924,7 @@ if ( !jQuery.support.changeBubbles ) {
 				var elem = e.target, type = elem.type;
 
 				if ( type === "radio" || type === "checkbox" || elem.nodeName.toLowerCase() === "select" ) {
-					return testChange.call( this, e );
+					testChange.call( this, e );
 				}
 			},
 
@@ -2911,7 +2936,7 @@ if ( !jQuery.support.changeBubbles ) {
 				if ( (e.keyCode === 13 && elem.nodeName.toLowerCase() !== "textarea") ||
 					(e.keyCode === 32 && (type === "checkbox" || type === "radio")) ||
 					type === "select-multiple" ) {
-					return testChange.call( this, e );
+					testChange.call( this, e );
 				}
 			},
 
@@ -2950,8 +2975,18 @@ if ( !jQuery.support.changeBubbles ) {
 }
 
 function trigger( type, elem, args ) {
-	args[0].type = type;
-	return jQuery.event.handle.apply( elem, args );
+	// Piggyback on a donor event to simulate a different one.
+	// Fake originalEvent to avoid donor's stopPropagation, but if the
+	// simulated event prevents default then we do the same on the donor.
+	// Don't pass args or remember liveFired; they apply to the donor event.
+	var event = jQuery.extend( {}, args[ 0 ] );
+	event.type = type;
+	event.originalEvent = {};
+	event.liveFired = undefined;
+	jQuery.event.handle.call( elem, event );
+	if ( event.isDefaultPrevented() ) {
+		args[ 0 ].preventDefault();
+	}
 }
 
 // Create "bubbling" focus and blur events
@@ -3188,7 +3223,7 @@ function liveHandler( event ) {
 		for ( j = 0; j < live.length; j++ ) {
 			handleObj = live[j];
 
-			if ( close.selector === handleObj.selector && (!namespace || namespace.test( handleObj.namespace )) ) {
+			if ( close.selector === handleObj.selector && (!namespace || namespace.test( handleObj.namespace )) && !close.elem.disabled ) {
 				elem = close.elem;
 				related = null;
 
@@ -3611,6 +3646,9 @@ var Expr = Sizzle.selectors = {
 	attrHandle: {
 		href: function( elem ) {
 			return elem.getAttribute( "href" );
+		},
+		type: function( elem ) {
+			return elem.getAttribute( "type" );
 		}
 	},
 
@@ -3856,7 +3894,9 @@ var Expr = Sizzle.selectors = {
 		selected: function( elem ) {
 			// Accessing this property makes selected-by-default
 			// options in Safari work properly
-			elem.parentNode.selectedIndex;
+			if ( elem.parentNode ) {
+				elem.parentNode.selectedIndex;
+			}
 			
 			return elem.selected === true;
 		},
@@ -3878,7 +3918,9 @@ var Expr = Sizzle.selectors = {
 		},
 
 		text: function( elem ) {
-			return "text" === elem.type;
+			// IE6 and 7 will map elem.type to 'text' for new HTML5 types (search, etc) 
+			// use getAttribute instead to test this case
+			return "text" === elem.getAttribute( 'type' );
 		},
 		radio: function( elem ) {
 			return "radio" === elem.type;
@@ -4411,7 +4453,8 @@ if ( document.querySelectorAll ) {
 				// and working up from there (Thanks to Andrew Dupont for the technique)
 				// IE 8 doesn't work on object elements
 				} else if ( context.nodeType === 1 && context.nodeName.toLowerCase() !== "object" ) {
-					var old = context.getAttribute( "id" ),
+					var oldContext = context,
+						old = context.getAttribute( "id" ),
 						nid = old || id,
 						hasParent = context.parentNode,
 						relativeHierarchySelector = /^\s*[+~]/.test( query );
@@ -4433,7 +4476,7 @@ if ( document.querySelectorAll ) {
 					} catch(pseudoError) {
 					} finally {
 						if ( !old ) {
-							context.removeAttribute( "id" );
+							oldContext.removeAttribute( "id" );
 						}
 					}
 				}
@@ -4849,11 +4892,11 @@ jQuery.each({
 }, function( name, fn ) {
 	jQuery.fn[ name ] = function( until, selector ) {
 		var ret = jQuery.map( this, fn, until ),
-                // The variable 'args' was introduced in
-                // https://github.com/jquery/jquery/commit/52a0238
-                // to work around a bug in Chrome 10 (Dev) and should be removed when the bug is fixed.
-                // http://code.google.com/p/v8/issues/detail?id=1050
-                    args = slice.call(arguments);
+			// The variable 'args' was introduced in
+			// https://github.com/jquery/jquery/commit/52a0238
+			// to work around a bug in Chrome 10 (Dev) and should be removed when the bug is fixed.
+			// http://code.google.com/p/v8/issues/detail?id=1050
+			args = slice.call(arguments);
 
 		if ( !runtil.test( name ) ) {
 			selector = until;
@@ -5445,6 +5488,18 @@ jQuery.each({
 	};
 });
 
+function getAll( elem ) {
+	if ( "getElementsByTagName" in elem ) {
+		return elem.getElementsByTagName( "*" );
+	
+	} else if ( "querySelectorAll" in elem ) {
+		return elem.querySelectorAll( "*" );
+
+	} else {
+		return [];
+	}
+}
+
 jQuery.extend({
 	clone: function( elem, dataAndEvents, deepDataAndEvents ) {
 		var clone = elem.cloneNode(true),
@@ -5452,7 +5507,8 @@ jQuery.extend({
 				destElements,
 				i;
 
-		if ( !jQuery.support.noCloneEvent && (elem.nodeType === 1 || elem.nodeType === 11) && !jQuery.isXMLDoc(elem) ) {
+		if ( (!jQuery.support.noCloneEvent || !jQuery.support.noCloneChecked) &&
+				(elem.nodeType === 1 || elem.nodeType === 11) && !jQuery.isXMLDoc(elem) ) {
 			// IE copies events bound via attachEvent when using cloneNode.
 			// Calling detachEvent on the clone will also remove the events
 			// from the original. In order to get around this, we use some
@@ -5463,8 +5519,8 @@ jQuery.extend({
 
 			// Using Sizzle here is crazy slow, so we use getElementsByTagName
 			// instead
-			srcElements = elem.getElementsByTagName("*");
-			destElements = clone.getElementsByTagName("*");
+			srcElements = getAll( elem );
+			destElements = getAll( clone );
 
 			// Weird iteration because IE will replace the length property
 			// with an element if you are cloning the body and one of the
@@ -5476,21 +5532,18 @@ jQuery.extend({
 
 		// Copy the events from the original to the clone
 		if ( dataAndEvents ) {
-
 			cloneCopyEvent( elem, clone );
 
-			if ( deepDataAndEvents && "getElementsByTagName" in elem ) {
+			if ( deepDataAndEvents ) {
+				srcElements = getAll( elem );
+				destElements = getAll( clone );
 
-				srcElements = elem.getElementsByTagName("*");
-				destElements = clone.getElementsByTagName("*");
-
-				if ( srcElements.length ) {
-					for ( i = 0; srcElements[i]; ++i ) {
-						cloneCopyEvent( srcElements[i], destElements[i] );
-					}
+				for ( i = 0; srcElements[i]; ++i ) {
+					cloneCopyEvent( srcElements[i], destElements[i] );
 				}
 			}
 		}
+
 		// Return the cloned set
 		return clone;
 },
@@ -5914,7 +5967,7 @@ if ( document.defaultView && document.defaultView.getComputedStyle ) {
 
 if ( document.documentElement.currentStyle ) {
 	currentStyle = function( elem, name ) {
-		var left, 
+		var left,
 			ret = elem.currentStyle && elem.currentStyle[ name ],
 			rsLeft = elem.runtimeStyle && elem.runtimeStyle[ name ],
 			style = elem.style;
@@ -5992,7 +6045,7 @@ var r20 = /%20/g,
 	rbracket = /\[\]$/,
 	rCRLF = /\r?\n/g,
 	rhash = /#.*$/,
-	rheaders = /^(.*?):\s*(.*?)\r?$/mg, // IE leaves an \r character at EOL
+	rheaders = /^(.*?):[ \t]*([^\r\n]*)\r?$/mg, // IE leaves an \r character at EOL
 	rinput = /^(?:color|date|datetime|email|hidden|month|number|password|range|search|tel|text|time|url|week)$/i,
 	// #7653, #8125, #8152: local protocol detection
 	rlocalProtocol = /(?:^file|^widget|\-extension):$/,
@@ -6152,7 +6205,7 @@ jQuery.fn.extend({
 			if ( jQuery.isFunction( params ) ) {
 				// We assume that it's the callback
 				callback = params;
-				params = null;
+				params = undefined;
 
 			// Otherwise, build a param string
 			} else if ( typeof params === "object" ) {
@@ -6244,7 +6297,7 @@ jQuery.each( [ "get", "post" ], function( i, method ) {
 		if ( jQuery.isFunction( data ) ) {
 			type = type || callback;
 			callback = data;
-			data = null;
+			data = undefined;
 		}
 
 		return jQuery.ajax({
@@ -6260,7 +6313,7 @@ jQuery.each( [ "get", "post" ], function( i, method ) {
 jQuery.extend({
 
 	getScript: function( url, callback ) {
-		return jQuery.get( url, null, callback, "script" );
+		return jQuery.get( url, undefined, callback, "script" );
 	},
 
 	getJSON: function( url, data, callback ) {
@@ -6427,7 +6480,7 @@ jQuery.extend({
 						}
 						match = responseHeaders[ key.toLowerCase() ];
 					}
-					return match || null;
+					return match === undefined ? null : match;
 				},
 
 				// Overrides response content-type header
@@ -7546,7 +7599,7 @@ jQuery.fn.extend({
 
 				} else {
 					var parts = rfxnum.exec(val),
-						start = e.cur() || 0;
+						start = e.cur();
 
 					if ( parts ) {
 						var end = parseFloat( parts[2] ),
@@ -7697,8 +7750,12 @@ jQuery.fx.prototype = {
 			return this.elem[ this.prop ];
 		}
 
-		var r = parseFloat( jQuery.css( this.elem, this.prop ) );
-		return r || 0;
+		var parsed,
+			r = jQuery.css( this.elem, this.prop );
+		// Empty strings, null, undefined and "auto" are converted to 0,
+		// complex values such as "rotate(1rad)" are returned as is,
+		// simple values such as "10px" are parsed to Float.
+		return isNaN( parsed = parseFloat( r ) ) ? !r || r === "auto" ? 0 : r : parsed;
 	},
 
 	// Start an animation from one number to another
@@ -8160,7 +8217,7 @@ jQuery.each( ["Left", "Top"], function( i, name ) {
 				if ( win ) {
 					win.scrollTo(
 						!i ? val : jQuery(win).scrollLeft(),
-						 i ? val : jQuery(win).scrollTop()
+						i ? val : jQuery(win).scrollTop()
 					);
 
 				} else {
@@ -8255,4 +8312,5 @@ jQuery.each([ "Height", "Width" ], function( i, name ) {
 });
 
 
+window.jQuery = window.$ = jQuery;
 })(window);

@@ -25,8 +25,10 @@
 
                 // Register deltas
                 var browserID = text20.browser.id()
-                connector.connection.preference("connector:calibration:" + browserID + ":offset:x", dx)
-                connector.connection.preference("connector:calibration:" + browserID + ":offset:y", dy)
+                connector.connection.preference("connector:calibration:" + browserID + ":offset:x", "" + dx + ".0")
+                connector.connection.preference("connector:calibration:" + browserID + ":offset:y", "" + dy + ".0")
+                
+                text20.browser.log("Setting offset to " + dx + "," + dy + " for browser id '" + browserID + "'")
 
                 // Inform user
                 $("#hitthedot").css("visibility", "hidden")
