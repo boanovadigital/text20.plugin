@@ -26,11 +26,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.logging.Logger;
 
 import net.xeoh.plugins.base.PluginManager;
+import net.xeoh.plugins.diagnosis.local.Diagnosis;
+import net.xeoh.plugins.diagnosis.local.DiagnosisChannel;
+import net.xeoh.plugins.diagnosis.local.options.status.OptionInfo;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.MasterGazeHandler;
+import de.dfki.km.text20.browserplugin.services.mastergazehandler.diagnosis.channels.tracing.MasterGazeHandlerTracer;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehandler.AbstractGazeHandler;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehandler.fixation.FixationHandler;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehandler.reading.PerusalHandler;
@@ -57,9 +60,6 @@ import de.dfki.km.text20.util.filter.displacement.ReferenceBasedDisplacementFilt
  *
  */
 public class MasterGazeHandlerImpl implements MasterGazeHandler {
-
-    /** */
-    private final Logger logger = Logger.getLogger(this.getClass().getName());
 
     /** */
     private final JSExecutor browserPlugin;
@@ -94,6 +94,9 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
     /** When to switch off reduced mode again */
     final AtomicLong switchReducedOffAt = new AtomicLong(Long.MAX_VALUE);
 
+    /** Responsible for tracing messages */
+    final DiagnosisChannel<String> diagnosis;
+
     // AbstractFilter filter = new SpakovFilter(5, 8, 12);
     // AbstractFilter filter = new FixedSmoothingFilter(20);
     // AbstractFilter filter = new EmptyFilter();
@@ -109,6 +112,8 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
         this.browserPlugin = browserPlugin;
         this.pseudorenderer = pseudorenderer;
         this.pluginManager = pluginManager;
+
+        this.diagnosis = this.pluginManager.getPlugin(Diagnosis.class).channel(MasterGazeHandlerTracer.class);
     }
 
     /**
@@ -123,6 +128,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
      *
      * @return .
      */
+    @Override
     public GazeEvaluator getGazeEvaluator() {
         return this.evaluator;
     }
@@ -135,6 +141,8 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
      */
     @Override
     public List<String> getHandlerForType(final String type) {
+        this.diagnosis.status("getHandlerForType/call", new OptionInfo("type", type));
+
         if (!this.callbackHandler.containsKey(type)) {
             this.callbackHandler.put(type, new ArrayList<String>());
         }
@@ -146,6 +154,8 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
      */
     @Override
     public void reduceJSLoad(final int timeToDisable) {
+        this.diagnosis.status("reduceJSLoad/call", new OptionInfo("timeToDisable", Integer.valueOf(timeToDisable)));
+
         for (final AbstractGazeHandler gazeHandler : this.allGazeHandler) {
             gazeHandler.setReducedCommunication(true);
         }
@@ -160,6 +170,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
      */
     @Override
     public void registerJSCallback(final String type, final String listener) {
+        this.diagnosis.status("registerJSCallback/call", new OptionInfo("type", type), new OptionInfo("listener", listener));
 
         // Make sure we have something for the type
         if (!this.callbackHandler.containsKey(type)) {
@@ -175,6 +186,8 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
      */
     @Override
     public void removeJSCallback(final String listener) {
+        this.diagnosis.status("removeJSCallback/call", new OptionInfo("listener", listener));
+
         for (final String type : this.callbackHandler.keySet()) {
             final List<String> all = this.callbackHandler.get(type);
             if (all == null) {
@@ -199,7 +212,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
      * Called after the tracking device has been set.
      */
     private void init(final EyeTrackingDevice trackingDevice) {
-        this.logger.fine("Starting MasterGazeHandler.");
+        this.diagnosis.status("init/start");
 
         // Setup filter
         this.filter.addFilter(this.smoothingFilter);
@@ -224,7 +237,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
             gazeHandler.init(this.pluginManager, this, this.pseudorenderer, this.browserPlugin, this.evaluator);
         }
 
-        // Check if we should reset the reduced mode
+        this.diagnosis.status("init/register/listener");
         trackingDevice.addTrackingListener(new EyeTrackingListener() {
 
             @Override
@@ -242,6 +255,8 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
                 }
             }
         });
+
+        this.diagnosis.status("init/end");
     }
 
     /**
