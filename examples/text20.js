@@ -398,6 +398,15 @@ var text20 = {},
             // If something has been calibrated, use that
             if(this.calibratedOffset)
                 return this.calibratedOffset
+        },
+        
+        /**
+         * Logs a given string to the console, if possible 
+         * 
+         * @param {Object} message
+         */
+        log: function(message) {
+            if(console && console.log) console.log(message)   
         }
     },
 
@@ -1040,8 +1049,8 @@ var text20 = {},
 
                     try {
                         if (status == "INITIALIZED") {
-
-                            self.updateaLoadingStatus("Lifesign received. Performing initialization.");
+                            text20.browser.log("Callback from plugin received. This means the plugin runs.");
+                            
                             self.variables.initialized = true;
 
                             // Check if the engine is there (this should never happen)
@@ -1050,7 +1059,7 @@ var text20 = {},
                                 return;
                             }
 
-                            self.updateaLoadingStatus("Loading extensions. Wish me luck.");
+                            text20.browser.log("Starting to load extensions.");
 
                             // Check if we can query extensions (what is causing these problems?!!?)
                             if(engine.getExtensions == null) {
@@ -1072,13 +1081,14 @@ var text20 = {},
                             }
 
 
-                            self.updateaLoadingStatus("Loading calibration.");
+                            text20.browser.log("Extensions loaded. Starting to load the browser calibration.");
 
 
                             var browserID = text20.browser.id(),
                                 dx = engine.getPreference("connector:calibration:" + browserID + ":offset:x", "UNDEFINED"),
                                 dy = engine.getPreference("connector:calibration:" + browserID + ":offset:y", "UNDEFINED")
 
+                            text20.browser.log("Obtained raw offsets " + dx + "," + dy + " for browserID '" + browserID + "'")
 
                             // If something has been set, use the override offset
                             if(dx != "UNDEFINED" && dy != "UNDEFINED") {
@@ -1095,9 +1105,7 @@ var text20 = {},
                             }
 
 
-                            self.updateaLoadingStatus("Extensions added. Registering special callbacks.");
-
-
+                            text20.browser.log("Calibration loaded. Registering low level handlers.");
 
 
                             // Register some of the global callback listeners at the engine ...
@@ -1112,16 +1120,9 @@ var text20 = {},
                             }
 
 
-                            self.updateaLoadingStatus("Callbacks registered. Transfering control to client. Cu ;-)");
+                            text20.browser.log("Handlers registered. Starting up EEG handling and registering additional functions.");
 
-                            // Disable background
-                            if(self.variables.loadIndicator) {
-                                $("#atloadingindicatorbackground").hide()
-                                $("#atloadingindicator").hide()
-                            }
-
-
-                            // Setup Emotion Engine :-)
+                            // Setup EEG device (TODO: very beta ...)
                             if(connector.config.enableBrainTracker) {
                                 var r = connector.extensions.brainTrackerInitEvaluation();
                                 alert(r)
@@ -1132,6 +1133,8 @@ var text20 = {},
                             window.document.onclick = function(e) {
                                 connector.extensions.mouseClicked(0, e.button)
                             }
+                            
+                            text20.browser.log("Functions registered. Transfering control to client. Have fun.");
 
                             // Process all initialized listener
                             connector.variables.listeners.process("INITIALIZED", function(f){
@@ -1163,32 +1166,9 @@ var text20 = {},
                 },
 
 
-                /** Updates the loading status screen with the given message */
-                updateaLoadingStatus: function(status) {
-                    if(console && console.log) console.log(status);
-                    if (this.variables.loadIndicator) $("#text20loadingindicator").html(status)
-                },
-
 
                 /** Connect the applet to the plugin, i.e., activate gaze! */
                 connect: function(){
-                    // In case we should render a load indicator
-                    if(this.variables.loadIndicator) {
-                        // Update the load indicator variable in case it is set.
-                        loadIndicator = this.variables.loadIndicator;
-
-                        // Append a background shade as well as a info box
-                        $("body").append("<div id='text20indicatorbackground' style='z-index:100000; position:absolute; top:0px; left: 0px; width:100%; height:2000px; background:black; opacity:0.6'>&nbsp;</div>")
-                        $("body").append("<div " +
-                             "style='width:300px; height:120px; margin-left:-100px; position:absolute; background:orange; top:300px; opacity:0.97; left:50%; -webkit-border-radius:10px; z-index:100001' " +
-                             "id='text20loadingindicator'> " +
-                                 "<br/>" +
-                                 "<center><span style='font-weight:bold; font-size:120%; text-decoration:underline; margin-left:20px; margin-top:40px;'>Connector Status</span></center>" +
-                                 "<br/>" +
-                                 "<center><span id='atloadingstatus'>Please wait ... initializing plugin.</span></center>" +
-                         "</div>");
-                    }
-
                     // Assemble extension string
                     var allExtensions = ""
                     connector.config.extensions.forEach(function f(i) {
@@ -1244,10 +1224,7 @@ var text20 = {},
                     }
 
 
-
-
-
-                    this.updateaLoadingStatus("Plugin added. Waiting for a lifesign. This usually takes 5-10 seconds.");
+                    text20.browser.log("Plugin added. Waiting for a lifesign. This usually takes 5-10 seconds.");
 
                     // Set applet engine
                     this.variables.engine = $("#" + this.variables.appletID).get(0);
@@ -1341,6 +1318,7 @@ var text20 = {},
                             p.y = y;
                             p.w = w;
                             p.h = h;
+                            text20.browser.log("New browser geometry: " + x + "," + y + " " + w + "x" + h + " (document offset is " + offset[0] + ", " + offset[1] + ")")
                             e.updateBrowserGeometry(x, y, w, h);
                         }
                     })
@@ -1948,9 +1926,11 @@ var text20 = {},
 
                 // Register some global callbacks regarding the window visibility
                 callbacks.register("blurListener", function(){
+                    text20.browser.log("Window blurred")
                     connection.transmitWindowVisibility(false);
                 });
                 callbacks.register("focusListener", function(){
+                    text20.browser.log("Window focussed")
                     connection.transmitWindowVisibility(true);
                 });
 

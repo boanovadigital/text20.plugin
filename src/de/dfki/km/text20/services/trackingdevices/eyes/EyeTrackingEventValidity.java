@@ -24,38 +24,24 @@ package de.dfki.km.text20.services.trackingdevices.eyes;
 /**
  * Are elements valid?
  * 
- * @author rb
- *
+ * @author Ralf Biedert
  */
 public enum EyeTrackingEventValidity {
-    /**
-     * Is the center position valid?
-     */
+    /** Is the center position valid? */
     CENTER_POSITION_VALID,
 
-    /**
-     * 
-     */
+    /** Is the head position valid? */
     HEAD_POSITION_VALID,
 
-    /**
-     * 
-     */
+    /** Is the left eye position valid */
     LEFT_EYE_POSITION_VALID,
 
-    /**
-     * 
-     */
+    /** Is the gaze position for the left eye valid */
     LEFT_GAZE_POSITION_VALID,
 
-    /**
-     * 
-     */
+    /** Is the right eye position valid */
     RIGHT_EYE_POSITION_VALID,
 
-    /**
-     * 
-     */
+    /** Is the gaze position for the right eye valid */
     RIGHT_GAZE_POSITION_VALID
-
 }
