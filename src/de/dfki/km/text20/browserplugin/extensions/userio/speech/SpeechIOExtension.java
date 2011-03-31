@@ -40,14 +40,14 @@ import de.dfki.km.augmentedtext.services.speech.recognition.SpeechRecognizer;
 import de.dfki.km.augmentedtext.services.speech.synthesis.SpeechSynthesis;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.JavaScriptExecutorItem;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.DynamicExtension;
 
 /**
  * 
  * @author rb
  */
 @PluginImplementation
-public class SpeechIOExtension implements Extension {
+public class SpeechIOExtension implements DynamicExtension {
 
     /** */
     final Logger logger = Logger.getLogger(this.getClass().getName());

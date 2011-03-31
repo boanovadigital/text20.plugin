@@ -24,25 +24,7 @@ package de.dfki.km.text20.browserplugin.services.extensionmanager;
 import net.xeoh.plugins.base.Plugin;
 
 /**
- * 
- * @author rb
- * 
+ * @author Ralf Biedert
  */
 public interface Extension extends Plugin {
-    /**
-     * Returns a list with all supported functions
-     * 
-     * @return .
-     */
-    public String[] getDynamicFunctions();
-
-    /**
-     * Executes the given function.
-     * 
-     * @param function
-     * @param args
-     * 
-     * @return .
-     */
-    public Object executeDynamicFunction(String function, String args);
 }
