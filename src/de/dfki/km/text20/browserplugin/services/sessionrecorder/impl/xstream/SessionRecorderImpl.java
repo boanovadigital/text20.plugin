@@ -40,6 +40,8 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import net.jcores.interfaces.functions.F0;
+import net.jcores.options.Option;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.informationbroker.InformationBroker;
 import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
@@ -400,6 +402,24 @@ public class SessionRecorderImpl implements SessionRecorder {
     public void updateElementGeometry(final String id, final String type,
                                       final String content, final Rectangle r) {
         if (this.sessionStreamer == null) return;
+        
+        // In case this is an image, we also try to store the image
+        if("image".equals(type)) {
+            // Check if we already had this file
+            final File target = new File(this.sessionDir + "/" + "image." + $(content).string().bytes().hash(Option.HASH_MD5).get(0) + "." + $(content).split("\\.").get(-1));
+            if(!target.exists()) {
+                // If we hadn't, then run n the background 
+                $.oneTime(new F0() {
+                    @Override
+                    public void f() {
+                        // Download the image and copy it to a file in the session directory
+                        $(content).uri().download().copy(target.getAbsolutePath());
+                    }
+                }, 1);
+            }
+        }
+        
+        // And store the element info
         this.sessionStreamer.updateElementGeometry(id, type, content, r);
     }
 
@@ -483,7 +503,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     void doTakeScreenshot() {
         if (this.sessionStreamer == null || this.fakeReplay != null) return;
 
-        final String file = System.currentTimeMillis() + ".png";
+        final String file = "screenshot." + System.currentTimeMillis() + ".png";
         final String fullpath = SessionRecorderImpl.this.sessionDir + "/" + file;
 
         // We need this priviledged stuff for applets...
