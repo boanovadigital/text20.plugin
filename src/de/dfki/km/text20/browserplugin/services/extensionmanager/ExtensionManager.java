@@ -47,5 +47,4 @@ public interface ExtensionManager extends Plugin {
      * @return .
      */
     public List<String> getExtensions();
-
 }

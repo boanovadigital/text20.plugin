@@ -39,14 +39,14 @@ import de.dfki.km.augmentedtext.services.datasource.dbpedia.DBPedia;
 import de.dfki.km.augmentedtext.services.language.statistics.Statistics;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.JavaScriptExecutorItem;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.DynamicExtension;
 
 /**
  * 
  * @author rb
  */
 @PluginImplementation
-public class BackgroundServicesExtension implements Extension {
+public class BackgroundServicesExtension implements DynamicExtension {
 
     /** */
     final Logger logger = Logger.getLogger(this.getClass().getName());

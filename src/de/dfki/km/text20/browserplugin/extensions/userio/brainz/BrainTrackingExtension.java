@@ -36,7 +36,7 @@ import de.dfki.km.text20.browserplugin.services.emotiondetector.impl.brain.rmser
 import de.dfki.km.text20.browserplugin.services.emotiondetector.impl.brain.rmserror.TrainedPeakEmotionClassifier;
 import de.dfki.km.text20.browserplugin.services.emotiondetector.impl.brain.simple.SimpleAvgEmotionClassifier;
 import de.dfki.km.text20.browserplugin.services.emotiondetector.impl.brain.simple.SimplePeakEmotionClassifier;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.DynamicExtension;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingListener;
 
@@ -44,7 +44,7 @@ import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingListener;
  * @author Farida Ismail
  */
 @PluginImplementation
-public class BrainTrackingExtension implements Extension {
+public class BrainTrackingExtension implements DynamicExtension {
 
     /** */
     final Logger logger = Logger.getLogger(this.getClass().getName());
