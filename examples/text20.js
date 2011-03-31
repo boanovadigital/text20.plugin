@@ -710,7 +710,7 @@ var text20 = {},
             /** Internal variables. */
             transmitMode : "ASYNC",    // DO NOT TOUCH THIS
 
-            useObjectTag : false,
+            useObjectTag : true,
         },
 
         variables: {
@@ -1385,11 +1385,12 @@ var text20 = {},
                         return;
                     }
 
-                    if (cache.x != x || cache.y != y || cache.w != w || cache.h != h) {
+                    if (cache.x != x || cache.y != y || cache.w != w || cache.h != h || (type == "image" && cache.content != content)) {
                         cache.x = x;
                         cache.y = y
                         cache.w = w;
                         cache.h = h;
+                        cache.content = content;
                         updateElementGeometry(id, type, content, x, y, w, h);
                     }
                 },
@@ -1607,13 +1608,16 @@ var text20 = {},
                     var pos = dom.documentPosition(this),
                         w = parseInt(this.offsetWidth),
                         h = parseInt(this.offsetHeight),
+                        type = null,
                         content = null;
                         
                     // If we have an image tag, check the .src again (might have changed
-                    if(this.tagName == "IMG") content = this.src;    
+                    if (this.tagName == "IMG") {
+                        type = "image"
+                        content = this.src;
+                    }    
                     
-                    
-                    connection.transmitElement(id, null, content, pos[0], pos[1], w, h);
+                    connection.transmitElement(id, type, content, pos[0], pos[1], w, h);
                 });
 
                 connector.connection.endBatch();
