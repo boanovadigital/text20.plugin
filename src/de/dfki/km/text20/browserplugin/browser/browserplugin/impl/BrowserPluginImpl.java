@@ -57,6 +57,7 @@ import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration.OptionFixationParametersItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration.SessionDirectoryItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.configuration.TransmissionModeItem;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.meta.BuildNumberItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.BrowserAPIItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.GazeEvaluatorItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.JavaScriptExecutorItem;
@@ -99,6 +100,9 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         ASYNC, DIRECT
     }
 
+    /** The build number of this release */
+    private final String buildNumber;
+    
     /** */
     private static final long serialVersionUID = 8654743028251010225L;
 
@@ -175,9 +179,10 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     JSObject window;
 
     private Thread mouseThread;
-    
+
     public BrowserPluginImpl() {
-        System.out.println("BrowserPluginImpl.new()");
+        this.buildNumber = $(BrowserPluginImpl.class.getResourceAsStream("browser.plugin.version")).text().split("\n").hashmap().get("build");
+        System.out.println("BrowserPluginImpl.new() -- Build " + this.buildNumber);
     }
 
     /*
@@ -453,7 +458,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
         this.diagnosis.status("init/call/javascript");
 
-        tellJSStatus("INITIALIZED");
+        tellJSStatus("INITIALIZED", this.buildNumber);
 
         this.diagnosis.status("init/end");
     }
@@ -763,6 +768,9 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.infoBroker.publish(JavaScriptExecutorItem.class, this);
         this.infoBroker.publish(BrowserAPIItem.class, this);
 
+        // Publish meta items
+        this.infoBroker.publish(BuildNumberItem.class, this.buildNumber);
+        
         // Publish config items
         this.infoBroker.publish(TransmissionModeItem.class, this.transmitMode);
         this.infoBroker.publish(SessionDirectoryItem.class, this.masterFilePath);
@@ -783,8 +791,8 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      * 
      * @param status
      */
-    private void tellJSStatus(final String status) {
-        executeJSFunction("_augmentedTextStatusFunction", status);
+    private void tellJSStatus(final String... status) {
+        executeJSFunction("_augmentedTextStatusFunction", (Object[]) status);
     }
 
     /**
