@@ -21,15 +21,22 @@
  */
 package de.dfki.km.text20.browserplugin.services.extensionmanager.impl;
 
+import static net.jcores.CoreKeeper.$;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.jcores.interfaces.functions.F1;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.PluginLoaded;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.DynamicExtension;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.ExtensionManager;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.annotations.ExtensionMethod;
 
 /**
  * @author rb
@@ -52,11 +59,93 @@ public class ExtensionManagerImpl implements ExtensionManager {
      */
     @Override
     public Object executeFunction(String function, String args) {
+        // Arguments
+        String[] split = $(args.split(",")).replace("'([^']*)'", "$1").decode().array(String.class);
+        if(split.length == 1 && split[0].equals("")) split = new String[0];
+
+        
         // TODO: Improve the loop, hash the functions instead..
         for (Extension e : this.allKnownExtensions) {
-            final List<String> supported = Arrays.asList(e.getDynamicFunctions());
-
-            if (supported.contains(function)) { return e.executeDynamicFunction(function, args); }
+            // First check if the extension was declared in a normal way, in that case, just execute the function
+            if (e instanceof DynamicExtension) {
+                DynamicExtension ee = (DynamicExtension) e;
+                final List<String> supported = Arrays.asList(ee.getDynamicFunctions());
+                if (supported.contains(function)) { return ee.executeDynamicFunction(function, args); }
+            }
+            
+            // We really want to make sure this code does not break the normal extension handling ...
+            try {
+                // Next, check if there is a suitable method
+                final Method[] methods = e.getClass().getMethods();
+                
+                // Check all methods if there is something matching
+                for (Method method : methods) {
+                    try {
+                        
+                        if(!method.getName().equals(function)) continue;
+                        
+                        // Make sure the number of args match
+                        final Class<?>[] params = method.getParameterTypes();
+                        if(params.length != split.length) continue;
+                        
+                        // Check it the method has an annotation
+                        if(method.getAnnotation(ExtensionMethod.class) == null) continue;
+                        
+                        // Try to cast the arguments
+                        final Object[] cast = new Object[params.length];
+                        for (int i = 0; i < cast.length; i++) {
+                            final Class<?> type = params[i];
+                            
+                            if(type.equals(int.class) || type.equals(Integer.class)) {
+                                cast[i] = Integer.decode(split[i]);
+                            }
+                            
+                            if(type.equals(byte.class) || type.equals(Byte.class)) {
+                                cast[i] = Byte.decode(split[i]);
+                            }
+                            
+                            if(type.equals(short.class) || type.equals(Short.class)) {
+                                cast[i] = Short.decode(split[i]);
+                            }
+                            
+                            if(type.equals(long.class) || type.equals(Long.class)) {
+                                cast[i] = Long.decode(split[i]);
+                            }
+                            
+                            if(type.equals(boolean.class) || type.equals(Boolean.class)) {
+                                cast[i] = Boolean.valueOf(split[i]);
+                            }
+                            
+                            if(type.equals(float.class) || type.equals(Float.class)) {
+                                cast[i] = Float.valueOf(split[i]);
+                            }
+                            
+                            if(type.equals(double.class) || type.equals(Double.class)) {
+                                cast[i] = Double.valueOf(split[i]);
+                            }
+                            
+                            if(type.equals(String.class)) {
+                                cast[i] = split[i];
+                            }
+                        }
+                        
+                        // Eventually, try to invoke the method
+                        try {
+                            return method.invoke(e, cast);
+                        } catch (IllegalArgumentException e1) {
+                            e1.printStackTrace();
+                        } catch (IllegalAccessException e1) {
+                            e1.printStackTrace();
+                        } catch (InvocationTargetException e1) {
+                            e1.printStackTrace();
+                        }
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
         }
 
         return null;
@@ -74,8 +163,23 @@ public class ExtensionManagerImpl implements ExtensionManager {
         final List<String> rval = new ArrayList<String>();
 
         for (Extension e : this.allKnownExtensions) {
-            final List<String> supported = Arrays.asList(e.getDynamicFunctions());
-            rval.addAll(supported);
+            if (e instanceof DynamicExtension) {
+                DynamicExtension ee = (DynamicExtension) e;
+                final List<String> supported = Arrays.asList(ee.getDynamicFunctions());
+                rval.addAll(supported);
+            }
+
+            // Get all methods declared by annotations
+            final List<String> byAnnotation = $(e.getClass().getMethods()).map(new F1<Method, String>() {
+                @Override
+                public String f(Method arg0) {
+                   ExtensionMethod method = arg0.getAnnotation(ExtensionMethod.class);
+                   if(method == null) return null;
+                   
+                   return arg0.getName();
+                }
+            }).compact().list();
+            rval.addAll(byAnnotation);
         }
 
         return rval;
@@ -86,13 +190,6 @@ public class ExtensionManagerImpl implements ExtensionManager {
      */
     @PluginLoaded
     public void newExtension(Extension extension) {
-        this.logger.fine("Registered extension module " + extension.toString());
-
         this.allKnownExtensions.add(extension);
-
-        // Print extension functions
-        for (String string : extension.getDynamicFunctions()) {
-            this.logger.fine("Module supportes extension function " + string);
-        }
     }
 }

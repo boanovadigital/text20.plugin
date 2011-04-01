@@ -32,14 +32,14 @@ import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
 import net.xeoh.plugins.remote.PublishMethod;
 import net.xeoh.plugins.remotediscovery.DiscoveredPlugin;
 import net.xeoh.plugins.remotediscovery.RemoteDiscovery;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.DynamicExtension;
 
 /**
  * @author rb
  *
  */
 @PluginImplementation
-public class DiscoveryExtension implements Extension {
+public class DiscoveryExtension implements DynamicExtension {
 
     /** */
     final Logger logger = Logger.getLogger(this.getClass().getName());

@@ -35,7 +35,7 @@ import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.BrowserAPIItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.MasterGazeHandlerItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.PseudorendererItem;
-import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.DynamicExtension;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.MasterGazeHandler;
 import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
@@ -46,7 +46,7 @@ import de.dfki.km.text20.services.pseudorenderer.RenderElement;
  * 
  */
 @PluginImplementation
-public class VariousHacksExtension implements Extension {
+public class VariousHacksExtension implements DynamicExtension {
 
     /** */
     private MasterGazeHandler gazeHandler;
