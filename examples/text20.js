@@ -34,6 +34,11 @@
 
 
 var text20 = {},
+    /** Version information to assist debugging */
+    version = {
+        version: "1.4.0",
+        build: "1.4.0-201104011635",
+    },
 
     strings = {
         /** Segment a string into chunks of strings based on punctiation. */
@@ -1047,21 +1052,26 @@ var text20 = {},
                 },
 
                 /** Called when the plugin is ready */
-                onStatus: function(status){
+                onStatus: function(status, arg1){
 
                     // Get a number variables
                     var self = text20.connector.connection,
+                        times = text20.connector.connection.variables.times,
                         engine = self.variables.engine,
                         registry = text20.connector.extensions.registry
 
-
                     try {
                         if (status == "INITIALIZED") {
-                            var times = self.variables.times
+                            // Give first lifesign and timing report                            
                             times.appletinitialized = new Date().getTime()
                             var time = times.appletinitialized - times.appletadded  
-                            
                             text20.browser.log("Callback from plugin received. This means the plugin runs. Init time " + time + "ms.");
+                            
+                            // Compare versions and warn in case things went wrong
+                            if(!arg1 || version.build != arg1) {
+                                alert("This version of text20.js (" + version.build + ") is incompatible with the version of text20.jar (" + arg1 + "). We will continue, but there might be errors or strange behavior. Please use the same version.");
+                                text20.browser.log("Version mismatch. Plugin reported version " + arg1 + ". Expect misbehavior.");                                                            
+                            }                            
                             
                             self.variables.initialized = true;
 
@@ -1929,7 +1939,9 @@ var text20 = {},
 
         /** Call when everything is set up and ready to go */
         init: function() {
-
+            // Print version
+            text20.browser.log("Initializing text20.js (" + version.build + ").");
+            
             var self = this
 
             // Execute this only when the document is ready ...
