@@ -408,7 +408,7 @@ public class SessionRecorderImpl implements SessionRecorder {
             // Check if we already had this file
             final File target = new File(this.sessionDir + "/" + "image." + $(content).string().bytes().hash(Option.HASH_MD5).get(0) + "." + $(content).split("\\.").get(-1));
             if(!target.exists()) {
-                // If we hadn't, then run n the background 
+                // If we hadn't, then run in the background 
                 $.oneTime(new F0() {
                     @Override
                     public void f() {

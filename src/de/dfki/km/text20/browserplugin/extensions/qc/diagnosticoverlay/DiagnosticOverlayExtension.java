@@ -36,6 +36,7 @@ import net.xeoh.plugins.informationbroker.InformationBroker;
 import net.xeoh.plugins.informationbroker.InformationListener;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.MasterGazeHandlerItem;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.annotations.ExtensionMethod;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.MasterGazeHandler;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEventType;
@@ -56,34 +57,17 @@ public class DiagnosticOverlayExtension implements Extension {
     /** The overlay frame to show */
     OverlayFrame overlayFrame;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.dfki.km.text20.browserplugin.services.extensionmanager.Extension#getDynamicFunctions()
+    /**
+     * Shows the diagnostic overlay.
      */
-    @Override
-    public String[] getDynamicFunctions() {
-        return new String[] { "diagnosticOverlay" };
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.dfki.km.text20.browserplugin.services.extensionmanager.Extension#executeDynamicFunction(java.lang.String,
-     * java.lang.String)
-     */
-    @Override
-    public Object executeDynamicFunction(String function, String args) {
-        if ("diagnosticOverlay".equals(function)) {
-            $.oneTime(new F0() {
-                @Override
-                public void f() {
-                    DiagnosticOverlayExtension.this.overlayFrame.activate();
-                }
-            }, 100);
-        }
-        
-        return null;
+    @ExtensionMethod
+    public void diagnosticOverlay() {
+        $.oneTime(new F0() {
+            @Override
+            public void f() {
+                DiagnosticOverlayExtension.this.overlayFrame.activate();
+            }
+        }, 100);
     }
 
     /** */

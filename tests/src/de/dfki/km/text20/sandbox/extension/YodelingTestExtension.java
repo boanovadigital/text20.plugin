@@ -8,9 +8,9 @@
 package de.dfki.km.text20.sandbox.extension;
 
 import net.xeoh.plugins.base.annotations.PluginImplementation;
-import net.xeoh.plugins.base.annotations.Timer;
 import net.xeoh.plugins.base.annotations.events.Init;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.annotations.ExtensionMethod;
 
 /**
  * This is a very simple test for you to see how to write an extension.
@@ -32,35 +32,9 @@ public class YodelingTestExtension implements Extension {
     public void init() {
         System.out.println("Yodeling Succeded");
     }
-
-    /**
-     * Override this method, it will be executed when some JavaScript code calls you. 
-     * 
-     * @param function Contains the function to call
-     * @param args Contains all arguments
-     * 
-     * @return Something you wish to return to JavaScript.
-     */
-    @Override
-    public Object executeDynamicFunction(String function, String args) {
-        return "YODEL WORLD";
-    }
-
     
-    /**
-     * You MUST return all function names executeDynamicFunction() can handle. 
-     */
-    @Override
-    public String[] getDynamicFunctions() {
-        return new String[] { "YODEL" };
-    }
-
-    
-    /**
-     * Can be safely removed :-) 
-     */
-    @Timer(period=1000)
-    public void nag() {
-        System.out.println("Yodeling extension reports: I'm still there ...");
-    }
+    @ExtensionMethod
+    public void yodelHelloWorld(int number) {
+        System.out.println(number);
+    } 
 }
