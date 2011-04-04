@@ -406,7 +406,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         props.setProperty(UpdateCheck.class, "update.url", "http://api.text20.net/common/versioncheck/");
         props.setProperty(UpdateCheck.class, "update.enabled", this.updatecheck);
         props.setProperty(UpdateCheck.class, "product.name", "text20.plugin");
-        props.setProperty(UpdateCheck.class, "product.version", "1.3"); // TODO: Get this
+        props.setProperty(UpdateCheck.class, "product.version", "1.4"); // TODO: Get this
                                                                         // version number
                                                                         // from a better
                                                                         // place!
