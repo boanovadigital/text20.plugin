@@ -37,6 +37,7 @@
 	<!-- Build and pack target -->
 	<target name="plugin" depends="clean, compile, pack, sign" />
 
+	
 	<!-- Compile the plugin -->
 	<target name="compile" description="Compile the framework">
 		<!-- Create output folder -->

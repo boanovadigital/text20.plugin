@@ -30,6 +30,7 @@ import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
 import net.xeoh.plugins.base.util.uri.ClassURI;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.ExtensionManager;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.util.ExtensionManagerUtil;
 
 /**
  * @author buhl
@@ -57,17 +58,22 @@ public class TestExtensions {
      * @throws URISyntaxException
      *
      */
+    @SuppressWarnings("boxing")
     public void init() throws URISyntaxException {
 
         this.pluginManager = PluginManagerFactory.createPluginManager();
         this.pluginManager.addPluginsFrom(ClassURI.CLASSPATH);
 
         ExtensionManager manager = this.pluginManager.getPlugin(ExtensionManager.class);
-        Object executeFunction = manager.executeFunction("test", "(12)");
+        Object executeFunction = manager.executeFunction("yodelHelloWorld", "12");
+        System.out.println(executeFunction.getClass());
         $(manager.getExtensions()).print();
         
         System.out.println(executeFunction);
 
+        ExtensionManagerUtil util = new ExtensionManagerUtil(manager);
+        System.out.println(util.executeFunction("yodelHelloWorld", 32));
+        
         this.pluginManager.shutdown();
     }
 }

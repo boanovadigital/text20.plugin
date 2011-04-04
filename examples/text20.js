@@ -37,7 +37,7 @@ var text20 = {},
     /** Version information to assist debugging */
     version = {
         version: "1.4.0",
-        build: "1.4.0-201104011635",
+        build: "1.4.0-201104041148",
     },
 
     strings = {
@@ -403,6 +403,8 @@ var text20 = {},
             // If something has been calibrated, use that
             if(this.calibratedOffset)
                 return this.calibratedOffset
+                
+            return [0, 0]
         },
         
         /**
@@ -1337,6 +1339,9 @@ var text20 = {},
                         var p = v.transmitCache.get("windowPosition");
                         var offset = browser.documentOffset();
 
+                        // Can be null when there were problems                        
+                        if(!offset) offset = [0, 0]
+
                         // Correct offset before transmission
                         x += offset[0]
                         y += offset[1]
@@ -1939,6 +1944,11 @@ var text20 = {},
 
         /** Call when everything is set up and ready to go */
         init: function() {
+            if(navigator && navigator.javaEnabled && !navigator.javaEnabled()) {
+                alert("You need to install Java (and enable Applets) to use the Text 2.0 Framework.")
+                return;
+            } 
+            
             // Print version
             text20.browser.log("Initializing text20.js (" + version.build + ").");
             
