@@ -33,8 +33,10 @@ public class YodelingTestExtension implements Extension {
         System.out.println("Yodeling Succeded");
     }
     
+    
     @ExtensionMethod
-    public void yodelHelloWorld(int number) {
+    public int yodelHelloWorld(int number) {
         System.out.println(number);
+        return number*number;
     } 
 }

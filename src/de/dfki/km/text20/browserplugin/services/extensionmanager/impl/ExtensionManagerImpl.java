@@ -59,10 +59,9 @@ public class ExtensionManagerImpl implements ExtensionManager {
      */
     @Override
     public Object executeFunction(String function, String args) {
-        // Arguments
-        String[] split = $(args.split(",")).replace("'([^']*)'", "$1").decode().array(String.class);
+        // Arguments (first, remove global () , then remove '' on each param).
+        String[] split = $($(args).replace("\\(([^)]*)\\)", "$1").get(0).split(",")).replace("'([^']*)'", "$1").decode().array(String.class);
         if(split.length == 1 && split[0].equals("")) split = new String[0];
-
         
         // TODO: Improve the loop, hash the functions instead..
         for (Extension e : this.allKnownExtensions) {

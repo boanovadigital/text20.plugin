@@ -97,7 +97,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         final DiagnosisChannel<String> diagnosis = this.pluginManager.getPlugin(Diagnosis.class).channel(TrackingDeviceManagerTracer.class);
 
 
-        diagnosis.status("initEyeTrackerConnection/start", new OptionInfo("_deviceSelector", _deviceSelector), new OptionInfo("_trackerConnection", _trackerConnection));
+        diagnosis.status("initeyetrackerconnection/start", new OptionInfo("_deviceSelector", _deviceSelector), new OptionInfo("_trackerConnection", _trackerConnection));
 
         boolean autoDetection = false;
 
@@ -105,7 +105,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         String deviceSelector = _deviceSelector;
         String trackerConnection = _trackerConnection;
 
-        diagnosis.status("initEyeTrackerConnection/set/connection");
+        diagnosis.status("initeyetrackerconnection/set/connection");
 
         if (deviceSelector == null) {
             deviceSelector = "eyetrackingdevice:mouse";
@@ -119,37 +119,37 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
             trackerConnection = "discover://any";
         }
 
-        diagnosis.status("initEyeTrackerConnection/connection/mode", new OptionInfo("deviceSelector", deviceSelector), new OptionInfo("autoDetection", Boolean.valueOf(autoDetection)));
+        diagnosis.status("initeyetrackerconnection/connection/mode", new OptionInfo("deviceSelector", deviceSelector), new OptionInfo("autoDetection", Boolean.valueOf(autoDetection)));
 
         // Check if we should get our connection from the environment
         if (trackerConnection.startsWith(ENVIRONMENT_URL)) {
-            diagnosis.status("initEyeTrackerConnection/get/connection", new OptionInfo("trackerConnection", trackerConnection));
+            diagnosis.status("initeyetrackerconnection/get/connection", new OptionInfo("trackerConnection", trackerConnection));
 
             final String getenv = System.getenv(trackerConnection.substring(ENVIRONMENT_URL.length()));
 
-            diagnosis.status("initEyeTrackerConnection/connection/environment", new OptionInfo("getenv", getenv));
+            diagnosis.status("initeyetrackerconnection/connection/environment", new OptionInfo("getenv", getenv));
 
             trackerConnection = getenv;
 
             if (trackerConnection == null) {
-                diagnosis.status("initEyeTrackerConnection/get/connection/mouse");
+                diagnosis.status("initeyetrackerconnection/get/connection/mouse");
                 deviceSelector = "eyetrackingdevice:mouse";
                 trackerConnection = "";
             }
         }
 
-        diagnosis.status("initEyeTrackerConnection/get/device", new OptionInfo("deviceSelector", deviceSelector));
+        diagnosis.status("initeyetrackerconnection/get/device", new OptionInfo("deviceSelector", deviceSelector));
 
         // Obtain the proper tracking device here
         EyeTrackingDeviceProvider deviceProvider = this.pluginManager.getPlugin(EyeTrackingDeviceProvider.class, new OptionCapabilities(deviceSelector));
 
         // No device is bad ... at this stage ...
         if (deviceProvider == null) {
-            diagnosis.status("initEyeTrackerConnection/deviceProvider/unusual", new OptionInfo("deviceSelector", deviceSelector));
+            diagnosis.status("initeyetrackerconnection/deviceProvider/unusual", new OptionInfo("deviceSelector", deviceSelector));
             return null;
         }
 
-        diagnosis.status("initEyeTrackerConnection/connecting", new OptionInfo("trackerConnection", trackerConnection));
+        diagnosis.status("initeyetrackerconnection/connecting", new OptionInfo("trackerConnection", trackerConnection));
 
         // Now open the device
         this.eyeTrackingDevice = deviceProvider.openDevice(trackerConnection);
@@ -157,7 +157,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         // If opening the device didn't work and we have autodetection, use the mouse
         if (this.eyeTrackingDevice == null && autoDetection) {
 
-            diagnosis.status("initEyeTrackerConnection/connecting/mouse");
+            diagnosis.status("initeyetrackerconnection/connecting/mouse");
 
             deviceSelector = "eyetrackingdevice:mouse";
 
@@ -166,7 +166,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
 
             // No device is bad ... at this stage ...
             if (deviceProvider == null) {
-                diagnosis.status("initEyeTrackerConnection/connecting/nodevice/unusual", new OptionInfo("deviceSelector", deviceSelector));
+                diagnosis.status("initeyetrackerconnection/connecting/nodevice/unusual", new OptionInfo("deviceSelector", deviceSelector));
                 return null;
             }
 
@@ -175,7 +175,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
 
             // Bad luck today.
             if (this.eyeTrackingDevice == null) {
-                diagnosis.status("initEyeTrackerConnection/connecting/nodevice/unusual");
+                diagnosis.status("initeyetrackerconnection/connecting/nodevice/unusual");
                 return null;
             }
         }
@@ -190,7 +190,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
 
         addDataRateListener();
 
-        diagnosis.status("initEyeTrackerConnection/end");
+        diagnosis.status("initeyetrackerconnection/end");
 
         return this.eyeTrackingDevice;
     }
@@ -198,14 +198,14 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
     private void addDataRateListener() {
         final DiagnosisChannel<String> diagnosis = this.pluginManager.getPlugin(Diagnosis.class).channel(TrackingDeviceManagerTracer.class);
 
-        diagnosis.status("addDataRateListener/call");
+        diagnosis.status("adddataratelistener/call");
 
         if (this.eyeTrackingDevice == null) return;
 
         final AtomicLong lng = new AtomicLong();
         final AtomicBoolean warned = new AtomicBoolean(false);
 
-        diagnosis.status("addDataRateListener/register");
+        diagnosis.status("adddataratelistener/register");
         this.eyeTrackingDevice.addTrackingListener(new EyeTrackingListener() {
             @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
@@ -224,7 +224,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
                 final long delta = current - old;
 
                 if (delta > 2000 && !warned.get()) {
-                    diagnosis.status("addDataRateListener/timer/lowdatarate", new OptionInfo("delta", Long.valueOf(delta)));
+                    diagnosis.status("adddataratelistener/timer/lowdatarate", new OptionInfo("delta", Long.valueOf(delta)));
 
                     new AePlayWave(getClass().getResourceAsStream("dataratelow.wav")).start();
                     warned.set(true);
@@ -244,9 +244,9 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
     public BrainTrackingDevice initBrainTrackerConnection(final String _deviceSelector, final String _trackerConnection) {
         final DiagnosisChannel<String> diagnosis = this.pluginManager.getPlugin(Diagnosis.class).channel(TrackingDeviceManagerTracer.class);
 
-        diagnosis.status("initBrainTrackerConnection/start", new OptionInfo("_deviceSelector", _deviceSelector), new OptionInfo("_trackerConnection", _trackerConnection));
+        diagnosis.status("initbraintrackerconnection/start", new OptionInfo("_deviceSelector", _deviceSelector), new OptionInfo("_trackerConnection", _trackerConnection));
 
-        diagnosis.status("initBrainTrackerConnection/set/connection");
+        diagnosis.status("initbraintrackerconnection/set/connection");
 
         // Setup device
         final String trackerConnection = (_trackerConnection == null) ? "discover://any" : _trackerConnection;
@@ -256,22 +256,22 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
 
         // No device is bad ... at this stage ...
         if (deviceProvider == null) {
-            diagnosis.status("initBrainTrackerConnection/connection/nobraintracker");
+            diagnosis.status("initbraintrackerconnection/connection/nobraintracker");
             return null;
         }
 
-        diagnosis.status("initBrainTrackerConnection/connecting/braintracker", new OptionInfo("trackerConnection", trackerConnection));
+        diagnosis.status("initbraintrackerconnection/connecting/braintracker", new OptionInfo("trackerConnection", trackerConnection));
 
         // Now open the device
         this.brainTrackingDevice = deviceProvider.openDevice(trackerConnection);
 
         // If opening the device didn't work and we have autodetection, use the mouse
         if (this.brainTrackingDevice == null) {
-            diagnosis.status("initBrainTrackerConnection/connecting/braintracker/unusual");
+            diagnosis.status("initbraintrackerconnection/connecting/braintracker/unusual");
             return null;
         }
 
-        diagnosis.status("initBrainTrackerConnection/end");
+        diagnosis.status("initbraintrackerconnection/end");
 
         return this.brainTrackingDevice;
     }
