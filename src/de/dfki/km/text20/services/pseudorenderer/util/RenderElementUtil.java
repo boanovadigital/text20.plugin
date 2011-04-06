@@ -22,6 +22,7 @@
 package de.dfki.km.text20.services.pseudorenderer.util;
 
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
+import de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderElement;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
@@ -45,6 +46,9 @@ public class RenderElementUtil {
     public String getPrettyName() {
         if (this.renderElement instanceof TextualRenderElement)
             return ((TextualRenderElement) this.renderElement).getContent();
+
+        if (this.renderElement instanceof GraphicalRenderElement)
+            return ((GraphicalRenderElement) this.renderElement).getSource();
 
         return this.renderElement.toString();
     }

@@ -29,8 +29,8 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOp
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.DisplacementRegion;
 
 /**
+ * 
  * @author Ralf Biedert
- *
  */
 public interface SessionReplay {
     /**

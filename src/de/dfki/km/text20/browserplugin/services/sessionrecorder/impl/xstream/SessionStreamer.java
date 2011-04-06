@@ -56,6 +56,7 @@ import com.thoughtworks.xstream.XStream;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.AbstractSessionEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.BrainTrackingEventContainer;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.CallFunctionEvent;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.DeInitEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ElementGeometryEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ElementMetaInformation;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ExecuteJSEvent;
@@ -203,7 +204,7 @@ public class SessionStreamer implements Serializable {
                 @Override
                 public void run() {
                     try {
-                        output.writeObject("Hook");
+                        output.writeObject(new DeInitEvent());
                         output.close();
                     } catch (IOException e) {
                         e.printStackTrace();

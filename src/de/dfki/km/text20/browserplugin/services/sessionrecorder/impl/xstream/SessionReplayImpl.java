@@ -100,7 +100,7 @@ public class SessionReplayImpl implements SessionReplay {
         SessionStreamer.registerConverters(this.xstream);
 
         // Parse file to get properties and screen size
-        this.getMetaInfo();
+        getMetaInfo();
     }
 
     /* (non-Javadoc)
@@ -229,10 +229,13 @@ public class SessionReplayImpl implements SessionReplay {
                                     continue;
                                 }
 
-                                final InputStream is = SessionReplayImpl.this.loader.getFile(e.associatedFilename);
-                                final BufferedImage read = ImageIO.read(is);
-
-                                event = new PseudoImageEvent(e, read);
+                                try {
+                                    final InputStream is = SessionReplayImpl.this.loader.getFile(e.associatedFilename);
+                                    final BufferedImage read = ImageIO.read(is);
+                                    event = new PseudoImageEvent(e, read);
+                                } catch (Exception ee) {
+                                    System.err.println("Missing image in replay archive " + e.associatedFilename); 
+                                }
                             }
 
                             // Now we are permitted to fire the event.
@@ -356,6 +359,8 @@ public class SessionReplayImpl implements SessionReplay {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (ClassCastException e) {
                 e.printStackTrace();
             }
         }
