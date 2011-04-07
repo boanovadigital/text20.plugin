@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.loader;
 
+import static net.jcores.CoreKeeper.$;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -58,7 +60,6 @@ public class PlainFileLoader extends AbstractLoader {
      */
     @Override
     public InputStream getFile(String name) {
-
-        return null;
+        return $(this.file.getParent() + "/" + name).file().input().get(0);
     }
 }

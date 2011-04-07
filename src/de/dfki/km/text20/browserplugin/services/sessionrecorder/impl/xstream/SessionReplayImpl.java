@@ -38,6 +38,7 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.PropertyE
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ScreenSizeEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.pseudo.PseudoImageEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.loader.AbstractLoader;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.loader.PlainFileLoader;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.loader.ZIPLoader;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOption;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.OptionGetMetaInfo;
@@ -307,6 +308,7 @@ public class SessionReplayImpl implements SessionReplay {
 
             // ... and check if we have .xstream file
             if (this.file.getAbsolutePath().endsWith(".xstream")) {
+                this.loader = new PlainFileLoader(this.file);
                 input = new FileInputStream(this.file);
             }
 
@@ -395,5 +397,13 @@ public class SessionReplayImpl implements SessionReplay {
     @SuppressWarnings("unused")
     private void addFilter(final Class<? extends AbstractSessionEvent> filter) {
         this.toFilter.add(filter);
+    }
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay#getResource(java.lang.String)
+     */
+    @Override
+    public InputStream getResource(String resource) {
+        return this.loader.getFile(resource);
     }
 }
