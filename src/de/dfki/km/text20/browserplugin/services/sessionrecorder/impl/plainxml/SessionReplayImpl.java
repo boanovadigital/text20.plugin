@@ -24,6 +24,7 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.plainxml;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -320,6 +321,12 @@ public class SessionReplayImpl implements SessionReplay {
     @Override
     public List<DisplacementRegion> getDisplacements() {
         return (this.record.fixationDisplacementRegions != null) ? this.record.fixationDisplacementRegions : new ArrayList<DisplacementRegion>();
+    }
+
+    @Override
+    public InputStream getResource(String resource) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

@@ -22,6 +22,7 @@
 package de.dfki.km.text20.browserplugin.services.sessionrecorder;
 
 import java.awt.Dimension;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -61,4 +62,12 @@ public interface SessionReplay {
      * @return .
      */
     public List<DisplacementRegion> getDisplacements();
+    
+    /**
+     * Returns a resource for this replay (e.g., an image).  
+     *
+     * @param resource 
+     * @return An input stream for the resource
+     */
+    public InputStream getResource(String resource);
 }
