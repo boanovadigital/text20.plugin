@@ -27,8 +27,10 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 
 /**
- * @author rb
- *
+ * The manager can be used to create a new {@link GazeEvaluator} for a given {@link EyeTrackingDevice}. 
+ * 
+ * @author Ralf Biedert
+ * @since 1.3
  */
 public interface GazeEvaluatorManager
         extends

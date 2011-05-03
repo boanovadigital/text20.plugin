@@ -24,15 +24,17 @@ package de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
 
 /**
- * Called upon a fixation
+ * Called when a new raw data event arrives.
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface RawDataListener extends GazeEvaluationListener<RawDataEvent> {
     /**
-     * Return true if you require unfiltered events. If false, filters may apply to the events. 
+     * Return true if you require unfiltered events. If false, filters may be applied 
+     * to the events. 
      * 
-     * @return .
+     * @return Either true or false.
      */
     public boolean requireUnfilteredEvents();
 }

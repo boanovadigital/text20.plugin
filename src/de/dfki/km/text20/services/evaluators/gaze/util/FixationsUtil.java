@@ -39,10 +39,10 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixatio
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * Methods regarding fixations.
+ * Methods regarding as set of {@link Fixation} objects.
  *
- * @author rb
- *
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public class FixationsUtil {
 
@@ -53,7 +53,9 @@ public class FixationsUtil {
     private CoreObject<Fixation> $fixations;
 
     /**
-     * @param fixations
+     * Creates a new fixations wrapper.
+     * 
+     * @param fixations The fixations to wrap.
      */
     public FixationsUtil(final List<Fixation> fixations) {
         this.fixations = fixations;
@@ -61,9 +63,9 @@ public class FixationsUtil {
     }
 
     /**
-     * Calculates the average y point of all fixations.
+     * Calculates the average y value of all fixations.
      *
-     * @return .
+     * @return The average y value.
      */
     public int getAverageYPosition() {
         final Staple<Point> staple = this.$fixations.map(new F1<Fixation, Point>() {
@@ -84,13 +86,12 @@ public class FixationsUtil {
     }
 
     /**
-     * TODO: Calculate proper median w. null elements considered.
+     * Calculates the median y position of all fixations. 
      *
-     * Calculates the average y point of all fixations.
-     *
-     * @return .
+     * @return The median y position.
      */
     public int getMedianYPosition() {
+        // TODO: Calculate proper median with <code>null</code> elements considered.
         return this.$fixations.map(new F1<Fixation, Point>() {
             @Override
             public Point f(Fixation arg0) {
@@ -105,9 +106,9 @@ public class FixationsUtil {
     }
 
     /**
-     * Returns the average length of saccades.
+     * Returns the average length of saccades in pixels.
      *
-     * @return .
+     * @return The average length in pixels.
      */
     @SuppressWarnings("boxing")
     public int getAvgSaccadeLength() {
@@ -134,7 +135,7 @@ public class FixationsUtil {
     /**
      * Returns all saccade lengths.
      *
-     * @return .
+     * @return An array of the size <code>n-1</code> is being returned with all lenghts.
      */
     @SuppressWarnings("boxing")
     public double[] getAllSaccadeLengths() {
@@ -160,9 +161,9 @@ public class FixationsUtil {
     }
 
     /**
-     * Returns all angles between the fixations
+     * Returns all angles between the fixations.
      *
-     * @return .
+     * @return An array of the size <code>n-1</code> is being returned with all angles.
      */
     @SuppressWarnings("boxing")
     public double[] getAllAngles() {
@@ -191,7 +192,7 @@ public class FixationsUtil {
      * Returns the avg. vertical deviation of fixations from the
      * whole's line center.
      *
-     * @return .
+     * @return The average deviation in pixels.
      */
     @SuppressWarnings("boxing")
     public int getAvgVerticalDeviation() {
@@ -215,7 +216,7 @@ public class FixationsUtil {
     /**
      * Returns the fixation line's dimension
      *
-     * @return .
+     * @return The dimension in pixels.
      */
     public Dimension getDimension() {
         final Point min = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -239,8 +240,8 @@ public class FixationsUtil {
     /**
      * Calculates how long has been gazed into the specified area of screen.
      *
-     * @param screenRectangle
-     * @return .
+     * @param screenRectangle The rectangle to query.
+     * @return The time in ms.
      */
     public long getGazetimeFor(final Rectangle screenRectangle) {
         long rval = 0;
@@ -260,8 +261,9 @@ public class FixationsUtil {
 
     /**
      * Returns the last n fixations.
-     * @param n
-     * @return .
+     * 
+     * @param n The number of fixations to return. 
+     * @return A list containing the last n fixations.
      */
     public List<Fixation> getLastFixations(final int n) {
         final int s = this.fixations.size();
@@ -272,7 +274,7 @@ public class FixationsUtil {
      * Returns the minimal x and y values. They are NOT connected. The point is likely not
      * existent, it only holds that no values are smaller than x or y.
      *
-     * @return .
+     * @return The upper left point.
      */
     public Point getMinCoordinates() {
         final Point min = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
@@ -290,16 +292,16 @@ public class FixationsUtil {
     /**
      * Returns the rectangle of this fixation line.
      *
-     * @return .
+     * @return The bounding rectangle.
      */
     public Rectangle getRectangle() {
         return new Rectangle(getMinCoordinates(), getDimension());
     }
 
     /**
-     * First observation-point of this event.
+     * The time of the first measurement of this event.
      *
-     * @return .
+     * @return The start time.
      */
     public long getStartTime() {
         final Fixation fixation = this.$fixations.compact().get(0);
@@ -312,9 +314,9 @@ public class FixationsUtil {
     }
 
     /**
-     * Last observation-point of this fixation line.
+     * The time of the last measurement of this event.
      *
-     * @return .
+     * @return The stop time.
      */
     public long getStopTime() {
         final Fixation fixation = this.$fixations.compact().get(-1);

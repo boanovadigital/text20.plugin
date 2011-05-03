@@ -24,27 +24,31 @@ package de.dfki.km.text20.browserplugin.services.extensionmanager;
 import java.util.List;
 
 import net.xeoh.plugins.base.Plugin;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
 
 /**
+ * Finds and manages all registered {@link Extension}s. The list is constructed by the plugin providing 
+ * the {@link BrowserAPI}. There should not be any need for you to use or access this class directly.
  * 
  * @author Ralf Biedert
+ * @since 1.0
  */
 public interface ExtensionManager extends Plugin {
 
     /**
-     * Executes the given function.
+     * Executes the given function in the first extension that provides it.
      * 
-     * @param function
-     * @param args
+     * @param function The function to execute.
+     * @param args The arguments for the function.
      * 
-     * @return .
+     * @return The returned value.
      */
     public Object executeFunction(String function, String args);
 
     /**
-     * Lists all supported extensions.
+     * Lists all supported extensions (the exported function names).
      * 
-     * @return .
+     * @return A list of all names.
      */
     public List<String> getExtensions();
 }

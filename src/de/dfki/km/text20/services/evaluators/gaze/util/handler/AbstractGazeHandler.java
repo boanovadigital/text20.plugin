@@ -35,10 +35,12 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 
 /**
+ * An abstract {@link GazeHandler}, only used internally.
+ * 
  * @author Ralf Biedert
- *
  * @param <E>
  * @param <L>
+ * @since 1.3
  */
 public abstract class AbstractGazeHandler<E extends GazeEvaluationEvent, L extends GazeEvaluationListener<E>>
         implements EyeTrackingListener, GazeHandler {

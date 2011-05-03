@@ -21,22 +21,24 @@
  */
 package de.dfki.km.text20.util.filter;
 
+import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 import de.dfki.km.text20.services.evaluators.gaze.GazeFilter;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * Represents an abstract filter
+ * Represents an abstract filter, implementing the {@link GazeEvaluator}'s
+ * {@link GazeFilter} interface.
  *
- * @author rb
- *
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public abstract class AbstractFilter implements GazeFilter {
 
     /**
      * Feeds the filter a new event.
      *
-     * @param event
-     * @return If true, something exiting happened, if false, you can leave the filter alone this round.
+     * @param event The event to feed.
+     * @return The filtered event.
      */
     @Override
     public abstract EyeTrackingEvent filterEvent(EyeTrackingEvent event);

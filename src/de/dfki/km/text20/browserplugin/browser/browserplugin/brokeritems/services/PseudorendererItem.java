@@ -1,5 +1,5 @@
 /*
- * PageManagerItem.java
+ * PseudorendererItem.java
  * 
  * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 
 /**
- * Reflects the browser's pseudorenderer.
+ * Reflects the browser's {@link Pseudorenderer}.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface PseudorendererItem extends InformationItem<Pseudorenderer> {}

@@ -22,15 +22,21 @@
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.eyecontact;
 
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationEvent;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 
 /**
+ * An eye contact event is being emitted when the {@link EyeTrackingDevice} detected or lost the 
+ * user's eyes.
+ * 
  * @author Ralf Biedert
+ * @since 1.4
+ * @see EyeContactListener
  */
 public interface EyeContactEvent extends GazeEvaluationEvent {
     /**
      * What type of event this is.
      * 
-     * @return .
+     * @return The type of event.
      */
     public EyeContactEventType getType();
 

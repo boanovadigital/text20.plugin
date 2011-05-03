@@ -21,12 +21,19 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay;
 
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.ReplayListener;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ImageEvent;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.pseudo.PseudoImageEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOption;
 
 /**
- * If specified, the replay will load and return images instead of only filename events.
+ * If specified, the {@link SessionReplay} will load and return images instead of only filename 
+ * events. In that case the {@link ReplayListener} will be called with a {@link PseudoImageEvent} 
+ * instead of an {@link ImageEvent}.
  *
  * @author Ralf Biedert
+ * @since 1.3
  */
 public class OptionLoadImages implements ReplayOption {
     /** */

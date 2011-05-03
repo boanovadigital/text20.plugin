@@ -28,22 +28,24 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixatio
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * Displaces a fixation.
+ * Displaces a {@link Fixation}.
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public class DisplacingFixationWrapper extends FixationWrapper {
 
     private final Point displacement;
 
     /**
-     * @param originalFixation
-     * @param displacement 
+     * Create a displacer for the given fixation and displacement.
+     * 
+     * @param originalFixation The fixation.
+     * @param displacement The displacement to apply.
      */
     public DisplacingFixationWrapper(final Fixation originalFixation,
                                      final Point displacement) {
         super(originalFixation);
-
         this.displacement = displacement;
     }
 

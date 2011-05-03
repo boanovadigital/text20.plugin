@@ -22,21 +22,26 @@
 package de.dfki.km.text20.browserplugin.services.mastergazehandler;
 
 import net.xeoh.plugins.base.Plugin;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 
 /**
- * Creates a new master gaze handler.
+ * Manages {@link MasterGazeHandler}s. In most cases there is only one 
+ * handler, and when in extension mode it is already there (see {@link BrowserAPI}),
+ * and when in library mode, you won't need it.  
  *
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface MasterGazeHandlerManager extends Plugin {
     /**
+     * Creates a new {@link MasterGazeHandler} for the given {@link JSExecutor} and {@link Pseudorenderer}.
      *
-     * @param browserPlugin
-     * @param pseudorenderer
-     * @return .
+     * @param executor The {@link JSExecutor} to call the JavaScript engine.
+     * @param pseudorenderer The current {@link Pseudorenderer}.
+     * @return A newly created {@link MasterGazeHandler}.
      */
-    MasterGazeHandler createMasterGazeHandler(JSExecutor browserPlugin,
+    MasterGazeHandler createMasterGazeHandler(JSExecutor executor,
                                               Pseudorenderer pseudorenderer);
 }

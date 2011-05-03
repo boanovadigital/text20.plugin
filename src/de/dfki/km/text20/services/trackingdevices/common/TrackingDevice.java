@@ -22,26 +22,27 @@
 package de.dfki.km.text20.services.trackingdevices.common;
 
 /**
- * Represents a tracking device.
+ * Represents a tracking device that provides {@link TrackingEvent}s.  
  * 
  * @author Ralf Biedert
+ * @since 1.3
  * 
- * @param <I> 
- * @param <T> 
- * @param <L> 
+ * @param <I> The type of the {@link TrackingDeviceInfo}.
+ * @param <T> The type of the {@link TrackingEvent}.
+ * @param <L> The type of the {@link TrackingListener}.
  */
 public interface TrackingDevice<I extends TrackingDeviceInfo, T extends TrackingEvent, L extends TrackingListener<T>> {
     /**
      * Adds a tracking listener to the device.
      * 
-     * @param listener
+     * @param listener The listener to add.
      */
     public void addTrackingListener(L listener);
 
     /**
      * Returns info about the tracking device.
      * 
-     * @return .
+     * @return The device info.
      */
     public I getDeviceInfo();
 
@@ -49,5 +50,4 @@ public interface TrackingDevice<I extends TrackingDeviceInfo, T extends Tracking
      * Closes the device.
      */
     public void closeDevice();
-
 }

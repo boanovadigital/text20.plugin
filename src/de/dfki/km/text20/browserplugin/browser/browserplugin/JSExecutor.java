@@ -21,19 +21,22 @@
  */
 package de.dfki.km.text20.browserplugin.browser.browserplugin;
 
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.JavaScriptExecutorItem;
+
 /**
- * Interface to the browser plugin. The corresponding class is *not* initialized by the PluginManager,
- * but by the browser, use BrowserPluginManager to retrieve it.
+ * The JSExecutor (which can be retrieved by the {@link JavaScriptExecutorItem} when developing extensions) 
+ * enables you call back the JavaScript engine in the web browser.   
  *
  * @author Ralf Biedert
+ * @since 1.0
  */
 public interface JSExecutor {
     /**
-     * Executes a JavaScript function inside the browser.
+     * Executes a JavaScript function inside the browser. 
      *
-     * @param function
-     * @param args
-     * @return The object returned by the browser script
+     * @param function A JavaScript function name to call. For example <code>test</code>. 
+     * @param args The args to pass (optional). Only primitive types or Strings should be used. 
+     * @return The object returned by the browser script.
      */
     public Object executeJSFunction(String function, Object... args);
 }

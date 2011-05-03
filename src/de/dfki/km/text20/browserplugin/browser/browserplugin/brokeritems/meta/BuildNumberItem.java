@@ -30,8 +30,9 @@ package de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.meta;
 import net.xeoh.plugins.informationbroker.InformationItem;
 
 /**
- * Reflects the build number
+ * Reflects the build number.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface BuildNumberItem extends InformationItem<String> {}

@@ -1,5 +1,5 @@
 /*
- * PageManagerItem.java
+ * EyeTrackingDeviceItem.java
  * 
  * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 
 /**
- * Reflects the used eye tracking item.
+ * Contains a link to the current {@link EyeTrackingDevice}.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface EyeTrackingDeviceItem extends InformationItem<EyeTrackingDevice> {}

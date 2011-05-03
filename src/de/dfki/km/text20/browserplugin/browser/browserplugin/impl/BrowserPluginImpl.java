@@ -88,11 +88,11 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 import de.dfki.km.text20.util.system.OS;
 
 /**
- * Will be instantiated by the browser.
- * 
- * Main entry point!
+ * Will be instantiated by the browser (is a Java Applet). This is the main entry point 
+ * for the Text 2.0 Framework when it runs as a browser plugin.
  * 
  * @author Ralf Biedert
+ * @since 1.0
  */
 public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI {
     /** Indicates how JavaScript calls should be made from the Applet. */
@@ -555,6 +555,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
      * @see de.dfki.km.augmentedtext.browserplugin.browser.browserplugin.impl.BrowserAPI#
      * testBasicFunctionality(java.lang.String)
      */
+    @Deprecated
     @Override
     public void testBasicFunctionality(final String callback) {
         this.diagnosis.status("testbasicfunctionality/call", new OptionInfo("callback", callback));
@@ -838,6 +839,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
     /* (non-Javadoc)
      * @see de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI#logString(java.lang.String)
      */
+    @Deprecated
     @Override
     public void logString(String toLog) {
         this.diagnosis.status("logstring/call", new OptionInfo("message", toLog));

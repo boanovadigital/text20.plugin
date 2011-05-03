@@ -22,9 +22,11 @@
 package de.dfki.km.text20.services.trackingdevices.eyes;
 
 /**
- * Are elements valid?
+ * The items to consider for validity checking.
  * 
  * @author Ralf Biedert
+ * @since 1.0
+ * @see EyeTrackingEvent
  */
 public enum EyeTrackingEventValidity {
     /** Is the center position valid? */

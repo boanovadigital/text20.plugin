@@ -21,11 +21,16 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener;
 
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationListener;
 import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 
 /**
+ * Specifies {@link Fixation} detection parameters to use. 
  * 
  * @author Ralf Biedert
+ * @since 1.3
+ * @see FixationListener
  */
 public class OptionFixationParameters implements AddGazeEvaluationListenerOption {
     /** */
@@ -41,17 +46,21 @@ public class OptionFixationParameters implements AddGazeEvaluationListenerOption
     private int minFixationEvents = 3;
 
     /**
-     * @param radiusFixationSize 
-     * @param minimalTime
+     * Constructs an options with the given radius and time.
+     * 
+     * @param radiusFixationSize The maximal radius in pixel to detect a fixation.
+     * @param minimalTime The minimal time in ms to detect a fixation. 
      */
     public OptionFixationParameters(int radiusFixationSize, int minimalTime) {
         this(radiusFixationSize, minimalTime, 3);
     }
 
     /**
-     * @param radiusFixationSize 
-     * @param minimalTime
-     * @param minFixationEvents 
+     * Constructs an options with the given radius, time and event count.
+     * 
+     * @param radiusFixationSize The maximal radius in pixel to detect a fixation.
+     * @param minimalTime The minimal time in ms to detect a fixation. 
+     * @param minFixationEvents The minimal number of events to require (<code>1</code> recommended).
      */
     public OptionFixationParameters(int radiusFixationSize, int minimalTime,
                                     int minFixationEvents) {

@@ -25,14 +25,17 @@ import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
+ * A raw data event, either filtered or unfiltered (see the {@link RawDataListener}).
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
+ * @see RawDataListener
  */
 public interface RawDataEvent extends GazeEvaluationEvent {
     /**
      * Returns the associated tracking event.
      *  
-     * @return .
+     * @return The tracking event.
      */
     public EyeTrackingEvent getTrackingEvent();
 }

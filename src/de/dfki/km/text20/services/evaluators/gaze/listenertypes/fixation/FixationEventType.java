@@ -22,7 +22,10 @@
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation;
 
 /**
- * @author rb
+ * The type used in the {@link FixationEvent}.
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public enum FixationEventType {
     /**

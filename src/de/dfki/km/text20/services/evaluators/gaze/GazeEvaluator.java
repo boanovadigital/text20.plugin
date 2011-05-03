@@ -21,13 +21,26 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze;
 
+import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.GazeEvaluatorItem;
 import de.dfki.km.text20.services.evaluators.common.Evaluator;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEvent;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationListener;
 import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 
 /**
- * A gaze evaluator bound to a specific gaze device. Different listeners may be registered using the method below.
+ * A gaze evaluator that evaluates raw gaze data and provides {@link GazeEvaluationEvent}s. An evaluator can be
+ * obtained either by the {@link GazeEvaluatorManager} (when in library mode), or by the {@link GazeEvaluatorItem} 
+ * (when in extension mode, see the {@link BrowserAPI} for details). <br/><br/>
  * 
- * @author rb
+ * Currently, the following evaluators are supported:
+ * 
+ * <ul>
+ * <li>{@link FixationListener} - Registers a listener that will be called upon new {@link FixationEvent}s.</li>
+ * </ul>
+ * 
+ * @author Ralf Biedert
+ * @since 1.3
  */
 public interface GazeEvaluator
         extends

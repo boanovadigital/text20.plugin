@@ -24,8 +24,9 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.special
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.SpecialCommandOption;
 
 /**
- * @author rb
- *
+ * Tells the session recorder to fake the next event date.
+ * 
+ * @author Ralf Biedert
  */
 public class OptionFakeNextDate implements SpecialCommandOption {
 
@@ -36,15 +37,19 @@ public class OptionFakeNextDate implements SpecialCommandOption {
     private final long startdate;
 
     /**
-     * @param next
-     *
+     * Constructs a new fake date. 
+     * 
+     * @param next The time to use for the next event instead of the current time.
+     * @see System 
      */
     public OptionFakeNextDate(long next) {
         this.startdate = next;
     }
 
     /**
-     * @return the startdate
+     * Returns the date. 
+     * 
+     * @return The date.
      */
     public long getDate() {
         return this.startdate;

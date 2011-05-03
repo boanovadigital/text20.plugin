@@ -24,11 +24,11 @@ package de.dfki.km.text20.services.evaluators.gaze;
 import de.dfki.km.text20.services.evaluators.common.HandlerFactory;
 
 /**
- * Used to construct gaze handler. NOTE: This is the "internal" API. Only 
- * use it if you want to provide new handler yourself, not if you want to 
- * use them. For that case use an GazeEvaluator. 
+ * Used to construct gaze handlers. This is the internal API. In most cases you want to use 
+ * the {@link GazeEvaluator}. 
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.3
  */
 public interface GazeHandlerFactory
         extends

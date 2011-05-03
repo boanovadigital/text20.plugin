@@ -28,18 +28,20 @@ import de.dfki.km.text20.services.evaluators.gaze.util.FixationUtil;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * Various metrics regarding fixations
+ * Various metrics regarding fixations.
  * 
  * @author Eugen Massini
  */
+@Deprecated
 public class FixationMetrics {
     /**
      * Calculates the density of a fixation based on the farmost element.  
      * 
-     * @param fixation
+     * @param fixation The fixation to calculate the densitiy on.
      * 
-     * @return TODO.
+     * @return The density.
      */
+    @Deprecated    
     public static double calculateOpenDensity(final Fixation fixation) {
         final List<EyeTrackingEvent> trackingEvents = fixation.getTrackingEvents();
         final int lstSize = trackingEvents.size();
@@ -70,12 +72,13 @@ public class FixationMetrics {
     }
 
     /**
-     * Calculates how healthy the fixation event is.
+     * Calculates how <i>healthy</i> the fixation event is.
      *  
-     * @param fixation 
+     * @param fixation The fixation to consider.
      * 
-     * @return .
+     * @return The healthiness value.
      */
+    @Deprecated
     public static double calculateTemporalHealthiness(final Fixation fixation) {
         double baseValue = 1.0;
 

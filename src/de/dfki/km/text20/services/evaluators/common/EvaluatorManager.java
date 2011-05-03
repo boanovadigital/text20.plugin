@@ -29,20 +29,22 @@ import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingListener;
 
 /**
- * @author rb
- *
- * @param <T>
- * @param <U>
- * @param <V>
- * @param <W>
+ * Creates {@link Evaluator}s of a given type for a given {@link TrackingDevice}.
+ * 
+ * @author Ralf Biedert
+ * @param <T> The type of the {@link TrackingEvent}.
+ * @param <U> The type of the {@link TrackingListener}.
+ * @param <V> The type of the {@link Evaluator}.
+ * @param <W> The type of the {@link TrackingDevice}.
+ * @since 1.3
  */
 public interface EvaluatorManager<T extends TrackingEvent, U extends TrackingListener<T>, V extends Evaluator<? extends EvaluationListener<? extends EvaluationEvent>, ? extends Option, ? extends Filter<T>>, W extends TrackingDevice<? extends TrackingDeviceInfo, T, U>>
         extends Plugin {
     /**
-     * Constructs an evaluator for the given tracking device.
+     * Constructs an evaluator for the given {@link TrackingDevice}.
      * 
-     * @param trackingDevice 
-     * @return .
+     * @param trackingDevice The tracking device to create an evaluator for.
+     * @return A new evaluator.
      */
     public V createEvaluator(W trackingDevice);
 }

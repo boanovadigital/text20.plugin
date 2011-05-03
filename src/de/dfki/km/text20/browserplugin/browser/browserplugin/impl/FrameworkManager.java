@@ -48,7 +48,6 @@ import de.dfki.km.text20.services.evaluators.gaze.impl.handler.raw.v1.RawHandler
 import de.dfki.km.text20.services.evaluators.gaze.impl.handler.saccade.v1.SaccadeHandlerFactory;
 import de.dfki.km.text20.services.evaluators.gaze.impl.handler.weaksaccade.v2.WeakSaccadeHandlerFactory;
 import de.dfki.km.text20.services.pseudorenderer.impl.PseudorendererManagerImpl;
-import de.dfki.km.text20.services.system.security.impl.PrivilegedExecutorImpl;
 import de.dfki.km.text20.services.trackingdevices.brain.impl.braintrackingserver.BrainTrackingServerDeviceProviderImpl;
 import de.dfki.km.text20.services.trackingdevices.eyes.impl.mouse.MouseTrackingDeviceProviderImpl;
 import de.dfki.km.text20.services.trackingdevices.eyes.impl.trackingserver.TrackingServerDeviceProviderImpl;
@@ -101,7 +100,6 @@ public class FrameworkManager {
         this.pluginManager = PluginManagerFactory.createPluginManager(props);
 
         // Manually load the plugins. Not really beautiful ...
-        this.pluginManager.addPluginsFrom(new ClassURI(PrivilegedExecutorImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(RemoteAPIImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(RemoteDiscoveryImpl.class).toURI());
 

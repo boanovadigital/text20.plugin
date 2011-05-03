@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl.TransmitMode;
 
 /**
- * Reflects the transmission mode to use
+ * Reflects the transmission mode to use. Only used internaly.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface TransmissionModeItem extends InformationItem<TransmitMode> {}

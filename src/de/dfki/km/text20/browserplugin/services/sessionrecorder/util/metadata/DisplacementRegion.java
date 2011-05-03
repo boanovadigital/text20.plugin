@@ -29,10 +29,10 @@ import org.simpleframework.xml.Element;
 import de.dfki.km.text20.util.filter.displacement.Displacer;
 
 /**
- * Specifies how a region has to be displaced
+ * Specifies how a region should be displaced.
  *
  * @author Ralf Biedert
- *
+ * @since 1.0
  */
 public class DisplacementRegion implements Displacer {
 
@@ -43,7 +43,7 @@ public class DisplacementRegion implements Displacer {
     Point displacement;
 
     /**
-     * Creates an empty region
+     * Creates an empty region.
      */
     public DisplacementRegion() {
         this.source = new Rectangle();
@@ -51,28 +51,36 @@ public class DisplacementRegion implements Displacer {
     }
 
     /**
-     * @return the source
+     * Returns the source area that should be displaced.
+     * 
+     * @return The area.
      */
     public Rectangle getSource() {
         return this.source;
     }
 
     /**
-     * @param source the source to set
+     * Sets the source area.
+     * 
+     * @param source The source to displace.
      */
     public void setSource(Rectangle source) {
         this.source = source;
     }
 
     /**
-     * @return the displacement
+     * Returns the displacement vector. 
+     * 
+     * @return the displacement The vector.
      */
     public Point getDisplacement() {
         return this.displacement;
     }
 
     /**
-     * @param displacement the displacement to set
+     * Sets the displacement vector.
+     * 
+     * @param displacement The displacement to set.
      */
     public void setDisplacement(Point displacement) {
         this.displacement = displacement;

@@ -28,7 +28,7 @@ import de.dfki.km.text20.services.pseudorenderer.options.GetAllElementsIntersect
  * returned, namely the closest one. In case there is no element within a sensible range, 
  * also no element might be returned.
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 public class OptionMagnetic implements GetAllElementsIntersectingOption {
     /**  */

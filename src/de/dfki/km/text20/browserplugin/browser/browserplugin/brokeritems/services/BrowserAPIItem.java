@@ -1,5 +1,5 @@
 /*
- * PageManagerItem.java
+ * BrowserAPIItem.java
  * 
  * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
 
 /**
- * Reflects the browser's current browser API.
+ * Contains the browser's current {@link BrowserAPI}. Usually you do not need this.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface BrowserAPIItem extends InformationItem<BrowserAPI> {}

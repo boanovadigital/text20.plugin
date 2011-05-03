@@ -22,20 +22,22 @@
 package de.dfki.km.text20.services.pseudorenderer;
 
 import net.xeoh.plugins.base.Plugin;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.PseudorendererItem;
 
 /**
- * Manages pseudo-renderers. A pseudo-renderer is a (hidden) datastructure which keeps information liked to 
- * a "true" rendering device, like it's windowGeometry and contained shapes.
+ * Manages and provides pseudo renderers. When in extension mode the {@link Pseudorenderer} can be obtained through 
+ * the {@link PseudorendererItem} (see the {@link BrowserAPI}).  
  *  
- * @author rb
- *
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface PseudorendererManager extends Plugin {
 
     /**
      * Create a new renderer.
      * 
-     * @return .
+     * @return A new, empty renderer.
      */
     public Pseudorenderer createPseudorenderer();
 }

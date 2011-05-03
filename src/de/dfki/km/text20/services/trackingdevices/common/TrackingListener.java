@@ -22,20 +22,19 @@
 package de.dfki.km.text20.services.trackingdevices.common;
 
 /**
- * Classes may implement this interface to register themselves as being able to 
- * interpret measurements.
+ * Implement this interface to receive {@link TrackingEvent}s from a {@link TrackingDevice}.
  * 
  * @author Ralf Biedert
+ * @since 1.0
  * 
- * @param <T> 
- *
+ * @param <T> The type of the {@link TrackingEvent} 
  */
 public interface TrackingListener<T extends TrackingEvent> {
 
     /**
      * Called as soon as a new event arrives.
      * 
-     * @param event
+     * @param event The new event.
      */
     public void newTrackingEvent(T event);
 }

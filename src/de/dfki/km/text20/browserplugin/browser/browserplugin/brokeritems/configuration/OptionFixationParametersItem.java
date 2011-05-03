@@ -1,5 +1,5 @@
 /*
- * PageManagerItem.java
+ * OptionFixationParametersItem.java
  * 
  * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener.OptionFixationParameters;
 
 /**
- * Reflects the transmission mode to use
+ * Contains the current fixation detection parameters.  
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface OptionFixationParametersItem extends InformationItem<OptionFixationParameters> {}

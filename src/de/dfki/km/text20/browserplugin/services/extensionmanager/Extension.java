@@ -22,9 +22,34 @@
 package de.dfki.km.text20.browserplugin.services.extensionmanager;
 
 import net.xeoh.plugins.base.Plugin;
+import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
+import net.xeoh.plugins.informationbroker.InformationBroker;
+import net.xeoh.plugins.informationbroker.InformationItem;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
+import de.dfki.km.text20.browserplugin.services.extensionmanager.annotations.ExtensionMethod;
 
 /**
+ * A {@link Plugin} (see <a href="http://jspf.xeoh.net">JSPF</a> implementing 
+ * this interface can be loaded as an extension. Extensions can be used in 
+ * HTML applications. Extensions can easily access internal functionality and run code 
+ * that would otherwise be restricted by the JavaScript sandbox.<br/><br/>
+ * 
+ * There are two ways for extensions to access the remaining Text 2.0 Framework 
+ * functionality. The first way is to use {@link InjectPlugin} to inject required 
+ * plugins (again, see JSPF documentation). The second way is to use the 
+ * {@link InformationBroker} (which, in turn, must also be injected first) and then
+ * listen for objects / interfaces you are interested in (see the {@link BrowserAPI} 
+ * documentation for a list of useful {@link InformationItem}s).<br/><br/>
+ * 
+ * Internally extensions are loaded by the {@link ExtensionManager}. The manager scans
+ * each extension and searches for methods annotated by @{@link ExtensionMethod}. These
+ * are then automatically exported.<br/><br/>
+ * 
+ * Extensions should be exported as JARs and specified in the HTML appliction 
+ * configuration (see the <a href="http://code.google.com/p/text20/wiki/UsageGuide">usage guide</a>).  
+ * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface Extension extends Plugin {
 }

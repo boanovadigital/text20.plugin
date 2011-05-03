@@ -21,42 +21,41 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.util;
 
+import static net.jcores.CoreKeeper.$;
+
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.xeoh.plugins.base.util.VanillaUtil;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * Some mathematical functions about regarding fixations. 
+ * Additional functions regarding {@link Fixation}s. 
  * 
- * @author rb
- *
+ * @author Ralf Biedert
+ * @since 1.0
  */
-public final class FixationUtil {
-
-    /** The fixation of this object. */
-    private final Fixation fixation;
+public final class FixationUtil extends VanillaUtil<Fixation> {
 
     /** Tracking events */
     private final List<EyeTrackingEvent> trackingEvents;
 
     /**
+     * Creates a new wrapper.
+     * 
      * @param fixation
      */
     public FixationUtil(final Fixation fixation) {
-        final List<EyeTrackingEvent> te = fixation.getTrackingEvents();
-
-        this.fixation = fixation;
-        this.trackingEvents = te == null ? new ArrayList<EyeTrackingEvent>() : te;
+        super(fixation);
+        this.trackingEvents = $(fixation.getTrackingEvents()).list();
     }
 
     /**
-     * Return the date when this fixation ended
+     * Return the date when this fixation ended.
      * 
-     * @return .
+     * @return The end date.
      */
     public Date getEndDate() {
         if (this.trackingEvents.size() == 0) return null;
@@ -67,7 +66,7 @@ public final class FixationUtil {
     /**
      * Returns the time in milliseconds this fixation lasted.
      * 
-     * @return .
+     * @return The duration.
      */
     public long getFixationDuration() {
         if (this.trackingEvents.size() == 0) return 0;
@@ -76,12 +75,12 @@ public final class FixationUtil {
     }
 
     /**
-     * Returns maximal derivation from this points center.
+     * Returns maximal derivation in pixels from this fixation's center.
      * 
-     * @return .
+     * @return The maximal derivation.
      */
     public int getMaxCenterDerivation() {
-        final Point center = this.fixation.getCenter();
+        final Point center = this.object.getCenter();
 
         float maxDist = 0;
 
@@ -95,12 +94,12 @@ public final class FixationUtil {
     }
 
     /**
-     * Returns the mean derivation from the fixations center
+     * Returns the mean derivation in pixels from the fixation's center.
      * 
-     * @return .
+     * @return The mean derivation.
      */
     public int getMeanCenterDerivation() {
-        final Point center = this.fixation.getCenter();
+        final Point center = this.object.getCenter();
 
         float dist = 0;
 
@@ -114,9 +113,9 @@ public final class FixationUtil {
     }
 
     /**
-     * Return the date when this fixation started
+     * Return the date when this fixation ended.
      * 
-     * @return .
+     * @return The end date.
      */
     public Date getStartDate() {
         if (this.trackingEvents.size() == 0) return null;

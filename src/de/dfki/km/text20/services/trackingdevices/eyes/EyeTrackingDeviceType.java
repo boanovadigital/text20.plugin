@@ -22,18 +22,16 @@
 package de.dfki.km.text20.services.trackingdevices.eyes;
 
 /**
- * 
- * @author rb
- *
+ * The type of the {@link EyeTrackingDevice}. 
+ *   
+ * @author Ralf Biedert
+ * @since 1.0
+ * @see EyeTrackingDeviceProvider
  */
 public enum EyeTrackingDeviceType {
-    /**
-     * Mouse emulation
-     */
+    /** Mouse emulation */
     MOUSE,
 
-    /**
-     * A true tracking device, not an emulation
-     */
+    /** A tracking device */
     TRACKER
 }

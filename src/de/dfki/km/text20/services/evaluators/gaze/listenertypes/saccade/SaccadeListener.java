@@ -22,11 +22,15 @@
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade;
 
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 
 /**
- * Called upon a saccade, which is after two fixations.
+ * Called when a {@link Saccade} has been detected. The SaccadeListener emits 
+ * a saccade after the second {@link Fixation} has been fully recognized.   
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
+ * @see WeakSaccadeListener
  */
 public interface SaccadeListener extends GazeEvaluationListener<SaccadeEvent> {
     //

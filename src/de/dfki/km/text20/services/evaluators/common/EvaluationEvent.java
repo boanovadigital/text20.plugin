@@ -22,15 +22,17 @@
 package de.dfki.km.text20.services.evaluators.common;
 
 /**
- * @author rb
- *
+ * Base class for an evaluation event passed to the {@link EvaluationListener}. 
+ * 
+ * @author Ralf Biedert
+ * @since 1.3
  */
 public interface EvaluationEvent {
 
     /**
      * Returns the time this event was generated.
      * 
-     * @return .
+     * @return The time the event was generated.
      */
     public long getGenerationTime();
 }

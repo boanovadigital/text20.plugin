@@ -1,5 +1,5 @@
 /*
- * PageManagerItem.java
+ * SessionDirectoryItem.java
  * 
  * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
@@ -30,8 +30,9 @@ package de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.config
 import net.xeoh.plugins.informationbroker.InformationItem;
 
 /**
- * Reflects the transmission mode to use
+ * Contains the session directory (to which directory replay sessions are written).
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface SessionDirectoryItem extends InformationItem<String> {}

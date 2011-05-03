@@ -24,24 +24,31 @@ package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation;
 import java.awt.Point;
 import java.util.List;
 
+import de.dfki.km.text20.services.evaluators.gaze.util.FixationUtil;
+import de.dfki.km.text20.services.evaluators.gaze.util.FixationsUtil;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
+ * Reflects a fixation. Each fixation consists of a number of measured {@link EyeTrackingEvent}. This 
+ * interface is rather primitive, and you might want to use the corresponding util classes (see below).     
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @see FixationUtil
+ * @see FixationsUtil
+ * @since 1.0
  */
 public interface Fixation {
     /**
      * Returns the center of this fixation.
      * 
-     * @return .
+     * @return The fixation center.
      */
     public Point getCenter();
 
     /**
      * Get the associated tracking events which made up this fixation. 
      * 
-     * @return .
+     * @return An ordered list of all events.
      */
     public List<EyeTrackingEvent> getTrackingEvents();
 

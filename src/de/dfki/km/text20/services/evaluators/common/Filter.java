@@ -24,18 +24,18 @@ package de.dfki.km.text20.services.evaluators.common;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
 /**
- * @author rb
- *
- * @param <T>
+ * Filters {@link TrackingEvent}s.
+ * 
+ * @author Ralf Biedert
+ * @since 1.3
+ * @param <T> The type of {@link TrackingEvent}.
  */
 public interface Filter<T extends TrackingEvent> {
     /**
      * Filters a given event.
      * 
-     * @param event
-     * @return A new event with tweaked properties. 
-     * 
+     * @param event The new event to feed into the filter.
+     * @return A filtered event. 
      */
     public T filterEvent(T event);
-
 }

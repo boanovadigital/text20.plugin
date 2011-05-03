@@ -25,16 +25,17 @@ import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 
 /**
- * Called upon reading events. 
+ * Registers a perusal listener that receives {@link PerusalEvent}s. 
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.5
  */
 public interface PerusalListener extends GazeEvaluationListener<PerusalEvent> {
     /**
-     * Optional: Listers can deliver the related pseudorenderer which is used 
-     * to determine perusal position.
+     * Optional: Listeners can provide a {@link Pseudorenderer} which is then used 
+     * to match the read passages with the underlying text. 
      * 
-     * @return .
+     * @return The current pseudorenderer, may be null.
      */
     public Pseudorenderer getPseudorenderer();
 

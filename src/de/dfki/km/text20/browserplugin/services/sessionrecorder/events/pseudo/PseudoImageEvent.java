@@ -26,8 +26,9 @@ import java.awt.image.BufferedImage;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ImageEvent;
 
 /**
- * @author rb
- *
+ * Contains an already loaded image from the replay. 
+ * 
+ * @author Ralf Biedert
  */
 public class PseudoImageEvent extends ImageEvent {
 

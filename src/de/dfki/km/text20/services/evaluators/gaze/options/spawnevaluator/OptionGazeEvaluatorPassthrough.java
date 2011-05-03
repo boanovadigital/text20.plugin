@@ -22,11 +22,14 @@
 package de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator;
 
 import de.dfki.km.text20.services.evaluators.common.options.SpawnEvaluatorOption;
+import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
 import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 
 /**
- * @author rb
- *
+ * Passes options to the {@link GazeEvaluationListener}.
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public class OptionGazeEvaluatorPassthrough implements SpawnEvaluatorOption {
 
@@ -37,14 +40,18 @@ public class OptionGazeEvaluatorPassthrough implements SpawnEvaluatorOption {
     private final AddGazeEvaluationListenerOption[] options;
 
     /**
-     * @param options
+     * Construct a new options object with the parametes to pass through.
+     * 
+     * @param options The parameters to pass through.
      */
     public OptionGazeEvaluatorPassthrough(AddGazeEvaluationListenerOption... options) {
         this.options = options;
     }
 
     /**
-     * @return the options
+     * Returns the passed through parameters.
+     * 
+     * @return the options The parameters.
      */
     public AddGazeEvaluationListenerOption[] getOptions() {
         return this.options;

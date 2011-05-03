@@ -24,10 +24,21 @@ package de.dfki.km.text20.services.trackingdevices.eyes;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingDeviceProvider;
 
 /**
- * Represents a tracking device to deliver data
+ * The EyeTrackingDeviceProvider is a JSPF plugin that, well, provides an {@link EyeTrackingDevice}. In 
+ * order to obtain a device, you first have to get the right provider (only two lines of code, see 
+ * <a href="http://code.google.com/p/text20/wiki/UsingJavaInterface">this page for details</a>), afterwards you 
+ * can use the tracking device to access raw eye tracking data.<br/><br/>
+ * 
+ * Currently there are two providers:
+ * 
+ * <ul>
+ * <li><code>eyetrackingdevice:trackingserver</code> - Connects to a remote tracking server and 
+ * delievers true eye tracking or simulation data.</li>
+ * <li><code>eyetrackingdevice:mouse</code> - Works without a tracking server and uses the mouse directly.</li>
+ * </ul>
  * 
  * @author Ralf Biedert
- *
+ * @since 1.0
  */
 public interface EyeTrackingDeviceProvider
         extends

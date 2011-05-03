@@ -23,12 +23,15 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.creater
 
 import java.awt.Dimension;
 
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.CreateRecorderOption;
 
 /**
- * If given, the generated replay will be faked.
+ * If passed, the {@link SessionRecorder} will generate a fake repaly with the given 
+ * start date that will be saved to the given directory. 
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public class OptionFakeReplay implements CreateRecorderOption {
 
@@ -45,9 +48,11 @@ public class OptionFakeReplay implements CreateRecorderOption {
     private final Dimension screenSize;
 
     /**
-     * @param file
-     * @param screenSize 
-     * @param startdate
+     * Constructs a new fake replay. 
+     * 
+     * @param file The file to save the replay to.
+     * @param screenSize The assumed screen size.
+     * @param startdate The time when the fake replay should start.
      * 
      */
     public OptionFakeReplay(String file, Dimension screenSize, long startdate) {
@@ -57,21 +62,27 @@ public class OptionFakeReplay implements CreateRecorderOption {
     }
 
     /**
-     * @return the startdate
+     * Returns the start date.
+     * 
+     * @return The start date.
      */
     public long getStartDate() {
         return this.startdate;
     }
 
     /**
-     * @return the file
+     * Returns the file of the replay.
+     * 
+     * @return The file.
      */
     public String getFile() {
         return this.file;
     }
 
     /**
-     * @return the screenSize
+     * Returns the screen size.
+     * 
+     * @return The screen size.
      */
     public Dimension getScreenSize() {
         return this.screenSize;

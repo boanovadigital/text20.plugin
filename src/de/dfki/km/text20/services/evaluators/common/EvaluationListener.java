@@ -22,16 +22,18 @@
 package de.dfki.km.text20.services.evaluators.common;
 
 /**
- * @author rb
- *
- * @param <T>
+ * An evaluation listener can be registered with an {@link Evaluator} and receives {@link EvaluationEvent}s. 
+ * 
+ * @author Ralf Biedert
+ * @param <T> The type of the event.
+ * @since 1.3
  */
 public interface EvaluationListener<T extends EvaluationEvent> {
 
     /**
-     * Called with a new evaluation event. 
+     * Called when a new event arrives. 
      * 
-     * @param event
+     * @param event The new event.
      */
     public void newEvaluationEvent(T event);
 }

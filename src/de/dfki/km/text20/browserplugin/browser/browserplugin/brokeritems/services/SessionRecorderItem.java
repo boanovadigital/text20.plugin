@@ -1,5 +1,5 @@
 /*
- * PageManagerItem.java
+ * SessionRecorderItem.java
  * 
  * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 
 /**
- * Reflects the browser's session recorder.
+ * Reflects the browser's {@link SessionRecorder}.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface SessionRecorderItem extends InformationItem<SessionRecorder> {}

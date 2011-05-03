@@ -22,14 +22,18 @@
 package de.dfki.km.text20.browserplugin.services.emotiondetector;
 
 /**
- * @author rb
- *
+ * Returns the current emotions. 
+ * 
+ * @author Farida Ismail
+ * @since 1.3
  */
+@Deprecated
 public interface EmotionClassifier {
     /**
-     * Gets the current emotion
+     * Returns the current emotion, which is either <code>happy</code>, <code>doubt</code>, <code>interested</code> or <code>boredom</code>.
      *
-     * @return .
+     * @return A String with the currently detected emotion.
      */
+    @Deprecated
     public String getEmotion();
 }

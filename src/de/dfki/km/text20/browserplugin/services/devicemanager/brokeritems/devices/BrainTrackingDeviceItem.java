@@ -1,5 +1,5 @@
 /*
- * PageManagerItem.java
+ * BrainTrackingDeviceItem.java
  * 
  * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
 
 /**
- * Reflects the used brain tracking item.
+ * Reflects the current {@link BrainTrackingDevice}.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface BrainTrackingDeviceItem extends InformationItem<BrainTrackingDevice> {}

@@ -21,54 +21,56 @@
  */
 package de.dfki.km.text20.browserplugin.services.pagemanager;
 
+import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
+
 /**
- * Manages the information a web page provides (about windowGeometry and events). It is a 
- * wrapper between the JavaScript side and the pseudorenderer.
- * 
- * Note: this class is not necessarily "bound" to the applet, it can be used fine without it. 
- * The only reason this class is inside the applet-services directory and not the general service 
- * directory is that the String parameter encode a few special messages which are not obvious  
+ * Handles the information the web page provides (e.g., window geometry and elements). It is 
+ * mostly an adapter from the JavaScript side to the {@link Pseudorenderer} and helps it
+ * to maintain a consitent state (with respect to the web page). In most cases, you 
+ * won't need to bother about this object.
  * 
  * @author Ralf Biedert
+ * @since 1.0
  */
 public interface PageManager {
 
     /**
-     * Updates the windowGeometry of the browser.
+     * Updates the window geometry of the browser (with respect to the screen).
      * 
-     * @param x
-     * @param y
-     * @param w
-     * @param h
+     * @param x X position of the browser (in screen coordinates).
+     * @param y Y position of the browser (in screen coordinates).
+     * @param w Width of the browser.
+     * @param h Height of the browser.    
      */
     public void updateBrowserGeometry(int x, int y, int w, int h);
 
     /**
-     * Updates the viewport. 
+     * Updates the document start position. 
      * 
-     * @param x
-     * @param y
+     * @param x X position of the viewport (in document coordinates).
+     * @param y Y position of the viewport (in document coordinates).
      */
     public void updateDocumentViewport(int x, int y);
 
     /**
-     * 
-     * @param id
-     * @param flag
-     * @param value
+     * Updates an element flag.
+     *  
+     * @param id The ID of the element to update.
+     * @param flag The flag to update.
+     * @param value The value to update.
      */
     public void updateElementFlag(String id, String flag, boolean value);
 
     /**
-     * Creates or updates an element
+     * Creates or updates an element.
      * 
-     * @param id
-     * @param type
-     * @param content
-     * @param x
-     * @param y
-     * @param w
-     * @param h
+     * @param id ID as used in the web page. Note that this is NOT the HTML-id, but can be something on its own. 
+     * @param type What type the element is "text", "image", ...
+     * @param content The content of the tag. If text, the text, if image the url.
+     * @param x X position of the element (in document coordinates).
+     * @param y Y position of the element (in document coordinates).
+     * @param w Width of the element.
+     * @param h Height of the element.
      */
     public void updateElementGeometry(String id, String type, String content, int x,
                                       int y, int w, int h);
@@ -76,9 +78,9 @@ public interface PageManager {
     /**
      * Updates an element's meta information. 
      * 
-     * @param id
-     * @param key
-     * @param value
+     * @param id The ID of the element to update.
+     * @param key The key to set.
+     * @param value The value to set.
      */
     public void updateElementMetaInformation(String id, String key, String value);
 

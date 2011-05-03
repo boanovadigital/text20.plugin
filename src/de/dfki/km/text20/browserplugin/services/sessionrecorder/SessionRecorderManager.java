@@ -27,25 +27,27 @@ import net.xeoh.plugins.base.Plugin;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.CreateRecorderOption;
 
 /**
+ * The SessionRecorderManager enables you to record and replay interaction session. In most cases you 
+ * want to replay a previously recorded session. 
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface SessionRecorderManager extends Plugin {
 
     /**
-     * Creates a session recorder which can be used to write the current session log into a file. 
-     * @param options 
-     * 
-     * @return .     
+     * Creates a {@link SessionRecorder} which can be used to write the current session log into a file. 
+     *  
+     * @param options The options for the recorder to create. 
+     * @return A new recorder object.
      */
     SessionRecorder createSessionRecorder(CreateRecorderOption... options);
 
     /**
-     * Loads a session replay from a given path.
+     * Loads a {@link SessionReplay} from a given path.
      * 
-     * @param file
-     * 
-     * @return .
+     * @param file The file/path to load the replay from. 
+     * @return A new replay object.
      */
     SessionReplay loadSessionReplay(File file);
 }

@@ -24,12 +24,13 @@ package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
 
 /**
- * Called upon a weak saccade. A weak saccade is called between two hypothetical 
- * fixations but before the fixation listener actually fires. 
+ * Called upon a weak {@link Saccade}. A weak saccade is called between two hypothetical 
+ * fixations but before the fixation listener actually fires. The weak saccade will be fired
+ * more quickly, but is more prone to measurement errors.  
  * 
- * Use the weak saccade to change content of the screen in a more concealed way.  
- * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.3
+ * @see SaccadeListener
  */
 public interface WeakSaccadeListener extends GazeEvaluationListener<SaccadeEvent> {
     //

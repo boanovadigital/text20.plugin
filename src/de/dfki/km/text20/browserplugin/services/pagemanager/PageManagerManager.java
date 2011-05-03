@@ -25,16 +25,18 @@ import net.xeoh.plugins.base.Plugin;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 
 /**
- * Provides page managers for pseudorenderers.
+ * Spawns {@link PageManager}s for {@link Pseudorenderer}s. You don't need to 
+ * care about this plugin, neither in extension mode, nor in library mode. 
  * 
  * @author Ralf Biedert
+ * @since 1.0
  */
 public interface PageManagerManager extends Plugin {
     /**
-     * Creates a new page manager for a given pseudorenderer.
+     * Creates a new {@link PageManager} for a given {@link Pseudorenderer}.
      * 
-     * @param pseudorenderer
-     * @return A new page manager
+     * @param pseudorenderer The {@link Pseudorenderer} for which we create a {@link PageManager}.
+     * @return A new {@link PageManager}
      */
     public PageManager createPageManager(Pseudorenderer pseudorenderer);
 }
