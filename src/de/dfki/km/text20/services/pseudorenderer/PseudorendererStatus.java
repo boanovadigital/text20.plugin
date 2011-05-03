@@ -22,13 +22,12 @@
 package de.dfki.km.text20.services.pseudorenderer;
 
 /**
- * The status of a pseudorenderer element
+ * The status of a {@link RenderElement}.
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public enum PseudorendererStatus {
-    /**
-     * Is this element visible?
-     */
+    /** Is this element visible? */
     VISIBLE,
 }

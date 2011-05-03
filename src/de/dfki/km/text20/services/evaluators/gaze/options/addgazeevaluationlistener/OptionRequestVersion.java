@@ -22,40 +22,41 @@
 package de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener;
 
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
+import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
+import de.dfki.km.text20.services.evaluators.gaze.GazeHandler;
 import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 
 /**
- * @author rb
- *
+ * Requests the {@link GazeEvaluator} to construct a {@link GazeHandler} of a given 
+ * version. Use this option if you want to use a specific evaluator.   
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public class OptionRequestVersion implements AddGazeEvaluationListenerOption {
 
     /** */
     private static final long serialVersionUID = -5981935295824298580L;
 
-    /**
-     * 
-     */
+    /** */
     private final String author;
 
-    /**
-     * 
-     */
+    /** */
     private final int version;
 
-    /**
-     * 
-     */
+    /** */
     private final String[] capabilities;
 
     /** */
     private final Class<? extends GazeEvaluationListener<?>> listener;
 
     /**
-     * @param listener
-     * @param author 
-     * @param version - Note: Any version larger than the given one is considered 
-     * @param capabilities 
+     * Constructs a request. 
+     * 
+     * @param listener The listener to use.
+     * @param author The required author (may be null).
+     * @param version The required minimum version (any version larger than the given one is considered). 
+     * @param capabilities The required capabilities (may be null). 
      */
     public OptionRequestVersion(Class<? extends GazeEvaluationListener<?>> listener,
                                 String author, int version, String... capabilities) {
@@ -66,8 +67,10 @@ public class OptionRequestVersion implements AddGazeEvaluationListenerOption {
     }
 
     /**
-     * @param listener
-     * @param capabilities 
+     * Constructs a request. 
+     * 
+     * @param listener The listener to use.
+     * @param capabilities The required capabilities (may be null). 
      */
     public OptionRequestVersion(Class<? extends GazeEvaluationListener<?>> listener,
                                 String... capabilities) {
@@ -78,28 +81,36 @@ public class OptionRequestVersion implements AddGazeEvaluationListenerOption {
     }
 
     /**
-     * @return the version
+     * Returns the version.
+     * 
+     * @return The version.
      */
     public int getVersion() {
         return this.version;
     }
 
     /**
-     * @return the capabilities
+     * Return the capabilities.
+     * 
+     * @return The capabilities.
      */
     public String[] getCapabilities() {
         return this.capabilities;
     }
 
     /**
-     * @return the author
+     * Returns the author.
+     * 
+     * @return The author.
      */
     public String getAuthor() {
         return this.author;
     }
 
     /**
-     * @return the listener
+     * Returns the listener.
+     * 
+     * @return The listener.
      */
     public Class<? extends GazeEvaluationListener<?>> getListener() {
         return this.listener;

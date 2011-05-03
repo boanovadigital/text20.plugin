@@ -26,25 +26,29 @@ import de.dfki.km.text20.services.evaluators.common.options.SpawnEvaluatorOption
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
 /**
- * @author rb
- *
- * @param <T>
- * @param <U>
+ * Used internally, the handler factory construct {@link Handler}s for a given type.  
+ * 
+ * @author Ralf Biedert
+ * @param <T> The type of the {@link EvaluationListener} we recognize.
+ * @param <U> The tye of the {@link Handler} we provide.
+ * @since 1.3
  */
 public interface HandlerFactory<T extends EvaluationListener<? extends EvaluationEvent>, U extends Handler<? extends TrackingEvent>>
         extends Plugin {
 
     /**
-     * Returns a list with all supported evaluators
+     * Returns the supported {@link EvaluationListener} for which we can spawn a {@link Handler}.
      * 
-     * @return .
+     * @return The type on which we act.
      */
     public Class<? extends T> getEvaluatorType();
 
     /**
-     * @param listener 
-     * @param options 
-     * @return .
+     * Spawns a {@link Handler} for the given {@link EvaluationListener} type.
+     * 
+     * @param listener The listener to create a {@link Handler} for. 
+     * @param options The option for the spawn process.
+     * @return The new handler.
      */
     public U spawnEvaluator(T listener, SpawnEvaluatorOption... options);
 }

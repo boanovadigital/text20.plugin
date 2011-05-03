@@ -1,5 +1,5 @@
 /*
- * PageManagerItem.java
+ * JavaScriptExecutorItem.java
  * 
  * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.JSExecutor;
 
 /**
- * Reflects the browser's current JavaScript executor.
+ * Contains the plugins's current {@link JSExecutor}.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface JavaScriptExecutorItem extends InformationItem<JSExecutor> {}

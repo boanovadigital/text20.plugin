@@ -21,14 +21,15 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze;
 
+import de.dfki.km.text20.services.evaluators.common.EvaluationEvent;
 import de.dfki.km.text20.services.evaluators.common.EvaluationListener;
 
 /**
- * @author rb
+ * A gaze evaluation listener for given {@link GazeEvaluationEvent}s.
  * 
- * 
- * @param <T> 
- *
+ * @author Ralf Biedert
+ * @param <T> The type of {@link EvaluationEvent} the listener accepts.
+ * @since 1.3 
  */
 public interface GazeEvaluationListener<T extends GazeEvaluationEvent> extends
         EvaluationListener<T> {

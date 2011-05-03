@@ -22,8 +22,10 @@
 package de.dfki.km.text20.services.evaluators.gaze;
 
 /**
- * @author rb
- *
+ * The flags a gaze handler can return.
+ * 
+ * @author Ralf Biedert
+ * @since 1.3
  */
 public enum GazeHandlerFlags {
     /**

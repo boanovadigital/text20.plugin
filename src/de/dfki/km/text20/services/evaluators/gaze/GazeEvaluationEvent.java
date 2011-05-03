@@ -24,10 +24,10 @@ package de.dfki.km.text20.services.evaluators.gaze;
 import de.dfki.km.text20.services.evaluators.common.EvaluationEvent;
 
 /**
- * Base class of all gaze events. 
+ * Base class of all gaze evaluation events (e.g., a new fixation). 
  * 
- * @author rb
- *
+ * @author Ralf Biedert
+ * @since 1.3
  */
 public interface GazeEvaluationEvent extends EvaluationEvent {
     //

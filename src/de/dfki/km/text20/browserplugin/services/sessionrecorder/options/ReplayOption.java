@@ -22,10 +22,14 @@
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.options;
 
 import net.xeoh.plugins.base.Option;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay;
 
 /**
- * @author rb
+ * Options for replays.
+ * 
+ * @author Ralf Biedert
+ * @since 1.3
+ * @see SessionReplay
  */
 public interface ReplayOption extends Option {
-    //
 }

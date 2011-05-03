@@ -27,7 +27,8 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 /**
  * Filters gaze data.
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.3
  */
 public interface GazeFilter extends Filter<EyeTrackingEvent> {
     //

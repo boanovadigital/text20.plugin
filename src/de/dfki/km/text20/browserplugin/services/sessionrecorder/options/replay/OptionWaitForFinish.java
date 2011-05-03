@@ -21,15 +21,16 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay;
 
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOption;
 
 /**
- * Signals replay not to return until it finished the complete file.
+ * Signals {@link SessionReplay} not to return until it finished the complete file.
  * 
  * @author Ralf Biedert
+ * @since 1.0
  */
 public class OptionWaitForFinish implements ReplayOption {
     /** */
     private static final long serialVersionUID = 4718902145003522316L;
-
 }

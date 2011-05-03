@@ -24,21 +24,28 @@ package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationEvent;
 
 /**
+ * A fixation event is being emitted to the {@link FixationListener} when the 
+ * corresponding evaluator detected either a fixation start, a fixation 
+ * continuation or a fixation end. <br/><br/>
  * 
- * @author rb
+ * In most cases you should filter the event based on the {@link FixationEventType},
+ * otherwise your code will execute multiple times for the same fixation.   
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface FixationEvent extends GazeEvaluationEvent {
     /**
      * Returns the fixation related to this event.
      * 
-     * @return .
+     * @return The fixation object.
      */
     public Fixation getFixation();
 
     /**
-     * What type of event this is.
+     * The type of this event.
      * 
-     * @return .
+     * @return The type.
      */
     public FixationEventType getType();
 }

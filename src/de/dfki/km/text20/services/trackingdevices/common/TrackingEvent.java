@@ -24,13 +24,14 @@ package de.dfki.km.text20.services.trackingdevices.common;
 /**
  * Represents a single tracking event / measurement.
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface TrackingEvent {
     /**
-     * When this event was observed by this application.  
+     * When this event was observed.  
      * 
-     * @return .
+     * @return The event time.
      */
     public long getEventTime();
 }

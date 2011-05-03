@@ -21,12 +21,14 @@
  */
 package de.dfki.km.text20.browserplugin.services.pagemanager.diagnosis.channels.tracing;
 
+import net.xeoh.plugins.diagnosis.local.Diagnosis;
 import net.xeoh.plugins.diagnosis.local.DiagnosisChannelID;
 
 /**
- * Traces general messages.
+ * Uses JSPFs {@link Diagnosis} mechanisms to trace general messages.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public class PageManagerTracer extends DiagnosisChannelID<String> {
     

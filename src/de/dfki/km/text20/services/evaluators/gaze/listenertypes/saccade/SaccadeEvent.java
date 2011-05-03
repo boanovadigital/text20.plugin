@@ -24,15 +24,17 @@ package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationEvent;
 
 /**
+ * Emitted by the {@link SaccadeListener} or {@link WeakSaccadeListener} when a {@link Saccade} has been detected.
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface SaccadeEvent extends GazeEvaluationEvent {
 
     /**
      * Returns the associated saccade.
      * 
-     * @return .
+     * @return The saccade.
      */
     public Saccade getSaccade();
 }

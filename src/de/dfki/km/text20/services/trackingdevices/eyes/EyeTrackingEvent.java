@@ -25,21 +25,24 @@ import java.awt.Point;
 
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
+/*
+* TODO: Think of a way to include the original event time and consider different clocks 
+* on the tracking device and this host ... 
+* 
+* TODO: Return gaze positions in float values (as pixel values (212.21) as well as normalized values (0.4361))
+*/
+
 /**
- * Represents a single gaze event.
- * 
- * TODO: Think of a way to include the original event time and consider different clocks 
- * on the tracking device and this host ... 
- * 
- * TODO: Return gaze positions in float values (as pixel values (212.21) as well as normalized values (0.4361))
+ * Represents a single gaze event, as delivered by the {@link EyeTrackingListener}.
  * 
  * @author Ralf Biedert
+ * @since 1.0
  */
 public interface EyeTrackingEvent extends TrackingEvent {
     /**
      * Check if all given parameters are valid.
      * 
-     * @param validities
+     * @param validities The validities to check.
      * 
      * @return False if one is not valid.
      */
@@ -62,70 +65,70 @@ public interface EyeTrackingEvent extends TrackingEvent {
     /**
      * Returns distance of the left eye position.
      * 
-     * @return Distance in mm
+     * @return Distance in mm.
      */
     public float getLeftEyeDistance();
 
     /**
      * Returns a 2-tuple of the gaze position of the left eye.
      * 
-     * @return [x, y] (values range from 0 ... 1)
+     * @return [x, y] (values range from 0 ... 1).
      */
     public float[] getLeftEyeGazePosition();
 
     /**
      * Returns a 2-tuple of the gaze position of the right eye.
      * 
-     * @return [x, y] (values range from 0 ... 1)
+     * @return [x, y] (values range from 0 ... 1).
      */
     public float[] getRightEyeGazePosition();
 
     /**
-     * Returns the gaze point of the right eye
+     * Returns the gaze point of the right eye.
      * 
-     * @return .
+     * @return The gaze poinf of the right eye.
      */
     public Point getRightEyeGazePoint();
 
     /**
      * Returns the gaze point of the left eye
      * 
-     * @return .
+     * @return  The gaze poinf of the left eye.
      */
     public Point getLeftEyeGazePoint();
 
     /**
      * Returns a 3-tuple of the left eye position.
      * 
-     * @return [x, y, z]
+     * @return [x, y, z].
      */
     public float[] getLeftEyePosition();
 
     /**
      * Returns the pupil size of the left eye
      * 
-     * @return .
+     * @return The size in mm.
      */
     public float getPupilSizeLeft();
 
     /**
      * Returns the pupil size of the right eye
      * 
-     * @return . 
+     * @return The size in mm.
      */
     public float getPupilSizeRight();
 
     /**
      * Returns distance of the right eye position.
      * 
-     * @return Distance in mm
+     * @return Distance in mm.
      */
     public float getRightEyeDistance();
 
     /**
      * Returns a 3-tuple of the right eye position.
      * 
-     * @return [x, y, z]
+     * @return [x, y, z].
      */
     public float[] getRightEyePosition();
 

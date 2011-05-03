@@ -22,9 +22,14 @@
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.options;
 
 import net.xeoh.plugins.base.Option;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorderManager;
 
 /**
- * @author rb
+ * Options to create recorders.
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
+ * @see SessionRecorderManager
  */
 public interface CreateRecorderOption extends Option {
     //

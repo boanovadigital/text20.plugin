@@ -24,29 +24,30 @@ package de.dfki.km.text20.browserplugin.services.persistentpreferences;
 import net.xeoh.plugins.base.Plugin;
 
 /**
- * Manages small and lightweight preferences of the device. It ensures values once set will stay persistent 
+ * Manages preferences that should be kept indefinitely. The plugin ensures that values, once set, will stay persistent 
  * even after restart of the application.
  * 
- * @author rb
- *
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface PersistentPreferences extends Plugin {
     /**
      * Returns a previously set preference or the the default value. The default value is returned if the 
      * the key has not been set before.
      * 
-     * @param key
-     * @param deflt 
-     * @return .
+     * @param key The key to retrieve.
+     * @param deflt The default value to return.
+     * @return Either the corresponding key's value, or the default if nothing was found. 
      * 
      */
     public String getString(String key, String... deflt);
 
     /**
-     * Sets a string to the preferences. After the call returns the value will be retrievable by getString().
+     * Sets a string to the preferences. After the call returns the value will be retrievable by 
+     * getString(). Keys and values should be kept reasonably short. 
      * 
-     * @param key
-     * @param value
+     * @param key The key to set.
+     * @param value the value to set.
      */
     public void setString(String key, String value);
 }

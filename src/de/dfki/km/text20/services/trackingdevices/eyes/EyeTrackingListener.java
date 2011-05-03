@@ -24,10 +24,10 @@ package de.dfki.km.text20.services.trackingdevices.eyes;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingListener;
 
 /**
- * Classes may implement this interface to register themselves as being able to 
- * interpret gaze.
- * @author rb
- *
+ * Implement this interface to receive {@link EyeTrackingEvent}s from an {@link EyeTrackingDevice}.
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface EyeTrackingListener extends TrackingListener<EyeTrackingEvent> {
     //

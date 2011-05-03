@@ -25,8 +25,10 @@ import de.dfki.km.text20.services.evaluators.common.options.SpawnEvaluatorOption
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 
 /**
- * @author rb
- *
+ * Specifies which {@link GazeEvaluator} to use.
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public class OptionGazeEvaluator implements SpawnEvaluatorOption {
 
@@ -37,14 +39,18 @@ public class OptionGazeEvaluator implements SpawnEvaluatorOption {
     private final GazeEvaluator gazeEvaluator;
 
     /**
-     * @param gazeEvaluator
+     * Constructs a new options object. 
+     * 
+     * @param gazeEvaluator The evaluator to use.
      */
     public OptionGazeEvaluator(GazeEvaluator gazeEvaluator) {
         this.gazeEvaluator = gazeEvaluator;
     }
 
     /**
-     * @return the options
+     * Returns the evaluator.
+     * 
+     * @return The evaluator.
      */
     public GazeEvaluator getGazeEvaluator() {
         return this.gazeEvaluator;

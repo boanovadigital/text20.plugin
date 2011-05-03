@@ -22,25 +22,28 @@
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade;
 
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
+import de.dfki.km.text20.services.evaluators.gaze.util.SaccadeUtil;
 
 /**
- * Reflects a saccade.
+ * Reflects a saccade, the <i>jump</i> between two fixations, which will be contained in a {@link SaccadeEvent}.
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
+ * @see SaccadeUtil
  */
 public interface Saccade {
 
     /**
      * Returns the end fixation.
      * 
-     * @return .
+     * @return The end fixation.
      */
     public Fixation getEnd();
 
     /**
      * Returns the start fixation.
      * 
-     * @return .
+     * @return The start fixation.
      */
     public Fixation getStart();
 }

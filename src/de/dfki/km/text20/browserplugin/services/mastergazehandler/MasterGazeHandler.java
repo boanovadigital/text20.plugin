@@ -23,70 +23,78 @@ package de.dfki.km.text20.browserplugin.services.mastergazehandler;
 
 import java.util.List;
 
+import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.util.filter.ChainedFilter;
 
 /**
- * A master gaze handler registers itself to the tracking device and receives raw gaze
- * data. It feeds this information into other plugins (subhandlers) which in turn detect
- * different conditions (fixations, ...). A given JSHandler is used to push our events to
- * JavaScript.
+ * The master gaze handler registers itself to the {@link EyeTrackingDevice} and receives raw gaze
+ * data. It feeds this information to subhandlers, which in turn detect different conditions (e.g., 
+ * fixations, saccades, reading, ...) and pump these events to the JavaScript layer.<br/><br/>
+ * 
+ * The MasterGazeHandler is only relevant in extension mode (see {@link BrowserAPI}), and even 
+ * there, you only need a few of its methods (if any).
  * 
  * @author Ralf Biedert
+ * @since 1.0
  */
 public interface MasterGazeHandler {
 
     /**
-     * Returns a handler for the given type of event.
+     * Returns the list of registered JavaScript handlers for the given type of event 
+     * (e.g., <code>fixation</code>, ...).
      * 
-     * @param type
-     * @return .
+     * @param type The type to request. 
+     * @return A list of JavaScript function names.
      */
     public List<String> getHandlerForType(String type);
 
     /**
-     * Returns the gaze evaluator for this handler.
+     * Returns the main {@link GazeEvaluator} for this handler.
      * 
      * @return The used gaze evaluator.
      */
     public GazeEvaluator getGazeEvaluator();
 
     /**
-     * Call this function to reduce the callback load for a while. The master gaze handler
-     * will disable high-frequency calls in order to reduce computation load in the JS
+     * Call this function to reduce the callback load for a while. The MasterGazeHandler
+     * will disable high-frequency calls in order to reduce computation load in the JavaScript 
      * engine.
      * 
-     * @param timeToDisable The number of miliseconds to disable the JavaScript callbacks.
+     * @param timeToDisable The number of miliseconds to disable JavaScript callbacks.
      */
+    @Deprecated
     public void reduceJSLoad(int timeToDisable);
 
     /**
-     * Registers a callback handler
+     * Registers a JavaScript callback handler for a given type (e.g., <code>fixation</code>, ...).
      * 
-     * @param type
-     * @param listener
+     * @param type The type to register a handler for. 
+     * @param listener The name of the JavaScript listener.
      */
     public void registerJSCallback(String type, String listener);
 
     /**
-     * Remove a handler
+     * Removes a handler. 
      * 
-     * @param listener
+     * @param listener The name of the JavaScript handler to remove.
      */
     public void removeJSCallback(String listener);
 
     /**
-     * Sets the tracking device for this gaze handler.
+     * Sets the tracking device for this gaze handler. When in extension mode (see {@link BrowserAPI}), this 
+     * will already have been done.
      * 
-     * @param trackingDevice
+     * @param trackingDevice The {@link EyeTrackingDevice} to set.
      */
     public void setTrackingDevice(EyeTrackingDevice trackingDevice);
 
     /**
-     * Returns the master filter chain .
+     * Returns the master filter chain, which is a {@link ChainedFilter}. The filter is applied to raw 
+     * eye tracking data before the data is being processed. 
      * 
-     * @return .
+     * @return Returns the master filter chain.
      */
     public ChainedFilter getMasterFilterChain();
 

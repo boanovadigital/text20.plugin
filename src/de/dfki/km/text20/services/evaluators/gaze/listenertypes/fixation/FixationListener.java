@@ -24,9 +24,10 @@ package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
 
 /**
- * Called upon a fixation
+ * Called when new {@link FixationEvent}s arrive.
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface FixationListener extends GazeEvaluationListener<FixationEvent> {
     //

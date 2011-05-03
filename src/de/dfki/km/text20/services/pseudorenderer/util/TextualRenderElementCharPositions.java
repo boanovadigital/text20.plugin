@@ -31,10 +31,10 @@ import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
- * Calculates char positions of render elements
+ * Calculates char positions of render elements.
  * 
- * @author rb
- *
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public class TextualRenderElementCharPositions {
 

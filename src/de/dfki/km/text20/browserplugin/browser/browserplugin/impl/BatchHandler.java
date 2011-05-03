@@ -27,17 +27,21 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 /**
- * @author rb
- *
+ * Handles batch calls.
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public class BatchHandler {
     /** */
     private final BrowserPluginImpl browserAPI;
-
+    
     /** */
     final Logger logger = Logger.getLogger(this.getClass().getName());
 
     /**
+     * Constructs a new batch handler.
+     * 
      * @param browserAPI
      */
     public BatchHandler(BrowserPluginImpl browserAPI) {
@@ -45,6 +49,8 @@ public class BatchHandler {
     }
 
     /**
+     * Called with a JS batch call.
+     * 
      * @param call
      */
     public void batch(String call) {

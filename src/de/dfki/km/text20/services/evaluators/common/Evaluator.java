@@ -22,28 +22,32 @@
 package de.dfki.km.text20.services.evaluators.common;
 
 import net.xeoh.plugins.base.Option;
+import de.dfki.km.text20.services.trackingdevices.common.TrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
 /**
- * A evaluator bound to a specific device. Different listeners may be registered using the method below.
+ * The base evaluator for a given device. An evaluator usually takes raw data from 
+ * a {@link TrackingDevice} and performs some aggregation/evaluation.   
  * 
- * @author rb
- * @param <T> 
- * @param <U> 
- * @param <V> 
+ * @author Ralf Biedert
+ * @param <T> The type of the {@link EvaluationListener}.
+ * @param <U> The type of the {@link Option}.
+ * @param <V> The type of the {@link Filter} 
+ * @since 1.3
  */
 public interface Evaluator<T extends EvaluationListener<? extends EvaluationEvent>, U extends Option, V extends Filter<? extends TrackingEvent>> {
-
     /**
-     * @param listener
-     * @param options 
+     * Adds an evaluation listener.
+     * 
+     * @param listener The listener to add.
+     * @param options The options to use.
      */
     public void addEvaluationListener(T listener, U... options);
 
     /**
-     * Sets a filter this evaluator used to pre-process all incoming event.
+     * Sets a filter this evaluator used to pre-process all incoming events.
      * 
-     * @param filter
+     * @param filter The filter to use.
      */
     public void setFilter(V filter);
 }

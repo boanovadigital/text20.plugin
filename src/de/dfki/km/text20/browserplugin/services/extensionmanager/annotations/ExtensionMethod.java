@@ -32,10 +32,15 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
+
 /**
- * Marks that a specific method should be available to the JS layer  
+ * Marks that a specific {@link Extension}-method should be available to the JavaScript layer. 
+ * Methods tagged with this annotation should have 1) a unique name and 2) only use primitive 
+ * types or Strings.     
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

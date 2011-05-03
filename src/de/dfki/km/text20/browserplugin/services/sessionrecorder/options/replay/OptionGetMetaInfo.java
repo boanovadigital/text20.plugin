@@ -21,15 +21,17 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay;
 
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOption;
 
 /**
- * @author rb
- *
+ * When specified the {@link SessionReplay} only parses the meta information (used internally). 
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public class OptionGetMetaInfo implements ReplayOption {
 
     /**  */
     private static final long serialVersionUID = -3881364967476584839L;
-    //  Marker class
 }

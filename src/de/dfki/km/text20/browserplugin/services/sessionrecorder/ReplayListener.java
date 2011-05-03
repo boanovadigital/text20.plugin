@@ -24,12 +24,17 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.AbstractSessionEvent;
 
 /**
- * @author rb
- *
+ * The listener a class should implement if it wishes to perform a {@link SessionReplay}.
+ * 
+ * @author Ralf Biedert
+ * @since 1.3
  */
 public interface ReplayListener {
     /**
-     * @param event
+     * Will be called with each new {@link AbstractSessionEvent} that has previosly been recorderd 
+     * with the {@link SessionRecorder}.
+     * 
+     * @param event The event from the log.
      */
     public void nextEvent(AbstractSessionEvent event);
 }

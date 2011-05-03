@@ -22,9 +22,14 @@
 package de.dfki.km.text20.services.pseudorenderer.options;
 
 import net.xeoh.plugins.base.Option;
+import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 
 /**
- * @author rb
+ * Options for elements.
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
+ * @see Pseudorenderer
  */
 public interface GetAllElementsIntersectingOption extends Option {
     //

@@ -22,29 +22,34 @@
 package de.dfki.km.text20.services.pseudorenderer.renderelements;
 
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
+import de.dfki.km.text20.services.pseudorenderer.util.TextualRenderElementUtil;
 
 /**
- * Represents a textual render element.
+ * Represents a textual render element (e.g., word on the page).
  * 
  * @author Ralf Biedert
+ * @since 1.0
+ * @see TextualRenderElementUtil
  */
 public interface TextualRenderElement extends RenderElement {
     /**
      * Return the content of this element.
      * 
-     * @return .
+     * @return The content.
      */
     public String getContent();
 
     /**
-     * Sets the content of an element
+     * Sets the content of an element.
      * 
      * @param content The text this element represents.
      */
     public void setContent(String content);
 
     /**
-     * Returns the word ID of this element.
+     * Returns the word ID of this element. Word IDs are ordered and usually 
+     * start with 0. If you order all word ID of the same text ID you should be able
+     * to reconstruct the text.
      * 
      * @return -1 means invalid / unknown.
      */
@@ -52,7 +57,7 @@ public interface TextualRenderElement extends RenderElement {
 
     /**
      * Sets the word ID of this element. Note that a higher ID implicates the word comes
-     * after a word with a lower ID
+     * after a word with a lower ID.
      * 
      * @param id -1 means invalid / unknown.
      */
@@ -60,7 +65,7 @@ public interface TextualRenderElement extends RenderElement {
 
     /**
      * Sets the text ID of this element. Words with the same text ID are supposed to be
-     * ordered by their word ID.
+     * ordered by their word ID. Text IDs might be random. 
      * 
      * @param id -1 means invalid / unknown.
      */

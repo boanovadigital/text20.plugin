@@ -22,10 +22,14 @@
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.options;
 
 import net.xeoh.plugins.base.Option;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 
 /**
- * @author rb
+ * Options for special commands.
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
+ * @see SessionRecorder
  */
 public interface SpecialCommandOption extends Option {
-    //
 }

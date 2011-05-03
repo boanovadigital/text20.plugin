@@ -22,13 +22,14 @@
 package de.dfki.km.text20.services.pseudorenderer;
 
 /**
- * The status of a render element
+ * The status of a render element.
  * 
  * @author Ralf Biedert
+ * @since 1.0
  */
 public enum RenderElementMetaAttribute {
     /**
-     * If JS should be called back when gaze enters (BOOLEAN).
+     * If JavaScript should be called back when gaze enters (BOOLEAN).
      */
     CALLBACK_ENTER_EXIT_GAZE,
 

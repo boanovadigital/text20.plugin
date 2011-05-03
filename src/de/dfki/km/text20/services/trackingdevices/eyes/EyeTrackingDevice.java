@@ -26,9 +26,11 @@ import de.dfki.km.text20.trackingserver.eyes.remote.TrackingCommand;
 import de.dfki.km.text20.trackingserver.eyes.remote.options.SendCommandOption;
 
 /**
- * Represents a tracking device.
+ * Represents an eye tracking device that receives {@link EyeTrackingEvent}s. The device can be obtained 
+ * through the {@link EyeTrackingDeviceProvider}. This class is your main source of eye tracking data.
  * 
- * @author rb 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface EyeTrackingDevice extends
         TrackingDevice<EyeTrackingDeviceInfo, EyeTrackingEvent, EyeTrackingListener> {
@@ -36,15 +38,15 @@ public interface EyeTrackingDevice extends
     /**
      * Returns the type of the device.
      * 
-     * @return .
+     * @return The type.
      */
     public EyeTrackingDeviceType getDeviceType();
 
     /**
-     * Sends a low level tracking command to the device
+     * Sends a low level tracking command to the device, e.g., to calibrate.
      * 
-     * @param command
-     * @param options
+     * @param command The command to send.
+     * @param options The options to add to the command.
      */
     public void sendLowLevelCommand(TrackingCommand command, SendCommandOption... options);
 }

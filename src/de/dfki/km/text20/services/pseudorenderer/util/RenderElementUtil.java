@@ -21,35 +21,39 @@
  */
 package de.dfki.km.text20.services.pseudorenderer.util;
 
+import net.xeoh.plugins.base.util.VanillaUtil;
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderElement;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
- * @author rb
- *
+ * Utility functions for render elements.
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
-public class RenderElementUtil {
-    /** */
-    private final RenderElement renderElement;
-
+public class RenderElementUtil extends VanillaUtil<RenderElement> {
     /**
-     * @param renderElement
+     * Wraps a render element.
+     * 
+     * @param renderElement The element to wrap.
      */
     public RenderElementUtil(RenderElement renderElement) {
-        this.renderElement = renderElement;
+        super(renderElement);
     }
 
     /**
-     * @return .
+     * Returns a pretty name for rendering.
+     * 
+     * @return The pretty name.
      */
     public String getPrettyName() {
-        if (this.renderElement instanceof TextualRenderElement)
-            return ((TextualRenderElement) this.renderElement).getContent();
+        if (this.object instanceof TextualRenderElement)
+            return ((TextualRenderElement) this.object).getContent();
 
-        if (this.renderElement instanceof GraphicalRenderElement)
-            return ((GraphicalRenderElement) this.renderElement).getSource();
+        if (this.object instanceof GraphicalRenderElement)
+            return ((GraphicalRenderElement) this.object).getSource();
 
-        return this.renderElement.toString();
+        return this.object.toString();
     }
 }

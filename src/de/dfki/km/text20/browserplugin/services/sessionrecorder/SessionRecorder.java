@@ -31,84 +31,86 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceInfo;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * Manages the recording of interactive gaze-based session.
+ * Manages the recording of interactive gaze-based session. The recorder can also be 
+ * used to fake sessions, in that case, <code>specialCommand()</code> should be called prior
+ * to <b>each</b> other method call to fake the next date. 
  * 
  * @author Ralf Biedert
+ * @sice 1.0
  */
 public interface SessionRecorder {
     /**
      * Records the call to a function.
      * 
-     * @param function
+     * @param function The function name to record.
      */
     public void callFunction(String function);
 
     /**
+     * Records a call back to JavaScript.
      * 
-     * @param function
-     * @param args
+     * @param function The called function.
+     * @param args The arguments.
      */
     public void executeJSFunction(String function, Object... args);
 
     /**
-     * Preference was requested.
+     * Records a preference that was requested.
      * 
-     * @param key
-     * @param deflt
+     * @param key They key.
+     * @param deflt The default.
      */
     public void getPreference(String key, String deflt);
 
     /**
-     * Puts a mark into the log.
+     * Puts a mark into the log. 
      * 
-     * @param subSequence
+     * @param subSequence Name of the mark. 
      */
     public void markLog(String subSequence);
 
     /**
-     * Sets a mouse click
+     * Sets a mouse click.
      * 
      * @param type Singleclick = 1, doubleclick = 2, ...
-     * @param button
-     * 
-     * 
+     * @param button The button that was pressed.
      */
     public void mouseClicked(int type, int button);
 
     /**
-     * Puts a new tracking event.
+     * Puts a new eye tracking event.
      * 
-     * @param event
+     * @param event The event to put.
      */
     public void newTrackingEvent(EyeTrackingEvent event);
 
     /**
-     * Puts a new tracking event.
+     * Puts a new brain tracking event.
      * 
-     * @param event
+     * @param event The event to put.
      */
     public void newBrainTrackingEvent(BrainTrackingEvent event);
 
     /**
-     * A new listener was added
+     * A new listener was added.
      * 
-     * @param type
-     * @param listener
+     * @param type Type of the listener. 
+     * @param listener Name. 
      */
     public void registerListener(String type, String listener);
 
     /**
-     * Listener was removed
+     * A listener was removed.
      * 
-     * @param listener
+     * @param listener Name.
      */
     public void removeListener(String listener);
 
     /**
-     * Stores a parameter
+     * Stored a parameter.
      * 
-     * @param key
-     * @param value
+     * @param key The key. 
+     * @param value The value.
      * 
      */
     public void setParameter(String key, String value);
@@ -116,38 +118,39 @@ public interface SessionRecorder {
     /**
      * Preference was set.
      * 
-     * @param key
-     * @param value
+     * @param key The key.
+     * @param value The value.
      */
     public void setPreference(String key, String value);
 
     /**
-     * Starts recording a session
+     * Indicates the recording should start. Must be called first. 
      */
     public void start();
 
     /**
-     * Stops recording of a session
+     * Indicates the recording should stop. Must be called last. Recordings are somewhat 
+     * fail-safe, thus an application does not need to call stop() at any cost. However, in that
+     * case some events might be missing (usually 3-5 seconds). 
      */
     public void stop();
 
     /**
-     * Stores the device info.
+     * Stores the eye device info.
      * 
-     * @param deviceInfo
+     * @param deviceInfo Device info to store. 
      */
     public void storeDeviceInfo(EyeTrackingDeviceInfo deviceInfo);
 
     /**
-     * Stores the device info.
+     * Stores the brain device info.
      * 
-     * @param deviceInfo
+     * @param deviceInfo Device info to store.
      */
     public void storeBrainDeviceInfo(BrainTrackingDeviceInfo deviceInfo);
 
     /**
      * Tells the recorder to take a screenshot.
-     * 
      */
     public void takeScreenshot();
 

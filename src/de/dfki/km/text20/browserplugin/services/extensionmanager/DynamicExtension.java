@@ -28,7 +28,11 @@
 package de.dfki.km.text20.browserplugin.services.extensionmanager;
 
 /**
+ * This interface should only be used by plugins that wish to define 
+ * their exports manually. All other plugins should implement {@link Extension}.
+ *  
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface DynamicExtension extends Extension {
     /**

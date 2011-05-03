@@ -24,13 +24,16 @@ package de.dfki.km.text20.services.pseudorenderer.renderelements;
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
 
 /**
- * @author rb
+ * A graphical render element (e.g., an image tag on the web page).
+ * 
+ * @author Ralf Biedert
+ * @since 1.4
  */
 public interface GraphicalRenderElement extends RenderElement {
     /**
      * Returns the image source of this graphical render element
      * 
-     * @return .
+     * @return The source URI string.
      */
     public String getSource();
 

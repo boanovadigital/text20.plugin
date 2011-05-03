@@ -24,19 +24,16 @@ package de.dfki.km.text20.services.pseudorenderer.util;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
- * @author rb
- *
+ * Util functions for a textual render element.
+ * 
+ * @author Ralf Biedert
+ * @since 1.4
  */
-public class TextualRenderElementUtil {
-    /** */
-    @SuppressWarnings("unused")
-    private final TextualRenderElement renderElement;
-
+public class TextualRenderElementUtil extends RenderElementUtil {
     /**
      * @param renderElement
      */
     public TextualRenderElementUtil(TextualRenderElement renderElement) {
-        this.renderElement = renderElement;
+        super(renderElement);
     }
-
 }

@@ -24,9 +24,10 @@ package de.dfki.km.text20.services.evaluators.gaze.listenertypes.eyecontact;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
 
 /**
- * Called upon a new eye contact event
+ * Called upon a new {@link EyeContactEvent}. 
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface EyeContactListener extends GazeEvaluationListener<EyeContactEvent> {
     //

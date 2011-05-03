@@ -1,5 +1,5 @@
 /*
- * PageManagerItem.java
+ * GazeEvaluatorItem.java
  * 
  * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 
 /**
- * Reflects the browser's current gaze evaluator executor.
+ * Holds a reference to the current {@link GazeEvaluator}. 
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface GazeEvaluatorItem extends InformationItem<GazeEvaluator> {}

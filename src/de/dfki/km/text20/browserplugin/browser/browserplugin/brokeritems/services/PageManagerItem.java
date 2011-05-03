@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.browserplugin.services.pagemanager.PageManager;
 
 /**
- * Reflects the browser's page manager.
+ * Reflects the browser's {@link PageManager}.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface PageManagerItem extends InformationItem<PageManager> {}

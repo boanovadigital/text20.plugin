@@ -21,9 +21,11 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay;
 
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.ReplayOption;
 
 /**
+ * Tells the {@link SessionReplay} to perform the replay in realtime. 
  *
  * @author Ralf Biedert
  */

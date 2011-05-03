@@ -22,24 +22,20 @@
 package de.dfki.km.text20.services.pseudorenderer;
 
 /**
- * If a point is given in screen or document coordinates.
+ * Specifies relative to which coordinate system points are being based.
  * 
- * @author rb
- *
+ * @author Ralf Biedert
+ * @since 1.0
+ * @see Pseudorenderer
  */
 public enum CoordinatesType {
 
-    /**
-     * 
-     */
+    /** Points are document based */
     DOCUMENT_BASED,
-    /**
-     * 
-     */
+    
+    /** Points are screen based */
     SCREEN_BASED,
 
-    /**
-     * Coordinates are based on the currently visible rectangle, i.e., (0,0) == (scrollPosX, scrollPosY)
-     */
+    /** Coordinates are based on the currently visible rectangle, i.e., (0,0) == (scrollPosX, scrollPosY) */
     VIEWPORT_BASED
 }

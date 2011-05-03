@@ -22,7 +22,10 @@
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.eyecontact;
 
 /**
+ * The type of eye contact.
+ * 
  * @author Ralf Biedert
+ * @sine 1.4
  */
 public enum EyeContactEventType {
     /**

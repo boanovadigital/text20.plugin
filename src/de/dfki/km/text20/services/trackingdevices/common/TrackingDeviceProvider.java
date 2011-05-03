@@ -24,12 +24,14 @@ package de.dfki.km.text20.services.trackingdevices.common;
 import net.xeoh.plugins.base.Plugin;
 
 /**
- * @author Ralf Biedert
+ * Provides tracking devices.
  * 
- * @param <I> 
- * @param <T> 
- * @param <L> 
- * @param <D> 
+ * @author Ralf Biedert
+ * @since 1.0
+ * @param <I> The type of the {@link TrackingDeviceInfo}.
+ * @param <T> The type of the {@link TrackingEvent}.
+ * @param <L> The type of the {@link TrackingListener}.
+ * @param <D> The type of the {@link TrackingDevice}.
  *
  */
 public interface TrackingDeviceProvider<I extends TrackingDeviceInfo, T extends TrackingEvent, L extends TrackingListener<T>, D extends TrackingDevice<I, T, L>>
@@ -41,7 +43,7 @@ public interface TrackingDeviceProvider<I extends TrackingDeviceInfo, T extends 
      *  
      * @param url URL to connect to. Not all devices require this, some accept null.
      * 
-     * @return Connection to the device
+     * @return Connection a to the device.
      */
     D openDevice(String url);
 }

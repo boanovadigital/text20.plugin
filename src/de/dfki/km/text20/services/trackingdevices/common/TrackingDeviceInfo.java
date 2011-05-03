@@ -22,23 +22,24 @@
 package de.dfki.km.text20.services.trackingdevices.common;
 
 /**
- * Various information about tracking devices.
+ * Various information about {@link TrackingDevice}s.
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface TrackingDeviceInfo {
     /**
-     * Returns info about the tracking device.
+     * Returns a info string from the tracking device.
      * 
-     * @param key
-     * @return .
+     * @param key The key to query.
+     * @return The correspondng value or <code>null</code> if the key was not found.
      */
     public String getInfo(String key);
 
     /**
-     * Returns the available keys.
+     * Returns all available keys.
      * 
-     * @return .
+     * @return A list of all available keys.
      */
     public String[] getKeys();
 }

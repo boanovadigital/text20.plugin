@@ -22,9 +22,13 @@
 package de.dfki.km.text20.services.evaluators.gaze.options;
 
 import net.xeoh.plugins.base.Option;
+import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
 
 /**
- * @author rb
+ * Options for {@link GazeEvaluationListener}s.
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface AddGazeEvaluationListenerOption extends Option {
     //

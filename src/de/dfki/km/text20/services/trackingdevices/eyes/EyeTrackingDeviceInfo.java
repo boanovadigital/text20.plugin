@@ -26,7 +26,8 @@ import de.dfki.km.text20.services.trackingdevices.common.TrackingDeviceInfo;
 /**
  * Various information about tracking devices.
  * 
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public interface EyeTrackingDeviceInfo extends TrackingDeviceInfo {
     //

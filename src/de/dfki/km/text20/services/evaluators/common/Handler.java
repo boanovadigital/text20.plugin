@@ -24,15 +24,18 @@ package de.dfki.km.text20.services.evaluators.common;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
 /**
- * @author rb
- *
- * @param <T>
+ * Handlers are used internally to convert {@link TrackingEvent}s of a given 
+ * type into something more abstract, e.g., eye tracking events into fixations.
+ * 
+ * @author Ralf Biedert
+ * @param <T> The type of {@link TrackingEvent}s.
+ * @since 1.3
  */
 public interface Handler<T extends TrackingEvent> {
     /**
-     * Called with a new tracking event
+     * Called with a new tracking event. The handler decides how to react best on the new event.
      * 
-     * @param filteredEvent
+     * @param filteredEvent The (filtered) event to process. 
      */
     public void newTrackingEvent(final T filteredEvent);
 }

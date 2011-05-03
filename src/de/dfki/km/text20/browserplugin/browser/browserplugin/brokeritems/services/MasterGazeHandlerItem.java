@@ -1,5 +1,5 @@
 /*
- * PageManagerItem.java
+ * MasterGazeHandlerItem.java
  * 
  * Copyright (c) 2010, Ralf Biedert All rights reserved.
  * 
@@ -31,8 +31,9 @@ import net.xeoh.plugins.informationbroker.InformationItem;
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.MasterGazeHandler;
 
 /**
- * Reflects the browser's master gaze handler.
+ * Holds the browser's current {@link MasterGazeHandler}.
  * 
  * @author Ralf Biedert
+ * @since 1.4
  */
 public interface MasterGazeHandlerItem extends InformationItem<MasterGazeHandler> {}

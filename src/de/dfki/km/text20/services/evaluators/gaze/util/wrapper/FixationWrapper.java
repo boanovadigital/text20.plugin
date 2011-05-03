@@ -28,9 +28,10 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixatio
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * Wraps a fixation.
+ * Wraps a {@link Fixation}, can be used to quickly override a method for a given fixation. 
  *
- * @author rb
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public class FixationWrapper implements Fixation {
 
@@ -39,7 +40,7 @@ public class FixationWrapper implements Fixation {
     /**
      * Wraps the given event.
      *
-     * @param originalFixation
+     * @param originalFixation The fixation to wrap.
      */
     public FixationWrapper(final Fixation originalFixation) {
         this.originalFixation = originalFixation;

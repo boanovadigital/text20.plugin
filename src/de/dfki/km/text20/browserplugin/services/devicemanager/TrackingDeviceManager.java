@@ -22,22 +22,27 @@
 package de.dfki.km.text20.browserplugin.services.devicemanager;
 
 import net.xeoh.plugins.base.Plugin;
+import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 
 /**
- * Manages gaze tracking devices.
+ * The TrackingDeviceManager tries to locate and connect to existing eye- and 
+ * brain tracking devices, either on the same machine or local network. Usually you do not need
+ * to access this class, neither when in extension, nor when in library mode (see {@link BrowserAPI}).   
  * 
  * @author Ralf Biedert
- * 
+ * @since 1.0
+ * @see EyeTrackingDevice
+ * @see BrainTrackingDevice
  */
 public interface TrackingDeviceManager extends Plugin {
 
     /**
      * Inits the tracker connection using a given identifier.
      * 
-     * @param deviceSelector
-     * @param trackerConnection
+     * @param deviceSelector The selector to use, e.g. <code>eyetrackingdevice:trackingserver</code>.
+     * @param trackerConnection The location where to locate the device, e.g., <code>discover://nearest</code>.
      * @return Returns the initialized eye tracking device.
      */
     public EyeTrackingDevice initEyeTrackerConnection(String deviceSelector,
@@ -46,8 +51,8 @@ public interface TrackingDeviceManager extends Plugin {
     /**
      * Inits the tracker connection using a given identifier.
      * 
-     * @param deviceSelector
-     * @param trackerConnection
+     * @param deviceSelector The selector to use (unused right now).
+     * @param trackerConnection The location where to locate the device, e.g., <code>discover://nearest</code>.
      * @return Returns the initialized brain tracking device.
      */
     public BrainTrackingDevice initBrainTrackerConnection(String deviceSelector,

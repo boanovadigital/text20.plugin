@@ -25,18 +25,7 @@ package de.dfki.km.text20.services.evaluators.gaze.listenertypes.perusal;
  * The classified level of perusal currently observed.
  * 
  * @author Ralf Biedert
+ * @since 1.5
  */
 public enum PerusalLevel {
-
-    /**
-     * This is the default mode used upon calibration.
-     */
-    READING,
-
-    /**
-     * If the reading progress is significantly faster than reading but still mostly line
-     * base, we classify
-     * it as skimming
-     */
-    SKIMMING
 }

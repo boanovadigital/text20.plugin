@@ -24,9 +24,11 @@ package de.dfki.km.text20.services.evaluators.gaze.listenertypes.perusal;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationEvent;
 
 /**
- * Fired when perusal on text is detected.
+ * Fired to the {@link PerusalListener} when perusal (either reading or skimming) has been 
+ * detected (on text). This is currently being reworked.  
  * 
  * @author Ralf Biedert
+ * @since 1.5
  */
 public interface PerusalEvent extends GazeEvaluationEvent {
 

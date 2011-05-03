@@ -24,14 +24,18 @@ package de.dfki.km.text20.util.filter;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * @author rb
- *
+ * An empty filter that does nothing. 
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
 public class EmptyFilter extends AbstractFilter {
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.util.filter.AbstractFilter#filterEvent(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent)
+     */
     @Override
     public EyeTrackingEvent filterEvent(final EyeTrackingEvent event) {
         return event;
     }
-
 }
