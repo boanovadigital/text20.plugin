@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.plainxml;
 
+import static net.jcores.CoreKeeper.$;
+
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -62,7 +64,6 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.UpdateEle
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ViewportEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.DisplacementRegion;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.util.system.IO;
 
 /**
  *
@@ -148,7 +149,7 @@ public class SessionRecordImpl implements Serializable {
             e1.printStackTrace();
         }
 
-        final List<String> readLines = IO.readLines(inFile);
+        final List<String> readLines = $(inFile).text().split("\n").list();
         final List<String> writeLines = new ArrayList<String>();
         for (String string : readLines) {
             String replaced = string;
@@ -160,7 +161,8 @@ public class SessionRecordImpl implements Serializable {
             writeLines.add(replaced);
 
         }
-        IO.writeLines(tmp, writeLines);
+        
+        $(tmp).append(writeLines);
 
         final SessionRecordImpl rval = null;
         try {
