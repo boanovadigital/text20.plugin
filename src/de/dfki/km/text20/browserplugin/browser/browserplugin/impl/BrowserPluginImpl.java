@@ -85,7 +85,6 @@ import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingListener;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
-import de.dfki.km.text20.util.system.OS;
 
 /**
  * Will be instantiated by the browser (is a Java Applet). This is the main entry point 
@@ -734,7 +733,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
             @Override
             public String f(String path) {
                 try {
-                    final URI uri = OS.absoluteBrowserPathToURI(path);
+                    final URI uri = URI.create(path.replaceAll(" ", "%20")); 
                     BrowserPluginImpl.this.diagnosis.status("processadditional/extension/path", new OptionInfo("path", path), new OptionInfo("uri", uri));
                     BrowserPluginImpl.this.pluginManager.addPluginsFrom(uri);
                 } catch (Exception e) {

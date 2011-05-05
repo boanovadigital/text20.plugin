@@ -28,8 +28,6 @@ import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.dfki.km.text20.util.logging.SimpleAndWhatIWouldHaveLikedFormatter;
-
 /**
  * Master logging handler
  *
@@ -50,9 +48,6 @@ public class MasterLoggingHandler {
     public MasterLoggingHandler(final String root, Level level) throws SecurityException,
                                                                IOException {
         this.fileHandler = new FileHandler(root + "/java.logging.bsfree.txt");
-
-        //this.fh2.setFormatter(new SimpleFormatter());
-        this.fileHandler.setFormatter(new SimpleAndWhatIWouldHaveLikedFormatter());
 
         // The output should appear in the files
         //Logger.getLogger("").addHandler(this.fh1);
