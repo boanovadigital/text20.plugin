@@ -26,7 +26,7 @@ import java.awt.Rectangle;
 
 import org.simpleframework.xml.Element;
 
-import de.dfki.km.text20.util.filter.displacement.Displacer;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement.Displacer;
 
 /**
  * Specifies how a region should be displaced.

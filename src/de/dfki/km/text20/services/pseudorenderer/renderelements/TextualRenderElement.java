@@ -22,7 +22,7 @@
 package de.dfki.km.text20.services.pseudorenderer.renderelements;
 
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
-import de.dfki.km.text20.services.pseudorenderer.util.TextualRenderElementUtil;
+import de.dfki.km.text20.services.pseudorenderer.util.elements.TextualRenderElementUtil;
 
 /**
  * Represents a textual render element (e.g., word on the page).

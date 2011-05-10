@@ -25,8 +25,8 @@ import java.util.List;
 
 import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.ChainedFilter;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
-import de.dfki.km.text20.util.filter.ChainedFilter;
 
 /**
  * The master gaze handler registers itself to the {@link EyeTrackingDevice} and receives raw gaze

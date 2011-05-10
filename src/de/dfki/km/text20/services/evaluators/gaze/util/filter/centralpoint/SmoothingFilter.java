@@ -1,5 +1,5 @@
 /*
- * TestChars.java
+ * SmoothingFilter.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,21 +19,40 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.sandbox.misc;
+package de.dfki.km.text20.services.evaluators.gaze.util.filter.centralpoint;
 
-import de.dfki.km.text20.services.pseudorenderer.util.elements.TextualRenderElementCharPositions;
+import java.awt.Point;
 
 /**
  * @author rb
- *
  */
-public class TestChars {
+public class SmoothingFilter extends CentralPointFilter {
+
     /**
-     * @param args
+     * 
+     * @param size
      */
-    public static void main(final String[] args) {
-        
-        final TextualRenderElementCharPositions recp = new TextualRenderElementCharPositions();
-        System.out.println(recp.getWidthRelation('a', 'b'));
+    public SmoothingFilter(final int size) {
+        super(size);
     }
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.augmentedtext.util.filter.centralpoint.CentralPointFilter#getPoint()
+     */
+
+    @Override
+    Point getPoint() {
+        final Point rval = new Point();
+
+        for (final Point p : this.lastPoints) {
+            rval.x += p.x;
+            rval.y += p.y;
+        }
+
+        rval.x /= this.lastPoints.size();
+        rval.y /= this.lastPoints.size();
+
+        return rval;
+    }
+
 }

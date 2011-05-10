@@ -32,7 +32,7 @@ import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListe
 import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
-import de.dfki.km.text20.services.pseudorenderer.util.TextualRenderElementCharPositions;
+import de.dfki.km.text20.services.pseudorenderer.util.elements.TextualRenderElementCharPositions;
 
 /**
  * Detects perusal progress.

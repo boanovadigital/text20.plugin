@@ -29,8 +29,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.dfki.km.text20.util.filter.etufilters.HighPassFilter;
-import de.dfki.km.text20.util.filter.etufilters.LowPassFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.etufilters.HighPassFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.etufilters.LowPassFilter;
 
 /**
  * @author rb
