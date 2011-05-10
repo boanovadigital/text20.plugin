@@ -44,14 +44,14 @@ import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehandl
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehandler.simple.ReducedApplicationGazeHandler;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluatorManager;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.ChainedFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.centralpoint.CentralPointFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.centralpoint.VirtualMedianFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement.ReferenceBasedDisplacementFilter;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
-import de.dfki.km.text20.util.filter.ChainedFilter;
-import de.dfki.km.text20.util.filter.centralpoint.CentralPointFilter;
-import de.dfki.km.text20.util.filter.centralpoint.VirtualMedianFilter;
-import de.dfki.km.text20.util.filter.displacement.ReferenceBasedDisplacementFilter;
 
 /**
  * Listens to tracking events.

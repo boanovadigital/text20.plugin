@@ -24,7 +24,7 @@ package de.dfki.km.text20.services.pseudorenderer;
 import java.awt.Rectangle;
 import java.io.Serializable;
 
-import de.dfki.km.text20.services.pseudorenderer.util.RenderElementUtil;
+import de.dfki.km.text20.services.pseudorenderer.util.elements.RenderElementUtil;
 
 /**
  * Represents a rendering element. Note that a render element is a 'live' object. Its

@@ -1,5 +1,5 @@
 /*
- * TestChars.java
+ * GridEntry.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,21 +19,30 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.sandbox.misc;
-
-import de.dfki.km.text20.services.pseudorenderer.util.elements.TextualRenderElementCharPositions;
+package de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement;
 
 /**
+ * Manages one grid field.
+ * 
  * @author rb
- *
  */
-public class TestChars {
+public class GridEntry {
     /**
-     * @param args
+     * The status of the entry.
+     * 
+     * @author rb
      */
-    public static void main(final String[] args) {
-        
-        final TextualRenderElementCharPositions recp = new TextualRenderElementCharPositions();
-        System.out.println(recp.getWidthRelation('a', 'b'));
+    public enum GridStatus {
+        /** We obtianed a proper displaement in the region */
+        SET,
+        /** Unknown means no displacement known */
+        UNKNOWN
     }
+
+    long dateOfSet = 0;
+
+    GridStatus gridStatus = GridStatus.UNKNOWN;
+
+    int xdisplacement = 0;
+    int ydisplacement = 0;
 }

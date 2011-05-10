@@ -31,7 +31,7 @@ import org.junit.Test;
 import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.RenderElementMetaAttribute;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
-import de.dfki.km.text20.services.pseudorenderer.util.TextualRenderElementCharPositions;
+import de.dfki.km.text20.services.pseudorenderer.util.elements.TextualRenderElementCharPositions;
 
 /**
  * @author rb

@@ -1,5 +1,5 @@
 /*
- * TestChars.java
+ * EmptyFilter.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,21 +19,23 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.sandbox.misc;
+package de.dfki.km.text20.services.evaluators.gaze.util.filter;
 
-import de.dfki.km.text20.services.pseudorenderer.util.elements.TextualRenderElementCharPositions;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * @author rb
- *
+ * An empty filter that does nothing. 
+ * 
+ * @author Ralf Biedert
+ * @since 1.0
  */
-public class TestChars {
-    /**
-     * @param args
+public class EmptyFilter extends AbstractFilter {
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.util.filter.AbstractFilter#filterEvent(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent)
      */
-    public static void main(final String[] args) {
-        
-        final TextualRenderElementCharPositions recp = new TextualRenderElementCharPositions();
-        System.out.println(recp.getWidthRelation('a', 'b'));
+    @Override
+    public EyeTrackingEvent filterEvent(final EyeTrackingEvent event) {
+        return event;
     }
 }

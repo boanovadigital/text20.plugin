@@ -1,5 +1,5 @@
 /*
- * TestChars.java
+ * TextualRenderElementUtil.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,21 +19,21 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.sandbox.misc;
+package de.dfki.km.text20.services.pseudorenderer.util.elements;
 
-import de.dfki.km.text20.services.pseudorenderer.util.elements.TextualRenderElementCharPositions;
+import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
- * @author rb
- *
+ * Util functions for a textual render element.
+ * 
+ * @author Ralf Biedert
+ * @since 1.4
  */
-public class TestChars {
+public class TextualRenderElementUtil extends RenderElementUtil {
     /**
-     * @param args
+     * @param renderElement
      */
-    public static void main(final String[] args) {
-        
-        final TextualRenderElementCharPositions recp = new TextualRenderElementCharPositions();
-        System.out.println(recp.getWidthRelation('a', 'b'));
+    public TextualRenderElementUtil(TextualRenderElement renderElement) {
+        super(renderElement);
     }
 }

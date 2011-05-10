@@ -30,13 +30,13 @@ import java.util.List;
 
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehandler.AbstractGazeHandler;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement.MagneticDisplacementFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.fixation.FixationFilter;
 import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.PseudorendererStatus;
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.util.filter.displacement.MagneticDisplacementFilter;
-import de.dfki.km.text20.util.filter.fixation.FixationFilter;
 
 /**
  * @author rb

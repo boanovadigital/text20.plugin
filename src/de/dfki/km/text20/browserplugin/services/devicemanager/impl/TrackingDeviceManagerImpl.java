@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.browserplugin.services.devicemanager.impl;
 
+import static net.jcores.CoreKeeper.$;
+
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -44,7 +46,6 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceProvider;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
-import de.dfki.km.text20.util.rd3party.sound.AePlayWave;
 
 /**
  * Manages the tracking device
@@ -82,7 +83,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
      * @param args
      */
     public static void main(final String[] args) {
-        new AePlayWave(TrackingDeviceManagerImpl.class.getResourceAsStream("mouse.wav")).start();
+        $(TrackingDeviceManagerImpl.class.getResourceAsStream("mouse.wav")).audio().play();
     }
 
     /*
@@ -183,9 +184,9 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
         // Check if we have a "true" tracking device unrelated to the mouse
         if (deviceSelector.equals("eyetrackingdevice:trackingserver") && this.eyeTrackingDevice != null) {
             this.infoBroker.publish(EyeTrackingDeviceItem.class, this.eyeTrackingDevice);
-            new AePlayWave(getClass().getResourceAsStream("tracker.wav")).start();
+            $(TrackingDeviceManagerImpl.class.getResourceAsStream("tracker.wav")).audio().play();
         } else {
-            new AePlayWave(getClass().getResourceAsStream("mouse.wav")).start();
+            $(TrackingDeviceManagerImpl.class.getResourceAsStream("mouse.wav")).audio().play();
         }
 
         addDataRateListener();
@@ -225,8 +226,7 @@ public final class TrackingDeviceManagerImpl implements TrackingDeviceManager {
 
                 if (delta > 2000 && !warned.get()) {
                     diagnosis.status("adddataratelistener/timer/lowdatarate", new OptionInfo("delta", Long.valueOf(delta)));
-
-                    new AePlayWave(getClass().getResourceAsStream("dataratelow.wav")).start();
+                    $(TrackingDeviceManagerImpl.class.getResourceAsStream("dataratelow.wav")).audio().play();
                     warned.set(true);
                 }
             }

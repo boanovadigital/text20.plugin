@@ -27,7 +27,7 @@ import java.awt.geom.Point2D;
 import org.junit.Assert;
 import org.junit.Test;
 
-import de.dfki.km.text20.util.filter.displacement.ReferenceBasedDisplacementFilter;
+import de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement.ReferenceBasedDisplacementFilter;
 
 /**
  * @author rb
