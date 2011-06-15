@@ -24,8 +24,8 @@ package de.dfki.km.text20.browserplugin.services.persistentpreferences;
 import net.xeoh.plugins.base.Plugin;
 
 /**
- * Manages preferences that should be kept indefinitely. The plugin ensures that values, once set, will stay persistent 
- * even after restart of the application.
+ * Manages preferences that should be kept indefinitely. The plugin ensures that values, once set, 
+ * will stay persistent even after a restart of the application.
  * 
  * @author Ralf Biedert
  * @since 1.0

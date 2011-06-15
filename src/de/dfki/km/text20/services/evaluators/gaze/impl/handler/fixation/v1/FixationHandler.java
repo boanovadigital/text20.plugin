@@ -32,6 +32,7 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixatio
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEventType;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationListener;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationDummy;
 import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 import de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener.OptionFixationParameters;
 import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler;
@@ -198,22 +199,14 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
         final Point center = getCenter(trackingEvents);
         final List<EyeTrackingEvent> myTrackingEvents = new ArrayList<EyeTrackingEvent>(trackingEvents);
 
+        final FixationDummy fixation = new FixationDummy();
+        fixation.center = (Point) center.clone();
+        fixation.events = Collections.unmodifiableList(myTrackingEvents);
+        
         callListener(new FixationEvent() {
             @Override
             public Fixation getFixation() {
-                return new Fixation() {
-
-                    @Override
-                    public Point getCenter() {
-                        return (Point) center.clone();
-                    }
-
-                    @Override
-                    public List<EyeTrackingEvent> getTrackingEvents() {
-                        return Collections.unmodifiableList(myTrackingEvents);
-                    }
-
-                };
+                return fixation;
             }
 
             @Override

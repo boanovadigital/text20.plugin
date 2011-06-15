@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
-import de.dfki.km.text20.services.evaluators.gaze.util.FixationsUtil;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationsUtil;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**

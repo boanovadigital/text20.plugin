@@ -1,5 +1,5 @@
 /*
- * Fixation.java
+ * TestSerialization.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,37 +19,33 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation;
+package de.dfki.km.text20.sandbox.misc;
 
 import java.awt.Point;
 import java.util.List;
 
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationDummy;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationUtil;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationsUtil;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * Reflects a fixation. Each fixation consists of a number of measured {@link EyeTrackingEvent}. This 
- * interface is rather primitive, and you might want to use the corresponding util classes (see below).     
- * 
- * @author Ralf Biedert
- * @see FixationUtil
- * @see FixationsUtil
- * @since 1.0
+ * @author rb
+ *
  */
-public interface Fixation {
-    /**
-     * Returns the center of this fixation.
-     * 
-     * @return The fixation center.
-     */
-    public Point getCenter();
+public class TestDummy {
 
     /**
-     * Get the associated tracking events which made up this fixation. 
-     * 
-     * @return An ordered list of all events.
+     * @param args
      */
-    public List<EyeTrackingEvent> getTrackingEvents();
-
+    public static void main(final String[] args) {
+        FixationDummy dummy = new FixationDummy().simulate(new Point(100, 100), 100);
+        FixationUtil util = new FixationUtil(dummy);
+        
+        System.out.println(dummy);
+        System.out.println(util.getFixationDuration());
+        List<EyeTrackingEvent> trackingEvents = dummy.getTrackingEvents();
+        for (EyeTrackingEvent eyeTrackingEvent : trackingEvents) {
+            System.out.println(eyeTrackingEvent);
+        }
+    }
 }

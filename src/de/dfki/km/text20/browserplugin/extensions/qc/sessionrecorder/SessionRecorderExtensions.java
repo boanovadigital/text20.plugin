@@ -25,7 +25,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.Init;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
 import net.xeoh.plugins.informationbroker.InformationBroker;
-import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
+import net.xeoh.plugins.informationbroker.InformationListener;
 import de.dfki.km.text20.browserplugin.browser.browserplugin.brokeritems.services.SessionRecorderItem;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.Extension;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.annotations.ExtensionMethod;
@@ -39,7 +39,7 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 public class SessionRecorderExtensions implements Extension {
 
     /** */
-    private SessionRecorder sessionRecorder;
+    SessionRecorder sessionRecorder;
 
     /** */
     @InjectPlugin
@@ -69,6 +69,11 @@ public class SessionRecorderExtensions implements Extension {
     /** Called upon init */
     @Init
     public void init() {
-        this.sessionRecorder = new InformationBrokerUtil(this.broker).get(SessionRecorderItem.class);
+        this.broker.subscribe(SessionRecorderItem.class, new InformationListener<SessionRecorder>() {
+            @Override
+            public void update(SessionRecorder arg0) {
+                SessionRecorderExtensions.this.sessionRecorder = arg0;
+            }
+        });
     }
 }

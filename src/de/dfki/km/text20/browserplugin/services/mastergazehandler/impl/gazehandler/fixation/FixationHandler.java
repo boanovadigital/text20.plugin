@@ -32,8 +32,8 @@ import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEventType;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationListener;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationUtil;
 import de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener.OptionFixationParameters;
-import de.dfki.km.text20.services.evaluators.gaze.util.FixationUtil;
 import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.PseudorendererStatus;
 

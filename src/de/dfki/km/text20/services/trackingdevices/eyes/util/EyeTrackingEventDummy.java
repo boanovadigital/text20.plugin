@@ -1,4 +1,4 @@
-/*
+ /*
  * TrackingEventDummy.java
  *
  * Copyright (c) 2011, Ralf Biedert, DFKI. All rights reserved.
@@ -20,6 +20,8 @@
  *
  */
 package de.dfki.km.text20.services.trackingdevices.eyes.util;
+
+import static net.jcores.CoreKeeper.$;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -96,7 +98,7 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent {
      * @param screenSize Size of the screen.
      */
     public EyeTrackingEventDummy(Dimension screenSize) {
-        this.screenSize = screenSize;
+        this.screenSize = $(screenSize).get(defaultDimension);
         this.eventTime = System.currentTimeMillis();
         this.gazeCenter = new Point(0, 0);
         this.leftGazePoint = new Point(0, 0);
@@ -298,5 +300,10 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent {
     @Override
     public float[] getRightEyeGazePosition() {
         return this.rightGazePos;
+    }
+    
+    @Override
+    public String toString() {
+        return "EyeTrackingEvent {time:" + this.eventTime + ", pos:" + this.gazeCenter.x + "/" + this.gazeCenter.y + ")";
     }
 }

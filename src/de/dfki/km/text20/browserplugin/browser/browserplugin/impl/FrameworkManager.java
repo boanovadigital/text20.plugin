@@ -117,8 +117,6 @@ public class FrameworkManager {
         this.pluginManager.addPluginsFrom(new ClassURI(TrackingDeviceManagerImpl.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(ExtensionManagerImpl.class).toURI());
 
-        this.pluginManager.addPluginsFrom(new ClassURI(DiagnosticOverlayExtension.class).toURI());
-        
         // Add current handler ...
         this.pluginManager.addPluginsFrom(new ClassURI(FixationHandlerFactory.class).toURI());
         this.pluginManager.addPluginsFrom(new ClassURI(PerusalHandlerFactory.class).toURI());

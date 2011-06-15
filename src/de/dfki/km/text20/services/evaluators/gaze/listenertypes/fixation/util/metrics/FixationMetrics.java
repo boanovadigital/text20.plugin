@@ -19,12 +19,12 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.util.metrics;
+package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.metrics;
 
 import java.util.List;
 
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
-import de.dfki.km.text20.services.evaluators.gaze.util.FixationUtil;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationUtil;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**

@@ -28,11 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Logger;
 
 import net.xeoh.plugins.base.annotations.Capabilities;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.Shutdown;
+import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
+import net.xeoh.plugins.diagnosis.local.util.DiagnosisUtil;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceInfo;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceProvider;
@@ -40,42 +41,37 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceType;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
+import de.dfki.km.text20.services.trackingdevices.eyes.diagnosis.channels.tracer.EyeTrackingDeviceTracer;
 import de.dfki.km.text20.trackingserver.eyes.remote.TrackingCommand;
 import de.dfki.km.text20.trackingserver.eyes.remote.options.SendCommandOption;
 
 /**
- * @author rb
+ * Mouse implementation
  * 
+ * @author Ralf Biedert
  */
 @PluginImplementation
 public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvider {
     /**
      * Uses the mouse as a tracking device
      * 
-     * @author rb
+     * @author Ralf Biedert
      */
-    private static class MouseTrackingDevice implements EyeTrackingDevice {
-
-        /** */
-        final Logger logger = Logger.getLogger(this.getClass().getName());
-
-        /**
-         * Manages acces to the listener.
-         */
+    private class MouseTrackingDevice implements EyeTrackingDevice {
+        /** Manages acces to the listener. */
         final Lock listenerLock = new ReentrantLock();
 
-        /**
-         * List of listeners we inform.
-         */
+        /** List of listeners we inform. */
         final List<EyeTrackingListener> trackingListener = new ArrayList<EyeTrackingListener>();
 
+        /** */
         Thread thread;
 
         /**
          * Construct a standard MouseTrackigDevice which will start instantly.
          */
         MouseTrackingDevice() {
-            thread = new Thread(new Runnable() {
+            this.thread = new Thread(new Runnable() {
 
                 @Override
                 public void run() {
@@ -96,7 +92,7 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
                                 l.newTrackingEvent(event);
                             } catch (Exception exception) {
                                 exception.printStackTrace();
-                                MouseTrackingDevice.this.logger.warning(exception.getMessage());
+                                MouseTrackingDeviceProviderImpl.this.diagnosis.channel(EyeTrackingDeviceTracer.class).status("event/dispatch/exception", "exception", exception.getMessage());
                             }
                         }
                         MouseTrackingDevice.this.listenerLock.unlock();
@@ -112,8 +108,8 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
                 }
 
             });
-            thread.setDaemon(true);
-            thread.start();
+            this.thread.setDaemon(true);
+            this.thread.start();
         }
 
         /*
@@ -279,12 +275,11 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
         }
     }
 
-    /** */
-    final Logger logger = Logger.getLogger(this.getClass().getName());
-
-    /**
-     * The device we may return
-     */
+    /** Our diagnosis */
+    @InjectPlugin
+    public DiagnosisUtil diagnosis;
+    
+    /** The device we may return */
     volatile MouseTrackingDevice trackingDevice = null;
 
     /**
@@ -306,8 +301,7 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
      */
     @Override
     public EyeTrackingDevice openDevice(final String url) {
-
-        this.logger.info("Mouse device was opened with URL " + url);
+        this.diagnosis.channel(EyeTrackingDeviceTracer.class).status("opendevice/start", "url", url);
 
         synchronized (this) {
             if (this.trackingDevice == null) {
@@ -315,6 +309,7 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
             }
         }
 
+        this.diagnosis.channel(EyeTrackingDeviceTracer.class).status("opendevice/end");
         return this.trackingDevice;
     }
     
