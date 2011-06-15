@@ -22,7 +22,7 @@
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade;
 
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
-import de.dfki.km.text20.services.evaluators.gaze.util.SaccadeUtil;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.util.SaccadeUtil;
 
 /**
  * Reflects a saccade, the <i>jump</i> between two fixations, which will be contained in a {@link SaccadeEvent}.

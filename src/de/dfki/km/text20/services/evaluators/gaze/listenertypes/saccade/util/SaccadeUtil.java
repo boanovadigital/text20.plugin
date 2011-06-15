@@ -19,7 +19,7 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.util;
+package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.util;
 
 import java.awt.Point;
 

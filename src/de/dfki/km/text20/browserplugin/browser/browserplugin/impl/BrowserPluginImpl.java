@@ -181,6 +181,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
     public BrowserPluginImpl() {
         this.buildNumber = $(BrowserPluginImpl.class.getResourceAsStream("browser.plugin.version")).text().split("\n").hashmap().get("build");
+        System.out.println();
         System.out.println("BrowserPluginImpl.new() -- Build " + this.buildNumber);
     }
 

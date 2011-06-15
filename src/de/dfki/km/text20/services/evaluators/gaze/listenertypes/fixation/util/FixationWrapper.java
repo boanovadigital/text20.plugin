@@ -19,7 +19,7 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.util.wrapper;
+package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util;
 
 import java.awt.Point;
 import java.util.List;
@@ -35,7 +35,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  */
 public class FixationWrapper implements Fixation {
 
-    final Fixation originalFixation;
+    final protected Fixation originalFixation;
 
     /**
      * Wraps the given event.

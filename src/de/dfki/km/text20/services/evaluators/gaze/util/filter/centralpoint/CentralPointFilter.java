@@ -27,7 +27,7 @@ import java.util.List;
 
 import de.dfki.km.text20.services.evaluators.gaze.util.filter.AbstractFilter;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper.EyeTrackingEventWrapper;
+import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventWrapper;
 
 /**
  * Collects functions all centralPoint filters use. 

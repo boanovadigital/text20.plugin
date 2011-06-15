@@ -28,12 +28,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Logger;
 
 import net.xeoh.plugins.base.PluginConfiguration;
 import net.xeoh.plugins.base.annotations.Capabilities;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
+import net.xeoh.plugins.diagnosis.local.util.DiagnosisChannelUtil;
+import net.xeoh.plugins.diagnosis.local.util.DiagnosisUtil;
 import net.xeoh.plugins.informationbroker.InformationBroker;
 import net.xeoh.plugins.remote.RemoteAPILipe;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
@@ -42,6 +43,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceProvider
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceType;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
+import de.dfki.km.text20.services.trackingdevices.eyes.diagnosis.channels.tracer.EyeTrackingDeviceTracer;
 import de.dfki.km.text20.trackingserver.eyes.remote.TrackingClientCallback;
 import de.dfki.km.text20.trackingserver.eyes.remote.TrackingCommand;
 import de.dfki.km.text20.trackingserver.eyes.remote.TrackingDeviceInformation;
@@ -85,9 +87,13 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
          */
         public ServerTrackingDevice(final String string) throws URISyntaxException {
             // Get remote proxy of the server
+            final DiagnosisChannelUtil<String> channel = TrackingServerDeviceProviderImpl.this.diagnosis.channel(EyeTrackingDeviceTracer.class);
+            channel.status("servertrackingdevice/start", "url", string);
+            
+            channel.status("servertrackingdevice/getregistry");            
             this.registry = TrackingServerDeviceProviderImpl.this.remoteAPI.getRemoteProxy(new URI(string), TrackingServerRegistry.class);
+            channel.status("servertrackingdevice/getregistry/obtained");            
 
-            TrackingServerDeviceProviderImpl.this.logger.info("Connected registry says " + this.registry);
 
             if (this.registry == null) {
                 this.isProperlyConnected = false;
@@ -96,16 +102,13 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
             this.isProperlyConnected = true;
 
-            TrackingServerDeviceProviderImpl.this.logger.fine("Obtaining device information. In case LipeRMI is still broken this may lock up ...");
+            channel.status("servertrackingdevice/getinfo");
             this.deviceInformation = this.registry.getTrackingDeviceInformation();
-            TrackingServerDeviceProviderImpl.this.logger.fine("Device information obtained.");
-
-            // final URI exportPlugin =
-            // TrackingServerDeviceProviderImpl.this.remoteAPI.exportPlugin(this);
-            // TrackingServerDeviceProviderImpl.this.logger.info("Our callback is exported to "
-            // + exportPlugin.toString());
-
+            channel.status("servertrackingdevice/getinfo/obtained");
+            
             this.registry.addTrackingListener(this);
+            
+            channel.status("servertrackingdevice/end");
         }
 
         /*
@@ -444,7 +447,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                         l.newTrackingEvent(trackingEvent);
                     } catch (Exception exception) {
                         exception.printStackTrace();
-                        TrackingServerDeviceProviderImpl.this.logger.warning(exception.getMessage());
+                        TrackingServerDeviceProviderImpl.this.diagnosis.channel(EyeTrackingDeviceTracer.class).status("event/dispatch/exception", "exception", exception.getMessage());
                     }
                 }
             } finally {
@@ -495,8 +498,9 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
     @InjectPlugin
     public RemoteAPILipe remoteAPI;
 
-    /** */
-    final Logger logger = Logger.getLogger(this.getClass().getName());
+    /** Our diagnosis */
+    @InjectPlugin
+    public DiagnosisUtil diagnosis;
 
     /**
      * Return what we can do...

@@ -19,7 +19,7 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper;
+package de.dfki.km.text20.services.trackingdevices.eyes.util;
 
 import java.awt.Point;
 
@@ -33,7 +33,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
  */
 public class EyeTrackingEventWrapper implements EyeTrackingEvent {
 
-    final EyeTrackingEvent originalEvent;
+    final protected EyeTrackingEvent originalEvent;
 
     /**
      * Wraps the given event.

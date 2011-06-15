@@ -24,6 +24,7 @@ package de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper;
 import java.awt.Point;
 
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventWrapper;
 
 /**
  * @author rb

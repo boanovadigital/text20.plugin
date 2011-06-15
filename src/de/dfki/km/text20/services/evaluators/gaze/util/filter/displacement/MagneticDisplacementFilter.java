@@ -33,7 +33,7 @@ import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.services.trackingdevices.eyes.util.wrapper.EyeTrackingEventWrapper;
+import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventWrapper;
 
 /**
  * Displacement filter, alters the central position based on document information 

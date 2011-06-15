@@ -115,12 +115,11 @@
 	<!-- Create the API documentation -->
 	<target name="documentation">
 		<javadoc destdir="documentation/api/" author="true" version="true" use="true" windowtitle="Text 2.0 Plugin API">
-
 			<packageset dir="src/" defaultexcludes="yes">
-				<include name="de/dfki/km/text20/*" />
+				<include name="de/dfki/km/text20/**" />
 			</packageset>
 
-			<doctitle>MyTitle</doctitle>
+			<doctitle>Text 2.0 Framework Java API</doctitle>
 
 			<link href="http://developer.java.sun.com/developer/products/xml/docs/api/" />
 		</javadoc>

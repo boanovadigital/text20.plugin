@@ -27,7 +27,7 @@ import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehandl
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.WeakSaccadeListener;
-import de.dfki.km.text20.services.evaluators.gaze.util.SaccadeUtil;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.util.SaccadeUtil;
 import de.dfki.km.text20.services.pseudorenderer.PseudorendererStatus;
 
 /**

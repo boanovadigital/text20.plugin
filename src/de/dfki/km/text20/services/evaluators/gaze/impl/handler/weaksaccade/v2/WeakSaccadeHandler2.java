@@ -27,12 +27,12 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixatio
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEventType;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationListener;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationUtil;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.Saccade;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.WeakSaccadeListener;
 import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 import de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener.OptionFixationParameters;
-import de.dfki.km.text20.services.evaluators.gaze.util.FixationUtil;
 import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler;
 
 /**
