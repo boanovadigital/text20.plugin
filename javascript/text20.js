@@ -362,6 +362,12 @@ var text20 = {},
                 return data[id];
             }
 
+
+            /** Removes an for the given ID */
+            cache.remove = function(id){
+                delete data[id];
+            }
+
             // Return created cache.
             return cache
         }
@@ -1312,6 +1318,10 @@ var text20 = {},
                 /** Transmits if the given element has been removed in the meantime */
                 transmitElementRemoved: function(id) {
                     this.enginecheck(function(e, v, s) {
+
+                        // We also need to remove the ID from our cache, otherwise we could not 
+                        // use the ID again when it is created again.
+                        v.transmitCache.get("elementCache").cache.remove(id)
 
                         // If we have a batch call, call that one
                         if (v.batch) {
