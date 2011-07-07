@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.plainxml;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -67,7 +67,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
  *
- * @author rb
+ * @author Ralf Biedert
  *
  */
 @Root

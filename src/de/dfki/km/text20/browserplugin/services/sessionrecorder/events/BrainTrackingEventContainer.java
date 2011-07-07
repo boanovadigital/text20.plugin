@@ -21,17 +21,14 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.events;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 import org.simpleframework.xml.Element;
 
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 
 /**
+ * Stores a brain tracking event
  *
- *
- * @author rb
+ * @author Ralf Biedert
  */
 public class BrainTrackingEventContainer extends AbstractSessionEvent implements BrainTrackingEvent {
 
@@ -40,28 +37,18 @@ public class BrainTrackingEventContainer extends AbstractSessionEvent implements
 
     /** */
     @Element
-    private HashMap<String, Double> channels = new HashMap<String, Double>();
+    private double[] readings = new double[0];
 
     /**
      * @param trackingEvent
      */
-    @SuppressWarnings("boxing")
     public BrainTrackingEventContainer(final BrainTrackingEvent trackingEvent) {
         this.originalEventTime = trackingEvent.getEventTime();
-
-        // Get channels
-        Collection<String> c = trackingEvent.getChannels();
-        for (String string : c) {
-            this.channels.put(string, trackingEvent.getValue(string));
-        }
+        this.readings = trackingEvent.getReadings();
     }
 
-    /**
-     *
-     */
-    protected BrainTrackingEventContainer() {
-        //
-    }
+    /** */
+    protected BrainTrackingEventContainer() { }
 
     /* (non-Javadoc)
      * @see de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent#getEventTime()
@@ -72,20 +59,10 @@ public class BrainTrackingEventContainer extends AbstractSessionEvent implements
     }
 
     /* (non-Javadoc)
-     * @see de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent#getChannels()
+     * @see de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent#getReadings()
      */
     @Override
-    public Collection<String> getChannels() {
-        return this.channels.keySet();
+    public double[] getReadings() {
+        return this.readings;
     }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent#getValue(java.lang.String)
-     */
-    @SuppressWarnings("boxing")
-    @Override
-    public double getValue(String channel) {
-        return this.channels.get(channel);
-    }
-
 }

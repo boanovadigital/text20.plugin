@@ -21,7 +21,11 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util;
 
+import static net.jcores.shared.CoreKeeper.$;
+
 import java.awt.Point;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
@@ -33,8 +37,11 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author Ralf Biedert
  * @since 1.0
  */
-public class FixationWrapper implements Fixation {
-
+public class FixationWrapper implements Fixation, Cloneable, Serializable {
+    /** */
+    private static final long serialVersionUID = -5864406318291130254L;
+    
+    /** The original fixation */
     final protected Fixation originalFixation;
 
     /**
@@ -51,7 +58,7 @@ public class FixationWrapper implements Fixation {
      */
     @Override
     public Point getCenter() {
-        return this.originalFixation.getCenter();
+        return $.clone(this.originalFixation.getCenter());
     }
 
     /* (non-Javadoc)
@@ -59,6 +66,6 @@ public class FixationWrapper implements Fixation {
      */
     @Override
     public List<EyeTrackingEvent> getTrackingEvents() {
-        return this.originalFixation.getTrackingEvents();
+        return new ArrayList<EyeTrackingEvent>(this.originalFixation.getTrackingEvents());
     }
 }

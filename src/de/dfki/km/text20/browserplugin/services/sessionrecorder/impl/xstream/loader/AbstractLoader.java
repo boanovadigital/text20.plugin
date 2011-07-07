@@ -25,7 +25,7 @@ import java.io.File;
 import java.io.InputStream;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public abstract class AbstractLoader {

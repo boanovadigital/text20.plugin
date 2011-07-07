@@ -21,11 +21,12 @@
  */
 package de.dfki.km.text20.services.trackingdevices.eyes.util;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.io.Serializable;
 
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
@@ -35,7 +36,10 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
  * 
  * @author Ralf Biedert
  */
-public class EyeTrackingEventDummy implements EyeTrackingEvent {
+public class EyeTrackingEventDummy implements EyeTrackingEvent, Cloneable, Serializable {
+
+    /** */
+    private static final long serialVersionUID = 3744543467889439191L;
 
     /** Default dimension to use */
     static Dimension defaultDimension;
@@ -188,7 +192,7 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent {
      */
     @Override
     public Point getGazeCenter() {
-        return (Point) this.gazeCenter.clone();
+        return $.clone(this.gazeCenter);
     }
 
     /*
@@ -198,7 +202,7 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent {
      */
     @Override
     public float[] getHeadPosition() {
-        return this.headPosition;
+        return $.clone(this.headPosition);
     }
 
     /*
@@ -218,7 +222,7 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent {
      */
     @Override
     public float[] getLeftEyePosition() {
-        return this.leftEyePosition;
+        return $.clone(this.leftEyePosition);
     }
 
     /*
@@ -259,7 +263,7 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent {
      */
     @Override
     public float[] getRightEyePosition() {
-        return this.rightEyePosition;
+        return $.clone(this.rightEyePosition);
     }
 
     /*
@@ -269,7 +273,7 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent {
      */
     @Override
     public Point getLeftEyeGazePoint() {
-        return this.leftGazePoint;
+        return $.clone(this.leftGazePoint);
     }
 
     /*
@@ -279,7 +283,7 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent {
      */
     @Override
     public float[] getLeftEyeGazePosition() {
-        return this.leftGazePos;
+        return $.clone(this.leftGazePos);
     }
 
     /*
@@ -289,7 +293,7 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent {
      */
     @Override
     public Point getRightEyeGazePoint() {
-        return this.rightGazePoint;
+        return $.clone(this.rightGazePoint);
     }
 
     /*
@@ -299,7 +303,7 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent {
      */
     @Override
     public float[] getRightEyeGazePosition() {
-        return this.rightGazePos;
+        return $.clone(this.rightGazePos);
     }
     
     @Override

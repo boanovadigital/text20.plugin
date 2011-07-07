@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class SessionMerger {

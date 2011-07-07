@@ -44,7 +44,7 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderEle
 
 /**
  *
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class PseudorendererImpl implements Pseudorenderer {

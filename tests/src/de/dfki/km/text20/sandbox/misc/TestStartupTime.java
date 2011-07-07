@@ -21,10 +21,10 @@
  */
 package de.dfki.km.text20.sandbox.misc;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestStartupTime {

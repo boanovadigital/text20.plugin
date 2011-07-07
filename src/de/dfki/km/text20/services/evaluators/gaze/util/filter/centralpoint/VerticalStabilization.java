@@ -28,7 +28,7 @@ import java.util.Arrays;
  * 
  * Uses the raw x-coordinate but stabilizes the y-coordinate
  * 
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class VerticalStabilization extends CentralPointFilter {

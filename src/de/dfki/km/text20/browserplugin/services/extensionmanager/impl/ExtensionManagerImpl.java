@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.browserplugin.services.extensionmanager.impl;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import net.jcores.interfaces.functions.F1;
+import net.jcores.shared.interfaces.functions.F1;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.PluginLoaded;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.DynamicExtension;
@@ -39,7 +39,7 @@ import de.dfki.km.text20.browserplugin.services.extensionmanager.ExtensionManage
 import de.dfki.km.text20.browserplugin.services.extensionmanager.annotations.ExtensionMethod;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  */
 @PluginImplementation
 public class ExtensionManagerImpl implements ExtensionManager {

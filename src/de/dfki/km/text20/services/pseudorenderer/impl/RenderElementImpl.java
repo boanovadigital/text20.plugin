@@ -35,7 +35,7 @@ import de.dfki.km.text20.services.pseudorenderer.RenderElementMetaAttribute;
 /**
  * Implementation of the RenderElement interface
  *
- * @author rb
+ * @author Ralf Biedert
  */
 public class RenderElementImpl implements RenderElement {
 

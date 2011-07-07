@@ -21,8 +21,13 @@
  */
 package de.dfki.km.text20.services.pseudorenderer.util.elements;
 
-import net.xeoh.plugins.base.util.VanillaUtil;
+import java.awt.Rectangle;
+import java.io.Serializable;
+
+import net.jcores.shared.utils.VanillaUtil;
+import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
+import de.dfki.km.text20.services.pseudorenderer.RenderElementMetaAttribute;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderElement;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
@@ -32,7 +37,8 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderEle
  * @author Ralf Biedert
  * @since 1.0
  */
-public class RenderElementUtil extends VanillaUtil<RenderElement> {
+public class RenderElementUtil extends VanillaUtil<RenderElement> implements RenderElement {
+    
     /**
      * Wraps a render element.
      * 
@@ -55,5 +61,106 @@ public class RenderElementUtil extends VanillaUtil<RenderElement> {
             return ((GraphicalRenderElement) this.object).getSource();
 
         return this.object.toString();
+    }
+
+    /**
+     * @return .
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#getCoordinatesType()
+     */
+    public CoordinatesType getCoordinatesType() {
+        return this.object.getCoordinatesType();
+    }
+
+    /**
+     * @param type
+     * @return .
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#getGeometry(de.dfki.km.text20.services.pseudorenderer.CoordinatesType)
+     */
+    public Rectangle getGeometry(CoordinatesType type) {
+        return this.object.getGeometry(type);
+    }
+
+    /**
+     * @return .
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#getIdentifier()
+     */
+    public String getIdentifier() {
+        return this.object.getIdentifier();
+    }
+
+    /**
+     * @param key
+     * @return .
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#getMetaAttribute(de.dfki.km.text20.services.pseudorenderer.RenderElementMetaAttribute)
+     */
+    public Serializable getMetaAttribute(RenderElementMetaAttribute key) {
+        return this.object.getMetaAttribute(key);
+    }
+
+    /**
+     * @return .
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#getZIndex()
+     */
+    public int getZIndex() {
+        return this.object.getZIndex();
+    }
+
+    /**
+     * @param key
+     * @return .
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#hasMetaAttribute(de.dfki.km.text20.services.pseudorenderer.RenderElementMetaAttribute)
+     */
+    public boolean hasMetaAttribute(RenderElementMetaAttribute key) {
+        return this.object.hasMetaAttribute(key);
+    }
+
+    /**
+     * @return .
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#isVisible()
+     */
+    public boolean isVisible() {
+        return this.object.isVisible();
+    }
+
+    /**
+     * @param rectangle
+     * @param type
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#setGeometry(java.awt.Rectangle, de.dfki.km.text20.services.pseudorenderer.CoordinatesType)
+     */
+    public void setGeometry(Rectangle rectangle, CoordinatesType type) {
+        this.object.setGeometry(rectangle, type);
+    }
+
+    /**
+     * @param id
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#setIdentifier(java.lang.String)
+     */
+    public void setIdentifier(String id) {
+        this.object.setIdentifier(id);
+    }
+
+    /**
+     * @param key
+     * @param value
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#setMetaAttribute(de.dfki.km.text20.services.pseudorenderer.RenderElementMetaAttribute, java.io.Serializable)
+     */
+    public void setMetaAttribute(RenderElementMetaAttribute key, Serializable value) {
+        this.object.setMetaAttribute(key, value);
+    }
+
+    /**
+     * @param visible
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#setVisible(boolean)
+     */
+    public void setVisible(boolean visible) {
+        this.object.setVisible(visible);
+    }
+
+    /**
+     * @param zindex
+     * @see de.dfki.km.text20.services.pseudorenderer.RenderElement#setZIndex(int)
+     */
+    public void setZIndex(int zindex) {
+        this.object.setZIndex(zindex);
     }
 }

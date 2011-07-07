@@ -36,7 +36,7 @@ import de.dfki.km.text20.trackingserver.eyes.remote.TrackingCommand;
 import de.dfki.km.text20.trackingserver.eyes.remote.options.sendcommand.OptionRecalibrationPattern;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestRecalibration {

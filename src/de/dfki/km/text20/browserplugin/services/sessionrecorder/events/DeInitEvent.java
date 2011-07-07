@@ -23,7 +23,7 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder.events;
 
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class DeInitEvent extends AbstractSessionEvent {

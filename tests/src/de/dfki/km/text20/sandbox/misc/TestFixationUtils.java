@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.sandbox.misc;
 
+import static net.jcores.shared.CoreKeeper.$;
+
 import java.awt.Point;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -28,11 +30,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationDummy;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationsUtil;
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestFixationUtils {
@@ -47,12 +49,7 @@ public class TestFixationUtils {
 
         final FixationsUtil fu = new FixationsUtil(fl);
 
-        System.out.println(fu.getAllAngles()[0]);
-        System.out.println(fu.getAllAngles()[1]);        
-        System.out.println(fu.getAllAngles()[2]);
-        
-        System.out.println(fu.getAvgVerticalDeviation());
-
+        $(fu.saccades()).print();
     }
 
     /**
@@ -61,18 +58,6 @@ public class TestFixationUtils {
      * @return .
      */
     public static Fixation f(final int x, final int y) {
-        return new Fixation() {
-
-            @Override
-            public List<EyeTrackingEvent> getTrackingEvents() {
-                // TODO Auto-generated method stub
-                return null;
-            }
-
-            @Override
-            public Point getCenter() {
-                return new Point(x, y);
-            }
-        };
+        return new FixationDummy().simulate(new Point(x, y), 100);
     }
 }

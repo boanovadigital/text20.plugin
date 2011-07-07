@@ -48,7 +48,7 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.replay.O
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.DisplacementRegion;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class SessionReplayImpl implements SessionReplay {

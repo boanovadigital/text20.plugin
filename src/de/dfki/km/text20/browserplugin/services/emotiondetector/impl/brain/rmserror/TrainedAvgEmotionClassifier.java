@@ -69,15 +69,15 @@ public class TrainedAvgEmotionClassifier implements EmotionClassifier {
 
 		for(BrainTrackingEvent e : currEvents){
 
-			double value = e.getValue("channel:smile");
+			double value = e.getReadings()[1];
 			sumSmile += value;
 			cntSmile = (value == 0? cntSmile : cntSmile+1);
 
-			value = e.getValue("channel:furrow");
+			value = e.getReadings()[0];
 			sumFurrow += value;
 			cntFurrow = (value == 0? cntFurrow : cntFurrow+1);
 
-			value = e.getValue("channel:engagement");
+			value = e.getReadings()[4];
 			sumEngagement += value;
 			cntEngagement++;
 		}
@@ -167,9 +167,9 @@ public class TrainedAvgEmotionClassifier implements EmotionClassifier {
 		synchronized (this.events) {
 			cnt = this.events.size();
 			for(BrainTrackingEvent b : this.events){
-				values[0] += b.getValue("channel:furrow");
-				values[1] += b.getValue("channel:smile");
-				values[2] += b.getValue("channel:engagement");
+				values[0] += b.getReadings()[0];
+				values[1] += b.getReadings()[1];
+				values[2] += b.getReadings()[4];
 			}
 			this.events.clear();
 		}

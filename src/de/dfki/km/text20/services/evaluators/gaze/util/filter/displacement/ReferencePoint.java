@@ -25,7 +25,7 @@ import java.awt.Point;
 import java.io.Serializable;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class ReferencePoint implements Serializable {

@@ -27,11 +27,14 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventWrapper;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class DisplacingEyeTrackingEventWrapper extends EyeTrackingEventWrapper {
 
+    /** */
+    private static final long serialVersionUID = -7495619053777400810L;
+    
     private final Point displacement;
 
     /**

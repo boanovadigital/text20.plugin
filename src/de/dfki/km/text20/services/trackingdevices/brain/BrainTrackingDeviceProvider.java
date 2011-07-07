@@ -24,8 +24,7 @@ package de.dfki.km.text20.services.trackingdevices.brain;
 import de.dfki.km.text20.services.trackingdevices.common.TrackingDeviceProvider;
 
 /**
- * @author rb
- *
+ * @author Ralf Biedert
  */
 public interface BrainTrackingDeviceProvider
         extends

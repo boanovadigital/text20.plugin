@@ -31,7 +31,7 @@ import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 
 /**
  * 
- * @author rb
+ * @author Ralf Biedert
  * 
  */
 @PluginImplementation

@@ -29,7 +29,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestZipReplay {

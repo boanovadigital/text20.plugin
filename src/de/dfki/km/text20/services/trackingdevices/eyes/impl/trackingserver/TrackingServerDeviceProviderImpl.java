@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.services.trackingdevices.eyes.impl.trackingserver;
 
+import static net.jcores.shared.CoreKeeper.$;
+
 import java.awt.Point;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -53,7 +55,7 @@ import de.dfki.km.text20.trackingserver.eyes.remote.options.SendCommandOption;
 
 /**
  * 
- * @author rb
+ * @author Ralf Biedert
  * 
  */
 @PluginImplementation
@@ -89,11 +91,10 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
             // Get remote proxy of the server
             final DiagnosisChannelUtil<String> channel = TrackingServerDeviceProviderImpl.this.diagnosis.channel(EyeTrackingDeviceTracer.class);
             channel.status("servertrackingdevice/start", "url", string);
-            
-            channel.status("servertrackingdevice/getregistry");            
-            this.registry = TrackingServerDeviceProviderImpl.this.remoteAPI.getRemoteProxy(new URI(string), TrackingServerRegistry.class);
-            channel.status("servertrackingdevice/getregistry/obtained");            
 
+            channel.status("servertrackingdevice/getregistry");
+            this.registry = TrackingServerDeviceProviderImpl.this.remoteAPI.getRemoteProxy(new URI(string), TrackingServerRegistry.class);
+            channel.status("servertrackingdevice/getregistry/obtained");
 
             if (this.registry == null) {
                 this.isProperlyConnected = false;
@@ -105,9 +106,9 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
             channel.status("servertrackingdevice/getinfo");
             this.deviceInformation = this.registry.getTrackingDeviceInformation();
             channel.status("servertrackingdevice/getinfo/obtained");
-            
+
             this.registry.addTrackingListener(this);
-            
+
             channel.status("servertrackingdevice/end");
         }
 
@@ -270,13 +271,11 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
 
                         // Update the backup value if the current value is in
                         // valid range
-                        if (!(leftEyePos[i] > 0.0f && leftEyePos[i] < 1.0f)) {
+                        if (!(leftEyePos[i] > 0.0f && leftEyePos[i] < 1.0f))
                             leftEyeFound = false;
-                        }
 
-                        if (!(rightEyePos[i] > 0.0f && rightEyePos[i] < 1.0f)) {
+                        if (!(rightEyePos[i] > 0.0f && rightEyePos[i] < 1.0f))
                             rightEyeFound = false;
-                        }
                     }
 
                     // Check if we got both eyes ...
@@ -292,9 +291,8 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                         ServerTrackingDevice.this.last.dateOfRight = e.date;
 
                         // Update rval
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 3; i++)
                             rval[i] = (leftEyePos[i] + rightEyePos[i]) / 2;
-                        }
 
                         // And return
                         return rval;
@@ -303,16 +301,14 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     // In case we have only the left eye ....
                     if (leftEyeFound) {
                         // Update last deltas
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 3; i++)
                             ServerTrackingDevice.this.last.lastLeft[i] = leftEyePos[i];
-                        }
 
                         ServerTrackingDevice.this.last.dateOfLeft = e.date;
 
                         // Update rval
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 3; i++)
                             rval[i] = (leftEyePos[i] + ServerTrackingDevice.this.last.lastDeltas[i] / 2);
-                        }
 
                         // And return
                         return rval;
@@ -321,16 +317,14 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     // Or the right eye ....
                     if (rightEyeFound) {
                         // Update last deltas
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 3; i++)
                             ServerTrackingDevice.this.last.lastRight[i] = rightEyePos[i];
-                        }
 
                         ServerTrackingDevice.this.last.dateOfRight = e.date;
 
                         // Update rval
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 3; i++)
                             rval[i] = (rightEyePos[i] - ServerTrackingDevice.this.last.lastDeltas[i] / 2);
-                        }
 
                         // And return
                         return rval;
@@ -339,14 +333,12 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     // In this case, no eye was found, so we select the latest
                     // position
                     if (ServerTrackingDevice.this.last.dateOfLeft > ServerTrackingDevice.this.last.dateOfRight) {
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 3; i++)
                             rval[i] = (ServerTrackingDevice.this.last.lastLeft[i] - ServerTrackingDevice.this.last.lastDeltas[i] / 2);
-                        }
 
                     } else {
-                        for (int i = 0; i < 3; i++) {
+                        for (int i = 0; i < 3; i++)
                             rval[i] = (ServerTrackingDevice.this.last.lastRight[i] + ServerTrackingDevice.this.last.lastDeltas[i] / 2);
-                        }
                     }
 
                     return rval;
@@ -362,6 +354,9 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     return e.eyeDistances[0];
                 }
 
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent#getLeftEyePosition()
+                 */
                 @Override
                 public float[] getLeftEyePosition() {
                     return e.leftEyePos;
@@ -391,16 +386,25 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     return e.pupilSizeRight;
                 }
 
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent#getRightEyeDistance()
+                 */
                 @Override
                 public float getRightEyeDistance() {
                     return e.eyeDistances[1];
                 }
 
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent#getRightEyePosition()
+                 */
                 @Override
                 public float[] getRightEyePosition() {
-                    return e.rightEyePos;
+                    return $.clone(e.rightEyePos);
                 }
 
+                /* (non-Javadoc)
+                 * @see java.lang.Object#toString()
+                 */
                 @Override
                 public String toString() {
                     final StringBuilder sb = new StringBuilder();
@@ -412,24 +416,36 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                     return sb.toString();
                 }
 
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent#getLeftEyeGazePoint()
+                 */
                 @Override
                 public Point getLeftEyeGazePoint() {
-                    return e.leftGaze;
+                    return $.clone(e.leftGaze);
                 }
 
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent#getLeftEyeGazePosition()
+                 */
                 @Override
                 public float[] getLeftEyeGazePosition() {
-                    return e.gazeLeftPos;
+                    return $.clone(e.gazeLeftPos);
                 }
 
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent#getRightEyeGazePoint()
+                 */
                 @Override
                 public Point getRightEyeGazePoint() {
-                    return e.rightGaze;
+                    return $.clone(e.rightGaze);
                 }
 
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent#getRightEyeGazePosition()
+                 */
                 @Override
                 public float[] getRightEyeGazePosition() {
-                    return e.gazeRightPos;
+                    return $.clone(e.gazeRightPos);
                 }
             };
 

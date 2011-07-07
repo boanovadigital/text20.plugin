@@ -22,7 +22,7 @@
 package de.dfki.km.text20.services.trackingdevices.eyes.impl.trackingserver;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class LastObservations {

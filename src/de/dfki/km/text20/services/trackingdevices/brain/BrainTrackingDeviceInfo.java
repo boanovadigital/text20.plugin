@@ -21,13 +21,20 @@
  */
 package de.dfki.km.text20.services.trackingdevices.brain;
 
+import java.util.List;
+
 import de.dfki.km.text20.services.trackingdevices.common.TrackingDeviceInfo;
 
 /**
  * Various information about tracking devices.
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 public interface BrainTrackingDeviceInfo extends TrackingDeviceInfo {
-    //
+    /**
+     * Returns the channel names of this brain tracking device. 
+     * 
+     * @return A list of names.
+     */
+    public List<String> getChannelNames();
 }

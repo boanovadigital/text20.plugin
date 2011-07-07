@@ -27,7 +27,7 @@ import de.dfki.km.text20.services.pseudorenderer.PseudorendererManager;
 
 /**
  *
- * @author rb
+ * @author Ralf Biedert
  *
  */
 @PluginImplementation

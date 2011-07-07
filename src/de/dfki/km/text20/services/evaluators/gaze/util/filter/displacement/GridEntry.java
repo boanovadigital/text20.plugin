@@ -24,13 +24,13 @@ package de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement;
 /**
  * Manages one grid field.
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 public class GridEntry {
     /**
      * The status of the entry.
      * 
-     * @author rb
+     * @author Ralf Biedert
      */
     public enum GridStatus {
         /** We obtianed a proper displaement in the region */

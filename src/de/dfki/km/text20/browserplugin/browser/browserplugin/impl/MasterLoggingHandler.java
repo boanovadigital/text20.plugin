@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 /**
  * Master logging handler
  *
- * @author rb
+ * @author Ralf Biedert
  */
 public class MasterLoggingHandler {
 

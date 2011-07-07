@@ -82,14 +82,14 @@ public interface SessionRecorder {
      * 
      * @param event The event to put.
      */
-    public void newTrackingEvent(EyeTrackingEvent event);
+    public void eyeTrackingEvent(EyeTrackingEvent event);
 
     /**
      * Puts a new brain tracking event.
      * 
      * @param event The event to put.
      */
-    public void newBrainTrackingEvent(BrainTrackingEvent event);
+    public void brainTrackingEvent(BrainTrackingEvent event);
 
     /**
      * A new listener was added.

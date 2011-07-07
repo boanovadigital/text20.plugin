@@ -26,7 +26,7 @@ import java.awt.Rectangle;
 import org.simpleframework.xml.Element;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class GeometryEvent extends AbstractSessionEvent {

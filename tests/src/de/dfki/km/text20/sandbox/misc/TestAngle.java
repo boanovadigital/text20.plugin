@@ -25,7 +25,7 @@ import java.awt.Point;
 import java.util.HashMap;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestAngle {

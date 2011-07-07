@@ -21,6 +21,8 @@
  */
 package de.dfki.km.text20.services.trackingdevices.eyes.impl.mouse;
 
+import static net.jcores.shared.CoreKeeper.$;
+
 import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.PointerInfo;
@@ -146,7 +148,7 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
 
                 @Override
                 public Point getGazeCenter() {
-                    return p;
+                    return $.clone(p);
                 }
 
                 @Override

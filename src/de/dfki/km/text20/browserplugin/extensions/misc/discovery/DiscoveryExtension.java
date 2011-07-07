@@ -35,7 +35,7 @@ import net.xeoh.plugins.remotediscovery.RemoteDiscovery;
 import de.dfki.km.text20.browserplugin.services.extensionmanager.DynamicExtension;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 @PluginImplementation

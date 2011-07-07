@@ -38,7 +38,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventWrap
 /**
  * Displacement filter, alters the central position based on document information 
  *  
- * @author rb
+ * @author Ralf Biedert
  */
 public class MagneticDisplacementFilter extends AbstractFilter {
 

@@ -29,7 +29,7 @@ import java.util.Arrays;
  * Computes the center of the last n points, it now selects the point of the last n 
  * points which lies closest to that center.
  * 
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class VirtualMedianFilter extends CentralPointFilter {

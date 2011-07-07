@@ -32,7 +32,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventWrap
 /**
  * Collects functions all centralPoint filters use. 
  * 
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public abstract class CentralPointFilter extends AbstractFilter {

@@ -52,7 +52,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceInfo;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  */
 @IsDisabled
 public class SessionRecorderImpl implements SessionRecorder {
@@ -204,7 +204,7 @@ public class SessionRecorderImpl implements SessionRecorder {
      * #newTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent)
      */
     @Override
-    public void newTrackingEvent(final EyeTrackingEvent event) {
+    public void eyeTrackingEvent(final EyeTrackingEvent event) {
         if (this.sessionRecord == null) return;
 
         this.sessionRecord.trackingEvent(event);
@@ -577,7 +577,7 @@ public class SessionRecorderImpl implements SessionRecorder {
      * (de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent)
      */
     @Override
-    public void newBrainTrackingEvent(BrainTrackingEvent event) {
+    public void brainTrackingEvent(BrainTrackingEvent event) {
         this.logger.warning("Not implemented");
     }
 

@@ -33,7 +33,7 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixatio
 import de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener.OptionRequestVersion;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestGazeEvaluator {

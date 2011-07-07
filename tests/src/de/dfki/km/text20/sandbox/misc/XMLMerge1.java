@@ -42,7 +42,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class XMLMerge1 {

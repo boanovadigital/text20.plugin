@@ -30,7 +30,7 @@ import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 /**
  * Base class of all gaze handler
  * 
- * @author rb
+ * @author Ralf Biedert
  * 
  */
 public abstract class AbstractGazeHandler {

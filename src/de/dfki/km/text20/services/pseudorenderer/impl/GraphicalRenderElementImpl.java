@@ -24,7 +24,7 @@ package de.dfki.km.text20.services.pseudorenderer.impl;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.GraphicalRenderElement;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class GraphicalRenderElementImpl extends RenderElementImpl implements

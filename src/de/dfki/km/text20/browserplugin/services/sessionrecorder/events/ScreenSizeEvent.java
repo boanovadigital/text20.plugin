@@ -24,7 +24,7 @@ package de.dfki.km.text20.browserplugin.services.sessionrecorder.events;
 import java.awt.Dimension;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class ScreenSizeEvent extends AbstractSessionEvent {

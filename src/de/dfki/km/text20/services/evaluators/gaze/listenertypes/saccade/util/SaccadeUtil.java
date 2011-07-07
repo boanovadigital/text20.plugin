@@ -22,9 +22,11 @@
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.util;
 
 import java.awt.Point;
+import java.io.Serializable;
 
-import net.xeoh.plugins.base.util.VanillaUtil;
+import net.jcores.shared.utils.VanillaUtil;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationUtil;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.Saccade;
 
 /**
@@ -33,7 +35,10 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.Saccade;
  * @author Ralf Biedert
  * @since 1.0
  */
-public final class SaccadeUtil extends VanillaUtil<Saccade> {
+public final class SaccadeUtil extends VanillaUtil<Saccade> implements Saccade, Cloneable, Serializable {
+
+    /** */
+    private static final long serialVersionUID = -1549243749037784971L;
 
     /**
      * Constructs a new saccade util.
@@ -91,4 +96,20 @@ public final class SaccadeUtil extends VanillaUtil<Saccade> {
         return Math.atan2(c2.getY() - c1.getY(), c2.getX() - c1.getX());
     }
 
+    
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.Saccade#getEnd()
+     */
+    @Override
+    public FixationUtil getEnd() {
+        return new FixationUtil(this.object.getEnd());
+    }
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.Saccade#getStart()
+     */
+    @Override
+    public FixationUtil getStart() {
+        return new FixationUtil(this.object.getEnd());
+    }
 }

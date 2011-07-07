@@ -21,29 +21,18 @@
  */
 package de.dfki.km.text20.services.trackingdevices.brain;
 
-import java.util.Collection;
-
 import de.dfki.km.text20.services.trackingdevices.common.TrackingEvent;
 
 /**
  * Represents a single brain tracking event / measurement.
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 public interface BrainTrackingEvent extends TrackingEvent {
     /**
-     * Returns all channels we have .
+     * Returns all measured values for this brain tracking event. 
      * 
      * @return .
      */
-    public Collection<String> getChannels();
-
-    /**
-     * Returns the value for the given channel
-     * 
-     * @param channel
-     * 
-     * @return .
-     */
-    public double getValue(String channel);
+    public double[] getReadings();
 }

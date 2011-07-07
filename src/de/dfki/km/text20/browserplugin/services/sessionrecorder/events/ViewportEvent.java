@@ -26,7 +26,7 @@ import java.awt.Point;
 import org.simpleframework.xml.Element;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class ViewportEvent extends AbstractSessionEvent {

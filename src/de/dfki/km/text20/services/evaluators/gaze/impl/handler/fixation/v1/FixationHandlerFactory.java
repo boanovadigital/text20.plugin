@@ -39,7 +39,7 @@ import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionG
 import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionGazeEvaluatorPassthrough;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 @Version(version = 10000)

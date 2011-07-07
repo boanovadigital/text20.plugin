@@ -33,7 +33,7 @@ import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandl
 
 /**
  *
- * @author rb
+ * @author Ralf Biedert
  */
 public class SaccadeHandler extends AbstractGazeHandler<SaccadeEvent, SaccadeListener> {
 

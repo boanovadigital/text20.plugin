@@ -24,7 +24,7 @@ package de.dfki.km.text20.sandbox.misc;
 import de.dfki.km.text20.services.pseudorenderer.util.elements.TextualRenderElementCharPositions;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestChars {

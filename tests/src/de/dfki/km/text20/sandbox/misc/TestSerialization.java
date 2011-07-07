@@ -30,7 +30,7 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.AbstractS
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.plainxml.SessionRecordImpl;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestSerialization {

@@ -27,7 +27,10 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util;
 
+import static net.jcores.shared.CoreKeeper.$;
+
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +45,10 @@ import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventDumm
  * @author Ralf Biedert
  * @since 1.4
  */
-public class FixationDummy implements Fixation {
+public class FixationDummy implements Fixation, Cloneable, Serializable {
+    /** */
+    private static final long serialVersionUID = 1155113877622191307L;
+
     /** The assumed standard eye tracking rate for simulated events */
     public static final double DEFAULT_TRACKING_RATE = 60.0;
 
@@ -92,7 +98,7 @@ public class FixationDummy implements Fixation {
      */
     @Override
     public Point getCenter() {
-        return this.center;
+        return $.clone(this.center);
     }
 
     /*
@@ -102,7 +108,7 @@ public class FixationDummy implements Fixation {
      */
     @Override
     public List<EyeTrackingEvent> getTrackingEvents() {
-        return this.events;
+        return new ArrayList<EyeTrackingEvent>(this.events);
     }
 
     /*

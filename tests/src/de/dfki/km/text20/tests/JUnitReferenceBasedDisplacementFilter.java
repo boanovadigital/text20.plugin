@@ -30,7 +30,7 @@ import org.junit.Test;
 import de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement.ReferenceBasedDisplacementFilter;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class JUnitReferenceBasedDisplacementFilter {

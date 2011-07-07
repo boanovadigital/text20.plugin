@@ -44,7 +44,7 @@ import de.dfki.km.text20.browserplugin.services.extensionmanager.DynamicExtensio
 
 /**
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 @PluginImplementation
 public class SpeechIOExtension implements DynamicExtension {

@@ -52,7 +52,7 @@ public class TrainingModel {
             int cnt = 0;
             synchronized (this.events) {
                 for (BrainTrackingEvent e : this.events) {
-                    double value = e.getValue("channel:smile");
+                    double value = e.getReadings()[1];
                     if (value != 0) {
                         sum += value;
                         cnt++;
@@ -72,7 +72,7 @@ public class TrainingModel {
             int cnt = 0;
             synchronized (this.events) {
                 for (BrainTrackingEvent e : this.events) {
-                    double value = e.getValue("channel:furrow");
+                    double value = e.getReadings()[0];
                     if (value != 0) {
                         sum += value;
                         cnt++;
@@ -91,7 +91,7 @@ public class TrainingModel {
             double sum = 0;
             synchronized (this.events) {
                 for (BrainTrackingEvent e : this.events) {
-                    sum += e.getValue("channel:engagement");
+                    sum += e.getReadings()[4];
                 }
 
                 if (this.events.size() == 0) return;
@@ -110,9 +110,9 @@ public class TrainingModel {
         synchronized (this.events) {
             cnt = this.events.size();
             for (BrainTrackingEvent e : this.events) {
-                values[0] += e.getValue("channel:furrow");
-                values[1] += e.getValue("channel:smile");
-                values[2] += e.getValue("channel:engagement");
+                values[0] += e.getReadings()[0];
+                values[1] += e.getReadings()[1];
+                values[2] += e.getReadings()[4];
             }
 
             this.events.clear();
