@@ -30,7 +30,7 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorderManager;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestFrameworkManager {

@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.browserplugin.browser.browserplugin.impl;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 import java.applet.Applet;
 import java.applet.AppletContext;
@@ -41,7 +41,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.jcores.interfaces.functions.F1;
+import net.jcores.shared.interfaces.functions.F1;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.util.JSPFProperties;
 import net.xeoh.plugins.diagnosis.local.Diagnosis;
@@ -406,7 +406,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         props.setProperty(UpdateCheck.class, "update.url", "http://api.text20.net/common/versioncheck/");
         props.setProperty(UpdateCheck.class, "update.enabled", this.updatecheck);
         props.setProperty(UpdateCheck.class, "product.name", "text20.plugin");
-        props.setProperty(UpdateCheck.class, "product.version", "1.4"); // TODO: Get this
+        props.setProperty(UpdateCheck.class, "product.version", "1.4.1"); // TODO: Get this
                                                                         // version number
                                                                         // from a better
                                                                         // place!
@@ -633,7 +633,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
         this.eyeTrackingDevice.addTrackingListener(new EyeTrackingListener() {
             @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
-                BrowserPluginImpl.this.sessionRecorder.newTrackingEvent(event);
+                BrowserPluginImpl.this.sessionRecorder.eyeTrackingEvent(event);
             }
         });
 
@@ -652,7 +652,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
                     @Override
                     public void newTrackingEvent(BrainTrackingEvent event) {
-                        BrowserPluginImpl.this.sessionRecorder.newBrainTrackingEvent(event);
+                        BrowserPluginImpl.this.sessionRecorder.brainTrackingEvent(event);
                     }
                 });
             } else {

@@ -34,7 +34,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 import de.dfki.km.text20.trackingserver.eyes.remote.TrackingCommand;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestTrackingClient {

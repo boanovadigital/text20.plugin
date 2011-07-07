@@ -29,7 +29,7 @@ import org.simpleframework.xml.transform.Matcher;
 import org.simpleframework.xml.transform.Transform;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class XMLTransformationMatcher implements Matcher {

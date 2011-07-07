@@ -27,7 +27,7 @@ import org.simpleframework.xml.Element;
 
 /**
  *
- * @author rb
+ * @author Ralf Biedert
  */
 public abstract class AbstractSessionEvent implements Serializable, SessionEvent {
     /** */

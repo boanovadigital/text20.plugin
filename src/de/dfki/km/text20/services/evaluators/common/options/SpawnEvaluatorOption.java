@@ -24,7 +24,7 @@ package de.dfki.km.text20.services.evaluators.common.options;
 import net.xeoh.plugins.base.Option;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public interface SpawnEvaluatorOption extends Option {

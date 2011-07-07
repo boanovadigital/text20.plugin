@@ -31,7 +31,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
 /**
  *
  *
- * @author rb
+ * @author Ralf Biedert
  */
 public class EyeTrackingEventContainer extends AbstractSessionEvent implements EyeTrackingEvent {
 

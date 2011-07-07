@@ -33,7 +33,7 @@ import de.dfki.km.augmentedtext.services.speech.recognition.SpeechRecognizer;
 import de.dfki.km.augmentedtext.services.speech.synthesis.SpeechSynthesis;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestSpeechRecognition {

@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.browserplugin.services.devicemanager.impl;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 import java.util.Timer;
 import java.util.TimerTask;

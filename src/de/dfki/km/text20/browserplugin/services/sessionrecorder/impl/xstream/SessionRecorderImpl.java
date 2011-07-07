@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.AWTException;
 import java.awt.Dimension;
@@ -40,8 +40,8 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import net.jcores.interfaces.functions.F0;
-import net.jcores.options.Option;
+import net.jcores.shared.interfaces.functions.F0;
+import net.jcores.shared.options.Option;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.informationbroker.InformationBroker;
 import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
@@ -192,7 +192,7 @@ public class SessionRecorderImpl implements SessionRecorder {
      * .trackingdevices.eyes.EyeTrackingEvent)
      */
     @Override
-    public void newTrackingEvent(final EyeTrackingEvent event) {
+    public void eyeTrackingEvent(final EyeTrackingEvent event) {
         if (this.sessionStreamer == null) return;
         this.sessionStreamer.trackingEvent(event);
     }
@@ -269,7 +269,7 @@ public class SessionRecorderImpl implements SessionRecorder {
 
         // Obtain the session dir (should have been set by now)
         // Return the session dir
-        this.sessionDir = new InformationBrokerUtil(this.infoBroker).get(SessionDirectoryItem.class, $.tempfile().getAbsolutePath() + ".dir");
+        this.sessionDir = new InformationBrokerUtil(this.infoBroker).get(SessionDirectoryItem.class, $.sys.tempfile().getAbsolutePath() + ".dir");
 
         // Create sessiondir
         new File(this.sessionDir).mkdirs();
@@ -409,7 +409,7 @@ public class SessionRecorderImpl implements SessionRecorder {
             final File target = new File(this.sessionDir + "/" + "image." + $(content).string().bytes().hash(Option.HASH_MD5).get(0) + "." + $(content).split("\\.").get(-1));
             if(!target.exists()) {
                 // If we hadn't, then run in the background 
-                $.oneTime(new F0() {
+                $.sys.oneTime(new F0() {
                     @Override
                     public void f() {
                         // Download the image and copy it to a file in the session directory
@@ -587,7 +587,7 @@ public class SessionRecorderImpl implements SessionRecorder {
      * .services.trackingdevices.brain.BrainTrackingEvent)
      */
     @Override
-    public void newBrainTrackingEvent(BrainTrackingEvent event) {
+    public void brainTrackingEvent(BrainTrackingEvent event) {
         if (this.sessionStreamer == null) return;
 
         this.sessionStreamer.brainTrackingEvent(event);

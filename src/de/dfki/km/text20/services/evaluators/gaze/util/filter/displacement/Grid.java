@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * Reflects a displacement-grid. 
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 public class Grid {
 

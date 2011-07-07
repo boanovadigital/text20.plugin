@@ -39,7 +39,7 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderEle
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class ReadingHandlerOld extends AbstractGazeHandler {

@@ -32,7 +32,7 @@ import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingListener;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestSimpleBrainTracker {

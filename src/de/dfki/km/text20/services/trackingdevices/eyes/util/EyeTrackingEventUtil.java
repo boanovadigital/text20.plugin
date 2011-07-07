@@ -35,17 +35,17 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
  * 
  * @author Ralf Biedert
  */
-public class EyeTrackingEventUtil {
-    /** Wrapped event */
-    private final EyeTrackingEvent event;
-
+public class EyeTrackingEventUtil extends EyeTrackingEventWrapper {
+    /** */
+    private static final long serialVersionUID = -8261807045932948423L;
+    
     /**
      * Creates a new gaze event util.
      * 
      * @param event The element to wrap.
      */
     public EyeTrackingEventUtil(EyeTrackingEvent event) {
-        this.event = event;
+        super(event);
     }
 
     /**
@@ -54,7 +54,7 @@ public class EyeTrackingEventUtil {
      * @return True if both eyes were invisible
      */
     public boolean bothInvisible() {
-        return !this.event.areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID) ||
-                this.event.getGazeCenter() == null || (this.event.getGazeCenter().x < 0 && this.event.getGazeCenter().y < 0);
+        return !this.originalEvent.areValid(EyeTrackingEventValidity.CENTER_POSITION_VALID) ||
+                this.originalEvent.getGazeCenter() == null || (this.originalEvent.getGazeCenter().x < 0 && this.originalEvent.getGazeCenter().y < 0);
     }
 }

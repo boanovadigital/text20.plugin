@@ -30,7 +30,7 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawDataListe
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class HeadPositionHandler extends AbstractGazeHandler {

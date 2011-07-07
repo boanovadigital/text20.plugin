@@ -22,6 +22,7 @@
 package de.dfki.km.text20.services.trackingdevices.eyes.util;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
@@ -29,10 +30,14 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
 /**
  * Wraps tracking events and allows changing of its values.
  *
- * @author rb
+ * @author Ralf Biedert
  */
-public class EyeTrackingEventWrapper implements EyeTrackingEvent {
+public class EyeTrackingEventWrapper implements EyeTrackingEvent, Cloneable, Serializable {
 
+    /** */
+    private static final long serialVersionUID = -7707604144145893939L;
+    
+    /** The original event */
     final protected EyeTrackingEvent originalEvent;
 
     /**
@@ -62,7 +67,7 @@ public class EyeTrackingEventWrapper implements EyeTrackingEvent {
      */
     @Override
     public Point getGazeCenter() {
-        return (Point) this.originalEvent.getGazeCenter().clone();
+        return this.originalEvent.getGazeCenter();
     }
 
     /* (non-Javadoc)

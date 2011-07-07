@@ -24,7 +24,7 @@ package de.dfki.km.text20.services.evaluators.gaze.util.filter.displacement;
 import java.awt.Point;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public interface Displacer {

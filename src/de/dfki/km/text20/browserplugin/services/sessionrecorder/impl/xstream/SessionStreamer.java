@@ -54,12 +54,14 @@ import org.simpleframework.xml.Root;
 import com.thoughtworks.xstream.XStream;
 
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.AbstractSessionEvent;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.BrainTrackingDeviceInformationContainer;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.BrainTrackingEventContainer;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.CallFunctionEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.DeInitEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ElementGeometryEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ElementMetaInformation;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ExecuteJSEvent;
+import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.EyeTrackingDeviceInformationContainer;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.EyeTrackingEventContainer;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.GeometryEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.GetPreferenceEvent;
@@ -125,7 +127,9 @@ public class SessionStreamer implements Serializable {
         xstream.alias("RemoveListenerEvent", RemoveListenerEvent.class);
         xstream.alias("SetPreferenceEvent", SetPreferenceEvent.class);
         xstream.alias("EyeTrackingEventContainer", EyeTrackingEventContainer.class);
+        xstream.alias("EyeTrackingDeviceInformationContainer", EyeTrackingDeviceInformationContainer.class);
         xstream.alias("BrainTrackingEventContainer", BrainTrackingEventContainer.class);
+        xstream.alias("BrainTrackingDeviceInformationContainer", BrainTrackingDeviceInformationContainer.class);
         xstream.alias("UpdateElementFlagEvent", UpdateElementFlagEvent.class);
         xstream.alias("DisplacementRegion", DisplacementRegion.class);
         xstream.alias("ScreenSizeEvent", ScreenSizeEvent.class);

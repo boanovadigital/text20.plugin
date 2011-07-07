@@ -50,7 +50,7 @@ public class UserTrainingModel {
 	/** Adds and event to the emotion being trained */
 	public void addEvent(BrainTrackingEvent event){
 		synchronized(this.trainingValues){
-			double[] values = {event.getValue("channel:furrow"), event.getValue("channel:smile"), event.getValue("channel:laugh"), event.getValue("channel:engagement")};
+			double[] values = {event.getReadings()[0], event.getReadings()[1], event.getReadings()[2], event.getReadings()[4]};
 			this.trainingValues.add(values);
 		}
 	}

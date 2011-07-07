@@ -31,7 +31,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventWrapper;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class FixationFilter extends AbstractFilter {

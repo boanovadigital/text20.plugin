@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.sandbox.misc;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 import java.net.URISyntaxException;
 import java.util.logging.Logger;

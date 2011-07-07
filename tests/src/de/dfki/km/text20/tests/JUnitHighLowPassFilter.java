@@ -33,7 +33,7 @@ import de.dfki.km.text20.services.evaluators.gaze.util.filter.etufilters.HighPas
 import de.dfki.km.text20.services.evaluators.gaze.util.filter.etufilters.LowPassFilter;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  */
 public class JUnitHighLowPassFilter {
     List<Point2D.Double> dest = new ArrayList<Point2D.Double>();

@@ -52,7 +52,7 @@ public class SimplePeakEmotionClassifier implements EmotionClassifier {
 	    	double sum = 0;
 	    	double avg = 0;
 	    	for(BrainTrackingEvent b : currEvents){
-	    		sum += b.getValue("channel:engagement");
+	    		sum += b.getReadings()[4];
 	    	}
 	    	avg = sum / currEvents.size();
 
@@ -67,13 +67,13 @@ public class SimplePeakEmotionClassifier implements EmotionClassifier {
 	    	double peakSmile = 0;
 
 	    	for(BrainTrackingEvent b : currEvents){
-	    		if(b.getValue("channel:furrow") >= 0.2){
+	    		if(b.getReadings()[0] >= 0.2){
 	    			doubt = true;
-	    			peakFurrow = b.getValue("channel:furrow") > peakFurrow ? b.getValue("channel:furrow") : peakFurrow;
+	    			peakFurrow = b.getReadings()[0] > peakFurrow ? b.getReadings()[0] : peakFurrow;
 	    		}
-	    		else if(b.getValue("channel:smile") >= 0.8){
+	    		else if(b.getReadings()[1] >= 0.8){
 	    			happy = true;
-	    			peakSmile = b.getValue("channel:smile") > peakSmile ? b.getValue("channel:smile") : peakSmile;
+	    			peakSmile = b.getReadings()[1] > peakSmile ? b.getReadings()[1] : peakSmile;
 	    		}
 	    	}
 

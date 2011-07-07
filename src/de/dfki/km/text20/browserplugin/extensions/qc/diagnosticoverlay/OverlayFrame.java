@@ -27,7 +27,7 @@
  */
 package de.dfki.km.text20.browserplugin.extensions.qc.diagnosticoverlay;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -43,7 +43,7 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
-import net.jcores.interfaces.java.KeyStroke;
+import net.jcores.shared.interfaces.java.KeyStroke;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventDummy;

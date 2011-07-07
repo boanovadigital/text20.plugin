@@ -25,7 +25,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementArray;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class ExecuteJSEvent extends AbstractSessionEvent {

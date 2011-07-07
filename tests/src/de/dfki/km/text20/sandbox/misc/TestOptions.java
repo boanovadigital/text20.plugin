@@ -21,13 +21,13 @@
  */
 package de.dfki.km.text20.sandbox.misc;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  * 
  */
 public class TestOptions {

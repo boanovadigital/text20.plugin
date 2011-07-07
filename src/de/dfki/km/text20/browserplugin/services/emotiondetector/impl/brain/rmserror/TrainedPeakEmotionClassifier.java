@@ -73,7 +73,7 @@ public class TrainedPeakEmotionClassifier implements EmotionClassifier {
     	double sum = 0;
     	double avg = 0;
     	for(BrainTrackingEvent b : currEvents){
-    		sum += b.getValue("channel:engagement");
+    		sum += b.getReadings()[4];
     	}
     	avg = sum / currEvents.size();
 
@@ -93,13 +93,13 @@ public class TrainedPeakEmotionClassifier implements EmotionClassifier {
     	double peakSmile = 0;
 
     	for(BrainTrackingEvent b : currEvents){
-    		if(b.getValue("channel:furrow") >= thresholdDoubt){
+    		if(b.getReadings()[0] >= thresholdDoubt){
     			doubt = true;
-    			peakFurrow = b.getValue("channel:furrow") > peakFurrow ? b.getValue("channel:furrow") : peakFurrow;
+    			peakFurrow = b.getReadings()[0] > peakFurrow ? b.getReadings()[0] : peakFurrow;
     		}
-    		else if(b.getValue("channel:smile") >= thresholdHappy)
+    		else if(b.getReadings()[1] >= thresholdHappy)
     				happy = true;
-    				peakSmile = b.getValue("channel:smile") > peakSmile ? b.getValue("channel:smile") : peakSmile;
+    				peakSmile = b.getReadings()[1] > peakSmile ? b.getReadings()[1] : peakSmile;
     	}
 
     	// return by priorities (bored > doubt > interested > happy)
@@ -139,7 +139,7 @@ public class TrainedPeakEmotionClassifier implements EmotionClassifier {
     	double sum = 0;
     	double avg = 0;
     	for(BrainTrackingEvent b : currEvents){
-    		sum += b.getValue("channel:engagement");
+    		sum += b.getReadings()[4];
     	}
     	avg = sum / currEvents.size();
 
@@ -161,13 +161,13 @@ public class TrainedPeakEmotionClassifier implements EmotionClassifier {
     	double peakSmile = 0;
 
     	for(BrainTrackingEvent b : currEvents){
-    		if(b.getValue("channel:furrow") >= thresholdDoubtTrained){
+    		if(b.getReadings()[0] >= thresholdDoubtTrained){
     			doubtTrained = true;
-    			peakFurrow = b.getValue("channel:furrow") > peakFurrow ? b.getValue("channel:furrow") : peakFurrow;
+    			peakFurrow = b.getReadings()[0] > peakFurrow ? b.getReadings()[0] : peakFurrow;
     		}
-    		else if(b.getValue("channel:smile") >= thresholdHappyTrained || b.getValue("channel:laugh") >= thresholdHappyTrained){
+    		else if(b.getReadings()[1] >= thresholdHappyTrained || b.getReadings()[2] >= thresholdHappyTrained){
     				happyTrained = true;
-    				peakSmile = b.getValue("channel:smile") > peakSmile ? b.getValue("channel:smile") : (b.getValue("channel:laugh") > peakSmile? b.getValue("channel:laugh") : peakSmile) ;
+    				peakSmile = b.getReadings()[1] > peakSmile ? b.getReadings()[1] : (b.getReadings()[2] > peakSmile? b.getReadings()[2] : peakSmile) ;
     			}
     	}
 
@@ -192,10 +192,10 @@ public class TrainedPeakEmotionClassifier implements EmotionClassifier {
 
     	// doubt or happy (have peaks)
     	for(BrainTrackingEvent b : currEvents){
-    		if(b.getValue("channel:furrow") >= 0.2){
+    		if(b.getReadings()[0] >= 0.2){
     			doubtSimple = true;
     		}
-    		else if(b.getValue("channel:smile") >= 0.8 || b.getValue("channel:laugh") >= 0.8 ){
+    		else if(b.getReadings()[1] >= 0.8 || b.getReadings()[2] >= 0.8 ){
     			happySimple = true;
     		}
     	}
@@ -236,9 +236,9 @@ public class TrainedPeakEmotionClassifier implements EmotionClassifier {
 		synchronized (this.events) {
 			cnt = this.events.size();
 			for(BrainTrackingEvent b : this.events){
-				values[0] += b.getValue("channel:furrow");
-				values[1] += b.getValue("channel:smile");
-				values[2] += b.getValue("channel:engagement");
+				values[0] += b.getReadings()[0];
+				values[1] += b.getReadings()[1];
+				values[2] += b.getReadings()[4];
 			}
 			this.events.clear();
 		}

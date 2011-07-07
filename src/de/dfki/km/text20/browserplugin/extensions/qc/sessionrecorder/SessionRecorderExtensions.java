@@ -32,7 +32,7 @@ import de.dfki.km.text20.browserplugin.services.extensionmanager.annotations.Ext
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionRecorder;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  * 
  */
 @PluginImplementation

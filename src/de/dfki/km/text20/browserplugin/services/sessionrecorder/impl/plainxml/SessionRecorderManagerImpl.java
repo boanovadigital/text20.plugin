@@ -36,7 +36,7 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.SessionReplay;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.options.CreateRecorderOption;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 //@IsDisabled

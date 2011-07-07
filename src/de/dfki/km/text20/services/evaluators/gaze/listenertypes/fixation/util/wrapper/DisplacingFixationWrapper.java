@@ -27,6 +27,7 @@ import java.util.List;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationWrapper;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.eyes.util.DisplacingEyeTrackingEventWrapper;
 
 /**
  * Displaces a {@link Fixation}.
@@ -35,7 +36,10 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @since 1.0
  */
 public class DisplacingFixationWrapper extends FixationWrapper {
-
+    /** */
+    private static final long serialVersionUID = 4962741971338987618L;
+    
+    /** The displacement to apply */
     private final Point displacement;
 
     /**
@@ -55,7 +59,7 @@ public class DisplacingFixationWrapper extends FixationWrapper {
      */
     @Override
     public Point getCenter() {
-        final Point center = this.originalFixation.getCenter();
+        final Point center = super.getCenter();
         center.x += this.displacement.x;
         center.y += this.displacement.y;
         return center;
@@ -66,7 +70,6 @@ public class DisplacingFixationWrapper extends FixationWrapper {
      */
     @Override
     public List<EyeTrackingEvent> getTrackingEvents() {
-        // TODO: The individual events should be wrapped as well ... However, what to do with the relative view positions?
-        return this.originalFixation.getTrackingEvents();
+        return DisplacingEyeTrackingEventWrapper.displace(this.displacement, super.getTrackingEvents());
     }
 }

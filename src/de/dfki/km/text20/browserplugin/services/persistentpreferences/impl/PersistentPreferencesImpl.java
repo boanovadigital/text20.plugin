@@ -30,7 +30,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 import de.dfki.km.text20.browserplugin.services.persistentpreferences.PersistentPreferences;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  */
 @PluginImplementation
 public class PersistentPreferencesImpl implements PersistentPreferences {

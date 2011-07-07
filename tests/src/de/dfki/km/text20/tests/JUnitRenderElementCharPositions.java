@@ -34,7 +34,7 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderEle
 import de.dfki.km.text20.services.pseudorenderer.util.elements.TextualRenderElementCharPositions;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class JUnitRenderElementCharPositions {

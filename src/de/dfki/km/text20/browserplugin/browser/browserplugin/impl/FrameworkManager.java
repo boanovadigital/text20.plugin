@@ -54,7 +54,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.impl.trackingserver.Track
 
 /**
  * 
- * @author rb
+ * @author Ralf Biedert
  * 
  */
 public class FrameworkManager {

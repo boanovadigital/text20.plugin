@@ -22,7 +22,7 @@
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.events;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class PropertyEvent extends AbstractSessionEvent {

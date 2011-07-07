@@ -36,7 +36,7 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.AbstractS
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.SessionStreamer;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class TestSerializationStream {

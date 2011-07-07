@@ -56,15 +56,15 @@ public class SimpleAvgEmotionClassifier implements EmotionClassifier {
 
 	    	for(BrainTrackingEvent e : currEvents){
 
-				double value = e.getValue("channel:smile");
+				double value = e.getReadings()[1];
 				sumSmile += value;
 				cntSmile = (value == 0? cntSmile : cntSmile+1);
 
-				value = e.getValue("channel:furrow");
+				value = e.getReadings()[0];
 				sumFurrow += value;
 				cntFurrow = (value == 0? cntFurrow : cntFurrow+1);
 
-				value = e.getValue("channel:engagement");
+				value = e.getReadings()[4];
 				sumEngagement += value;
 				cntEngagement++;
 			}

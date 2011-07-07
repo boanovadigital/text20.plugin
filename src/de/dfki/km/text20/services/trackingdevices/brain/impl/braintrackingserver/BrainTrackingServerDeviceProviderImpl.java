@@ -21,10 +21,11 @@
  */
 package de.dfki.km.text20.services.trackingdevices.brain.impl.braintrackingserver;
 
+import static net.jcores.jre.CoreKeeper.$;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -48,7 +49,7 @@ import de.dfki.km.text20.trackingserver.brain.remote.TrackingServerRegistry;
 
 /**
  *
- * @author rb
+ * @author Ralf Biedert
  *
  */
 @PluginImplementation
@@ -72,6 +73,9 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
         /** */
         final TrackingServerRegistry registry;
 
+        /** A list with all channel names the device offers */
+        List<String> channelNames;
+
         /**
          * @param string
          * @throws URISyntaxException
@@ -92,6 +96,7 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
 
             BrainTrackingServerDeviceProviderImpl.this.logger.fine("Obtaining device information. In case LipeRMI is still broken this may lock up ...");
             this.deviceInformation = this.registry.getTrackingDeviceInformation();
+            this.channelNames = $(ServerTrackingDevice.this.deviceInformation.channelNames).list();
             BrainTrackingServerDeviceProviderImpl.this.logger.fine("Device information obtained.");
 
             this.registry.addTrackingListener(this);
@@ -127,6 +132,9 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
         public BrainTrackingDeviceInfo getDeviceInfo() {
             return new BrainTrackingDeviceInfo() {
 
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.common.TrackingDeviceInfo#getInfo(java.lang.String)
+                 */
                 @Override
                 public String getInfo(final String key) {
                     if (ServerTrackingDevice.this.deviceInformation == null) return null;
@@ -141,15 +149,20 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
                     return null;
                 }
 
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.common.TrackingDeviceInfo#getKeys()
+                 */
                 @Override
                 public String[] getKeys() {
                     return new String[] { "DEVICE_NAME", "HARDWARE_ID", "DEVICE_MANUFACTURER" };
                 }
 
-                @SuppressWarnings("unused")
-                public int getTrackingEventRate() {
-                    // TODO Auto-generated method stub
-                    return 0;
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDeviceInfo#getChannelNames()
+                 */
+                @Override
+                public List<String> getChannelNames() {
+                    return ServerTrackingDevice.this.channelNames;
                 }
             };
         }
@@ -185,20 +198,11 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
                 }
 
                 /* (non-Javadoc)
-                 * @see de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent#getChannels()
+                 * @see de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent#getValues()
                  */
                 @Override
-                public Collection<String> getChannels() {
-                    return e.channels.keySet();
-                }
-
-                /* (non-Javadoc)
-                 * @see de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent#getValue(java.lang.String)
-                 */
-                @SuppressWarnings("boxing")
-                @Override
-                public double getValue(String channel) {
-                    return e.channels.get(channel);
+                public double[] getReadings() {
+                    return e.deviceReadings;
                 }
             };
 

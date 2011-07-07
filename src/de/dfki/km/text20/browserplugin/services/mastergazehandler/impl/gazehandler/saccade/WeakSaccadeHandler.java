@@ -33,7 +33,7 @@ import de.dfki.km.text20.services.pseudorenderer.PseudorendererStatus;
 /**
  *
  *
- * @author rb
+ * @author Ralf Biedert
  */
 public class WeakSaccadeHandler extends AbstractGazeHandler {
 

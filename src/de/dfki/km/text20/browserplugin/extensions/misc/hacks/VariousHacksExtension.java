@@ -42,7 +42,7 @@ import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  * 
  */
 @PluginImplementation

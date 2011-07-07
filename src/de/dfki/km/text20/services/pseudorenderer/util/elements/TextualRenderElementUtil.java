@@ -29,11 +29,41 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderEle
  * @author Ralf Biedert
  * @since 1.4
  */
-public class TextualRenderElementUtil extends RenderElementUtil {
+public class TextualRenderElementUtil extends RenderElementUtil implements TextualRenderElement {
     /**
      * @param renderElement
      */
     public TextualRenderElementUtil(TextualRenderElement renderElement) {
         super(renderElement);
+    }
+
+    @Override
+    public String getContent() {
+        return cast(TextualRenderElement.class).getContent();
+    }
+
+    @Override
+    public void setContent(String content) {
+        cast(TextualRenderElement.class).setContent(content);
+    }
+
+    @Override
+    public int getWordID() {
+        return cast(TextualRenderElement.class).getWordID();
+    }
+
+    @Override
+    public void setWordID(int id) {
+        cast(TextualRenderElement.class).setWordID(id);
+    }
+
+    @Override
+    public void setTextID(int id) {
+        cast(TextualRenderElement.class).setTextID(id);
+    }
+
+    @Override
+    public int getTextID() {
+        return cast(TextualRenderElement.class).getTextID();        
     }
 }

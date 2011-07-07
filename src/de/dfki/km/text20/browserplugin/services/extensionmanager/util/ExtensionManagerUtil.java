@@ -27,7 +27,7 @@
  */
 package de.dfki.km.text20.browserplugin.services.extensionmanager.util;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 import java.util.List;
 

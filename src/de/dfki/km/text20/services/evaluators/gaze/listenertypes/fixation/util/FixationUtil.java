@@ -21,13 +21,15 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import net.xeoh.plugins.base.util.VanillaUtil;
+import net.jcores.shared.interfaces.functions.F1;
+import net.jcores.shared.utils.VanillaUtil;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
@@ -37,8 +39,27 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author Ralf Biedert
  * @since 1.0
  */
-public final class FixationUtil extends VanillaUtil<Fixation> {
+public final class FixationUtil extends VanillaUtil<Fixation> implements Fixation, Cloneable, Serializable {
+    /** jCores Function to get the center of a fixation */
+    public static F1<Fixation, Point> fCenter = new F1<Fixation, Point>() {
+        @Override
+        public Point f(Fixation x) {
+            return x.getCenter();
+        }
+    };
+    
+    /** jCores Function to get the tracking events of a fixation */
+    public static F1<Fixation, List<EyeTrackingEvent>> fEvents = new F1<Fixation, List<EyeTrackingEvent>>() {
+        @Override
+        public List<EyeTrackingEvent> f(Fixation x) {
+            return x.getTrackingEvents();
+        }
+    };
 
+    
+    /** */
+    private static final long serialVersionUID = 6821731469615255876L;
+    
     /** Tracking events */
     private final List<EyeTrackingEvent> trackingEvents;
 
@@ -49,7 +70,12 @@ public final class FixationUtil extends VanillaUtil<Fixation> {
      */
     public FixationUtil(final Fixation fixation) {
         super(fixation);
-        this.trackingEvents = $(fixation.getTrackingEvents()).list();
+        
+        if(fixation == null) {
+            this.trackingEvents = $.list();
+        } else {
+            this.trackingEvents = $(fixation.getTrackingEvents()).list();
+        }
     }
 
     /**
@@ -121,5 +147,58 @@ public final class FixationUtil extends VanillaUtil<Fixation> {
         if (this.trackingEvents.size() == 0) return null;
 
         return new Date(this.trackingEvents.get(0).getEventTime());
+    }
+    
+
+    /**
+     * Returns the similarity between two fixations, a value between 0 and 1. Fixations are similar
+     * when they had a similar length and were at a similar position. Similarity is computed
+     * relative to the given spatial and temporal scale. 
+     *   
+     *   
+     * @param fixation The fixation to compare the current with.
+     * @param dSpacial The spacial scale. I.e., when the scale is 50px, then 25px delta are treated as 0.5.
+     * @param dTemporal The temporal scale.
+     * 
+     * 
+     * @return A similarity value between 0 and 1.
+     */
+    public double similarity(Fixation fixation, double dSpacial, double dTemporal) {
+        long da = this.getFixationDuration();
+        long db = new FixationUtil(fixation).getFixationDuration();
+        
+        double delta = Math.abs(da - db);
+        double dist = getCenter().distance(fixation.getCenter());
+        
+        double dtmp = $.alg.limit(0.0, 1 - (delta / dTemporal), 1.0);
+        double ddist = $.alg.limit(0.0, 1 - (dist / dSpacial), 1.0);
+        
+        return (dtmp + ddist) / 2;
+    }
+     
+    
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation#getCenter()
+     */
+    @Override
+    public Point getCenter() {
+       return this.object.getCenter();
+    }
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation#getTrackingEvents()
+     */
+    @Override
+    public List<EyeTrackingEvent> getTrackingEvents() {
+        return this.object.getTrackingEvents();
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "Fixation(" + getCenter().x + "/" + getCenter().y + ", @"  + this.trackingEvents.size() +")"; 
     }
 }

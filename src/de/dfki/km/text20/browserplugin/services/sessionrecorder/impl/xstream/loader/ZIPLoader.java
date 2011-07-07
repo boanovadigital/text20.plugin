@@ -30,7 +30,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class ZIPLoader extends AbstractLoader {

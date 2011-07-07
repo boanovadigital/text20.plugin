@@ -24,7 +24,7 @@ package de.dfki.km.text20.services.evaluators.gaze.util.filter.centralpoint;
 import java.awt.Point;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  */
 public class SmoothingFilter extends CentralPointFilter {
 

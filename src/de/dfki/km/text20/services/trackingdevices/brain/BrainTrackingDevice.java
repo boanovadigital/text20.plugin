@@ -26,7 +26,7 @@ import de.dfki.km.text20.services.trackingdevices.common.TrackingDevice;
 /**
  * Represents a tracking device.
  * 
- * @author rb 
+ * @author Ralf Biedert 
  */
 public interface BrainTrackingDevice
         extends

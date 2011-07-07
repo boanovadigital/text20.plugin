@@ -27,8 +27,8 @@
  */
 package de.dfki.km.text20.browserplugin.extensions.qc.diagnosticoverlay;
 
-import static net.jcores.CoreKeeper.$;
-import net.jcores.interfaces.functions.F0;
+import static net.jcores.shared.CoreKeeper.$;
+import net.jcores.shared.interfaces.functions.F0;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.Init;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
@@ -62,7 +62,7 @@ public class DiagnosticOverlayExtension implements Extension {
      */
     @ExtensionMethod
     public void diagnosticOverlay() {
-        $.oneTime(new F0() {
+        $.sys.oneTime(new F0() {
             @Override
             public void f() {
                 DiagnosticOverlayExtension.this.overlayFrame.activate();

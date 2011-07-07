@@ -26,7 +26,7 @@ import de.dfki.km.text20.services.trackingdevices.common.TrackingListener;
 /**
  * Classes may implement this interface to register themselves as being able to 
  * interpret brain tracking events.
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public interface BrainTrackingListener extends TrackingListener<BrainTrackingEvent> {

@@ -27,7 +27,7 @@ import java.awt.Rectangle;
 /**
  * 
  * 
- * @author rb
+ * @author Ralf Biedert
  */
 final class Circle {
 

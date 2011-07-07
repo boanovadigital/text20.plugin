@@ -56,7 +56,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
 /**
  * Listens to tracking events.
  *
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class MasterGazeHandlerImpl implements MasterGazeHandler {

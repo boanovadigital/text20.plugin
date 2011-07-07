@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.loader;
 
-import static net.jcores.CoreKeeper.$;
+import static net.jcores.shared.CoreKeeper.$;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,7 +29,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 /**
- * @author rb
+ * @author Ralf Biedert
  *
  */
 public class PlainFileLoader extends AbstractLoader {

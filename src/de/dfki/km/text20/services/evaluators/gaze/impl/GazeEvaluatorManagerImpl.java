@@ -35,7 +35,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
 
 /**
  *
- * @author rb
+ * @author Ralf Biedert
  */
 @PluginImplementation
 public class GazeEvaluatorManagerImpl implements GazeEvaluatorManager {
