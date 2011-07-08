@@ -182,7 +182,6 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
          * #newTrackingEvent(de.dfki.km.augmentedtext.trackingserver.remote.
          * TrackingEvent)
          */
-        @Override
         public void newTrackingEvent(final TrackingEvent e) {
             // Sometimes null events might occur. Filter them.
             if (e == null) return;
@@ -234,6 +233,16 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
         @Override
         public void closeDevice() {
             // TODO Auto-generated method stub
+        }
+
+        /* (non-Javadoc)
+         * @see de.dfki.km.text20.trackingserver.common.remote.CommonClientCallback#newTrackingEvents(T[])
+         */
+        @Override
+        public void newTrackingEvents(TrackingEvent... arg0) {
+            for (TrackingEvent trackingEvent : arg0) {
+                newTrackingEvent(trackingEvent);
+            }
         }
     }
 

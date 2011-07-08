@@ -36,39 +36,42 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEventValidity;
 public class EyeTrackingEventContainer extends AbstractSessionEvent implements EyeTrackingEvent {
 
     /** */
-    private static final long serialVersionUID = -4224591581456166382L;
+    public static final long serialVersionUID = -4224591581456166382L;
+
+    @Element(required = false)
+    public long hardwareEventTime = 0;
 
     /** */
     @Element
-    private Point combinedCenter;
+    public Point combinedCenter;
 
     @Element(required = false)
-    private float headPosition[] = new float[3];
+    public float headPosition[] = new float[3];
 
     @Element(required = false)
-    private float leftEyeDistance = 0;
+    public float leftEyeDistance = 0;
 
     @Element(required = false)
-    private float[] leftEyePosition = new float[3];
+    public float[] leftEyePosition = new float[3];
 
     @Element(required = false)
-    private float pupilSizeLeft = 0;
+    public float pupilSizeLeft = 0;
 
     @Element(required = false)
-    private float pupilSizeRight = 0;
+    public float pupilSizeRight = 0;
 
     @Element(required = false)
-    private float rightEyeDistance = 0;
+    public float rightEyeDistance = 0;
 
     @Element(required = false)
-    private float[] rightEyePosition = new float[3];
+    public float[] rightEyePosition = new float[3];
 
     @Element(required = false)
-    private boolean validity = true;
+    public boolean validity = true;
 
     // If version = 0 this is an old event
     @Element(required = false)
-    private int version = 0;
+    public int version = 0;
 
 
     public EyeTrackingEventContainer() {
@@ -80,6 +83,7 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements E
      */
     public EyeTrackingEventContainer(final EyeTrackingEvent trackingEvent) {
         // We should not use the original's event time, as it is set on the remote host and the times may differ.
+        this.hardwareEventTime = trackingEvent.getEventTime();
         this.combinedCenter = trackingEvent.getGazeCenter();
         this.headPosition = trackingEvent.getHeadPosition();
         this.pupilSizeLeft = trackingEvent.getPupilSizeLeft();
@@ -125,7 +129,7 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements E
 
     @Override
     public long getEventTime() {
-        return this.originalEventTime;
+        return this.hardwareEventTime == 0 ? this.originalEventTime : this.hardwareEventTime;
     }
 
     public void setEventTime(long originalEventTime) {

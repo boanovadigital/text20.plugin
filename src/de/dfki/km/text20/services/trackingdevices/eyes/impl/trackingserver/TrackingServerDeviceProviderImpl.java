@@ -196,7 +196,6 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
          * #newTrackingEvent(de.dfki.km.augmentedtext.trackingserver.remote.
          * TrackingEvent)
          */
-        @Override
         public void newTrackingEvent(final TrackingEvent e) {
             // Sometimes null events might occur. Filter them.
             if (e == null) return;
@@ -499,6 +498,16 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
         public void closeDevice() {
             // TODO Auto-generated method stub
 
+        }
+
+        /* (non-Javadoc)
+         * @see de.dfki.km.text20.trackingserver.eyes.remote.TrackingClientCallback#newTrackingEvents(de.dfki.km.text20.trackingserver.eyes.remote.TrackingEvent[])
+         */
+        @Override
+        public void newTrackingEvents(TrackingEvent... arg0) {
+            for (TrackingEvent trackingEvent : arg0) {
+                newTrackingEvent(trackingEvent);
+            }
         }
     }
 

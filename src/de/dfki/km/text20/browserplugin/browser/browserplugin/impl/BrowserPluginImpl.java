@@ -639,7 +639,7 @@ public class BrowserPluginImpl extends Applet implements JSExecutor, BrowserAPI 
 
         
         // Store the device info
-        this.sessionRecorder.storeDeviceInfo(this.eyeTrackingDevice.getDeviceInfo());
+        this.sessionRecorder.storeEyeDeviceInfo(this.eyeTrackingDevice.getDeviceInfo());
 
         // Setup eye tracking device
         if ($(getParameter("enablebraintracker")).get("false").equals("true")) {

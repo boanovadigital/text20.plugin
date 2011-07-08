@@ -21,11 +21,11 @@
  */
 package de.dfki.km.text20.sandbox.misc;
 
-import java.net.URI;
 import java.net.URISyntaxException;
 
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
+import net.xeoh.plugins.base.util.uri.ClassURI;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDeviceProvider;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
@@ -46,17 +46,17 @@ public class TestSimpleBrainTracker {
 
         // Load plugins
         final PluginManager pluginManager = PluginManagerFactory.createPluginManager();
-        pluginManager.addPluginsFrom(new URI("classpath://*"));
+        pluginManager.addPluginsFrom(ClassURI.CLASSPATH);
 
         final BrainTrackingDevice openDevice = pluginManager.getPlugin(BrainTrackingDeviceProvider.class).openDevice("discover://nearest");
         openDevice.addTrackingListener(new BrainTrackingListener() {
             @Override
             public void newTrackingEvent(BrainTrackingEvent event) {
-                System.out.println(event);
+                System.out.println(event.getReadings().length);
             }
         });
 
-        System.out.println("Connected!");
+        System.out.println("Connected >!");
 
         Thread.sleep(100000);
 

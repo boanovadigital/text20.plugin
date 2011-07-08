@@ -35,15 +35,18 @@ public class BrainTrackingEventContainer extends AbstractSessionEvent implements
     /** */
     private static final long serialVersionUID = -4224591581456166382L;
 
+    @Element(required = false)
+    public long hardwareEventTime = 0;
+    
     /** */
     @Element
-    private double[] readings = new double[0];
+    public double[] readings = new double[0];
 
     /**
      * @param trackingEvent
      */
     public BrainTrackingEventContainer(final BrainTrackingEvent trackingEvent) {
-        this.originalEventTime = trackingEvent.getEventTime();
+        this.hardwareEventTime = trackingEvent.getEventTime();
         this.readings = trackingEvent.getReadings();
     }
 
@@ -55,7 +58,7 @@ public class BrainTrackingEventContainer extends AbstractSessionEvent implements
      */
     @Override
     public long getEventTime() {
-        return this.originalEventTime;
+        return this.hardwareEventTime == 0 ? this.originalEventTime : this.hardwareEventTime;
     }
 
     /* (non-Javadoc)
