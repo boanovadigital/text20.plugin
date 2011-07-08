@@ -314,7 +314,7 @@ public class SessionRecorderImpl implements SessionRecorder {
     }
 
     @Override
-    public void storeDeviceInfo(final EyeTrackingDeviceInfo deviceInfo) {
+    public void storeEyeDeviceInfo(final EyeTrackingDeviceInfo deviceInfo) {
         final String[] keys = deviceInfo.getKeys();
 
         for (final String key : keys) {

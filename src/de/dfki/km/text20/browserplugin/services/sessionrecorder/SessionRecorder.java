@@ -140,7 +140,7 @@ public interface SessionRecorder {
      * 
      * @param deviceInfo Device info to store. 
      */
-    public void storeDeviceInfo(EyeTrackingDeviceInfo deviceInfo);
+    public void storeEyeDeviceInfo(EyeTrackingDeviceInfo deviceInfo);
 
     /**
      * Stores the brain device info.

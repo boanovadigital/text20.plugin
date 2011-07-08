@@ -57,7 +57,7 @@ public abstract class AbstractSessionEvent implements Serializable, SessionEvent
      */
 
     @Override
-    public long getTime() {
+    public long getObservationTime() {
         return this.originalEventTime;
     }
 }

@@ -33,5 +33,5 @@ public interface SessionEvent {
      *
      * @return .
      */
-    public long getTime();
+    public long getObservationTime();
 }

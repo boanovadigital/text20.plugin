@@ -1,5 +1,7 @@
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream;
 
+import static net.jcores.jre.CoreKeeper.$;
+
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -212,11 +214,7 @@ public class SessionReplayImpl implements SessionReplay {
                                 }
 
                                 // And now wait for the given time
-                                try {
-                                    Thread.sleep(delta * slowdownFactor.get());
-                                } catch (final InterruptedException e) {
-                                    e.printStackTrace();
-                                }
+                                $.sys.sleep(delta * slowdownFactor.get());
                             }
 
                             // Check what kind of event it is and if we have some special
