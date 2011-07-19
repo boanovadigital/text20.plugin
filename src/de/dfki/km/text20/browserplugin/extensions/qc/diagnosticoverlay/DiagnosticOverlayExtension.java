@@ -41,8 +41,8 @@ import de.dfki.km.text20.browserplugin.services.mastergazehandler.MasterGazeHand
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationEventType;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationListener;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawDataEvent;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawDataListener;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawGazeEvent;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawGazeListener;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
@@ -80,10 +80,10 @@ public class DiagnosticOverlayExtension implements Extension {
         this.informationBroker.subscribe(MasterGazeHandlerItem.class, new InformationListener<MasterGazeHandler>() {
             @Override
             public void update(MasterGazeHandler handler) {
-                handler.getGazeEvaluator().addEvaluationListener(new RawDataListener() {
+                handler.getGazeEvaluator().addEvaluationListener(new RawGazeListener() {
 
                     @Override
-                    public void newEvaluationEvent(RawDataEvent event) {
+                    public void newEvaluationEvent(RawGazeEvent event) {
                         // Get the current tracking events 
                         final EyeTrackingEvent e = event.getTrackingEvent();
                         DiagnosticOverlayExtension.this.overlayFrame.trackingEvent(e);

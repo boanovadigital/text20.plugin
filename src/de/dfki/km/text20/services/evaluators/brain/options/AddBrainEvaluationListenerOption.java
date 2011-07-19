@@ -1,7 +1,7 @@
 /*
- * WeakSaccadeHandlerFactory.java
+ * AddBrainEvaluationListenerOption.java
  * 
- * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
+ * Copyright (c) 2011, Ralf Biedert, DFKI. All rights reserved.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,23 +19,17 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.impl.handler.weaksaccade.v2;
+package de.dfki.km.text20.services.evaluators.brain.options;
 
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-import net.xeoh.plugins.base.annotations.meta.Author;
-import net.xeoh.plugins.base.annotations.meta.Version;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeListener;
-import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandlerFactory;
+import net.xeoh.plugins.base.Option;
+import de.dfki.km.text20.services.evaluators.brain.BrainEvaluationListener;
 
 /**
+ * Options for {@link BrainEvaluationListener}s.
+ * 
  * @author Ralf Biedert
+ * @since 1.4
  */
-@PluginImplementation
-@Version(version = 10000)
-@Author(name = "Ralf Biedert")
-public class WeakSaccadeHandlerFactory extends AbstractGazeHandlerFactory {
-
-    public WeakSaccadeHandlerFactory() {
-        super(SaccadeListener.class, WeakSaccadeHandler2.class);
-    }
+public interface AddBrainEvaluationListenerOption extends Option {
+    //
 }

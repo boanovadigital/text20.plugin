@@ -19,21 +19,23 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.impl.handler.raw.v1;
+package de.dfki.km.text20.services.evaluators.brain.impl.handler.raw.v1;
 
-import java.util.ArrayList;
+import static net.jcores.jre.CoreKeeper.$;
+
 import java.util.Collection;
+import java.util.List;
 
-import de.dfki.km.text20.services.evaluators.gaze.GazeHandlerFlags;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawGazeEvent;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawGazeListener;
-import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler;
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
+import de.dfki.km.text20.services.evaluators.brain.BrainHandlerFlags;
+import de.dfki.km.text20.services.evaluators.brain.listenertypes.raw.RawBrainEvent;
+import de.dfki.km.text20.services.evaluators.brain.listenertypes.raw.RawBrainListener;
+import de.dfki.km.text20.services.evaluators.brain.util.handler.AbstractBrainHandler;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 
 /**
  * @author Ralf Biedert
  */
-public class RawHandlerImpl extends AbstractGazeHandler<RawGazeEvent, RawGazeListener> {
+public class RawHandlerImpl extends AbstractBrainHandler<RawBrainEvent, RawBrainListener> {
 
     /** If we need unfiltered data */
     boolean requireUnfiltered;
@@ -55,16 +57,15 @@ public class RawHandlerImpl extends AbstractGazeHandler<RawGazeEvent, RawGazeLis
      */
 
     @Override
-    public void newTrackingEvent(final EyeTrackingEvent event) {
-
-        callListener(new RawGazeEvent() {
+    public void newTrackingEvent(final BrainTrackingEvent event) {
+        callListener(new RawBrainEvent() {
             @Override
             public long getGenerationTime() {
                 return event.getEventTime();
             }
 
             @Override
-            public EyeTrackingEvent getTrackingEvent() {
+            public BrainTrackingEvent getTrackingEvent() {
                 return event;
             }
         });
@@ -78,15 +79,12 @@ public class RawHandlerImpl extends AbstractGazeHandler<RawGazeEvent, RawGazeLis
      * augmentedtext.services.trackingdevices.TrackingEvent)
      */
     @Override
-    public Collection<GazeHandlerFlags> getFlags() {
-        final ArrayList<GazeHandlerFlags> rval = new ArrayList<GazeHandlerFlags>();
-
-        rval.add(GazeHandlerFlags.REQUIRE_RAW);
-
+    public Collection<BrainHandlerFlags> getFlags() {
+        final List<BrainHandlerFlags> rval = $.list();
+        rval.add(BrainHandlerFlags.REQUIRE_RAW);
         if (this.requireUnfiltered) {
-            rval.add(GazeHandlerFlags.REQUIRE_UNFILTERED);
+            rval.add(BrainHandlerFlags.REQUIRE_UNFILTERED);
         }
-
         return rval;
     }
 

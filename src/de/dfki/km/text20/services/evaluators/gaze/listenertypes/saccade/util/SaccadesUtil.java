@@ -106,7 +106,7 @@ public class SaccadesUtil extends CoreObjectJRE<Saccade> {
             @SuppressWarnings("boxing")
             @Override
             public Double f(Saccade x) {
-                return new SaccadeUtil(x).getLength();
+                return new SaccadeUtil(x).getAngle();
             }
         }).as(CoreNumber.class);
     }

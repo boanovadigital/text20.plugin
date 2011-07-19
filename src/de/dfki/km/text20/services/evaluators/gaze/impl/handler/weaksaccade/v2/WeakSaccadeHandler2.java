@@ -31,14 +31,13 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.Fi
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.Saccade;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.WeakSaccadeListener;
-import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 import de.dfki.km.text20.services.evaluators.gaze.options.addgazeevaluationlistener.OptionFixationParameters;
 import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler;
 
 /**
- *
+ * 
  * Weak Saccade Handler.
- *
+ * 
  * @author Ralf Biedert
  */
 public class WeakSaccadeHandler2 extends
@@ -51,22 +50,15 @@ public class WeakSaccadeHandler2 extends
     /** */
     private Fixation lastFixation;
 
-    /**
-     * @param listener
-     * @param options
-     */
-    public WeakSaccadeHandler2(WeakSaccadeListener listener,
-                               AddGazeEvaluationListenerOption... options) {
-        super(listener);
-
-    }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.augmentedtext.services.gazeevaluator.impl.AbstractGazeHandler#init(de.dfki.km.augmentedtext.services.gazeevaluator.options.AddGazeEvaluationListenerOption[])
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.dfki.km.augmentedtext.services.gazeevaluator.impl.AbstractGazeHandler#init(de.dfki.km.augmentedtext.services
+     * .gazeevaluator.options.AddGazeEvaluationListenerOption[])
      */
     @Override
-    public void init(AddGazeEvaluationListenerOption... options) {
-
+    public void init() {
         this.gazeEvaluator.addEvaluationListener(new FixationListener() {
 
             @Override

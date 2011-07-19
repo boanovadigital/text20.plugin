@@ -56,36 +56,36 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
     final List<EyeTrackingEvent> outliers = new ArrayList<EyeTrackingEvent>();
 
     /** Minimal time for a fixation to be recognized */
-    private final int minimalTime;
+    private int minimalTime;
 
     /** Minimal time for a fixation to be recognized */
-    private final int radiusFixationSize;
+    private int radiusFixationSize;
     
     /** Minimal number of events we need */
-    private final int minNumberOfEvents;
+    private int minNumberOfEvents;
 
     /** Used to detect event flow anomalies */
     private long lastObservedEventTime = Long.MAX_VALUE;
 
-
-    /**
-     * @param listener
-     * @param options
+    
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler#init()
      */
-    public FixationHandler(final FixationListener listener,
-                           AddGazeEvaluationListenerOption... options) {
-        super(listener);
-
+    @Override
+    public void init() {
         final OptionFixationParameters defaultParameters = new OptionFixationParameters(25, 100);
-
-        final OptionUtils<AddGazeEvaluationListenerOption> ou = new OptionUtils<AddGazeEvaluationListenerOption>(options);
-
+        final OptionUtils<AddGazeEvaluationListenerOption> ou = new OptionUtils<AddGazeEvaluationListenerOption>(this.options);
+        
         this.minimalTime = ou.get(OptionFixationParameters.class, defaultParameters).getMinimalTime();
         this.radiusFixationSize = ou.get(OptionFixationParameters.class, defaultParameters).getRadiusFixationSize();
         this.minNumberOfEvents = ou.get(OptionFixationParameters.class, defaultParameters).getMinFixationEvents();
-        
     }
 
+    
+    
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler#newTrackingEvent(de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent)
+     */
     @Override
     public void newTrackingEvent(final EyeTrackingEvent filteredEvent) {
 

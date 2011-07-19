@@ -1,5 +1,5 @@
 /*
- * WeakSaccadeHandlerFactory.java
+ * GazeHandlerFlags.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,23 +19,18 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.impl.handler.weaksaccade.v2;
-
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-import net.xeoh.plugins.base.annotations.meta.Author;
-import net.xeoh.plugins.base.annotations.meta.Version;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeListener;
-import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandlerFactory;
+package de.dfki.km.text20.services.evaluators.brain;
 
 /**
+ * The flags a brain handler can return.
+ * 
  * @author Ralf Biedert
+ * @since 1.4
  */
-@PluginImplementation
-@Version(version = 10000)
-@Author(name = "Ralf Biedert")
-public class WeakSaccadeHandlerFactory extends AbstractGazeHandlerFactory {
+public enum BrainHandlerFlags {
+    /** If returned, only unfiltered events are being transmitted. Only useful in combination with REQUIRE_RAW. */
+    REQUIRE_UNFILTERED,
 
-    public WeakSaccadeHandlerFactory() {
-        super(SaccadeListener.class, WeakSaccadeHandler2.class);
-    }
+    /** Return this value if you need raw values (i.e., have newTrackingEvent being called). */
+    REQUIRE_RAW
 }

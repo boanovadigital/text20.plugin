@@ -1,5 +1,5 @@
 /*
- * WeakSaccadeHandlerFactory.java
+ * GazeEvaluatorManager.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,23 +19,21 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.impl.handler.weaksaccade.v2;
+package de.dfki.km.text20.services.evaluators.brain;
 
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-import net.xeoh.plugins.base.annotations.meta.Author;
-import net.xeoh.plugins.base.annotations.meta.Version;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeListener;
-import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandlerFactory;
+import de.dfki.km.text20.services.evaluators.common.EvaluatorManager;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingListener;
 
 /**
+ * The manager can be used to create a new {@link BrainEvaluator} for a given {@link BrainTrackingDevice}. 
+ * 
  * @author Ralf Biedert
+ * @since 1.3
  */
-@PluginImplementation
-@Version(version = 10000)
-@Author(name = "Ralf Biedert")
-public class WeakSaccadeHandlerFactory extends AbstractGazeHandlerFactory {
-
-    public WeakSaccadeHandlerFactory() {
-        super(SaccadeListener.class, WeakSaccadeHandler2.class);
-    }
+public interface BrainEvaluatorManager
+        extends
+        EvaluatorManager<BrainTrackingEvent, BrainTrackingListener, BrainEvaluator, BrainTrackingDevice> {
+    //
 }

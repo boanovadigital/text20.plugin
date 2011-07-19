@@ -1,0 +1,45 @@
+/*
+ * GazeEvaluator.java
+ * 
+ * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
+ * MA 02110-1301  USA
+ *
+ */
+package de.dfki.km.text20.services.evaluators.brain;
+
+import de.dfki.km.text20.browserplugin.browser.browserplugin.BrowserAPI;
+import de.dfki.km.text20.services.evaluators.brain.options.AddBrainEvaluationListenerOption;
+import de.dfki.km.text20.services.evaluators.common.Evaluator;
+
+/**
+ * A gaze evaluator that evaluates raw brain data and provides {@link BrainEvaluationEvent}s. An evaluator can be
+ * obtained either by the {@link BrainEvaluatorManager} (when in library mode), or by the {@link BrainEvaluatorItem} 
+ * (when in extension mode, see the {@link BrowserAPI} for details). <br/><br/>
+ * 
+ * Currently, the following evaluators are supported:
+ * 
+ * <ul>
+ * </ul>
+ * 
+ * @author Ralf Biedert
+ * @since 1.4
+ */
+public interface BrainEvaluator
+        extends
+        Evaluator<BrainEvaluationListener<? extends BrainEvaluationEvent>, AddBrainEvaluationListenerOption, BrainFilter> {
+    //
+}

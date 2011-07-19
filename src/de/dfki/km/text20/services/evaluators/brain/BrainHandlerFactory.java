@@ -1,5 +1,5 @@
 /*
- * WeakSaccadeHandlerFactory.java
+ * GazeHandlerFactory.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,23 +19,19 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.impl.handler.weaksaccade.v2;
+package de.dfki.km.text20.services.evaluators.brain;
 
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-import net.xeoh.plugins.base.annotations.meta.Author;
-import net.xeoh.plugins.base.annotations.meta.Version;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeListener;
-import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandlerFactory;
+import de.dfki.km.text20.services.evaluators.common.HandlerFactory;
 
 /**
+ * Used to construct gaze handlers. This is the internal API. In most cases you want to use
+ * the {@link BrainEvaluator}.
+ * 
  * @author Ralf Biedert
+ * @since 1.4
  */
-@PluginImplementation
-@Version(version = 10000)
-@Author(name = "Ralf Biedert")
-public class WeakSaccadeHandlerFactory extends AbstractGazeHandlerFactory {
-
-    public WeakSaccadeHandlerFactory() {
-        super(SaccadeListener.class, WeakSaccadeHandler2.class);
-    }
+public interface BrainHandlerFactory
+        extends
+        HandlerFactory<BrainEvaluationListener<? extends BrainEvaluationEvent>, BrainHandler> {
+    //
 }

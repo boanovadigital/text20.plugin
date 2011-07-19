@@ -25,20 +25,21 @@ import java.net.URISyntaxException;
 
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.impl.PluginManagerFactory;
+import net.xeoh.plugins.base.options.getplugin.OptionCapabilities;
 import net.xeoh.plugins.base.util.uri.ClassURI;
-import de.dfki.km.text20.services.evaluators.brain.BrainEvaluator;
-import de.dfki.km.text20.services.evaluators.brain.BrainEvaluatorManager;
-import de.dfki.km.text20.services.evaluators.brain.listenertypes.raw.RawBrainEvent;
-import de.dfki.km.text20.services.evaluators.brain.listenertypes.raw.RawBrainListener;
-import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
-import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDeviceProvider;
-import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
+import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
+import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluatorManager;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawGazeEvent;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawGazeListener;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDeviceProvider;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
  * @author Ralf Biedert
  *
  */
-public class TestSimpleBrainTracker {
+public class TestSimpleEyeTracker {
     /**
      * @param args
      * @throws URISyntaxException
@@ -49,14 +50,14 @@ public class TestSimpleBrainTracker {
 
         // Load plugins, get a device, and get a evaluator
         final PluginManager pluginManager = PluginManagerFactory.createPluginManagerX().addPluginsFrom(ClassURI.CLASSPATH);
-        final BrainTrackingDevice openDevice = pluginManager.getPlugin(BrainTrackingDeviceProvider.class).openDevice("discover://nearest");
-        final BrainEvaluator evaluator = pluginManager.getPlugin(BrainEvaluatorManager.class).createEvaluator(openDevice);
+        final EyeTrackingDevice openDevice = pluginManager.getPlugin(EyeTrackingDeviceProvider.class, new OptionCapabilities("eyetrackingdevice:trackingserver")).openDevice("discover://nearest");
+        final GazeEvaluator evaluator = pluginManager.getPlugin(GazeEvaluatorManager.class).createEvaluator(openDevice);
         
         
-        evaluator.addEvaluationListener(new RawBrainListener() {
+        evaluator.addEvaluationListener(new RawGazeListener() {
             @Override
-            public void newEvaluationEvent(RawBrainEvent event) {
-                BrainTrackingEvent trackingEvent = event.getTrackingEvent();
+            public void newEvaluationEvent(RawGazeEvent event) {
+                EyeTrackingEvent trackingEvent = event.getTrackingEvent();
                 System.out.println(trackingEvent);
             }
             

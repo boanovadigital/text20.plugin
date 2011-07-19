@@ -21,74 +21,21 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.impl.handler.perusal.v4;
 
-import net.xeoh.plugins.base.PluginManager;
-import net.xeoh.plugins.base.annotations.Capabilities;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
-import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
 import net.xeoh.plugins.base.annotations.meta.Author;
 import net.xeoh.plugins.base.annotations.meta.Version;
-import net.xeoh.plugins.base.util.OptionUtils;
-import de.dfki.km.text20.services.evaluators.common.options.SpawnEvaluatorOption;
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
-import de.dfki.km.text20.services.evaluators.gaze.GazeHandler;
-import de.dfki.km.text20.services.evaluators.gaze.GazeHandlerFactory;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.perusal.PerusalListener;
-import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
-import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionGazeEvaluator;
-import de.dfki.km.text20.services.evaluators.gaze.options.spawnevaluator.OptionGazeEvaluatorPassthrough;
+import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandlerFactory;
 
 /**
  * @author Ralf Biedert
- *
  */
 @PluginImplementation
 @Version(version = 10000)
 @Author(name = "Ralf Biedert")
-public class PerusalHandlerFactory implements GazeHandlerFactory {
+public class PerusalHandlerFactory extends AbstractGazeHandlerFactory {
 
-    /** */
-    @InjectPlugin
-    public PluginManager pluginManager;
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.services.gazeevaluator.GazeHandlerCreator#getEvaluatorType()
-     */
-    @Override
-    public Class<? extends GazeEvaluationListener<?>> getEvaluatorType() {
-        return PerusalListener.class;
+    public PerusalHandlerFactory() {
+        super(PerusalListener.class, PerusalHandlerImpl4.class);
     }
-
-    /* (non-Javadoc)
-     * @see de.dfki.km.text20.services.gazeevaluator.GazeHandlerCreator#spawnEvaluator()
-     */
-    @Override
-    public GazeHandler spawnEvaluator(GazeEvaluationListener<?> listener,
-                                      SpawnEvaluatorOption... options) {
-
-        // Handle options
-        final OptionUtils<SpawnEvaluatorOption> ou = new OptionUtils<SpawnEvaluatorOption>(options);
-        final AddGazeEvaluationListenerOption[] passThrough = ou.get(OptionGazeEvaluatorPassthrough.class).getOptions();
-        final GazeEvaluator gazeEvaluator = ou.get(OptionGazeEvaluator.class).getGazeEvaluator();
-
-        // Create the element
-        final PerusalHandlerImpl4 handler = new PerusalHandlerImpl4((PerusalListener) listener, passThrough);
-
-        // Perform some setup
-        handler.setPluginManager(this.pluginManager);
-        handler.setGazeEvaluator(gazeEvaluator);
-        handler.init(passThrough);
-
-        // Return it‚
-        return handler;
-    }
-
-    /**
-     * @return .
-     */
-    @Capabilities
-    public String[] getCapabilities() {
-        return new String[] { "meta:status:maturity:release" };
-    }
-
 }

@@ -28,11 +28,10 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixatio
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.Saccade;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeListener;
-import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler;
 
 /**
- *
+ * 
  * @author Ralf Biedert
  */
 public class SaccadeHandler extends AbstractGazeHandler<SaccadeEvent, SaccadeListener> {
@@ -40,30 +39,21 @@ public class SaccadeHandler extends AbstractGazeHandler<SaccadeEvent, SaccadeLis
     /** Last fixation */
     Fixation lastFixation;
 
-    /**
-     * @param listener
-     * @param options
-     */
-    public SaccadeHandler(final SaccadeListener listener,
-                          AddGazeEvaluationListenerOption... options) {
-        super(listener);
-    }
-
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.impl.AbstractGazeHandler#init()
      */
-
     @Override
-    public void init(AddGazeEvaluationListenerOption... options) {
+    public void init() {
         this.gazeEvaluator.addEvaluationListener(new FixationListener() {
-
             @Override
             public void newEvaluationEvent(final FixationEvent event) {
                 if (event.getType().equals(FixationEventType.FIXATION_START)) {
                     nextFixation(event.getGenerationTime(), event.getFixation());
                 }
             }
-        }, options);
+        }, this.options);
     }
 
     /**

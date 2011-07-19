@@ -1,5 +1,5 @@
 /*
- * WeakSaccadeHandlerFactory.java
+ * RawDataEvent.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,23 +19,23 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.impl.handler.weaksaccade.v2;
+package de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw;
 
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-import net.xeoh.plugins.base.annotations.meta.Author;
-import net.xeoh.plugins.base.annotations.meta.Version;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeListener;
-import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandlerFactory;
+import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationEvent;
+import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
+ * A raw data event, either filtered or unfiltered (see the {@link RawGazeListener}).
+ * 
  * @author Ralf Biedert
+ * @since 1.0
+ * @see RawGazeListener
  */
-@PluginImplementation
-@Version(version = 10000)
-@Author(name = "Ralf Biedert")
-public class WeakSaccadeHandlerFactory extends AbstractGazeHandlerFactory {
-
-    public WeakSaccadeHandlerFactory() {
-        super(SaccadeListener.class, WeakSaccadeHandler2.class);
-    }
+public interface RawGazeEvent extends GazeEvaluationEvent {
+    /**
+     * Returns the associated tracking event.
+     *  
+     * @return The tracking event.
+     */
+    public EyeTrackingEvent getTrackingEvent();
 }

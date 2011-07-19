@@ -19,7 +19,7 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.impl;
+package de.dfki.km.text20.services.evaluators.brain.impl;
 
 import static net.jcores.jre.CoreKeeper.$;
 
@@ -29,19 +29,19 @@ import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.PluginLoaded;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluatorManager;
-import de.dfki.km.text20.services.evaluators.gaze.GazeHandlerFactory;
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingDevice;
+import de.dfki.km.text20.services.evaluators.brain.BrainEvaluator;
+import de.dfki.km.text20.services.evaluators.brain.BrainEvaluatorManager;
+import de.dfki.km.text20.services.evaluators.brain.BrainHandlerFactory;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingDevice;
 
 /**
  *
  * @author Ralf Biedert
  */
 @PluginImplementation
-public class GazeEvaluatorManagerImpl implements GazeEvaluatorManager {
+public class BrainEvaluatorManagerImpl implements BrainEvaluatorManager {
     /** List of all plugins */
-    Collection<GazeHandlerFactory> allHandler = $.list();
+    Collection<BrainHandlerFactory> allHandler = $.list();
 
     /** */
     @InjectPlugin
@@ -51,8 +51,8 @@ public class GazeEvaluatorManagerImpl implements GazeEvaluatorManager {
      * @see de.dfki.km.augmentedtext.sandbox.services.gazeevaluator.GazeEvaluatorManager#createGazeEvaluator(de.dfki.km.augmentedtext.services.trackingdevices.TrackingDevice)
      */
     @Override
-    public GazeEvaluator createEvaluator(final EyeTrackingDevice trackingDevice) {
-        return new GazeEvaluatorImpl(this.pluginManager, trackingDevice);
+    public BrainEvaluator createEvaluator(final BrainTrackingDevice trackingDevice) {
+        return new BrainEvaluatorImpl(this.pluginManager, trackingDevice);
     }
 
     /**
@@ -61,7 +61,7 @@ public class GazeEvaluatorManagerImpl implements GazeEvaluatorManager {
      * @param factory
      */
     @PluginLoaded
-    public void handlerAdded(GazeHandlerFactory factory) {
+    public void handlerAdded(BrainHandlerFactory factory) {
         this.allHandler.add(factory);
     }
 
@@ -70,7 +70,7 @@ public class GazeEvaluatorManagerImpl implements GazeEvaluatorManager {
      *
      * @return .
      */
-    public Collection<GazeHandlerFactory> getAllHandler() {
+    public Collection<BrainHandlerFactory> getAllHandler() {
         return this.allHandler;
     }
 }
