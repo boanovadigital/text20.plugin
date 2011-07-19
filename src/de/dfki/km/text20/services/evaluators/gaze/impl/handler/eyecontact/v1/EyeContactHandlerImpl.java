@@ -24,7 +24,6 @@ package de.dfki.km.text20.services.evaluators.gaze.impl.handler.eyecontact.v1;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.eyecontact.EyeContactEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.eyecontact.EyeContactEventType;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.eyecontact.EyeContactListener;
-import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventUtil;
@@ -40,15 +39,6 @@ public class EyeContactHandlerImpl extends
 
     /** Starting time of absence */
     long absenceTime = Long.MAX_VALUE;
-
-    /**
-     * @param listener
-     * @param options
-     */
-    public EyeContactHandlerImpl(final EyeContactListener listener,
-                                 AddGazeEvaluationListenerOption... options) {
-        super(listener);
-    }
 
     /*
      * (non-Javadoc)

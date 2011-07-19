@@ -19,21 +19,22 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.util.handler;
+package de.dfki.km.text20.services.evaluators.brain.util.handler;
 
 import static net.jcores.jre.CoreKeeper.$;
 
 import java.util.Collection;
 
 import net.xeoh.plugins.base.PluginManager;
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationEvent;
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
+import de.dfki.km.text20.services.evaluators.brain.BrainEvaluationEvent;
+import de.dfki.km.text20.services.evaluators.brain.BrainEvaluationListener;
+import de.dfki.km.text20.services.evaluators.brain.BrainEvaluator;
+import de.dfki.km.text20.services.evaluators.brain.BrainHandler;
+import de.dfki.km.text20.services.evaluators.brain.BrainHandlerFlags;
+import de.dfki.km.text20.services.evaluators.brain.options.AddBrainEvaluationListenerOption;
 import de.dfki.km.text20.services.evaluators.gaze.GazeHandler;
-import de.dfki.km.text20.services.evaluators.gaze.GazeHandlerFlags;
-import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingListener;
 
 /**
  * An abstract {@link GazeHandler}, only used internally.
@@ -43,23 +44,23 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingListener;
  * @param <L>
  * @since 1.3
  */
-public abstract class AbstractGazeHandler<E extends GazeEvaluationEvent, L extends GazeEvaluationListener<E>>
-        implements EyeTrackingListener, GazeHandler {
+public abstract class AbstractBrainHandler<E extends BrainEvaluationEvent, L extends BrainEvaluationListener<E>>
+        implements BrainTrackingListener, BrainHandler {
 
     /** Related listener */
     protected L attachedListener;
     
     /** Options */
-    protected AddGazeEvaluationListenerOption options[];
+    protected AddBrainEvaluationListenerOption options[];
 
     /** The related gaze evaluator */
-    protected GazeEvaluator gazeEvaluator;
+    protected BrainEvaluator brainEvaluator;
 
     /** Plugin manager */
     protected PluginManager pluginManager;
 
     /** */
-    public AbstractGazeHandler() {}
+    public AbstractBrainHandler() {}
 
     /**
      * Calls the attached listener with an event.
@@ -81,7 +82,7 @@ public abstract class AbstractGazeHandler<E extends GazeEvaluationEvent, L exten
      * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingListener#newTrackingEvent(de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent)
      */
     @Override
-    public void newTrackingEvent(final EyeTrackingEvent filteredEvent) {
+    public void newTrackingEvent(final BrainTrackingEvent filteredEvent) {
         // Nothing to see here, move on.
     }
 
@@ -89,7 +90,7 @@ public abstract class AbstractGazeHandler<E extends GazeEvaluationEvent, L exten
      * @see de.dfki.km.text20.services.gazeevaluator.GazeHandler#getFlags()
      */
     @Override
-    public Collection<GazeHandlerFlags> getFlags() {
+    public Collection<BrainHandlerFlags> getFlags() {
         return $.list();
     }
 }

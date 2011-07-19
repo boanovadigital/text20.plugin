@@ -28,7 +28,6 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.perusal.PerusalE
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.perusal.PerusalListener;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeEvent;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeListener;
-import de.dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption;
 import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler;
 import de.dfki.km.text20.services.pseudorenderer.Pseudorenderer;
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
@@ -53,25 +52,12 @@ public class PerusalHandlerImpl4 extends
     /** */
     TextualRenderElementCharPositions tecp = new TextualRenderElementCharPositions();
 
-    /**
-     * @param listener
-     * @param options
-     */
-    public PerusalHandlerImpl4(final PerusalListener listener,
-                               AddGazeEvaluationListenerOption... options) {
-        super(listener);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler#init
-     * (de.
-     * dfki.km.text20.services.evaluators.gaze.options.AddGazeEvaluationListenerOption[])
+    
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandler#init()
      */
     @Override
-    public void init(AddGazeEvaluationListenerOption... options) {
+    public void init() {
 
         this.pseudorenderer = this.attachedListener.getPseudorenderer();
         this.gazeEvaluator.addEvaluationListener(new SaccadeListener() {

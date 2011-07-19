@@ -72,4 +72,18 @@ public class DisplacingFixationWrapper extends FixationWrapper {
     public List<EyeTrackingEvent> getTrackingEvents() {
         return DisplacingEyeTrackingEventWrapper.displace(this.displacement, super.getTrackingEvents());
     }
+    
+    
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        final Point center = getCenter();
+        return "Fixation (" + center.x + "/" + center.y + ")";
+    }
+
 }

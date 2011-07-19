@@ -1,5 +1,5 @@
 /*
- * RawDataListener.java
+ * RawDataEvent.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,22 +19,23 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw;
+package de.dfki.km.text20.services.evaluators.brain.listenertypes.raw;
 
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationListener;
+import de.dfki.km.text20.services.evaluators.brain.BrainEvaluationEvent;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 
 /**
- * Called when a new raw data event arrives.
+ * A raw data event, either filtered or unfiltered (see the {@link RawBrainListener}).
  * 
  * @author Ralf Biedert
- * @since 1.0
+ * @since 1.4
+ * @see RawBrainListener
  */
-public interface RawDataListener extends GazeEvaluationListener<RawDataEvent> {
+public interface RawBrainEvent extends BrainEvaluationEvent {
     /**
-     * Return true if you require unfiltered events. If false, filters may be applied 
-     * to the events. 
+     * Returns the associated tracking event.
      * 
-     * @return Either true or false.
+     * @return The tracking event.
      */
-    public boolean requireUnfilteredEvents();
+    public BrainTrackingEvent getTrackingEvent();
 }

@@ -147,12 +147,13 @@ public class FixationsUtil extends CoreObjectJRE<Fixation> {
      * @return An array with all saccades.
      */
     public SaccadesUtil saccades() {
-        return new SaccadesUtil(delta(new F2DeltaObjects<Fixation, SaccadeDummy>() {
+        return delta(new F2DeltaObjects<Fixation, SaccadeDummy>() {
             @Override
             public SaccadeDummy f(Fixation arg0, Fixation arg1) {
+                if(arg0 == null || arg1 == null) return null;
                 return new SaccadeDummy(arg0, arg1);
             }
-        }).unsafearray());
+        }).as(SaccadesUtil.class);
     }
 
     

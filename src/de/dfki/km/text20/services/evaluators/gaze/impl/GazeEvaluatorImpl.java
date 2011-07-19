@@ -23,7 +23,6 @@ package de.dfki.km.text20.services.evaluators.gaze.impl;
 
 import static net.jcores.shared.CoreKeeper.$;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -71,7 +70,7 @@ public class GazeEvaluatorImpl implements GazeEvaluator, EyeTrackingListener {
     final PluginInformation pluginInformation;
 
     /** List of our handlers */
-    final List<GazeHandler> gazeHandler = new ArrayList<GazeHandler>();
+    final List<GazeHandler> gazeHandler = $.list();
 
     /**
      * Add ourselves to the tracking listener list.

@@ -26,8 +26,8 @@ import java.util.List;
 
 import de.dfki.km.text20.browserplugin.services.mastergazehandler.impl.gazehandler.AbstractGazeHandler;
 import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluator;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawDataEvent;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawDataListener;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawGazeEvent;
+import de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw.RawGazeListener;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 
 /**
@@ -54,10 +54,10 @@ public class RawGazeHandler extends AbstractGazeHandler {
 
     @Override
     protected void registerToEvaluator(final GazeEvaluator evaluator) {
-        evaluator.addEvaluationListener(new RawDataListener() {
+        evaluator.addEvaluationListener(new RawGazeListener() {
 
             @Override
-            public void newEvaluationEvent(final RawDataEvent event) {
+            public void newEvaluationEvent(final RawGazeEvent event) {
                 handleEvent(event.getTrackingEvent());
             }
 

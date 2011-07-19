@@ -1,7 +1,7 @@
 /*
- * FixationHandlerFactory.java
+ * BrainFilter.java
  * 
- * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
+ * Copyright (c) 2011, Ralf Biedert, DFKI. All rights reserved.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,23 +19,17 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.impl.handler.fixation.v1;
+package de.dfki.km.text20.services.evaluators.brain;
 
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-import net.xeoh.plugins.base.annotations.meta.Author;
-import net.xeoh.plugins.base.annotations.meta.Version;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.FixationListener;
-import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandlerFactory;
+import de.dfki.km.text20.services.evaluators.common.Filter;
+import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 
 /**
+ * Filters brain data.
+ * 
  * @author Ralf Biedert
- *
+ * @since 1.4
  */
-@Version(version = 10000)
-@Author(name = "Ralf Biedert")
-@PluginImplementation
-public class FixationHandlerFactory extends AbstractGazeHandlerFactory {
-    public FixationHandlerFactory() {
-        super(FixationListener.class, FixationHandler.class);
-    }
+public interface BrainFilter extends Filter<BrainTrackingEvent> {
+    //
 }

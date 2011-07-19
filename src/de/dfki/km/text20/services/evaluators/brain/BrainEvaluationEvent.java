@@ -1,7 +1,7 @@
 /*
- * RawDataEvent.java
+ * BrainEvaluationEvent.java
  * 
- * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
+ * Copyright (c) 2011, Ralf Biedert, DFKI. All rights reserved.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,23 +19,16 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.listenertypes.raw;
+package de.dfki.km.text20.services.evaluators.brain;
 
-import de.dfki.km.text20.services.evaluators.gaze.GazeEvaluationEvent;
-import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
+import de.dfki.km.text20.services.evaluators.common.EvaluationEvent;
 
 /**
- * A raw data event, either filtered or unfiltered (see the {@link RawDataListener}).
+ * Base class of all brain evaluation events. 
  * 
  * @author Ralf Biedert
- * @since 1.0
- * @see RawDataListener
+ * @since 1.4
  */
-public interface RawDataEvent extends GazeEvaluationEvent {
-    /**
-     * Returns the associated tracking event.
-     *  
-     * @return The tracking event.
-     */
-    public EyeTrackingEvent getTrackingEvent();
+public interface BrainEvaluationEvent extends EvaluationEvent {
+    //
 }

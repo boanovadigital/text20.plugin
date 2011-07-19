@@ -1,5 +1,5 @@
 /*
- * WeakSaccadeHandlerFactory.java
+ * RawDataListener.java
  * 
  * Copyright (c) 2010, Ralf Biedert, DFKI. All rights reserved.
  * 
@@ -19,23 +19,22 @@
  * MA 02110-1301  USA
  *
  */
-package de.dfki.km.text20.services.evaluators.gaze.impl.handler.weaksaccade.v2;
+package de.dfki.km.text20.services.evaluators.brain.listenertypes.raw;
 
-import net.xeoh.plugins.base.annotations.PluginImplementation;
-import net.xeoh.plugins.base.annotations.meta.Author;
-import net.xeoh.plugins.base.annotations.meta.Version;
-import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.SaccadeListener;
-import de.dfki.km.text20.services.evaluators.gaze.util.handler.AbstractGazeHandlerFactory;
+import de.dfki.km.text20.services.evaluators.brain.BrainEvaluationListener;
 
 /**
+ * Called when a new raw data event arrives.
+ * 
  * @author Ralf Biedert
+ * @since 1.4
  */
-@PluginImplementation
-@Version(version = 10000)
-@Author(name = "Ralf Biedert")
-public class WeakSaccadeHandlerFactory extends AbstractGazeHandlerFactory {
-
-    public WeakSaccadeHandlerFactory() {
-        super(SaccadeListener.class, WeakSaccadeHandler2.class);
-    }
+public interface RawBrainListener extends BrainEvaluationListener<RawBrainEvent> {
+    /**
+     * Return true if you require unfiltered events. If false, filters may be applied
+     * to the events.
+     * 
+     * @return Either true or false.
+     */
+    public boolean requireUnfilteredEvents();
 }
