@@ -192,10 +192,18 @@ public class BrainTrackingServerDeviceProviderImpl implements BrainTrackingDevic
                  * @see de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent#getEventTime()
                  */
                 @Override
-                public long getEventTime() {
-                    return e.date;
+                public long getObservationTime() {
+                    return e.observationTime;
                 }
 
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.common.TrackingEvent#getElapsedTime()
+                 */
+                @Override
+                public long getElapsedTime() {
+                    return e.elapsedTime;
+                }
+                
                 /* (non-Javadoc)
                  * @see de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent#getValues()
                  */

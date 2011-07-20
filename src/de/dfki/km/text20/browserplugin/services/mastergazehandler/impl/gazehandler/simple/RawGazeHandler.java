@@ -44,7 +44,7 @@ public class RawGazeHandler extends AbstractGazeHandler {
         final List<String> handler = this.masterGazeHandler.getHandlerForType("rawGaze");
         final Point gaze = event.getGazeCenter();
         for (final String h : handler) {
-            this.browserPlugin.executeJSFunction(h, event.getEventTime(), gaze.x, gaze.y);
+            this.browserPlugin.executeJSFunction(h, event.getObservationTime(), gaze.x, gaze.y);
         }
     }
 

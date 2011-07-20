@@ -49,7 +49,7 @@ public class HeadPositionHandler extends AbstractGazeHandler {
         if (this.i++ % 2 == 0) return;
 
         for (final String h : handler) {
-            this.browserPlugin.executeJSFunction(h, event.getEventTime(), headPosition[0], headPosition[1], headPosition[2]);
+            this.browserPlugin.executeJSFunction(h, event.getObservationTime(), headPosition[0], headPosition[1], headPosition[2]);
         }
     }
 

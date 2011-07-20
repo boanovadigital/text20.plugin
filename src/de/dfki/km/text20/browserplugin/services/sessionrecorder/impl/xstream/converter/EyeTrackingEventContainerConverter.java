@@ -48,7 +48,7 @@ public class EyeTrackingEventContainerConverter implements Converter {
         EyeTrackingEventContainer container = (EyeTrackingEventContainer) object;
 
         writer.startNode("originalEventTime");
-        writer.setValue("" + container.getEventTime());
+        writer.setValue("" + container.getObservationTime());
         writer.endNode();
 
         writer.startNode("combinedCenter");

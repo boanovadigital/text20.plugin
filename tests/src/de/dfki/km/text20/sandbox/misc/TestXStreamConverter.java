@@ -161,7 +161,7 @@ public class TestXStreamConverter {
         private final Random rnd = new Random();
 
         @Override
-        public long getEventTime() {
+        public long getObservationTime() {
             return this.rnd.nextLong();
         }
 
@@ -233,6 +233,15 @@ public class TestXStreamConverter {
         public float[] getRightEyePosition() {
             float[] result = { this.rnd.nextFloat(), this.rnd.nextFloat(), this.rnd.nextFloat() };
             return result;
+        }
+
+        /* (non-Javadoc)
+         * @see de.dfki.km.text20.services.trackingdevices.common.TrackingEvent#getElapsedTime()
+         */
+        @Override
+        public long getElapsedTime() {
+            // TODO Auto-generated method stub
+            return 0;
         }
     }
 

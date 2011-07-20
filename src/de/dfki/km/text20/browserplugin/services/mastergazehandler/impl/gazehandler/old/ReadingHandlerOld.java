@@ -155,6 +155,6 @@ public class ReadingHandlerOld extends AbstractGazeHandler {
         // Now we hopefully have better fixation information
         final Point fixation = attracted.getGazeCenter();
 
-        updateFixations(filterEvent.getEventTime(), fixation);
+        updateFixations(filterEvent.getObservationTime(), fixation);
     }
 }

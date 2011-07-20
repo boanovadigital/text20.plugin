@@ -37,6 +37,9 @@ public class BrainTrackingEventContainer extends AbstractSessionEvent implements
 
     @Element(required = false)
     public long hardwareEventTime = 0;
+
+    @Element(required = false)
+    public long elapsedTime = 0;
     
     /** */
     @Element
@@ -46,7 +49,7 @@ public class BrainTrackingEventContainer extends AbstractSessionEvent implements
      * @param trackingEvent
      */
     public BrainTrackingEventContainer(final BrainTrackingEvent trackingEvent) {
-        this.hardwareEventTime = trackingEvent.getEventTime();
+        this.hardwareEventTime = trackingEvent.getObservationTime();
         this.readings = trackingEvent.getReadings();
     }
 
@@ -57,7 +60,7 @@ public class BrainTrackingEventContainer extends AbstractSessionEvent implements
      * @see de.dfki.km.text20.services.braintrackingdevices.BrainTrackingEvent#getEventTime()
      */
     @Override
-    public long getEventTime() {
+    public long getObservationTime() {
         return this.hardwareEventTime == 0 ? this.originalEventTime : this.hardwareEventTime;
     }
 
@@ -67,5 +70,13 @@ public class BrainTrackingEventContainer extends AbstractSessionEvent implements
     @Override
     public double[] getReadings() {
         return this.readings;
+    }
+
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.trackingdevices.common.TrackingEvent#getElapsedTime()
+     */
+    @Override
+    public long getElapsedTime() {
+        return this.elapsedTime;
     }
 }

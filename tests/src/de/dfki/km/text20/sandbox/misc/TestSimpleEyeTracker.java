@@ -58,7 +58,7 @@ public class TestSimpleEyeTracker {
             @Override
             public void newEvaluationEvent(RawGazeEvent event) {
                 EyeTrackingEvent trackingEvent = event.getTrackingEvent();
-                System.out.println(trackingEvent);
+                System.out.println(trackingEvent.getElapsedTime());
             }
             
             @Override

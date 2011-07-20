@@ -61,7 +61,7 @@ public class RawHandlerImpl extends AbstractBrainHandler<RawBrainEvent, RawBrain
         callListener(new RawBrainEvent() {
             @Override
             public long getGenerationTime() {
-                return event.getEventTime();
+                return event.getObservationTime();
             }
 
             @Override

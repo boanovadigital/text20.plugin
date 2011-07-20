@@ -77,7 +77,6 @@ import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ScreenSiz
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.SetPreferenceEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.UpdateElementFlagEvent;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.events.ViewportEvent;
-import de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.converter.EyeTrackingEventContainerConverter;
 import de.dfki.km.text20.browserplugin.services.sessionrecorder.util.metadata.DisplacementRegion;
 import de.dfki.km.text20.services.trackingdevices.brain.BrainTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
@@ -137,7 +136,8 @@ public class SessionStreamer implements Serializable {
     }
 
     public static void registerConverters(final XStream xstream) {
-        xstream.registerConverter(new EyeTrackingEventContainerConverter());
+        // TODO: Testing again without converter
+        // xstream.registerConverter(new EyeTrackingEventContainerConverter());
     }
 
     /** List of occured events */

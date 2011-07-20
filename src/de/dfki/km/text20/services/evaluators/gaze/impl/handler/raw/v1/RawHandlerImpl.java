@@ -60,7 +60,7 @@ public class RawHandlerImpl extends AbstractGazeHandler<RawGazeEvent, RawGazeLis
         callListener(new RawGazeEvent() {
             @Override
             public long getGenerationTime() {
-                return event.getEventTime();
+                return event.getObservationTime();
             }
 
             @Override
