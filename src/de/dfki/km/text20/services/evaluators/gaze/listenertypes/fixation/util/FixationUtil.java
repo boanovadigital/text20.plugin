@@ -86,7 +86,7 @@ public final class FixationUtil extends VanillaUtil<Fixation> implements Fixatio
     public Date getEndDate() {
         if (this.trackingEvents.size() == 0) return null;
 
-        return new Date(this.trackingEvents.get(this.trackingEvents.size() - 1).getEventTime());
+        return new Date(this.trackingEvents.get(this.trackingEvents.size() - 1).getObservationTime());
     }
 
     /**
@@ -146,7 +146,7 @@ public final class FixationUtil extends VanillaUtil<Fixation> implements Fixatio
     public Date getStartDate() {
         if (this.trackingEvents.size() == 0) return null;
 
-        return new Date(this.trackingEvents.get(0).getEventTime());
+        return new Date(this.trackingEvents.get(0).getObservationTime());
     }
     
 

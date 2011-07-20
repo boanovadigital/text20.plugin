@@ -58,6 +58,9 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent, Cloneable, Seria
 
     /** Creation time */
     public long eventTime;
+    
+    /** Elapsed time since the first event was observed */
+    public long elapsedTime;
 
     /** Where we looked at */
     public Point gazeCenter;
@@ -181,8 +184,16 @@ public class EyeTrackingEventDummy implements EyeTrackingEvent, Cloneable, Seria
      * @see de.dfki.km.text20.services.trackingdevices.common.TrackingEvent#getEventTime()
      */
     @Override
-    public long getEventTime() {
+    public long getObservationTime() {
         return this.eventTime;
+    }
+    
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.trackingdevices.common.TrackingEvent#getElapsedTime()
+     */
+    @Override
+    public long getElapsedTime() {
+        return this.elapsedTime;
     }
 
     /*

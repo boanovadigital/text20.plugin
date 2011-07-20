@@ -58,8 +58,17 @@ public class EyeTrackingEventWrapper implements EyeTrackingEvent, Cloneable, Ser
      * @see de.dfki.km.augmentedtext.services.trackingdevices.TrackingEvent#eventTime()
      */
     @Override
-    public long getEventTime() {
-        return this.originalEvent.getEventTime();
+    public long getObservationTime() {
+        return this.originalEvent.getObservationTime();
+    }
+    
+    
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.trackingdevices.common.TrackingEvent#getElapsedTime()
+     */
+    @Override
+    public long getElapsedTime() {
+        return this.originalEvent.getElapsedTime();
     }
 
     /* (non-Javadoc)

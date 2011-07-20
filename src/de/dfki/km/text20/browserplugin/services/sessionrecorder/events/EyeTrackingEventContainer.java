@@ -41,6 +41,9 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements E
     @Element(required = false)
     public long hardwareEventTime = 0;
 
+    @Element(required = false)
+    public long elapsedTime = 0;
+    
     /** */
     @Element
     public Point combinedCenter;
@@ -83,7 +86,8 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements E
      */
     public EyeTrackingEventContainer(final EyeTrackingEvent trackingEvent) {
         // We should not use the original's event time, as it is set on the remote host and the times may differ.
-        this.hardwareEventTime = trackingEvent.getEventTime();
+        this.hardwareEventTime = trackingEvent.getObservationTime();
+        this.elapsedTime = trackingEvent.getElapsedTime();
         this.combinedCenter = trackingEvent.getGazeCenter();
         this.headPosition = trackingEvent.getHeadPosition();
         this.pupilSizeLeft = trackingEvent.getPupilSizeLeft();
@@ -95,7 +99,7 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements E
         this.rightEyePosition = trackingEvent.getRightEyePosition();
 
         // Current version
-        this.version = 1;
+        this.version = 2;
     }
 
     /* (non-Javadoc)
@@ -128,8 +132,16 @@ public class EyeTrackingEventContainer extends AbstractSessionEvent implements E
     }
 
     @Override
-    public long getEventTime() {
+    public long getObservationTime() {
         return this.hardwareEventTime == 0 ? this.originalEventTime : this.hardwareEventTime;
+    }
+    
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.trackingdevices.common.TrackingEvent#getElapsedTime()
+     */
+    @Override
+    public long getElapsedTime() {
+        return this.elapsedTime;
     }
 
     public void setEventTime(long originalEventTime) {

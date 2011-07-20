@@ -68,7 +68,7 @@ public class SpakovFilter extends AbstractFilter {
         }
 
         this.lastPoints.add(event.getGazeCenter());
-        this.lastTimes.add(Long.valueOf(event.getEventTime()));
+        this.lastTimes.add(Long.valueOf(event.getObservationTime()));
 
         final Point resPoint = getPoint();
 

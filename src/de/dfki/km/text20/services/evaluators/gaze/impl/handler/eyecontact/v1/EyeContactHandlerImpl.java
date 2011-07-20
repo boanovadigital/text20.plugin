@@ -55,7 +55,7 @@ public class EyeContactHandlerImpl extends
             // When we have none, inform our clients
             if (etu.bothInvisible()) {
                 this.currentMode = EyeContactEventType.EYECONTACT_LOST;
-                this.absenceTime = event.getEventTime();
+                this.absenceTime = event.getObservationTime();
                 callListener(createEvent(event, EyeContactEventType.EYECONTACT_LOST, 0));
             }
 
@@ -66,7 +66,7 @@ public class EyeContactHandlerImpl extends
         if (this.currentMode == EyeContactEventType.EYECONTACT_LOST) {
             // When we have one, inform our clients
             if (!etu.bothInvisible()) {
-                final long time = event.getEventTime() - this.absenceTime;
+                final long time = event.getObservationTime() - this.absenceTime;
                 this.currentMode = EyeContactEventType.EYECONTACT_FOUND;
                 this.absenceTime = Long.MAX_VALUE;
                 callListener(createEvent(event, EyeContactEventType.EYECONTACT_FOUND, time < 0 ? 0 : time));
@@ -92,7 +92,7 @@ public class EyeContactHandlerImpl extends
 
             @Override
             public long getGenerationTime() {
-                return event.getEventTime();
+                return event.getObservationTime();
             }
 
             @Override

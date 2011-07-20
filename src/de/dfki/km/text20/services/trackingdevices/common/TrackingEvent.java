@@ -29,9 +29,18 @@ package de.dfki.km.text20.services.trackingdevices.common;
  */
 public interface TrackingEvent {
     /**
-     * When this event was observed.  
+     * When absolute time in ms when this event was observed.  
      * 
-     * @return The event time.
+     * @return The event time in ms.
      */
-    public long getEventTime();
+    public long getObservationTime();
+    
+    
+    /**
+     * Returns the relative start time in nanoseconds when this element was observed.
+     * 
+     * @since 1.4
+     * @return The relative start time.
+     */
+    public long getElapsedTime();
 }

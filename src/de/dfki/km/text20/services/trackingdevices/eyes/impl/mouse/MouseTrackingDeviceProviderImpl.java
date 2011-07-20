@@ -66,8 +66,11 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
         /** List of listeners we inform. */
         final List<EyeTrackingListener> trackingListener = new ArrayList<EyeTrackingListener>();
 
-        /** */
+        /** The current thread generating events */
         Thread thread;
+        
+        /** Start time of this device */
+        long startTime = System.nanoTime();
 
         /**
          * Construct a standard MouseTrackigDevice which will start instantly.
@@ -142,8 +145,13 @@ public class MouseTrackingDeviceProviderImpl implements EyeTrackingDeviceProvide
                 }
 
                 @Override
-                public long getEventTime() {
+                public long getObservationTime() {
                     return this.et;
+                }
+                
+                @Override
+                public long getElapsedTime() {
+                    return System.nanoTime() - MouseTrackingDevice.this.startTime;
                 }
 
                 @Override

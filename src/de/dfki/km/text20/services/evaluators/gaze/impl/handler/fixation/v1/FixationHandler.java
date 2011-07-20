@@ -90,7 +90,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
     public void newTrackingEvent(final EyeTrackingEvent filteredEvent) {
 
         // First perform an anomaly detection
-        final long eventTime = filteredEvent.getEventTime();
+        final long eventTime = filteredEvent.getObservationTime();
         final long deltaTime = eventTime - this.lastObservedEventTime;
         if (deltaTime > 1000) {
             // FIXME: Does not appear to be a general problem, investigate more closely.
@@ -181,8 +181,8 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
     private int timeOf(List<EyeTrackingEvent> events) {
         if (events.size() < 1) return 0;
 
-        final long start = events.get(0).getEventTime();
-        final long stop = events.get(events.size() - 1).getEventTime();
+        final long start = events.get(0).getObservationTime();
+        final long stop = events.get(events.size() - 1).getObservationTime();
         return (int) (stop - start);
     }
 
@@ -212,7 +212,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
             @Override
             public long getGenerationTime() {
                 if (trackingEvents.size() == 0) return 0;
-                return trackingEvents.get(trackingEvents.size() - 1).getEventTime();
+                return trackingEvents.get(trackingEvents.size() - 1).getObservationTime();
             }
 
             @Override
@@ -235,7 +235,7 @@ public class FixationHandler extends AbstractGazeHandler<FixationEvent, Fixation
         final EyeTrackingEvent first = events.get(0);
         final EyeTrackingEvent last = events.get(events.size() - 1);
 
-        return last.getEventTime() - first.getEventTime();
+        return last.getObservationTime() - first.getObservationTime();
     }
 
     /**

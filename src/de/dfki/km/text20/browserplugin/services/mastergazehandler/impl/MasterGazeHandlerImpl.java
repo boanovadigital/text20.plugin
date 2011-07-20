@@ -242,7 +242,7 @@ public class MasterGazeHandlerImpl implements MasterGazeHandler {
 
             @Override
             public void newTrackingEvent(final EyeTrackingEvent event) {
-                MasterGazeHandlerImpl.this.lastObservedTime.set(event.getEventTime());
+                MasterGazeHandlerImpl.this.lastObservedTime.set(event.getObservationTime());
 
                 // If we're past switchoff time
                 if (MasterGazeHandlerImpl.this.lastObservedTime.get() > MasterGazeHandlerImpl.this.switchReducedOffAt.get()) {

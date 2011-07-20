@@ -214,11 +214,15 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                 @Override
                 public boolean areValid(final EyeTrackingEventValidity... validities) {
                     boolean rval = true;
+                    
+                    // Check the individual validities
                     for (final EyeTrackingEventValidity v : validities) {
                         if (v == EyeTrackingEventValidity.CENTER_POSITION_VALID) {
-                            rval &= e._centerValidity;
+                            rval &= e.centerGaze != null;
                         }
                     }
+                    
+                    // Return the result
                     return rval;
                 }
 
@@ -230,8 +234,16 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                  * #eventTime()
                  */
                 @Override
-                public long getEventTime() {
-                    return e.date;
+                public long getObservationTime() {
+                    return e.observationTime;
+                }
+                
+                /* (non-Javadoc)
+                 * @see de.dfki.km.text20.services.trackingdevices.common.TrackingEvent#getRelativeStartTime()
+                 */
+                @Override
+                public long getElapsedTime() {
+                    return e.elapsedTime;
                 }
 
                 /*
@@ -286,8 +298,8 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                             ServerTrackingDevice.this.last.lastRight[i] = rightEyePos[i];
                         }
 
-                        ServerTrackingDevice.this.last.dateOfLeft = e.date;
-                        ServerTrackingDevice.this.last.dateOfRight = e.date;
+                        ServerTrackingDevice.this.last.dateOfLeft = e.observationTime;
+                        ServerTrackingDevice.this.last.dateOfRight = e.observationTime;
 
                         // Update rval
                         for (int i = 0; i < 3; i++)
@@ -303,7 +315,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                         for (int i = 0; i < 3; i++)
                             ServerTrackingDevice.this.last.lastLeft[i] = leftEyePos[i];
 
-                        ServerTrackingDevice.this.last.dateOfLeft = e.date;
+                        ServerTrackingDevice.this.last.dateOfLeft = e.observationTime;
 
                         // Update rval
                         for (int i = 0; i < 3; i++)
@@ -319,7 +331,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                         for (int i = 0; i < 3; i++)
                             ServerTrackingDevice.this.last.lastRight[i] = rightEyePos[i];
 
-                        ServerTrackingDevice.this.last.dateOfRight = e.date;
+                        ServerTrackingDevice.this.last.dateOfRight = e.observationTime;
 
                         // Update rval
                         for (int i = 0; i < 3; i++)
@@ -408,7 +420,7 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
                 public String toString() {
                     final StringBuilder sb = new StringBuilder();
                     sb.append("[");
-                    sb.append(getEventTime());
+                    sb.append(getObservationTime());
                     sb.append(": ");
                     sb.append(getGazeCenter());
                     sb.append("]");
@@ -557,5 +569,4 @@ public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvid
         }
         return null;
     }
-
 }

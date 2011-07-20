@@ -250,7 +250,7 @@ public class FixationsUtil extends CoreObjectJRE<Fixation> {
         final EyeTrackingEvent trackingEvent = fixation.getTrackingEvents().get(0);
         if (trackingEvent == null) return 0;
 
-        return trackingEvent.getEventTime();
+        return trackingEvent.getObservationTime();
     }
 
     
@@ -267,7 +267,7 @@ public class FixationsUtil extends CoreObjectJRE<Fixation> {
         final EyeTrackingEvent trackingEvent = $(fixation.getTrackingEvents()).get(-1);
         if (trackingEvent == null) return 0;
 
-        return trackingEvent.getEventTime();
+        return trackingEvent.getObservationTime();
     }
     
     /**

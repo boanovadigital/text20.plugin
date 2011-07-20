@@ -61,7 +61,7 @@ public class GeneratedPoints {
                 }
 
                 @Override
-                public long getEventTime() {
+                public long getObservationTime() {
                     System.out.println(j);
                     return time + 30L * j;
                 }
@@ -134,6 +134,12 @@ public class GeneratedPoints {
                 public float[] getRightEyeGazePosition() {
                     // TODO Auto-generated method stub
                     return null;
+                }
+
+                @Override
+                public long getElapsedTime() {
+                    // TODO Auto-generated method stub
+                    return 0;
                 }
             });
 
