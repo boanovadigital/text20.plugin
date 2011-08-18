@@ -27,8 +27,8 @@
  */
 package de.dfki.km.text20.browserplugin.extensions.qc.diagnosticoverlay;
 
-import static net.jcores.shared.CoreKeeper.$;
-import net.jcores.shared.interfaces.functions.F0;
+import static net.jcores.jre.CoreKeeper.$;
+import net.jcores.jre.interfaces.functions.F0;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 import net.xeoh.plugins.base.annotations.events.Init;
 import net.xeoh.plugins.base.annotations.injections.InjectPlugin;

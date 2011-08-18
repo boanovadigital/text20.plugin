@@ -21,19 +21,19 @@
  */
 package de.dfki.km.text20.services.pseudorenderer.util.elements;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 
-import net.jcores.shared.CommonCore;
-import net.jcores.shared.cores.CoreNumber;
-import net.jcores.shared.cores.CoreObject;
-import net.jcores.shared.cores.adapter.AbstractAdapter;
-import net.jcores.shared.interfaces.functions.F1;
-import net.jcores.shared.interfaces.functions.F1Object2Bool;
+import net.jcores.jre.CommonCore;
+import net.jcores.jre.cores.CoreNumber;
+import net.jcores.jre.cores.CoreObject;
+import net.jcores.jre.cores.adapter.AbstractAdapter;
+import net.jcores.jre.interfaces.functions.F1;
+import net.jcores.jre.interfaces.functions.F1Object2Bool;
 import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
@@ -135,6 +135,9 @@ public class TextualRenderElementsUtil extends CoreObject<TextualRenderElement> 
         
         return rval;
     }
+    
+    
+    
     
     
     /**

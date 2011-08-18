@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.xstream.loader;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.io.File;
 import java.io.FileInputStream;

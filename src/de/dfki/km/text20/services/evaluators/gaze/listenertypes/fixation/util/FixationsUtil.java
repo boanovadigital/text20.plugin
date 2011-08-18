@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.Dimension;
 import java.awt.Point;
@@ -29,13 +29,12 @@ import java.awt.Rectangle;
 import java.util.Comparator;
 import java.util.List;
 
-import net.jcores.jre.cores.CoreObjectJRE;
-import net.jcores.shared.CommonCore;
-import net.jcores.shared.cores.CoreObject;
-import net.jcores.shared.cores.adapter.AbstractAdapter;
-import net.jcores.shared.cores.adapter.ListAdapter;
-import net.jcores.shared.interfaces.functions.F1;
-import net.jcores.shared.interfaces.functions.F2DeltaObjects;
+import net.jcores.jre.CommonCore;
+import net.jcores.jre.cores.CoreObject;
+import net.jcores.jre.cores.adapter.AbstractAdapter;
+import net.jcores.jre.cores.adapter.ListAdapter;
+import net.jcores.jre.interfaces.functions.F1;
+import net.jcores.jre.interfaces.functions.F2DeltaObjects;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.util.SaccadeDummy;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.util.SaccadesUtil;
@@ -47,7 +46,7 @@ import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
  * @author Ralf Biedert
  * @since 1.0
  */
-public class FixationsUtil extends CoreObjectJRE<Fixation> {
+public class FixationsUtil extends CoreObject<Fixation> {
     /** */
     private static final long serialVersionUID = -2953127465640671497L;
 

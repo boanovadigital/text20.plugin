@@ -40,8 +40,8 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
-import net.jcores.shared.interfaces.functions.F0;
-import net.jcores.shared.options.Option;
+import net.jcores.jre.interfaces.functions.F0;
+import net.jcores.jre.options.Option;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.informationbroker.InformationBroker;
 import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;

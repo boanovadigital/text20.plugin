@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.services.trackingdevices.eyes.util;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.Dimension;
 import java.awt.Point;

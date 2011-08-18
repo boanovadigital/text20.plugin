@@ -24,7 +24,7 @@ package de.dfki.km.text20.services.pseudorenderer.util.elements;
 import java.awt.Rectangle;
 import java.io.Serializable;
 
-import net.jcores.shared.utils.VanillaUtil;
+import net.jcores.jre.utils.VanillaUtil;
 import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.RenderElement;
 import de.dfki.km.text20.services.pseudorenderer.RenderElementMetaAttribute;
