@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.services.trackingdevices.eyes.impl.trackingserver;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.Point;
 import java.net.URI;
@@ -56,7 +56,6 @@ import de.dfki.km.text20.trackingserver.eyes.remote.options.SendCommandOption;
 /**
  * 
  * @author Ralf Biedert
- * 
  */
 @PluginImplementation
 public class TrackingServerDeviceProviderImpl implements EyeTrackingDeviceProvider {

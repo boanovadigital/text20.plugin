@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.browserplugin.browser.browserplugin.impl;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.applet.Applet;
 import java.applet.AppletContext;
@@ -41,7 +41,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.jcores.shared.interfaces.functions.F1;
+import net.jcores.jre.interfaces.functions.F1;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.base.util.JSPFProperties;
 import net.xeoh.plugins.diagnosis.local.Diagnosis;

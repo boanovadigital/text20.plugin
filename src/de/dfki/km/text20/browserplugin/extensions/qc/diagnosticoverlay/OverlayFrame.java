@@ -43,7 +43,7 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
-import net.jcores.shared.interfaces.java.KeyStroke;
+import net.jcores.jre.interfaces.java.KeyStroke;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 import de.dfki.km.text20.services.trackingdevices.eyes.util.EyeTrackingEventDummy;

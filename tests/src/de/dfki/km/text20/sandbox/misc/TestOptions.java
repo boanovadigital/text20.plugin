@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.sandbox.misc;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;

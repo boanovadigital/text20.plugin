@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.browserplugin.services.sessionrecorder.impl.plainxml;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.Dimension;
 import java.awt.Point;

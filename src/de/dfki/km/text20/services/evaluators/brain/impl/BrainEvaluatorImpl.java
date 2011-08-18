@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.services.evaluators.brain.impl;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;

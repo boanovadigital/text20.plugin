@@ -37,31 +37,49 @@ public class TextualRenderElementUtil extends RenderElementUtil implements Textu
         super(renderElement);
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#getContent()
+     */
     @Override
     public String getContent() {
         return cast(TextualRenderElement.class).getContent();
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#setContent(java.lang.String)
+     */
     @Override
     public void setContent(String content) {
         cast(TextualRenderElement.class).setContent(content);
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#getWordID()
+     */
     @Override
     public int getWordID() {
         return cast(TextualRenderElement.class).getWordID();
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#setWordID(int)
+     */
     @Override
     public void setWordID(int id) {
         cast(TextualRenderElement.class).setWordID(id);
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#setTextID(int)
+     */
     @Override
     public void setTextID(int id) {
         cast(TextualRenderElement.class).setTextID(id);
     }
 
+    /* (non-Javadoc)
+     * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#getTextID()
+     */
     @Override
     public int getTextID() {
         return cast(TextualRenderElement.class).getTextID();        

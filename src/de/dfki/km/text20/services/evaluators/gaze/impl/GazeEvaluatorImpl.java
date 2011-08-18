@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.impl;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.util.Arrays;
 import java.util.Collection;

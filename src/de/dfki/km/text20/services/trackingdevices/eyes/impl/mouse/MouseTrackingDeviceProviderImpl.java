@@ -21,7 +21,7 @@
  */
 package de.dfki.km.text20.services.trackingdevices.eyes.impl.mouse;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.MouseInfo;
 import java.awt.Point;

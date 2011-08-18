@@ -24,7 +24,7 @@ package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.util;
 import java.awt.Point;
 import java.io.Serializable;
 
-import net.jcores.shared.utils.VanillaUtil;
+import net.jcores.jre.utils.VanillaUtil;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationUtil;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.Saccade;

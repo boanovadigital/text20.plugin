@@ -21,15 +21,15 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.Point;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import net.jcores.shared.interfaces.functions.F1;
-import net.jcores.shared.utils.VanillaUtil;
+import net.jcores.jre.interfaces.functions.F1;
+import net.jcores.jre.utils.VanillaUtil;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.trackingdevices.eyes.EyeTrackingEvent;
 

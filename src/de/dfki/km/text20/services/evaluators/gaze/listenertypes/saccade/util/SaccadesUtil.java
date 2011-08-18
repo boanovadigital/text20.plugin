@@ -21,17 +21,17 @@
  */
 package de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.util;
 
-import static net.jcores.shared.CoreKeeper.$;
+import static net.jcores.jre.CoreKeeper.$;
 
 import java.awt.Point;
 import java.util.List;
 
-import net.jcores.jre.cores.CoreObjectJRE;
-import net.jcores.shared.CommonCore;
-import net.jcores.shared.cores.CoreNumber;
-import net.jcores.shared.cores.adapter.AbstractAdapter;
-import net.jcores.shared.interfaces.functions.F1;
-import net.jcores.shared.utils.internal.Wrapper;
+import net.jcores.jre.CommonCore;
+import net.jcores.jre.cores.CoreNumber;
+import net.jcores.jre.cores.CoreObject;
+import net.jcores.jre.cores.adapter.AbstractAdapter;
+import net.jcores.jre.interfaces.functions.F1;
+import net.jcores.jre.utils.internal.Wrapper;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationDummy;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationsUtil;
@@ -43,7 +43,7 @@ import de.dfki.km.text20.services.evaluators.gaze.listenertypes.saccade.Saccade;
  * @author Ralf Biedert
  * @since 1.4
  */
-public class SaccadesUtil extends CoreObjectJRE<Saccade> {
+public class SaccadesUtil extends CoreObject<Saccade> {
 
     /**  */
     private static final long serialVersionUID = -2238573022598996299L;
@@ -117,8 +117,8 @@ public class SaccadesUtil extends CoreObjectJRE<Saccade> {
      * 
      * @return A CoreObject with all start positions.
      */
-    public CoreObjectJRE<Fixation> starts() {
-        return new CoreObjectJRE<Fixation>(this.commonCore, map(new F1<Saccade, Fixation>() {
+    public CoreObject<Fixation> starts() {
+        return new CoreObject<Fixation>(this.commonCore, map(new F1<Saccade, Fixation>() {
             @Override
             public Fixation f(Saccade x) {
                return x.getStart();
@@ -133,8 +133,8 @@ public class SaccadesUtil extends CoreObjectJRE<Saccade> {
      * 
      * @return A CoreObject with all start positions.
      */
-    public CoreObjectJRE<Fixation> ends() {
-        return new CoreObjectJRE<Fixation>(this.commonCore, map(new F1<Saccade, Fixation>() {
+    public CoreObject<Fixation> ends() {
+        return new CoreObject<Fixation>(this.commonCore, map(new F1<Saccade, Fixation>() {
             @Override
             public Fixation f(Saccade x) {
                return x.getEnd();
