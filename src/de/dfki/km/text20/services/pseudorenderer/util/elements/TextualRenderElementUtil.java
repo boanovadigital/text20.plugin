@@ -21,6 +21,10 @@
  */
 package de.dfki.km.text20.services.pseudorenderer.util.elements;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import de.dfki.km.text20.services.pseudorenderer.CoordinatesType;
 import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement;
 
 /**
@@ -29,7 +33,13 @@ import de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderEle
  * @author Ralf Biedert
  * @since 1.4
  */
-public class TextualRenderElementUtil extends RenderElementUtil implements TextualRenderElement {
+public class TextualRenderElementUtil extends RenderElementUtil implements
+        TextualRenderElement {
+
+    static {
+        
+    }
+    
     /**
      * @param renderElement
      */
@@ -37,7 +47,9 @@ public class TextualRenderElementUtil extends RenderElementUtil implements Textu
         super(renderElement);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#getContent()
      */
     @Override
@@ -45,7 +57,9 @@ public class TextualRenderElementUtil extends RenderElementUtil implements Textu
         return cast(TextualRenderElement.class).getContent();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#setContent(java.lang.String)
      */
     @Override
@@ -53,7 +67,9 @@ public class TextualRenderElementUtil extends RenderElementUtil implements Textu
         cast(TextualRenderElement.class).setContent(content);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#getWordID()
      */
     @Override
@@ -61,7 +77,9 @@ public class TextualRenderElementUtil extends RenderElementUtil implements Textu
         return cast(TextualRenderElement.class).getWordID();
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#setWordID(int)
      */
     @Override
@@ -69,7 +87,9 @@ public class TextualRenderElementUtil extends RenderElementUtil implements Textu
         cast(TextualRenderElement.class).setWordID(id);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#setTextID(int)
      */
     @Override
@@ -77,11 +97,30 @@ public class TextualRenderElementUtil extends RenderElementUtil implements Textu
         cast(TextualRenderElement.class).setTextID(id);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see de.dfki.km.text20.services.pseudorenderer.renderelements.TextualRenderElement#getTextID()
      */
     @Override
     public int getTextID() {
-        return cast(TextualRenderElement.class).getTextID();        
+        return cast(TextualRenderElement.class).getTextID();
+    }
+
+    /**
+     * For a point inside the render element's rectangle, return the character position.
+     * 
+     * @since 1.4
+     * @param point
+     * @return The character position.
+     */
+    public int characterPosition(Point point) {
+        final String content = getContent();
+        final Rectangle geometry = getGeometry(CoordinatesType.DOCUMENT_BASED);
+        
+        
+        double perc = ((double) point.x) / geometry.width;
+        int rval = (int) (perc * content.length());
+        return rval;
     }
 }
