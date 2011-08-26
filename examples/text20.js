@@ -36,8 +36,8 @@
 var text20 = {},
     /** Version information to assist debugging */
     version = {
-        version: "1.4.0",
-        build: "1.4.0-201106161214",
+        version: "1.4.1",
+        build: "1.4.1-201108261118",
     },
 
     strings = {
@@ -458,13 +458,15 @@ var text20 = {},
         /** Finds elements in a region */
         elementsAround: function(x, y, xradius, yradius) {
             var rval = []
+            
+            if(x <= 0 || y <= 0) return rval;
 
             // FIXME: Better alternative to 'shooting'?
             for(var ypos = y - yradius; ypos < y + yradius; ypos += 10) {
                 for(var xpos = x - xradius; xpos < x + xradius; xpos += 10) {
 
-                    // FIXME: This is broker (Safari 5 uses coordinats differently?)
-                    //var element = document.elementFromPoint(xpos, ypos);
+                    // FIXME: This is broken? (Safari 5 uses coordinats differently?)
+                    var element = document.elementFromPoint(xpos, ypos);
 
                     if(!element) continue;
                     if(rval.indexOf(element) >= 0) continue;

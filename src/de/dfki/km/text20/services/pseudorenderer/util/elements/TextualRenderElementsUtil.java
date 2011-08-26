@@ -89,7 +89,7 @@ public class TextualRenderElementsUtil extends CoreObject<TextualRenderElement> 
     
     
     /**
-     * Returns all available text IDs.
+     * Returns all available elements of a given textID.
      * 
      * @param id 
      * @return CoreNumber object.
