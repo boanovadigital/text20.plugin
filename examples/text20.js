@@ -37,7 +37,7 @@ var text20 = {},
     /** Version information to assist debugging */
     version = {
         version: "1.4.1",
-        build: "1.4.1-201108261118",
+        build: "1.4.1-201109061609",
     },
 
     strings = {

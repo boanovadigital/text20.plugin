@@ -31,7 +31,7 @@ import net.jcores.jre.cores.CoreNumber;
 import net.jcores.jre.cores.CoreObject;
 import net.jcores.jre.cores.adapter.AbstractAdapter;
 import net.jcores.jre.interfaces.functions.F1;
-import net.jcores.jre.utils.internal.Wrapper;
+import net.jcores.jre.utils.internal.wrapper.Wrapper;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.Fixation;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationDummy;
 import de.dfki.km.text20.services.evaluators.gaze.listenertypes.fixation.util.FixationsUtil;
