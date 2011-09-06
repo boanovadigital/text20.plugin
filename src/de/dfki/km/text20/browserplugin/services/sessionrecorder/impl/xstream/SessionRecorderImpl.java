@@ -41,7 +41,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 import net.jcores.jre.interfaces.functions.F0;
-import net.jcores.jre.options.Option;
+import net.jcores.jre.options.Hash;
 import net.xeoh.plugins.base.PluginManager;
 import net.xeoh.plugins.informationbroker.InformationBroker;
 import net.xeoh.plugins.informationbroker.util.InformationBrokerUtil;
@@ -406,7 +406,7 @@ public class SessionRecorderImpl implements SessionRecorder {
         // In case this is an image, we also try to store the image
         if("image".equals(type)) {
             // Check if we already had this file
-            final File target = new File(this.sessionDir + "/" + "image." + $(content).string().bytes().hash(Option.HASH_MD5).get(0) + "." + $(content).split("\\.").get(-1));
+            final File target = new File(this.sessionDir + "/" + "image." + $(content).string().bytes().hash(Hash.MD5).get(0) + "." + $(content).split("\\.").get(-1));
             if(!target.exists()) {
                 // If we hadn't, then run in the background 
                 $.sys.oneTime(new F0() {
