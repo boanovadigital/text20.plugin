@@ -70,7 +70,6 @@ public class PerusalHandlerImpl4 extends
 
     /**
      * Dispatches the new event to the listener.
-     * 
      */
     @SuppressWarnings("unused")
     private void dispatch(final float speed, final Rectangle rectangle,
