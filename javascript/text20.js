@@ -23,7 +23,7 @@
  *
  *
  * Version:
- *      4.6.0
+ *      4.6.1
  *
  * Dependencies:
  *      jquery > 1.4
@@ -1963,7 +1963,7 @@ var text20 = {},
         /**
          * Unregisters an element and makes it invisible to the engine again.
          *
-         * As a rule of thum, user-controlled sites should register element as 
+         * As a rule of thumb, user-controlled sites should register element as 
          * soon as they were created and deregister them only shortly before removal.
          *
          * @param {Object} element
@@ -1978,9 +1978,11 @@ var text20 = {},
             // Start a new batch call to speed up the process
             connector.connection.startBatch();
 
+
             element.forEach(function(e) {
                 var el = $(e)
                 el.removeClass("registeredGazeElement")
+                // TODO: This is somewhat arguable … remove element, or just don't track atm?
                 connector.connection.transmitElementRemoved(el.attr("id"));
             })
 
