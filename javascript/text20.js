@@ -1616,6 +1616,12 @@ var text20 = {},
                             word = self.attr("_wordID")
                         }
                     }
+                    
+                    // Handle DIV elements here
+                    if (this.tagName == "DIV") {
+                        // Setting type to image and content to image-url
+                        type = "div"
+                    }
 
                     // Handle image elements here
                     if (this.tagName == "IMG") {
