@@ -1261,7 +1261,38 @@ var text20 = {},
 
                             "</applet>"
                         );
+                                                    
                     }
+                    
+                
+                    // Alternative when bootstrap.js has been added. 
+                    /*
+                    var attributes = {
+                        codebase:'./',
+                        code:'de.dfki.km.text20.browserplugin.browser.browserplugin.impl.BrowserPluginImpl.class',
+                        archive: connector.config.archive,
+                        width:1, height:1
+                    } ;
+                    
+                    var parameters = {
+                        trackingdevice: connector.config.trackingDevice,
+                        trackingconnection: connector.config.trackingURL,
+                        enablebraintracker: connector.config.enableBrainTracke,
+                        braintrackingconnection: connector.config.brainTrackingURL,
+                        callbackprefix: callbacks.prefix(),
+                        transmitmode: connector.config.transmitMode,
+                        sessionpath: connector.config.sessionPath,
+                        recordingenabled: connector.config.recordingEnabled,
+                        extensions: allExtensions,
+                        updatecheck: connector.config.updateCheck,
+                        logging: connector.config.logging,
+                        diagnosis: connector.config.diagnosis,
+                        configuration: $.param(text20.core.config),
+                    };
+                    
+                    var version = '1.6' ;
+                    
+                    deployJava.runApplet(attributes, parameters, version);*/
 
 
                     text20.browser.log("Plugin added. Waiting for a lifesign. This usually takes 5-10 seconds.");
